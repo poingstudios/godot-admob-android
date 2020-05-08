@@ -1,2 +1,2 @@
-# Godot-AdMob
-Godot's AdMob module
+# Godot AdMob
+• Android only
