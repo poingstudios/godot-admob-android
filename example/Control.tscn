@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Control
+
+var AdMob = null
+
+func _ready():
+	if (Engine.has_singleton(\"AdMob\")):
+		$Label.text = \"Has singleton AdMob!\"
+		print($Label.text)
+		AdMob = Engine.get_singleton(\"AdMob\")
+		print(AdMob.sample_function())
+	pass # Replace with function body.
+"
+
+[node name="Control" type="Control"]
+script = SubResource( 1 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 294.737
+margin_top = 119.668
+margin_right = 334.737
+margin_bottom = 133.668
