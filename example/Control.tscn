@@ -4,6 +4,7 @@
 script/source = "extends Control
 
 var banner_ad_unit_id = \"ca-app-pub-3940256099942544/6300978111\"
+var interstitial_ad_unit_id = \"ca-app-pub-3940256099942544/1033173712\"
 
 var gravity = {
 	\"TOP\" : 48,
@@ -26,11 +27,13 @@ func _ready():
 		AdMob = Engine.get_singleton(\"AdMob\")
 		AdMob.init(instance_id)
 		AdMob.load_banner(banner_ad_unit_id, gravity.BOTTOM, \"\")
+		AdMob.load_interstitial(interstitial_ad_unit_id)
 		get_tree().connect(\"screen_resized\", self, \"_on_get_tree_resized\")
 	pass # Replace with function body.
 
 func test(variable):
 	print(variable)
+
 func _on_get_tree_resized():
 	if AdMob:
 		AdMob.resize_banner()
@@ -52,17 +55,52 @@ func _on_AdMob_banner_left_application():
 	
 func _on_AdMob_banner_closed():
 	print(\"_on_AdMob_banner_closed\")
+
 	
 func _on_AdMob_banner_destroyed():
 	print(\"_on_AdMob_banner_destroyed\")
 	
-	"
+func _on_AdMob_interstitial_loaded():
+	$Interstitial.disabled = false
+	print(\"_on_AdMob_interstitial_loaded\")
+
+func _on_AdMob_interstitial_failed_to_load(error_code : int):
+	print(\"_on_AdMob_interstitial_failed_to_load\" + \" \" + str(error_code))
+
+func _on_AdMob_interstitial_opened():
+	print(\"_on_AdMob_interstitial_opened\")
+	
+func _on_AdMob_interstitial_clicked():
+	print(\"_on_AdMob_interstitial_clicked\")
+	
+func _on_AdMob_interstitial_left_application():
+	print(\"_on_AdMob_interstitial_left_application\")
+
+func _on_AdMob_interstitial_closed():
+	print(\"_on_AdMob_interstitial_closed\")
+	AdMob.load_interstitial(interstitial_ad_unit_id)
+
+
+func _on_Interstitial_pressed():
+	AdMob.show_interstitial()
+	$Interstitial.disabled = true
+	pass # Replace with function body.
+"
 
 [node name="Control" type="Control"]
 script = SubResource( 1 )
 
 [node name="Label" type="Label" parent="."]
-margin_left = 294.737
-margin_top = 119.668
-margin_right = 334.737
-margin_bottom = 133.668
+margin_left = 194.737
+margin_top = 68.668
+margin_right = 234.737
+margin_bottom = 82.668
+
+[node name="Interstitial" type="Button" parent="."]
+margin_left = 214.0
+margin_top = 143.0
+margin_right = 310.0
+margin_bottom = 163.0
+disabled = true
+text = "INTERSTITIAL"
+[connection signal="pressed" from="Interstitial" to="." method="_on_Interstitial_pressed"]
