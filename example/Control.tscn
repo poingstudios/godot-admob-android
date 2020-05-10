@@ -5,6 +5,7 @@ script/source = "extends Control
 
 var banner_ad_unit_id = \"ca-app-pub-3940256099942544/6300978111\"
 var interstitial_ad_unit_id = \"ca-app-pub-3940256099942544/1033173712\"
+var rewarded_ad_unit_id = \"ca-app-pub-3940256099942544/5224354917\"
 
 var gravity = {
 	\"TOP\" : 48,
@@ -28,6 +29,7 @@ func _ready():
 		AdMob.init(instance_id)
 		AdMob.load_banner(banner_ad_unit_id, gravity.BOTTOM, \"\")
 		AdMob.load_interstitial(interstitial_ad_unit_id)
+		AdMob.load_rewarded(rewarded_ad_unit_id)
 		get_tree().connect(\"screen_resized\", self, \"_on_get_tree_resized\")
 	pass # Replace with function body.
 
@@ -80,11 +82,35 @@ func _on_AdMob_interstitial_closed():
 	print(\"_on_AdMob_interstitial_closed\")
 	AdMob.load_interstitial(interstitial_ad_unit_id)
 
-
 func _on_Interstitial_pressed():
 	AdMob.show_interstitial()
 	$Interstitial.disabled = true
 	pass # Replace with function body.
+
+func _on_AdMob_rewarded_ad_loaded():
+	$Rewarded.disabled = false
+	print(\"_on_AdMob_rewarded_ad_loaded\")
+
+func _on_AdMob_rewarded_ad_failed_to_load():
+	print(\"_on_rewarded_ad_failed_to_load\")
+	
+func _on_AdMob_rewarded_ad_opened():
+	print(\"_on_AdMob_rewarded_ad_opened\")
+	
+func _on_AdMob_rewarded_ad_closed():
+	print(\"_on_AdMob_rewarded_ad_closed\")
+	AdMob.load_rewarded(rewarded_ad_unit_id)
+
+	
+func _on_AdMob_user_earned_rewarded(currency : String, amount : int):
+	print(\"_on_AdMob_user_earned_rewarded\" + \"currency: \" + currency + \", amount: \" + str(amount));
+
+func _on_AdMob_rewarded_ad_failed_to_show(error_code : int):
+	print(\"_on_AdMob_rewarded_ad_failed_to_show\" + \" \" + str(error_code))
+
+func _on_Rewarded_pressed():
+	$Rewarded.disabled = true
+	AdMob.show_rewarded()
 "
 
 [node name="Control" type="Control"]
@@ -103,4 +129,13 @@ margin_right = 310.0
 margin_bottom = 163.0
 disabled = true
 text = "INTERSTITIAL"
+
+[node name="Rewarded" type="Button" parent="."]
+margin_left = 214.698
+margin_top = 209.342
+margin_right = 310.698
+margin_bottom = 229.342
+disabled = true
+text = "Rewarded"
 [connection signal="pressed" from="Interstitial" to="." method="_on_Interstitial_pressed"]
+[connection signal="pressed" from="Rewarded" to="." method="_on_Rewarded_pressed"]
