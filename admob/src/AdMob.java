@@ -14,6 +14,11 @@ import com.google.android.gms.ads.AdListener; //used to get events of ads (banne
 
 import com.google.android.gms.ads.InterstitialAd; //interstitialAd
 
+import com.google.android.gms.ads.rewarded.RewardedAd; //rewardedAd 
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.google.android.gms.ads.rewarded.RewardedAdCallback;
+import com.google.android.gms.ads.rewarded.RewardItem;
+
 import android.provider.Settings;
 
 public class AdMob extends Godot.SingletonBase 
@@ -29,6 +34,8 @@ public class AdMob extends Godot.SingletonBase
 	private String aSize = ""; //size of banner
 
 	private InterstitialAd aInterstitialAd;
+
+	private RewardedAd pRewardedAd;
 
     public void init(int pInstanceId) 
     {
@@ -128,7 +135,36 @@ public class AdMob extends Godot.SingletonBase
 			}
 		});    	
     }
-
+    public void destroy_banner()//IF THIS METHOD IS CALLED ON GODOT, THE BANNER WILL ONLY APPEAR AGAIN IF THE BANNER IS LOADED AGAIN
+    {
+    	aActivity.runOnUiThread(new Runnable()
+		{
+			@Override public void run()
+			{
+				if(aAdView != null)
+				{
+					aGodotLayout.removeView(aAdView);
+					aAdView.destroy();
+					aAdView = null;
+					GodotLib.calldeferred(aInstanceId, "_on_AdMob_banner_destroyed", new Object[]{ });
+				}
+			}
+		});
+    }
+    public void resize_banner()
+    {
+    	aActivity.runOnUiThread(new Runnable()
+		{
+			@Override public void run()
+			{
+				if(aAdView != null){
+					load_banner(aAdView.getAdUnitId(), aGodotLayoutParams.gravity, "");
+				}
+			}
+		});
+    }
+    //BANNER
+    //INTERSTITIAL
     public void load_interstitial(final String pAdUnitId)
     {
     	aActivity.runOnUiThread(new Runnable()
@@ -186,7 +222,6 @@ public class AdMob extends Godot.SingletonBase
 			}
 		});
     }
-
 	public void show_interstitial()
 	{
 		aActivity.runOnUiThread(new Runnable()
@@ -199,36 +234,78 @@ public class AdMob extends Godot.SingletonBase
 			}
 		});
 	}
-
-    public void destroy_banner()//IF THIS METHOD IS CALLED ON GODOT, THE BANNER WILL ONLY APPEAR AGAIN IF THE BANNER IS LOADED AGAIN
+    //INTERSTITIAL
+    //REWARDED
+    public void load_rewarded(final String pAdUnitId)
     {
-    	aActivity.runOnUiThread(new Runnable()
+		aActivity.runOnUiThread(new Runnable()
 		{
 			@Override public void run()
 			{
-				if(aAdView != null)
+				pRewardedAd = new RewardedAd(aActivity, pAdUnitId);
+				RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() 
 				{
-					aGodotLayout.removeView(aAdView);
-					aAdView.destroy();
-					aAdView = null;
-					GodotLib.calldeferred(aInstanceId, "_on_AdMob_banner_destroyed", new Object[]{ });
-				}
+					@Override
+					public void onRewardedAdLoaded() 
+					{
+						// Ad successfully loaded
+						GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_loaded", new Object[] { });
+					}
+
+					@Override
+					public void onRewardedAdFailedToLoad(int errorCode) 
+					{
+						// Ad failed to load
+						GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_failed_to_load", new Object[] { errorCode });
+					}
+				};
+				pRewardedAd.loadAd(getAdRequest(), adLoadCallback);
 			}
 		});
     }
-    public void resize_banner()
+    public void show_rewarded()
     {
-    	aActivity.runOnUiThread(new Runnable()
+		aActivity.runOnUiThread(new Runnable()
 		{
 			@Override public void run()
 			{
-				if(aAdView != null){
-					load_banner(aAdView.getAdUnitId(), aGodotLayoutParams.gravity, "");
+		    	if (pRewardedAd != null && pRewardedAd.isLoaded()) 
+				{
+					RewardedAdCallback adCallback = new RewardedAdCallback() 
+					{
+		                @Override
+						public void onRewardedAdOpened() 
+		                {
+							// Ad opened.
+							GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_opened", new Object[] { });
+		                }
+
+		                @Override
+		                public void onRewardedAdClosed() {
+							// Ad closed.
+							GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_closed", new Object[] { });
+		                }
+
+		                @Override
+		                public void onUserEarnedReward(RewardItem reward) 
+		                {
+		                	// User earned reward.
+							GodotLib.calldeferred(aInstanceId, "_on_AdMob_user_earned_rewarded", new Object[] { reward.getType(), reward.getAmount() });
+		                }
+
+		                @Override
+		                public void onRewardedAdFailedToShow(int errorCode) 
+		                {
+		                	// Ad failed to display.
+							GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_failed_to_show", new Object[] { errorCode });		                	
+		                }
+		            };
+	            pRewardedAd.show(aActivity, adCallback);
 				}
 			}
 		});
-    }
-    //BANNER
+	}
+	//REWARDED
     private AdRequest getAdRequest()
     {
     	AdRequest.Builder adRequestBuilder = new AdRequest.Builder();
@@ -258,7 +335,9 @@ public class AdMob extends Godot.SingletonBase
         	"destroy_banner",
         	"resize_banner",
         	"load_interstitial",
-        	"show_interstitial"
+        	"show_interstitial",
+        	"load_rewarded",
+        	"show_rewarded"
         });
 
         this.aActivity = pActivity;
