@@ -3,16 +3,60 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Control
 
-var AdMob = null
+var banner_ad_unit_id = \"ca-app-pub-3940256099942544/6300978111\"
 
+var gravity = {
+	\"TOP\" : 48,
+	\"BOTTOM\" : 80
+}
+var test_device_id = {
+	\"REAL_DEVICE\" : OS.get_unique_id().md5_text().to_upper(),
+	\"EMULATOR_DEVICE\" : \"B3EEABB8EE11C2BE770B684D95219ECB\"
+}
+
+var is_real = false
+
+var instance_id = get_instance_id()
+
+var AdMob
 func _ready():
 	if (Engine.has_singleton(\"AdMob\")):
 		$Label.text = \"Has singleton AdMob!\"
 		print($Label.text)
 		AdMob = Engine.get_singleton(\"AdMob\")
-		print(AdMob.sample_function())
+		AdMob.init(instance_id)
+		AdMob.load_banner(banner_ad_unit_id, gravity.BOTTOM, \"\")
+		get_tree().connect(\"screen_resized\", self, \"_on_get_tree_resized\")
 	pass # Replace with function body.
-"
+
+func test(variable):
+	print(variable)
+func _on_get_tree_resized():
+	if AdMob:
+		AdMob.resize_banner()
+
+func _on_AdMob_banner_loaded():
+	print(\"_on_AdMob_banner_loaded\")
+	
+func _on_AdMob_banner_failed_to_load(error_code : int):
+	print(\"_on_AdMob_banner_failed_to_load\" + \" \" + str(error_code))
+	
+func _on_AdMob_banner_opened():
+	print(\"_on_AdMob_banner_opened\")
+	
+func _on_AdMob_banner_clicked_opened():
+	print(\"_on_AdMob_banner_clicked_opened\")
+	
+func _on_AdMob_banner_left_application():
+	print(\"_on_AdMob_banner_left_application\")
+	
+func _on_AdMob_banner_closed():
+	print(\"_on_AdMob_banner_closed\")
+	
+func _on_AdMob_banner_destroyed():
+	print(\"_on_AdMob_banner_destroyed\")
+	
+	"
 
 [node name="Control" type="Control"]
 script = SubResource( 1 )
