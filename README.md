@@ -2,3 +2,5 @@
 • Android only
 
 • Banner 
+
+• Interstitial
