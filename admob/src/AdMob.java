@@ -7,9 +7,12 @@ import android.view.Display;
 
 import com.google.android.gms.ads.MobileAds; //used for initialize
 import com.google.android.gms.ads.AdRequest; //used for make requests of ads
+
 import com.google.android.gms.ads.AdView; //used to banner ads
 import com.google.android.gms.ads.AdSize; //used to set/get size banner ads
 import com.google.android.gms.ads.AdListener; //used to get events of ads (banner, interstitial)
+
+import com.google.android.gms.ads.InterstitialAd; //interstitialAd
 
 import android.provider.Settings;
 
@@ -24,6 +27,8 @@ public class AdMob extends Godot.SingletonBase
 
 	private AdView aAdView; //view of banner
 	private String aSize = ""; //size of banner
+
+	private InterstitialAd aInterstitialAd;
 
     public void init(int pInstanceId) 
     {
@@ -123,7 +128,79 @@ public class AdMob extends Godot.SingletonBase
 			}
 		});    	
     }
-    public void destroy_banner()//IF THIS METHOD IS CALLED ON GODOT, THE BANNER WILL ONLY APPEAR AGAIN, IF THE BANNER IS LOADED AGAIN
+
+    public void load_interstitial(final String pAdUnitId)
+    {
+    	aActivity.runOnUiThread(new Runnable()
+		{
+			@Override public void run()
+			{
+				aInterstitialAd = new InterstitialAd(aActivity);
+				aInterstitialAd.setAdUnitId(pAdUnitId);
+				aInterstitialAd.setAdListener(new AdListener() 
+				{
+				    @Override
+				    public void onAdLoaded() 
+				    {
+				        // Code to be executed when an ad finishes loading.
+						GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_loaded", new Object[]{ });
+				    }
+
+				    @Override
+				    public void onAdFailedToLoad(int errorCode) 
+				    {
+				        // Code to be executed when an ad request fails.
+						GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_failed_to_load", new Object[]{ errorCode });
+				    }
+
+				    @Override
+				    public void onAdOpened() 
+				    {
+				        // Code to be executed when the ad is displayed.
+						GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_opened", new Object[]{ });
+				    }
+
+				    @Override
+				    public void onAdClicked() 
+				    {
+				        // Code to be executed when the user clicks on an ad.
+						GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_clicked", new Object[]{ });
+				    }
+
+				    @Override
+				    public void onAdLeftApplication() 
+				    {
+				        // Code to be executed when the user has left the app.
+						GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_left_application", new Object[]{ });
+				    }
+
+				    @Override
+				    public void onAdClosed() 
+				    {
+				        // Code to be executed when the interstitial ad is closed.
+						GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_closed", new Object[]{ });
+				    }
+				});
+				aInterstitialAd.loadAd(getAdRequest());
+
+			}
+		});
+    }
+
+	public void show_interstitial()
+	{
+		aActivity.runOnUiThread(new Runnable()
+		{
+			@Override public void run()
+			{
+				if (aInterstitialAd != null && aInterstitialAd.isLoaded()) {
+					aInterstitialAd.show();
+				}
+			}
+		});
+	}
+
+    public void destroy_banner()//IF THIS METHOD IS CALLED ON GODOT, THE BANNER WILL ONLY APPEAR AGAIN IF THE BANNER IS LOADED AGAIN
     {
     	aActivity.runOnUiThread(new Runnable()
 		{
@@ -179,7 +256,9 @@ public class AdMob extends Godot.SingletonBase
         	"test_init",
         	"load_banner",
         	"destroy_banner",
-        	"resize_banner"
+        	"resize_banner",
+        	"load_interstitial",
+        	"show_interstitial"
         });
 
         this.aActivity = pActivity;
