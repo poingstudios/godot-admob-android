@@ -6,10 +6,13 @@ script/source = "extends Control
 var banner_ad_unit_id = \"ca-app-pub-3940256099942544/6300978111\"
 var interstitial_ad_unit_id = \"ca-app-pub-3940256099942544/1033173712\"
 var rewarded_ad_unit_id = \"ca-app-pub-3940256099942544/5224354917\"
+var unified_native_ad_unit_id = \"ca-app-pub-3940256099942544/2247696110\"
 
 var gravity = {
 	\"TOP\" : 48,
-	\"BOTTOM\" : 80
+	\"BOTTOM\" : 80,
+	\"CENTER\" : 17,
+	\"NO_GRAVITY\" : 0
 }
 var test_device_id = {
 	\"REAL_DEVICE\" : OS.get_unique_id().md5_text().to_upper(),
@@ -20,6 +23,11 @@ var is_real = false
 
 var instance_id = get_instance_id()
 
+onready var SCALE = {
+	\"x\" : OS.get_screen_size().x / get_viewport_rect().size.x,
+	\"y\" : OS.get_screen_size().y / get_viewport_rect().size.y
+}
+
 var AdMob
 func _ready():
 	if (Engine.has_singleton(\"AdMob\")):
@@ -27,18 +35,23 @@ func _ready():
 		print($Label.text)
 		AdMob = Engine.get_singleton(\"AdMob\")
 		AdMob.init(instance_id)
-		AdMob.load_banner(banner_ad_unit_id, gravity.BOTTOM, \"\")
+		AdMob.load_banner(banner_ad_unit_id, gravity.CENTER, \"\")
 		AdMob.load_interstitial(interstitial_ad_unit_id)
 		AdMob.load_rewarded(rewarded_ad_unit_id)
+		#AdMob.load_unified_native(unified_native_ad_unit_id, [$Panel.rect_size.x * SCALE.x, $Panel.rect_size.y*SCALE.y], [$Panel.rect_position.x * SCALE.x, $Panel.rect_position.y * SCALE.y])
 		get_tree().connect(\"screen_resized\", self, \"_on_get_tree_resized\")
 	pass # Replace with function body.
 
-func test(variable):
-	print(variable)
-
 func _on_get_tree_resized():
 	if AdMob:
-		AdMob.resize_banner()
+		SCALE = {
+			\"x\" : OS.get_screen_size().x / get_viewport_rect().size.x,
+			\"y\" : OS.get_screen_size().y / get_viewport_rect().size.y
+		}
+		AdMob.load_banner(banner_ad_unit_id, gravity.CENTER, \"\")
+		AdMob.load_interstitial(interstitial_ad_unit_id)
+		AdMob.load_rewarded(rewarded_ad_unit_id)
+		#AdMob.load_unified_native(unified_native_ad_unit_id, [$Panel.rect_size.x * SCALE.x, $Panel.rect_size.y*SCALE.y], [$Panel.rect_position.x * SCALE.x, $Panel.rect_position.y * SCALE.y])
 
 func _on_AdMob_banner_loaded():
 	print(\"_on_AdMob_banner_loaded\")
@@ -108,34 +121,81 @@ func _on_AdMob_user_earned_rewarded(currency : String, amount : int):
 func _on_AdMob_rewarded_ad_failed_to_show(error_code : int):
 	print(\"_on_AdMob_rewarded_ad_failed_to_show\" + \" \" + str(error_code))
 
+
+
+
 func _on_Rewarded_pressed():
 	$Rewarded.disabled = true
 	AdMob.show_rewarded()
+
+
+func _on_AdMob_unified_native_ad_loaded():
+	$Native.disabled = false
+	print(\"_on_AdMob_unified_native_ad_loaded\")
+
+func _on_AdMob_unified_native_destroyed():
+	print(\"_on_AdMob_unified_native_destroyed\")
+
+
+func _on_AdMob_unified_native_ad_failed_to_load(error_code : int):
+	print(\"_on_AdMob_unified_native_ad_failed_to_load\" + \" \" + str(error_code))
+
+func _on_AdMob_unified_native_opened():
+	print(\"_on_AdMob_unified_native_opened\")
+
+func _on_AdMob_unified_native_clicked():
+	print(\"_on_AdMob_unified_native_clicked\")
+
+func _on_AdMob_unified_native_left_application():
+	print(\"_on_AdMob_unified_native_left_application\")
+	
+func _on_AdMob_unified_native_closed():
+	print(\"_on_AdMob_unified_native_closed\")
+
+func _on_Native_pressed():
+	$Native.disabled = true
+	#AdMob.show_native()
+	pass # Replace with function body.
 "
 
 [node name="Control" type="Control"]
 script = SubResource( 1 )
 
-[node name="Label" type="Label" parent="."]
-margin_left = 194.737
-margin_top = 68.668
-margin_right = 234.737
-margin_bottom = 82.668
-
 [node name="Interstitial" type="Button" parent="."]
-margin_left = 214.0
-margin_top = 143.0
-margin_right = 310.0
-margin_bottom = 163.0
+margin_left = 176.576
+margin_top = 149.645
+margin_right = 272.576
+margin_bottom = 169.645
 disabled = true
 text = "INTERSTITIAL"
 
 [node name="Rewarded" type="Button" parent="."]
-margin_left = 214.698
-margin_top = 209.342
-margin_right = 310.698
-margin_bottom = 229.342
+margin_left = 178.903
+margin_top = 220.874
+margin_right = 274.903
+margin_bottom = 240.874
 disabled = true
 text = "Rewarded"
+
+[node name="Native" type="Button" parent="."]
+margin_left = 176.897
+margin_top = 290.739
+margin_right = 272.897
+margin_bottom = 310.739
+disabled = true
+text = "Native"
+
+[node name="Label" type="Label" parent="."]
+margin_left = 199.41
+margin_top = 66.3531
+margin_right = 239.41
+margin_bottom = 80.3531
+
+[node name="Panel" type="Panel" parent="."]
+margin_left = 300.0
+margin_top = 150.0
+margin_right = 500.0
+margin_bottom = 350.0
 [connection signal="pressed" from="Interstitial" to="." method="_on_Interstitial_pressed"]
 [connection signal="pressed" from="Rewarded" to="." method="_on_Rewarded_pressed"]
+[connection signal="pressed" from="Native" to="." method="_on_Native_pressed"]
