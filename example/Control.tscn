@@ -28,20 +28,27 @@ onready var SCALE = {
 	\"y\" : OS.get_screen_size().y / get_viewport_rect().size.y
 }
 
+var is_for_child_directed_treatment := true
+var is_personalized := false 
+var max_ad_content_rating := \"G\"
+
+
 var AdMob
 func _ready():
 	if (Engine.has_singleton(\"AdMob\")):
 		$Label.text = \"Has singleton AdMob!\"
 		print($Label.text)
 		AdMob = Engine.get_singleton(\"AdMob\")
-		AdMob.init(instance_id)
+		AdMob.init(is_for_child_directed_treatment, is_personalized, max_ad_content_rating, instance_id, \"\")
 		AdMob.load_banner(banner_ad_unit_id, gravity.BOTTOM, \"\")
 		AdMob.load_interstitial(interstitial_ad_unit_id)
 		AdMob.load_rewarded(rewarded_ad_unit_id)
 		#AdMob.load_unified_native(unified_native_ad_unit_id, [$Panel.rect_size.x * SCALE.x, $Panel.rect_size.y*SCALE.y], [$Panel.rect_position.x * SCALE.x, $Panel.rect_position.y * SCALE.y])
 		get_tree().connect(\"screen_resized\", self, \"_on_get_tree_resized\")
-	pass # Replace with function body.
 
+func test(param = 123):
+	print(param)
+	
 func _on_get_tree_resized():
 	if AdMob:
 		SCALE = {
