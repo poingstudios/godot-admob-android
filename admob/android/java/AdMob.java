@@ -31,6 +31,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 
+import android.os.Bundle;
+
+import com.google.ads.mediation.admob.AdMobAdapter;
+
 public class AdMob extends Godot.SingletonBase 
 {
     private Activity aActivity;
@@ -49,17 +53,18 @@ public class AdMob extends Godot.SingletonBase
 
 	private UnifiedNativeAdView aUnifiedNativeAdView;
 
-    public void init(int pInstanceId) 
-    {
-    	aInstanceId = pInstanceId;
-    	MobileAds.initialize(aActivity); //initialize(Context context, OnInitializationCompleteListener listener) doesnt work due Godot cant download the package
-    	//aTestDeviceId won't be attributed because is not a test device
-    }
+	private boolean aIsForChildDirectedTreatment;
+	private boolean aIsPersonalized;
+	private String aMaxAdContentRating;
 
-    public void test_init(int pInstanceId, String pTestDeviceId) 
+
+    public void init(boolean pIsForChildDirectedTreatment, boolean pIsPersonalized, String pMaxAdContentRating, int pInstanceId, String pTestDeviceId) 
     {
 		aInstanceId = pInstanceId;
 		MobileAds.initialize(aActivity); //initialize(Context context, OnInitializationCompleteListener listener) doesnt work due Godot cant download the package
+		aIsForChildDirectedTreatment = pIsForChildDirectedTreatment;
+		aIsPersonalized = pIsPersonalized;
+		aMaxAdContentRating = pMaxAdContentRating;
 		aTestDeviceId = pTestDeviceId;
     }
 
@@ -323,6 +328,9 @@ public class AdMob extends Godot.SingletonBase
 				        public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
 				            // Show the ad.
 							aGodotLayout = ((Godot) aActivity).layout;
+							//SECURE TO DESTROY THE UNIFIED NATIVE AND THE BANNER
+							if (aUnifiedNativeAdView != null) destroy_unified_native();
+							if (aAdView != null) destroy_banner();
 
 							aUnifiedNativeAdView = (UnifiedNativeAdView) aActivity.getLayoutInflater().inflate(R.layout.ad_unified, null);
 
@@ -346,27 +354,6 @@ public class AdMob extends Godot.SingletonBase
 					    {
 					        // Code to be executed when the ad is displayed.
 							GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_opened", new Object[]{ });
-					    }
-
-					    @Override
-					    public void onAdClicked() 
-					    {
-					        // Code to be executed when the user clicks on an ad.
-							GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_clicked", new Object[]{ });
-					    }
-
-					    @Override
-					    public void onAdLeftApplication() 
-					    {
-					        // Code to be executed when the user has left the app.
-							GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_left_application", new Object[]{ });
-					    }
-
-					    @Override
-					    public void onAdClosed() 
-					    {
-					        // Code to be executed when the unified native ad is closed.
-							GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_closed", new Object[]{ });
 					    }
 				    })
 				    .build();
@@ -397,59 +384,6 @@ public class AdMob extends Godot.SingletonBase
         MediaView mediaView = myAdView.findViewById(R.id.ad_media);
         myAdView.setMediaView(mediaView);
 
-        myAdView.setHeadlineView(myAdView.findViewById(R.id.ad_headline));
-        myAdView.setBodyView(myAdView.findViewById(R.id.ad_body));
-        myAdView.setCallToActionView(myAdView.findViewById(R.id.ad_call_to_action));
-        myAdView.setIconView(myAdView.findViewById(R.id.ad_icon));
-        myAdView.setPriceView(myAdView.findViewById(R.id.ad_price));
-        myAdView.setStarRatingView(myAdView.findViewById(R.id.ad_rating));
-        myAdView.setStoreView(myAdView.findViewById(R.id.ad_store));
-        myAdView.setAdvertiserView(myAdView.findViewById(R.id.ad_advertiser));
-
-        ((TextView) myAdView.getHeadlineView()).setText(adFromGoogle.getHeadline());
-
-        if (adFromGoogle.getBody() == null) {
-            myAdView.getBodyView().setVisibility(View.GONE);
-        } else {
-            ((TextView) myAdView.getBodyView()).setText(adFromGoogle.getBody());
-        }
-
-        if (adFromGoogle.getCallToAction() == null) {
-            myAdView.getCallToActionView().setVisibility(View.GONE);
-        } else {
-            ((Button) myAdView.getCallToActionView()).setText(adFromGoogle.getCallToAction());
-        }
-
-        if (adFromGoogle.getIcon() == null) {
-            myAdView.getIconView().setVisibility(View.GONE);
-        } else {
-            ((ImageView) myAdView.getIconView()).setImageDrawable(adFromGoogle.getIcon().getDrawable());
-        }
-
-        if (adFromGoogle.getPrice() == null) {
-            myAdView.getPriceView().setVisibility(View.GONE);
-        } else {
-            ((TextView) myAdView.getPriceView()).setText(adFromGoogle.getPrice());
-        }
-
-        if (adFromGoogle.getStarRating() == null) {
-            myAdView.getStarRatingView().setVisibility(View.GONE);
-        } else {
-            ((RatingBar) myAdView.getStarRatingView()).setRating(adFromGoogle.getStarRating().floatValue());
-        }
-
-        if (adFromGoogle.getStore() == null) {
-            myAdView.getStoreView().setVisibility(View.GONE);
-        } else {
-            ((TextView) myAdView.getStoreView()).setText(adFromGoogle.getStore());
-        }
-
-        if (adFromGoogle.getAdvertiser() == null) {
-            myAdView.getAdvertiserView().setVisibility(View.GONE);
-        } else {
-            ((TextView) myAdView.getAdvertiserView()).setText(adFromGoogle.getAdvertiser());
-        }
-
         myAdView.setNativeAd(adFromGoogle);
     }
 
@@ -458,10 +392,20 @@ public class AdMob extends Godot.SingletonBase
     {
     	AdRequest.Builder adRequestBuilder = new AdRequest.Builder();
 
-    	adRequestBuilder.tagForChildDirectedTreatment(true);
+    	adRequestBuilder.tagForChildDirectedTreatment(aIsForChildDirectedTreatment);
+    	if (aIsForChildDirectedTreatment) {
+			adRequestBuilder.setMaxAdContentRating("G");
+    	}
+    	else{
+			adRequestBuilder.setMaxAdContentRating(aMaxAdContentRating);
+    	}
+		if (!aIsPersonalized) {
+	    	Bundle extras = new Bundle();
+    		extras.putString("npa", "1");
+    		adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, extras);
+		}
     	if (aTestDeviceId != "") {
 	    	adRequestBuilder.addTestDevice(aTestDeviceId);
-			GodotLib.calldeferred(aInstanceId, "test", new Object[]{ aTestDeviceId });
 	    }
 
     	return adRequestBuilder.build();

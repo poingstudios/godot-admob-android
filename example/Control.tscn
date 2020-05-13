@@ -35,7 +35,7 @@ func _ready():
 		print($Label.text)
 		AdMob = Engine.get_singleton(\"AdMob\")
 		AdMob.init(instance_id)
-		AdMob.load_banner(banner_ad_unit_id, gravity.CENTER, \"\")
+		AdMob.load_banner(banner_ad_unit_id, gravity.BOTTOM, \"\")
 		AdMob.load_interstitial(interstitial_ad_unit_id)
 		AdMob.load_rewarded(rewarded_ad_unit_id)
 		#AdMob.load_unified_native(unified_native_ad_unit_id, [$Panel.rect_size.x * SCALE.x, $Panel.rect_size.y*SCALE.y], [$Panel.rect_position.x * SCALE.x, $Panel.rect_position.y * SCALE.y])
@@ -48,7 +48,7 @@ func _on_get_tree_resized():
 			\"x\" : OS.get_screen_size().x / get_viewport_rect().size.x,
 			\"y\" : OS.get_screen_size().y / get_viewport_rect().size.y
 		}
-		AdMob.load_banner(banner_ad_unit_id, gravity.CENTER, \"\")
+		AdMob.load_banner(banner_ad_unit_id, gravity.BOTTOM, \"\")
 		AdMob.load_interstitial(interstitial_ad_unit_id)
 		AdMob.load_rewarded(rewarded_ad_unit_id)
 		#AdMob.load_unified_native(unified_native_ad_unit_id, [$Panel.rect_size.x * SCALE.x, $Panel.rect_size.y*SCALE.y], [$Panel.rect_position.x * SCALE.x, $Panel.rect_position.y * SCALE.y])
@@ -162,22 +162,23 @@ func _on_Native_pressed():
 script = SubResource( 1 )
 
 [node name="Interstitial" type="Button" parent="."]
-margin_left = 176.576
-margin_top = 149.645
-margin_right = 272.576
-margin_bottom = 169.645
+margin_left = 196.22
+margin_top = 33.0095
+margin_right = 396.22
+margin_bottom = 233.009
 disabled = true
 text = "INTERSTITIAL"
 
 [node name="Rewarded" type="Button" parent="."]
-margin_left = 178.903
-margin_top = 220.874
-margin_right = 274.903
-margin_bottom = 240.874
+margin_left = 480.0
+margin_top = 38.0
+margin_right = 722.0
+margin_bottom = 223.0
 disabled = true
 text = "Rewarded"
 
 [node name="Native" type="Button" parent="."]
+visible = false
 margin_left = 176.897
 margin_top = 290.739
 margin_right = 272.897
@@ -192,10 +193,11 @@ margin_right = 239.41
 margin_bottom = 80.3531
 
 [node name="Panel" type="Panel" parent="."]
-margin_left = 300.0
-margin_top = 150.0
-margin_right = 500.0
-margin_bottom = 350.0
+visible = false
+margin_left = 6.79248
+margin_top = 402.648
+margin_right = 706.792
+margin_bottom = 902.648
 [connection signal="pressed" from="Interstitial" to="." method="_on_Interstitial_pressed"]
 [connection signal="pressed" from="Rewarded" to="." method="_on_Rewarded_pressed"]
 [connection signal="pressed" from="Native" to="." method="_on_Native_pressed"]

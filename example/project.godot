@@ -25,8 +25,8 @@ config/icon="res://icon.png"
 
 [display]
 
-window/size/width=500
-window/size/height=500
+window/size/width=720
+window/size/height=1024
 window/handheld/orientation="sensor"
 window/stretch/mode="2d"
 
