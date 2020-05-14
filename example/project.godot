@@ -23,6 +23,10 @@ config/name="GodotAdMob"
 run/main_scene="res://Control.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+AdMob="*res://AdMob.gd"
+
 [display]
 
 window/size/width=720
