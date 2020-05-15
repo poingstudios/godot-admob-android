@@ -1,4 +1,4 @@
-# Godot AdMob
+# Godot AdMob (3.1.2)
 ### Android only, iOS still in development
 - Banner 
 - Interstitial
