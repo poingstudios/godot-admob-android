@@ -1,5 +1,5 @@
 # Godot AdMob
-### Android only
+### Android only, iOS still in development
 - Banner 
 - Interstitial
 - Rewarded
