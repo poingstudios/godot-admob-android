@@ -1,51 +1,104 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://Themes/Default.theme" type="Theme" id=2]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Control
 
+
+onready var Banner : Button = $VBoxContainer/Banner
+onready var Native : Button = $VBoxContainer/Native
+onready var Interstitial : Button = $VBoxContainer/Interstitial
+onready var Rewarded : Button = $VBoxContainer/Rewarded
+
 func _ready():
-	AdMob.init()"
+	AdMob.init()
+	AdMob.load_banner()
+	AdMob.connect(\"banner_loaded\", self, \"_on_AdMob_banner_loaded\")
+	AdMob.connect(\"banner_destroyed\", self, \"_on_AdMob_banner_destroyed\")
+	
+func _on_AdMob_banner_loaded():
+	Banner.disabled = false
+	
+func _on_AdMob_banner_destroyed():
+	Banner.disabled = true
+	AdMob.load_banner()
+
+func _on_Banner_pressed():
+	AdMob.destroy_banner()"
 
 [node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 script = SubResource( 1 )
 
-[node name="Interstitial" type="Button" parent="."]
-margin_left = 196.22
-margin_top = 33.0095
-margin_right = 396.22
-margin_bottom = 233.009
-disabled = true
-text = "INTERSTITIAL"
+[node name="AdMob" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -256.0
+margin_top = -256.0
+margin_right = 256.0
+margin_bottom = 256.0
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
 
-[node name="Rewarded" type="Button" parent="."]
-margin_left = 480.0
-margin_top = 38.0
-margin_right = 722.0
-margin_bottom = 223.0
-disabled = true
-text = "Rewarded"
+[node name="Advice" type="Label" parent="."]
+anchor_right = 1.0
+margin_top = 70.0
+margin_bottom = 178.0
+theme = ExtResource( 2 )
+text = "ADVICE LABEL"
+align = 1
+valign = 1
+autowrap = true
 
-[node name="Native" type="Button" parent="."]
-visible = false
-margin_left = 176.897
-margin_top = 290.739
-margin_right = 272.897
-margin_bottom = 310.739
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -140.0
+margin_top = -64.0
+margin_right = 140.0
+margin_bottom = 64.0
+alignment = 1
+
+[node name="Banner" type="Button" parent="VBoxContainer"]
+margin_right = 280.0
+margin_bottom = 40.0
+theme = ExtResource( 2 )
+disabled = true
+text = "Banner"
+
+[node name="Native" type="Button" parent="VBoxContainer"]
+margin_top = 44.0
+margin_right = 280.0
+margin_bottom = 84.0
+theme = ExtResource( 2 )
 disabled = true
 text = "Native"
 
-[node name="Label" type="Label" parent="."]
-margin_left = 199.41
-margin_top = 66.3531
-margin_right = 239.41
-margin_bottom = 80.3531
+[node name="Interstitial" type="Button" parent="VBoxContainer"]
+margin_top = 88.0
+margin_right = 280.0
+margin_bottom = 128.0
+theme = ExtResource( 2 )
+disabled = true
+text = "INTERSTITIAL"
 
-[node name="Panel" type="Panel" parent="."]
-visible = false
-margin_left = 6.79248
-margin_top = 402.648
-margin_right = 706.792
-margin_bottom = 902.648
-[connection signal="pressed" from="Interstitial" to="." method="_on_Interstitial_pressed"]
-[connection signal="pressed" from="Rewarded" to="." method="_on_Rewarded_pressed"]
-[connection signal="pressed" from="Native" to="." method="_on_Native_pressed"]
+[node name="Rewarded" type="Button" parent="VBoxContainer"]
+margin_top = 132.0
+margin_right = 280.0
+margin_bottom = 172.0
+theme = ExtResource( 2 )
+disabled = true
+text = "Rewarded"
+[connection signal="pressed" from="VBoxContainer/Banner" to="." method="_on_Banner_pressed"]
+[connection signal="pressed" from="VBoxContainer/Native" to="." method="_on_Native_pressed"]
+[connection signal="pressed" from="VBoxContainer/Interstitial" to="." method="_on_Interstitial_pressed"]
+[connection signal="pressed" from="VBoxContainer/Rewarded" to="." method="_on_Rewarded_pressed"]

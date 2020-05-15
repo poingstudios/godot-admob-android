@@ -1,13 +1,31 @@
 extends Control
 
+signal banner_loaded
+signal banner_destroyed
+
 var initialized := false
 
-var banner_ad_unit_id = "ca-app-pub-3940256099942544/6300978111"
-var interstitial_ad_unit_id = "ca-app-pub-3940256099942544/1033173712"
-var rewarded_ad_unit_id = "ca-app-pub-3940256099942544/5224354917"
-var unified_native_ad_unit_id = "ca-app-pub-3940256099942544/2247696110"
+var ad_unit_id = {
+	"banner" : {
+		"iOS" : "",
+		"Android" : "ca-app-pub-3940256099942544/6300978111"
+	},
+	"interstitial" : {
+		"iOS" : "",
+		"Android" : "ca-app-pub-3940256099942544/1033173712"
+	},
+	"rewarded" : {
+		"iOS" : "",
+		"Android" : "ca-app-pub-3940256099942544/5224354917"
+	},
+	"unified_native" : {
+		"iOS" : "",
+		"Android" : "ca-app-pub-3940256099942544/2247696110"
+	}
+}
 
-var gravity = {
+
+const GRAVITY = {
 	"TOP" : 48,
 	"BOTTOM" : 80,
 	"CENTER" : 17,
@@ -18,16 +36,10 @@ var test_device_id := {
 	"EMULATOR_DEVICE" : "B3EEABB8EE11C2BE770B684D95219ECB"
 }
 
-var is_real = false
-
 onready var SCALE = {
 	"x" : OS.get_screen_size().x / get_viewport_rect().size.x,
 	"y" : OS.get_screen_size().y / get_viewport_rect().size.y
 }
-
-var is_for_child_directed_treatment := true
-var is_personalized := false 
-var max_ad_content_rating := "G"
 
 var AdMob
 func _ready():
@@ -39,11 +51,16 @@ func init(is_for_child_directed_treatment := true, is_personalized := false, max
 	if AdMob and !initialized:
 		#IF test_device_id == "", then will be running as a test device
 		AdMob.init(is_for_child_directed_treatment, is_personalized, max_ad_content_rating, instance_id, test_device_id)
+		print("init on the gdscript code!")
 		initialized = !initialized
 
-func load_banner(unit_id : String, gravity : String, size : String = "SMART_BANNER"):
+func load_banner(unit_id : String = ad_unit_id.banner.Android, gravity : int = GRAVITY.BOTTOM, size : String = "SMART_BANNER"):
 	if AdMob:
 		AdMob.load_banner(unit_id, gravity, size)
+
+func destroy_banner():
+	if AdMob:
+		AdMob.destroy_banner()
 
 func load_interstitial(unit_id: String):
 	if AdMob:
@@ -74,14 +91,12 @@ func _on_get_tree_resized():
 			"x" : OS.get_screen_size().x / get_viewport_rect().size.x,
 			"y" : OS.get_screen_size().y / get_viewport_rect().size.y
 		}
-		AdMob.load_banner(banner_ad_unit_id, gravity.BOTTOM, "")
-		AdMob.load_interstitial(interstitial_ad_unit_id)
-		AdMob.load_rewarded(rewarded_ad_unit_id)
-		#AdMob.load_unified_native(unified_native_ad_unit_id, [$Panel.rect_size.x * SCALE.x, $Panel.rect_size.y*SCALE.y], [$Panel.rect_position.x * SCALE.x, $Panel.rect_position.y * SCALE.y])
 
 func _on_AdMob_banner_loaded():
-	print("_on_AdMob_banner_loaded")
-	
+	emit_signal("banner_loaded")
+func _on_AdMob_banner_destroyed():
+	emit_signal("banner_destroyed")
+
 func _on_AdMob_banner_failed_to_load(error_code : int):
 	print("_on_AdMob_banner_failed_to_load" + " " + str(error_code))
 	
@@ -98,11 +113,8 @@ func _on_AdMob_banner_closed():
 	print("_on_AdMob_banner_closed")
 
 	
-func _on_AdMob_banner_destroyed():
-	print("_on_AdMob_banner_destroyed")
 	
 func _on_AdMob_interstitial_loaded():
-	$Interstitial.disabled = false
 	print("_on_AdMob_interstitial_loaded")
 
 func _on_AdMob_interstitial_failed_to_load(error_code : int):
@@ -119,15 +131,9 @@ func _on_AdMob_interstitial_left_application():
 
 func _on_AdMob_interstitial_closed():
 	print("_on_AdMob_interstitial_closed")
-	AdMob.load_interstitial(interstitial_ad_unit_id)
-
-func _on_Interstitial_pressed():
-	AdMob.show_interstitial()
-	$Interstitial.disabled = true
-	pass # Replace with function body.
+	AdMob.load_interstitial(ad_unit_id.interstitial.Android)
 
 func _on_AdMob_rewarded_ad_loaded():
-	$Rewarded.disabled = false
 	print("_on_AdMob_rewarded_ad_loaded")
 
 func _on_AdMob_rewarded_ad_failed_to_load():
@@ -138,7 +144,7 @@ func _on_AdMob_rewarded_ad_opened():
 	
 func _on_AdMob_rewarded_ad_closed():
 	print("_on_AdMob_rewarded_ad_closed")
-	AdMob.load_rewarded(rewarded_ad_unit_id)
+	AdMob.load_rewarded(ad_unit_id.rewarded.Android)
 
 	
 func _on_AdMob_user_earned_rewarded(currency : String, amount : int):
@@ -148,15 +154,7 @@ func _on_AdMob_rewarded_ad_failed_to_show(error_code : int):
 	print("_on_AdMob_rewarded_ad_failed_to_show" + " " + str(error_code))
 
 
-
-
-func _on_Rewarded_pressed():
-	$Rewarded.disabled = true
-	AdMob.show_rewarded()
-
-
 func _on_AdMob_unified_native_ad_loaded():
-	$Native.disabled = false
 	print("_on_AdMob_unified_native_ad_loaded")
 
 func _on_AdMob_unified_native_destroyed():
@@ -177,8 +175,3 @@ func _on_AdMob_unified_native_left_application():
 	
 func _on_AdMob_unified_native_closed():
 	print("_on_AdMob_unified_native_closed")
-
-func _on_Native_pressed():
-	$Native.disabled = true
-	#AdMob.show_native()
-	pass # Replace with function body.
