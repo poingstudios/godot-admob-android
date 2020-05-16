@@ -35,7 +35,7 @@ var initialized := false
 
 var ad_unit_id = {
 	"banner" : {
-		"iOS" : "",
+		"iOS" : "ca-app-pub-3940256099942544/2934735716",
 		"Android" : "ca-app-pub-3940256099942544/6300978111"
 	},
 	"interstitial" : {

@@ -14,7 +14,7 @@ onready var Rewarded : Button = $VBoxContainer/Rewarded
 
 func _ready():
 	AdMob.init()
-	#AdMob.load_banner()
+	AdMob.load_banner(AdMob.ad_unit_id.banner.iOS)
 	AdMob.connect(\"banner_loaded\", self, \"_on_AdMob_banner_loaded\")
 	AdMob.connect(\"banner_destroyed\", self, \"_on_AdMob_banner_destroyed\")
 	
