@@ -127,7 +127,7 @@ public class AdMob extends Godot.SingletonBase
 				    @Override
 				    public void onAdClicked() {
 				        // Code to be executed when the user clicks on an ad.
-						GodotLib.calldeferred(aInstanceId, "_on_AdMob_banner_clicked_opened", new Object[]{ });
+						GodotLib.calldeferred(aInstanceId, "_on_AdMob_banner_clicked", new Object[]{ });
 				    }
 
 				    @Override
