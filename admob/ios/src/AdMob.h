@@ -1,13 +1,13 @@
-#include "core/reference.h"
+#include "reference.h"
 
 class AdMob : public Reference {
-	GDCLASS(AdMob, Reference);
+    GDCLASS(AdMob, Reference);
 
 protected:
-	static void _bind_methods();
+    static void _bind_methods();
 
 public:
-	void init();
+    void init(bool pIsForChildDirectedTreatment, bool pIsPersonalized, const String &pMaxAdContentRating, int pInstanceId, const String &pTestDeviceId);
     AdMob();
     ~AdMob();
-}
+};
