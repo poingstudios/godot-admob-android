@@ -2,6 +2,34 @@ extends Control
 
 signal banner_loaded
 signal banner_destroyed
+signal banner_failed_to_load(error_code)
+signal banner_opened
+signal banner_clicked
+signal banner_left_application
+signal banner_closed
+
+signal interstitial_loaded
+signal interstitial_failed_to_load(error_code)
+signal interstitial_opened
+signal interstitial_clicked
+signal interstitial_left_application
+signal interstitial_closed
+
+signal rewarded_ad_loaded
+signal rewarded_ad_failed_to_load
+signal rewarded_ad_opened
+signal rewarded_ad_closed
+signal rewarded_user_earned_rewarded(currency, amount)
+signal rewarded_ad_failed_to_show(error_code)
+
+signal unified_native_ad_loaded
+signal unified_native_destroyed
+signal unified_native_ad_failed_to_load(error_code)
+signal unified_native_opened
+signal unified_native_clicked
+signal unified_native_left_application
+signal unified_native_closed
+
 
 var initialized := false
 
@@ -54,7 +82,7 @@ func init(is_for_child_directed_treatment := true, is_personalized := false, max
 		print("init on the gdscript code!")
 		initialized = !initialized
 
-func load_banner(unit_id : String = ad_unit_id.banner.Android, gravity : int = GRAVITY.BOTTOM, size : String = "SMART_BANNER"):
+func load_banner(unit_id : String, gravity : int = GRAVITY.BOTTOM, size : String = "SMART_BANNER"):
 	if AdMob:
 		AdMob.load_banner(unit_id, gravity, size)
 
@@ -84,7 +112,6 @@ func load_unified_native(unit_id : String, control_node_to_be_replaced : Control
 		}
 		AdMob.load_unified_native(unit_id, [ad.size.w, ad.size.h], [ad.position.x, ad.position.y])
 		
-	
 func _on_get_tree_resized():
 	if AdMob:
 		SCALE = {
@@ -94,84 +121,79 @@ func _on_get_tree_resized():
 
 func _on_AdMob_banner_loaded():
 	emit_signal("banner_loaded")
+	
 func _on_AdMob_banner_destroyed():
 	emit_signal("banner_destroyed")
 
 func _on_AdMob_banner_failed_to_load(error_code : int):
-	print("_on_AdMob_banner_failed_to_load" + " " + str(error_code))
+	emit_signal("banner_failed_to_load", error_code)
 	
 func _on_AdMob_banner_opened():
-	print("_on_AdMob_banner_opened")
+	emit_signal("banner_opened")
 	
-func _on_AdMob_banner_clicked_opened():
-	print("_on_AdMob_banner_clicked_opened")
+func _on_AdMob_banner_clicked():
+	emit_signal("banner_clicked")
 	
 func _on_AdMob_banner_left_application():
-	print("_on_AdMob_banner_left_application")
+	emit_signal("banner_left_application")
 	
 func _on_AdMob_banner_closed():
-	print("_on_AdMob_banner_closed")
-
-	
+	emit_signal("banner_closed")
 	
 func _on_AdMob_interstitial_loaded():
-	print("_on_AdMob_interstitial_loaded")
+	emit_signal("interstitial_loaded")
 
 func _on_AdMob_interstitial_failed_to_load(error_code : int):
-	print("_on_AdMob_interstitial_failed_to_load" + " " + str(error_code))
+	emit_signal("interstitial_failed_to_load", error_code)
 
 func _on_AdMob_interstitial_opened():
-	print("_on_AdMob_interstitial_opened")
+	emit_signal("interstitial_opened")
 	
 func _on_AdMob_interstitial_clicked():
-	print("_on_AdMob_interstitial_clicked")
+	emit_signal("interstitial_clicked")
 	
 func _on_AdMob_interstitial_left_application():
-	print("_on_AdMob_interstitial_left_application")
+	emit_signal("interstitial_left_application")
 
 func _on_AdMob_interstitial_closed():
-	print("_on_AdMob_interstitial_closed")
-	AdMob.load_interstitial(ad_unit_id.interstitial.Android)
+	emit_signal("interstitial_closed")
 
 func _on_AdMob_rewarded_ad_loaded():
-	print("_on_AdMob_rewarded_ad_loaded")
+	emit_signal("rewarded_ad_loaded")
 
 func _on_AdMob_rewarded_ad_failed_to_load():
-	print("_on_rewarded_ad_failed_to_load")
+	emit_signal("rewarded_ad_failed_to_load")
 	
 func _on_AdMob_rewarded_ad_opened():
-	print("_on_AdMob_rewarded_ad_opened")
+	emit_signal("rewarded_ad_opened")
 	
 func _on_AdMob_rewarded_ad_closed():
-	print("_on_AdMob_rewarded_ad_closed")
-	AdMob.load_rewarded(ad_unit_id.rewarded.Android)
+	emit_signal("rewarded_ad_closed")
 
-	
 func _on_AdMob_user_earned_rewarded(currency : String, amount : int):
-	print("_on_AdMob_user_earned_rewarded" + "currency: " + currency + ", amount: " + str(amount));
+	emit_signal("rewarded_user_earned_rewarded", currency, amount)
 
 func _on_AdMob_rewarded_ad_failed_to_show(error_code : int):
-	print("_on_AdMob_rewarded_ad_failed_to_show" + " " + str(error_code))
+	emit_signal("rewarded_ad_failed_to_show", error_code)
 
 
 func _on_AdMob_unified_native_ad_loaded():
-	print("_on_AdMob_unified_native_ad_loaded")
+	emit_signal("unified_native_ad_loaded")
 
 func _on_AdMob_unified_native_destroyed():
-	print("_on_AdMob_unified_native_destroyed")
-
+	emit_signal("unified_native_destroyed")
 
 func _on_AdMob_unified_native_ad_failed_to_load(error_code : int):
-	print("_on_AdMob_unified_native_ad_failed_to_load" + " " + str(error_code))
+	emit_signal("unified_native_ad_failed_to_load", error_code)
 
 func _on_AdMob_unified_native_opened():
-	print("_on_AdMob_unified_native_opened")
+	emit_signal("unified_native_opened")
 
 func _on_AdMob_unified_native_clicked():
-	print("_on_AdMob_unified_native_clicked")
+	emit_signal("unified_native_clicked")
 
 func _on_AdMob_unified_native_left_application():
-	print("_on_AdMob_unified_native_left_application")
+	emit_signal("unified_native_left_application")
 	
 func _on_AdMob_unified_native_closed():
-	print("_on_AdMob_unified_native_closed")
+	emit_signal("unified_native_closed")
