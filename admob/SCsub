@@ -1,6 +1,6 @@
 Import('env')
 
-sources = ['register_types.cpp', 'ios/src/AdMob.mm']
+sources = ['register_types.cpp', 'ios/src/AdMob.mm', 'ios/src/AdMobBanner.mm']
 
 if (env["platform"] == "iphone"):
     env.add_source_files(env.modules_sources, sources)

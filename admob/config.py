@@ -10,4 +10,5 @@ def configure(env):
 		env.android_add_to_manifest("android/manifests/AndroidManifest.xml")
 		#initial config (https://developers.google.com/admob/android/quick-start)
 	elif env['platform'] == 'iphone':
-		pass
+		env.Append(FRAMEWORKPATH=['#modules/admob/ios/lib'])
+		env.Append(CPPPATH=['#core'])
