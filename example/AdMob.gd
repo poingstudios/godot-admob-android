@@ -70,6 +70,10 @@ onready var SCALE = {
 }
 
 var AdMob
+
+var banner_loaded
+var banner_unit_id
+
 func _ready():
 	if (Engine.has_singleton("AdMob")):
 		AdMob = Engine.get_singleton("AdMob")
@@ -85,6 +89,8 @@ func init(is_for_child_directed_treatment := true, is_personalized := false, max
 func load_banner(unit_id : String, gravity : int = GRAVITY.BOTTOM, size : String = "SMART_BANNER"):
 	if AdMob:
 		AdMob.load_banner(unit_id, gravity, size)
+		banner_loaded = true
+		banner_unit_id = unit_id
 
 func destroy_banner():
 	if AdMob:
@@ -112,6 +118,10 @@ func load_unified_native(unit_id : String, control_node_to_be_replaced : Control
 		}
 		AdMob.load_unified_native(unit_id, [ad.size.w, ad.size.h], [ad.position.x, ad.position.y])
 		
+func show_interstitial():
+	if AdMob:
+		AdMob.show_interstitial()
+		if banner_loaded: destroy_banner()
 func _on_get_tree_resized():
 	if AdMob:
 		SCALE = {
@@ -157,6 +167,7 @@ func _on_AdMob_interstitial_left_application():
 
 func _on_AdMob_interstitial_closed():
 	emit_signal("interstitial_closed")
+	if banner_loaded: load_banner(banner_unit_id)
 
 func _on_AdMob_rewarded_ad_loaded():
 	emit_signal("rewarded_ad_loaded")

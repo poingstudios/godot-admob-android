@@ -9,6 +9,8 @@ def configure(env):
 		env.android_add_dependency("compile ('com.google.android.gms:play-services-ads:17.2.1') { exclude group: 'com.android.support' }") #exclude group due: https://muka.app/?p=270
 		env.android_add_to_manifest("android/manifests/AndroidManifest.xml")
 		#initial config (https://developers.google.com/admob/android/quick-start)
+		env.disable_module()
+		#disable module due iphone register_types
 	elif env['platform'] == 'iphone':
 		env.Append(FRAMEWORKPATH=['#modules/admob/ios/lib'])
 		env.Append(CPPPATH=['#core'])

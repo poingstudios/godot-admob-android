@@ -7,26 +7,51 @@
 script/source = "extends Control
 
 
-onready var Banner : Button = $VBoxContainer/Banner
-onready var Native : Button = $VBoxContainer/Native
-onready var Interstitial : Button = $VBoxContainer/Interstitial
-onready var Rewarded : Button = $VBoxContainer/Rewarded
+onready var Enable : Button = $CenterContainer/VBoxContainer/Banner/Enable
+onready var Disable : Button = $CenterContainer/VBoxContainer/Banner/Disable
+onready var Native : Button = $CenterContainer/VBoxContainer/Native
+onready var Interstitial : Button = $CenterContainer/VBoxContainer/Interstitial
+onready var Rewarded : Button = $CenterContainer/VBoxContainer/Rewarded
 
 func _ready():
 	AdMob.init()
-	AdMob.load_banner(AdMob.ad_unit_id.banner.iOS)
+	AdMob.load_interstitial(AdMob.ad_unit_id.interstitial.Android)
 	AdMob.connect(\"banner_loaded\", self, \"_on_AdMob_banner_loaded\")
 	AdMob.connect(\"banner_destroyed\", self, \"_on_AdMob_banner_destroyed\")
+	AdMob.connect(\"interstitial_loaded\", self, \"_on_AdMob_interstitial_loaded\")
+	AdMob.connect(\"interstitial_closed\", self, \"_on_AdMob_interstitial_closed\")
 	
 func _on_AdMob_banner_loaded():
-	Banner.disabled = false
+	Disable.disabled = false
+	Enable.disabled = true
 	
 func _on_AdMob_banner_destroyed():
-	Banner.disabled = true
-	AdMob.load_banner(AdMob.ad_unit_id.banner.Android)
+	Disable.disabled = true
+	Enable.disabled = false
 
 func _on_Banner_pressed():
-	AdMob.destroy_banner()"
+	AdMob.load_banner(AdMob.ad_unit_id.banner.iOS)
+	
+func _on_AdMob_interstitial_loaded():
+	Interstitial.disabled = false
+
+func _on_Interstitial_pressed():
+	AdMob.show_interstitial()
+	Interstitial.disabled = true
+	
+func _on_AdMob_interstitial_closed():
+	AdMob.load_interstitial(AdMob.ad_unit_id.interstitial.Android)
+	
+	
+func _on_Enable_pressed():
+	AdMob.load_banner(AdMob.ad_unit_id.banner.iOS)
+
+
+func _on_Disable_pressed():
+	AdMob.destroy_banner()
+	AdMob.banner_loaded = false
+
+"
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -57,48 +82,64 @@ align = 1
 valign = 1
 autowrap = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="CenterContainer" type="CenterContainer" parent="."]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -140.0
-margin_top = -64.0
-margin_right = 140.0
-margin_bottom = 64.0
+margin_left = -342.5
+margin_top = -86.0
+margin_right = 342.5
+margin_bottom = 86.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+margin_right = 685.0
+margin_bottom = 172.0
 alignment = 1
 
-[node name="Banner" type="Button" parent="VBoxContainer"]
-margin_right = 280.0
+[node name="Banner" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+margin_right = 685.0
+margin_bottom = 40.0
+
+[node name="Enable" type="Button" parent="CenterContainer/VBoxContainer/Banner"]
+margin_right = 334.0
+margin_bottom = 40.0
+theme = ExtResource( 2 )
+text = "enable banner"
+
+[node name="Disable" type="Button" parent="CenterContainer/VBoxContainer/Banner"]
+margin_left = 338.0
+margin_right = 685.0
 margin_bottom = 40.0
 theme = ExtResource( 2 )
 disabled = true
-text = "Banner"
+text = "banner disable"
 
-[node name="Native" type="Button" parent="VBoxContainer"]
+[node name="Native" type="Button" parent="CenterContainer/VBoxContainer"]
 margin_top = 44.0
-margin_right = 280.0
+margin_right = 685.0
 margin_bottom = 84.0
 theme = ExtResource( 2 )
 disabled = true
 text = "Native"
 
-[node name="Interstitial" type="Button" parent="VBoxContainer"]
+[node name="Interstitial" type="Button" parent="CenterContainer/VBoxContainer"]
 margin_top = 88.0
-margin_right = 280.0
+margin_right = 685.0
 margin_bottom = 128.0
 theme = ExtResource( 2 )
 disabled = true
 text = "INTERSTITIAL"
 
-[node name="Rewarded" type="Button" parent="VBoxContainer"]
+[node name="Rewarded" type="Button" parent="CenterContainer/VBoxContainer"]
 margin_top = 132.0
-margin_right = 280.0
+margin_right = 685.0
 margin_bottom = 172.0
 theme = ExtResource( 2 )
 disabled = true
 text = "Rewarded"
-[connection signal="pressed" from="VBoxContainer/Banner" to="." method="_on_Banner_pressed"]
-[connection signal="pressed" from="VBoxContainer/Native" to="." method="_on_Native_pressed"]
-[connection signal="pressed" from="VBoxContainer/Interstitial" to="." method="_on_Interstitial_pressed"]
-[connection signal="pressed" from="VBoxContainer/Rewarded" to="." method="_on_Rewarded_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Banner/Enable" to="." method="_on_Enable_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Banner/Disable" to="." method="_on_Disable_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Native" to="." method="_on_Native_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Interstitial" to="." method="_on_Interstitial_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Rewarded" to="." method="_on_Rewarded_pressed"]
