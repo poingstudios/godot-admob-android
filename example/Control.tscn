@@ -13,13 +13,19 @@ onready var Native : Button = $CenterContainer/VBoxContainer/Native
 onready var Interstitial : Button = $CenterContainer/VBoxContainer/Interstitial
 onready var Rewarded : Button = $CenterContainer/VBoxContainer/Rewarded
 
+onready var Advice : Button = $Advice
+
 func _ready():
 	AdMob.init()
 	AdMob.load_interstitial(AdMob.ad_unit_id.interstitial.Android)
+	AdMob.load_rewarded(AdMob.ad_unit_id.rewarded.Android)
 	AdMob.connect(\"banner_loaded\", self, \"_on_AdMob_banner_loaded\")
 	AdMob.connect(\"banner_destroyed\", self, \"_on_AdMob_banner_destroyed\")
 	AdMob.connect(\"interstitial_loaded\", self, \"_on_AdMob_interstitial_loaded\")
 	AdMob.connect(\"interstitial_closed\", self, \"_on_AdMob_interstitial_closed\")
+	AdMob.connect(\"rewarded_ad_closed\", self, \"_on_AdMob_rewarded_ad_closed\")
+	AdMob.connect(\"rewarded_ad_loaded\", self, \"_on_AdMob_rewarded_ad_loaded\")
+	AdMob.connect(\"rewarded_user_earned_rewarded\", self, \"_on_AdMob_rewarded_user_earned_rewarded\")
 	
 func _on_AdMob_banner_loaded():
 	Disable.disabled = false
@@ -51,7 +57,19 @@ func _on_Disable_pressed():
 	AdMob.destroy_banner()
 	AdMob.banner_loaded = false
 
-"
+
+func _on_Rewarded_pressed():
+	AdMob.show_rewarded()
+	Rewarded.disabled = true
+	
+func _on_AdMob_rewarded_ad_closed():
+	AdMob.load_rewarded(AdMob.ad_unit_id.rewarded.Android)
+
+func _on_AdMob_rewarded_ad_loaded():
+	Rewarded.disabled = false
+	
+func _on_AdMob_rewarded_user_earned_rewarded(currency : String, amount : int):
+	Advice.text = \"EARNED \" + currency + \" with amount: \" + str(amount)"
 
 [node name="Control" type="Control"]
 anchor_right = 1.0

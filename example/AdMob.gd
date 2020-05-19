@@ -122,6 +122,12 @@ func show_interstitial():
 	if AdMob:
 		AdMob.show_interstitial()
 		if banner_loaded: destroy_banner()
+
+func show_rewarded():
+	if AdMob:
+		AdMob.show_rewarded()
+		if banner_loaded: destroy_banner()
+
 func _on_get_tree_resized():
 	if AdMob:
 		SCALE = {
