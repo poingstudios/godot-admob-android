@@ -7,36 +7,38 @@
 script/source = "extends Control
 
 
-onready var Enable : Button = $CenterContainer/VBoxContainer/Banner/Enable
-onready var Disable : Button = $CenterContainer/VBoxContainer/Banner/Disable
-onready var Native : Button = $CenterContainer/VBoxContainer/Native
+onready var EnableBanner : Button = $CenterContainer/VBoxContainer/Banner/EnableBanner
+onready var DisableBanner : Button = $CenterContainer/VBoxContainer/Banner/DisableBanner
 onready var Interstitial : Button = $CenterContainer/VBoxContainer/Interstitial
 onready var Rewarded : Button = $CenterContainer/VBoxContainer/Rewarded
+onready var EnableNative : Button = $CenterContainer/VBoxContainer/UnifiedNative/EnableUnifiedNative
+onready var DisableNative : Button = $CenterContainer/VBoxContainer/UnifiedNative/DisableUnifiedNative
 
 onready var Advice : Button = $Advice
 
 func _ready():
-	AdMob.init()
-	AdMob.load_interstitial(AdMob.ad_unit_id.interstitial.Android)
-	AdMob.load_rewarded(AdMob.ad_unit_id.rewarded.Android)
-	AdMob.connect(\"banner_loaded\", self, \"_on_AdMob_banner_loaded\")
-	AdMob.connect(\"banner_destroyed\", self, \"_on_AdMob_banner_destroyed\")
-	AdMob.connect(\"interstitial_loaded\", self, \"_on_AdMob_interstitial_loaded\")
-	AdMob.connect(\"interstitial_closed\", self, \"_on_AdMob_interstitial_closed\")
-	AdMob.connect(\"rewarded_ad_closed\", self, \"_on_AdMob_rewarded_ad_closed\")
-	AdMob.connect(\"rewarded_ad_loaded\", self, \"_on_AdMob_rewarded_ad_loaded\")
-	AdMob.connect(\"rewarded_user_earned_rewarded\", self, \"_on_AdMob_rewarded_user_earned_rewarded\")
+	if OS.get_name() == \"Android\" or OS.get_name() == \"iOS\":
+		AdMob.init()
+		AdMob.load_interstitial()
+		AdMob.load_rewarded()
+		AdMob.connect(\"banner_loaded\", self, \"_on_AdMob_banner_loaded\")
+		AdMob.connect(\"banner_destroyed\", self, \"_on_AdMob_banner_destroyed\")
+		AdMob.connect(\"interstitial_loaded\", self, \"_on_AdMob_interstitial_loaded\")
+		AdMob.connect(\"interstitial_closed\", self, \"_on_AdMob_interstitial_closed\")
+		AdMob.connect(\"rewarded_ad_closed\", self, \"_on_AdMob_rewarded_ad_closed\")
+		AdMob.connect(\"rewarded_ad_loaded\", self, \"_on_AdMob_rewarded_ad_loaded\")
+		AdMob.connect(\"rewarded_user_earned_rewarded\", self, \"_on_AdMob_rewarded_user_earned_rewarded\")
+		AdMob.connect(\"unified_native_ad_loaded\", self, \"_on_AdMob_unified_native_ad_loaded\")
+		AdMob.connect(\"unified_native_destroyed\", self, \"_on_AdMob_unified_native_destroyed\")
+
 	
 func _on_AdMob_banner_loaded():
-	Disable.disabled = false
-	Enable.disabled = true
+	DisableBanner.disabled = false
+	EnableBanner.disabled = true
 	
 func _on_AdMob_banner_destroyed():
-	Disable.disabled = true
-	Enable.disabled = false
-
-func _on_Banner_pressed():
-	AdMob.load_banner(AdMob.ad_unit_id.banner.iOS)
+	DisableBanner.disabled = true
+	EnableBanner.disabled = false
 	
 func _on_AdMob_interstitial_loaded():
 	Interstitial.disabled = false
@@ -46,16 +48,15 @@ func _on_Interstitial_pressed():
 	Interstitial.disabled = true
 	
 func _on_AdMob_interstitial_closed():
-	AdMob.load_interstitial(AdMob.ad_unit_id.interstitial.Android)
+	AdMob.load_interstitial()
 	
-	
-func _on_Enable_pressed():
-	AdMob.load_banner(AdMob.ad_unit_id.banner.iOS)
+func _on_EnableBanner_pressed():
+	AdMob.load_banner()
 
 
-func _on_Disable_pressed():
+func _on_DisableBanner_pressed():
 	AdMob.destroy_banner()
-	AdMob.banner_loaded = false
+	AdMob.ad.banner.loaded = false
 
 
 func _on_Rewarded_pressed():
@@ -63,13 +64,32 @@ func _on_Rewarded_pressed():
 	Rewarded.disabled = true
 	
 func _on_AdMob_rewarded_ad_closed():
-	AdMob.load_rewarded(AdMob.ad_unit_id.rewarded.Android)
+	AdMob.load_rewarded()
 
 func _on_AdMob_rewarded_ad_loaded():
 	Rewarded.disabled = false
 	
 func _on_AdMob_rewarded_user_earned_rewarded(currency : String, amount : int):
-	Advice.text = \"EARNED \" + currency + \" with amount: \" + str(amount)"
+	Advice.text = \"EARNED \" + currency + \" with amount: \" + str(amount)
+
+
+func _on_EnableUnifiedNative_pressed():
+	AdMob.load_unified_native($UnifiedNative)
+
+func _on_DisableUnifiedNative_pressed():
+	AdMob.destroy_unified_native()
+	AdMob.ad.unified_native.loaded = false
+
+func _on_AdMob_unified_native_ad_loaded():
+	DisableNative.disabled = false
+	EnableNative.disabled = true
+	
+func _on_AdMob_unified_native_destroyed():
+	DisableNative.disabled = true
+	EnableNative.disabled = false
+
+
+"
 
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0, 0, 0, 1 )
@@ -98,10 +118,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -360.0
-margin_top = -417.0
-margin_right = 360.0
-margin_bottom = -383.0
+margin_left = -358.834
+margin_top = -312.0
+margin_right = 361.166
+margin_bottom = -278.0
 theme = ExtResource( 2 )
 custom_styles/normal = SubResource( 2 )
 text = "ADVICE LABEL"
@@ -115,26 +135,28 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -342.5
-margin_top = -86.0
+margin_top = -108.0
 margin_right = 342.5
-margin_bottom = 86.0
+margin_bottom = 108.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+margin_top = 22.0
 margin_right = 685.0
-margin_bottom = 172.0
+margin_bottom = 194.0
 alignment = 1
 
 [node name="Banner" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
 margin_right = 685.0
 margin_bottom = 40.0
+alignment = 1
 
-[node name="Enable" type="Button" parent="CenterContainer/VBoxContainer/Banner"]
+[node name="EnableBanner" type="Button" parent="CenterContainer/VBoxContainer/Banner"]
 margin_right = 334.0
 margin_bottom = 40.0
 theme = ExtResource( 2 )
 text = "enable banner"
 
-[node name="Disable" type="Button" parent="CenterContainer/VBoxContainer/Banner"]
+[node name="DisableBanner" type="Button" parent="CenterContainer/VBoxContainer/Banner"]
 margin_left = 338.0
 margin_right = 685.0
 margin_bottom = 40.0
@@ -142,31 +164,48 @@ theme = ExtResource( 2 )
 disabled = true
 text = "banner disable"
 
-[node name="Native" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="Interstitial" type="Button" parent="CenterContainer/VBoxContainer"]
 margin_top = 44.0
 margin_right = 685.0
 margin_bottom = 84.0
 theme = ExtResource( 2 )
 disabled = true
-text = "Native"
+text = "INTERSTITIAL"
 
-[node name="Interstitial" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="Rewarded" type="Button" parent="CenterContainer/VBoxContainer"]
 margin_top = 88.0
 margin_right = 685.0
 margin_bottom = 128.0
 theme = ExtResource( 2 )
 disabled = true
-text = "INTERSTITIAL"
+text = "Rewarded"
 
-[node name="Rewarded" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="UnifiedNative" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
 margin_top = 132.0
 margin_right = 685.0
 margin_bottom = 172.0
+alignment = 1
+
+[node name="EnableUnifiedNative" type="Button" parent="CenterContainer/VBoxContainer/UnifiedNative"]
+margin_right = 325.0
+margin_bottom = 40.0
+theme = ExtResource( 2 )
+text = "ENABLE UNFIED"
+
+[node name="DisableUnifiedNative" type="Button" parent="CenterContainer/VBoxContainer/UnifiedNative"]
+margin_left = 329.0
+margin_right = 685.0
+margin_bottom = 40.0
 theme = ExtResource( 2 )
 disabled = true
-text = "Rewarded"
-[connection signal="pressed" from="CenterContainer/VBoxContainer/Banner/Enable" to="." method="_on_Enable_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/Banner/Disable" to="." method="_on_Disable_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/Native" to="." method="_on_Native_pressed"]
+text = "UNIFIED disable"
+
+[node name="UnifiedNative" type="Panel" parent="."]
+anchor_right = 1.0
+margin_bottom = 150.0
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Banner/EnableBanner" to="." method="_on_EnableBanner_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/Banner/DisableBanner" to="." method="_on_DisableBanner_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Interstitial" to="." method="_on_Interstitial_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Rewarded" to="." method="_on_Rewarded_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/UnifiedNative/EnableUnifiedNative" to="." method="_on_EnableUnifiedNative_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/UnifiedNative/DisableUnifiedNative" to="." method="_on_DisableUnifiedNative_pressed"]
