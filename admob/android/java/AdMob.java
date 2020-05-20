@@ -224,7 +224,6 @@ public class AdMob extends Godot.SingletonBase
 				    }
 				});
 				aInterstitialAd.loadAd(getAdRequest());
-
 			}
 		});
     }
@@ -235,6 +234,9 @@ public class AdMob extends Godot.SingletonBase
 			@Override public void run()
 			{
 				if (aInterstitialAd != null && aInterstitialAd.isLoaded()) {
+					if (aAdView != null) destroy_banner();
+					if (aUnifiedNativeAdView != null) destroy_unified_native();
+
 					aInterstitialAd.show();
 				}
 			}
@@ -306,6 +308,9 @@ public class AdMob extends Godot.SingletonBase
 							GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_failed_to_show", new Object[] { errorCode });		                	
 		                }
 		            };
+				if (aAdView != null) destroy_banner();
+				if (aUnifiedNativeAdView != null) destroy_unified_native();
+
 	            pRewardedAd.show(aActivity, adCallback);
 				}
 			}
@@ -338,7 +343,7 @@ public class AdMob extends Godot.SingletonBase
 							aGodotLayoutParams = new FrameLayout.LayoutParams(pSize[0], pSize[1]);
 							aGodotLayoutParams.setMargins(pMargins[0], pMargins[1], 0, 0);
 							aGodotLayout.addView(aUnifiedNativeAdView, aGodotLayoutParams);
-							GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_ad_loaded", new Object[] { });
+							GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_loaded", new Object[] { });
 				        }
 				    })
 				    .withAdListener(new AdListener() {
@@ -355,6 +360,13 @@ public class AdMob extends Godot.SingletonBase
 					        // Code to be executed when the ad is displayed.
 							GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_opened", new Object[]{ });
 					    }
+						@Override
+					    public void onAdClosed() 
+					    {
+					        // Code to be executed when the unified native ad is closed.
+							GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_closed", new Object[]{ });
+					    }
+
 				    })
 				    .build();
 
