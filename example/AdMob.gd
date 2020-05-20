@@ -22,9 +22,9 @@ signal rewarded_ad_closed
 signal rewarded_user_earned_rewarded(currency, amount)
 signal rewarded_ad_failed_to_show(error_code)
 
-signal unified_native_ad_loaded
+signal unified_native_loaded
 signal unified_native_destroyed
-signal unified_native_ad_failed_to_load(error_code)
+signal unified_native_failed_to_load(error_code)
 signal unified_native_opened
 signal unified_native_closed
 
@@ -37,7 +37,6 @@ onready var ad := {
 			"iOS" : "ca-app-pub-3940256099942544/2934735716",
 			"Android" : "ca-app-pub-3940256099942544/6300978111",
 		},
-		"loaded" : false,
 	},
 	"interstitial" : {
 		"unit_id": {
@@ -56,7 +55,6 @@ onready var ad := {
 			"iOS" : "",
 			"Android" : "ca-app-pub-3940256099942544/2247696110",
 		},
-		"loaded" : false,
 		"scale" : {
 			"x" : OS.get_screen_size().x / get_viewport_rect().size.x,
 			"y" : OS.get_screen_size().y / get_viewport_rect().size.y,
@@ -92,8 +90,6 @@ func init(is_for_child_directed_treatment := true, is_personalized := false, max
 func load_banner(gravity : int = GRAVITY.BOTTOM, size : String = "SMART_BANNER", unit_id : String = ad.banner.unit_id[OS.get_name()]):
 	if AdMob:
 		AdMob.load_banner(unit_id, gravity, size)
-		ad.banner.loaded = true
-		ad.unified_native.loaded = false
 
 func load_interstitial(unit_id: String = ad.interstitial.unit_id[OS.get_name()]):
 	if AdMob:
@@ -116,8 +112,6 @@ func load_unified_native(control_node_to_be_replaced : Control = Control.new(), 
 			}
 		}
 
-		ad.banner.loaded = false
-		ad.unified_native.loaded = true
 		AdMob.load_unified_native(unit_id, [params.size.w, params.size.h], [params.position.x, params.position.y])
 		
 func destroy_banner():
@@ -181,8 +175,6 @@ func _on_AdMob_interstitial_left_application():
 
 func _on_AdMob_interstitial_closed():
 	emit_signal("interstitial_closed")
-	if ad.banner.loaded: load_banner()
-	if ad.unified_native.loaded: load_banner()
 
 func _on_AdMob_rewarded_ad_loaded():
 	emit_signal("rewarded_ad_loaded")
@@ -195,8 +187,6 @@ func _on_AdMob_rewarded_ad_opened():
 	
 func _on_AdMob_rewarded_ad_closed():
 	emit_signal("rewarded_ad_closed")
-	if ad.banner.loaded: load_banner()
-	if ad.unified_native.loaded: load_banner()
 
 func _on_AdMob_user_earned_rewarded(currency : String, amount : int):
 	emit_signal("rewarded_user_earned_rewarded", currency, amount)

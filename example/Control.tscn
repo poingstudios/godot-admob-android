@@ -19,26 +19,20 @@ onready var Advice : Button = $Advice
 func _ready():
 	if OS.get_name() == \"Android\" or OS.get_name() == \"iOS\":
 		AdMob.init()
+		EnableBanner.disabled = false
+		EnableNative.disabled = false
 		AdMob.load_interstitial()
 		AdMob.load_rewarded()
-		AdMob.connect(\"banner_loaded\", self, \"_on_AdMob_banner_loaded\")
 		AdMob.connect(\"banner_destroyed\", self, \"_on_AdMob_banner_destroyed\")
 		AdMob.connect(\"interstitial_loaded\", self, \"_on_AdMob_interstitial_loaded\")
 		AdMob.connect(\"interstitial_closed\", self, \"_on_AdMob_interstitial_closed\")
 		AdMob.connect(\"rewarded_ad_closed\", self, \"_on_AdMob_rewarded_ad_closed\")
 		AdMob.connect(\"rewarded_ad_loaded\", self, \"_on_AdMob_rewarded_ad_loaded\")
 		AdMob.connect(\"rewarded_user_earned_rewarded\", self, \"_on_AdMob_rewarded_user_earned_rewarded\")
-		AdMob.connect(\"unified_native_ad_loaded\", self, \"_on_AdMob_unified_native_ad_loaded\")
 		AdMob.connect(\"unified_native_destroyed\", self, \"_on_AdMob_unified_native_destroyed\")
-
+	else:
+		Advice.text = \"Module only works on Android or iOS devices!\"
 	
-func _on_AdMob_banner_loaded():
-	DisableBanner.disabled = false
-	EnableBanner.disabled = true
-	
-func _on_AdMob_banner_destroyed():
-	DisableBanner.disabled = true
-	EnableBanner.disabled = false
 	
 func _on_AdMob_interstitial_loaded():
 	Interstitial.disabled = false
@@ -50,13 +44,28 @@ func _on_Interstitial_pressed():
 func _on_AdMob_interstitial_closed():
 	AdMob.load_interstitial()
 	
+
+func _on_AdMob_banner_destroyed():
+	DisableBanner.disabled = true
+	EnableBanner.disabled = false
+	EnableNative.disabled = false
+
+func _on_AdMob_unified_native_destroyed():
+	DisableNative.disabled = true
+	EnableBanner.disabled = false
+	EnableNative.disabled = false
+
 func _on_EnableBanner_pressed():
+	DisableBanner.disabled = false
+	EnableBanner.disabled = true
+	EnableNative.disabled = true
 	AdMob.load_banner()
 
-
 func _on_DisableBanner_pressed():
+	DisableBanner.disabled = true
+	EnableBanner.disabled = false
+	EnableNative.disabled = false
 	AdMob.destroy_banner()
-	AdMob.ad.banner.loaded = false
 
 
 func _on_Rewarded_pressed():
@@ -74,19 +83,16 @@ func _on_AdMob_rewarded_user_earned_rewarded(currency : String, amount : int):
 
 
 func _on_EnableUnifiedNative_pressed():
+	DisableNative.disabled = false
+	EnableNative.disabled = true
+	EnableBanner.disabled = true
 	AdMob.load_unified_native($UnifiedNative)
 
 func _on_DisableUnifiedNative_pressed():
-	AdMob.destroy_unified_native()
-	AdMob.ad.unified_native.loaded = false
-
-func _on_AdMob_unified_native_ad_loaded():
-	DisableNative.disabled = false
-	EnableNative.disabled = true
-	
-func _on_AdMob_unified_native_destroyed():
 	DisableNative.disabled = true
 	EnableNative.disabled = false
+	EnableBanner.disabled = false
+	AdMob.destroy_unified_native()
 
 
 "
@@ -154,6 +160,7 @@ alignment = 1
 margin_right = 334.0
 margin_bottom = 40.0
 theme = ExtResource( 2 )
+disabled = true
 text = "enable banner"
 
 [node name="DisableBanner" type="Button" parent="CenterContainer/VBoxContainer/Banner"]
@@ -190,6 +197,7 @@ alignment = 1
 margin_right = 325.0
 margin_bottom = 40.0
 theme = ExtResource( 2 )
+disabled = true
 text = "ENABLE UNFIED"
 
 [node name="DisableUnifiedNative" type="Button" parent="CenterContainer/VBoxContainer/UnifiedNative"]
