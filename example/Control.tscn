@@ -45,15 +45,16 @@ func _on_AdMob_interstitial_closed():
 	AdMob.load_interstitial()
 	
 
-func _on_AdMob_banner_destroyed():
+func reset_banner_and_unified_buttons():
 	DisableBanner.disabled = true
-	EnableBanner.disabled = false
-	EnableNative.disabled = false
-
-func _on_AdMob_unified_native_destroyed():
 	DisableNative.disabled = true
 	EnableBanner.disabled = false
 	EnableNative.disabled = false
+
+func _on_AdMob_banner_destroyed():
+	reset_banner_and_unified_buttons()
+func _on_AdMob_unified_native_destroyed():
+	reset_banner_and_unified_buttons()
 
 func _on_EnableBanner_pressed():
 	DisableBanner.disabled = false
