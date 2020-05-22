@@ -1,90 +1,132 @@
 #import "AdMobBanner.h"
+#include "reference.h"
 
 @implementation AdMobBanner
 
-//https://developers.google.com/admob/ios/banner
-
-- (void)initialize :(int)instance_id :(NSString*)test_device_id
-{
-	//
-	[[GADMobileAds sharedInstance] startWithCompletionHandler:nil];
-	NSLog(@"Banner Initialized");
-	_test_device_id = test_device_id;
-	_instance_id = instance_id;
-	_root_controller = [AppDelegate getViewController];
-	_initialized = true;
+- (void)dealloc {
+    bannerView.delegate = nil;
+    [bannerView release];
+    [super dealloc];
 }
 
-- (void)load_banner :(NSString*)ad_unit_id :(int)gravity :(NSString*)size
-{
-	if (!_initialized)
-		return;
-	if ((!_size.length))
-		_size = size;
-	if (_banner_view != nil)
-		[self destroy_banner];
+- (void)initialize:(BOOL)is_real: (int)instance_id {
+    isReal = is_real;
+    initialized = true;
+    instanceId = instance_id;
+    rootController = [AppDelegate getViewController];
+}
 
 
-	UIInterfaceOrientation screen_orientation = [UIApplication sharedApplication].statusBarOrientation;
-	if (screen_orientation == 0 || screen_orientation == UIInterfaceOrientationPortrait) 
-	{
-		_banner_view = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerPortrait];
+- (void) load_banner:(NSString*)ad_unit_id :(int)gravity :(NSString*)size {
+    NSLog(@"Calling load_banner");
+    
+    isOnTop = false;
+    
+    if (!initialized || (!ad_unit_id.length)) {
+        return;
     }
-    else 
-    { 
-		_banner_view = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerLandscape];
-	}
+    else{
+        NSLog(@"banner will load with the banner id");
+        NSLog(ad_unit_id);
+    }
+    
 
-	_banner_view.adUnitID = ad_unit_id;
-	_banner_view.delegate = self;
-	_banner_view.rootViewController = _root_controller;
+    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+    
+    if (bannerView == nil) {
+        if (orientation == 0 || orientation == UIInterfaceOrientationPortrait) { //portrait
+            bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerPortrait];
+        }
+        else { //landscape
+            bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerLandscape];
+        }
+        
+        if(!isReal) {
+            bannerView.adUnitID = @"ca-app-pub-3940256099942544/2934735716";
+        }
+        else {
+            bannerView.adUnitID = ad_unit_id;
+        }
 
-	[self addBannerViewToView:_banner_view];
+        bannerView.delegate = self;
+        bannerView.rootViewController = rootController;
+        
 
-    [_banner_view loadRequest:[GADRequest request]];
-
-}
-- (void)addBannerViewToView:(UIView *)bannerView {
-  bannerView.translatesAutoresizingMaskIntoConstraints = NO;
-  [_root_controller.view addSubview:bannerView];
-  [_root_controller.view addConstraints:@[
-    [NSLayoutConstraint constraintWithItem:bannerView
-                               attribute:NSLayoutAttributeBottom
-                               relatedBy:NSLayoutRelationEqual
-                                  toItem:_root_controller.bottomLayoutGuide
-                               attribute:NSLayoutAttributeTop
-                              multiplier:1
-                                constant:0],
-    [NSLayoutConstraint constraintWithItem:bannerView
-                               attribute:NSLayoutAttributeCenterX
-                               relatedBy:NSLayoutRelationEqual
-                                  toItem:_root_controller.view
-                               attribute:NSLayoutAttributeCenterX
-                              multiplier:1
-                                constant:0]
-                                ]];
-}
-
-
-- (void)destroy_banner
-{
-	if (!_initialized)
-		return;
-
-	if (_banner_view != nil)
-	{
-		[_banner_view setHidden:YES];
-	    [_banner_view removeFromSuperview];
-	    _banner_view = nil;
-		Object *obj = ObjectDB::get_instance(_instance_id);
-	    obj->call_deferred("_on_AdMob_banner_destroyed");
-	}
+        [self addBannerViewToView:bannerView:isOnTop];
+    }
+    
+    GADRequest *request = [GADRequest request];
+    [bannerView loadRequest:request];
+    
 }
 
-/// Tells the delegate an ad request loaded an ad.
-- (void)adViewDidReceiveAd:(GADBannerView *)adView {
-    Object *obj = ObjectDB::get_instance(_instance_id);
-    obj->call_deferred("_on_AdMob_banner_loaded");
+
+- (void)addBannerViewToView:(UIView *_Nonnull)bannerView: (BOOL)is_on_top{
+    bannerView.translatesAutoresizingMaskIntoConstraints = NO;
+    [rootController.view addSubview:bannerView];
+    if (@available(ios 11.0, *)) {
+        [self positionBannerViewFullWidthAtSafeArea:bannerView:is_on_top];
+    } else {
+        [self positionBannerViewFullWidthAtView:bannerView:is_on_top];
+    }
+}
+
+
+
+- (void)positionBannerViewFullWidthAtSafeArea:(UIView *_Nonnull)bannerView: (BOOL)is_on_top  NS_AVAILABLE_IOS(11.0) {
+    UILayoutGuide *guide = rootController.view.safeAreaLayoutGuide;
+    
+    if (is_on_top) {
+        [NSLayoutConstraint activateConstraints:@[
+            [guide.leftAnchor constraintEqualToAnchor:bannerView.leftAnchor],
+            [guide.rightAnchor constraintEqualToAnchor:bannerView.rightAnchor],
+            [guide.topAnchor constraintEqualToAnchor:bannerView.topAnchor]
+        ]];
+    } else {
+        [NSLayoutConstraint activateConstraints:@[
+            [guide.leftAnchor constraintEqualToAnchor:bannerView.leftAnchor],
+            [guide.rightAnchor constraintEqualToAnchor:bannerView.rightAnchor],
+            [guide.bottomAnchor constraintEqualToAnchor:bannerView.bottomAnchor]
+        ]];
+    }
+}
+
+
+- (void)positionBannerViewFullWidthAtView:(UIView *_Nonnull)bannerView: (BOOL)is_on_top {
+    
+    [rootController.view addConstraint:[NSLayoutConstraint constraintWithItem:bannerView
+                                                                    attribute:NSLayoutAttributeLeading
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:rootController.view
+                                                                    attribute:NSLayoutAttributeLeading
+                                                                   multiplier:1
+                                                                     constant:0]];
+    [rootController.view addConstraint:[NSLayoutConstraint constraintWithItem:bannerView
+                                                                    attribute:NSLayoutAttributeTrailing
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:rootController.view
+                                                                    attribute:NSLayoutAttributeTrailing
+                                                                   multiplier:1
+                                                                     constant:0]];
+    
+    if (is_on_top) {
+        [rootController.view addConstraint:[NSLayoutConstraint constraintWithItem:bannerView
+                                                                        attribute:NSLayoutAttributeTop
+                                                                        relatedBy:NSLayoutRelationEqual
+                                                                           toItem:rootController.topLayoutGuide
+                                                                        attribute:NSLayoutAttributeTop
+                                                                       multiplier:1
+                                                                         constant:0]];
+        
+    } else {
+        [rootController.view addConstraint:[NSLayoutConstraint constraintWithItem:bannerView
+                                                              attribute:NSLayoutAttributeBottom
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:rootController.bottomLayoutGuide
+                                                              attribute:NSLayoutAttributeTop
+                                                             multiplier:1
+                                                               constant:0]];
+    }
 }
 
 

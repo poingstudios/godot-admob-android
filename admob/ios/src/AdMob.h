@@ -1,19 +1,26 @@
+#ifndef ADMOB_H
+#define ADMOB_H
+
 #include "reference.h"
+
 
 #ifdef __OBJC__
 @class AdMobBanner;
-typedef AdMobBanner * BannerPtr;
+typedef AdMobBanner *bannerPtr;
 #else
-typedef void * BannerPtr;
+typedef void *bannerPtr;
 #endif
 
+
+
 class AdMob : public Reference {
+    
     GDCLASS(AdMob, Reference);
-    //Ads Formats
-    BannerPtr _banner;
 
     bool initialized;
-    static AdMob* instance;
+    static AdMob *instance; //fix
+    
+    bannerPtr banner;
 
 
 protected:
@@ -22,7 +29,9 @@ protected:
 public:
     void init(bool is_for_child_directed_treatment, bool is_personalized, const String &max_ad_content_rating, int instance_id, const String &test_device_id);
     void load_banner(const String &ad_unit_id, int gravity, const String &size);
-    void destroy_banner();
+
     AdMob();
     ~AdMob();
 };
+
+#endif
