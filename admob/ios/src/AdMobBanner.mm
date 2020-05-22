@@ -34,12 +34,33 @@
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
     
     if (bannerView == nil) {
-        if (orientation == 0 || orientation == UIInterfaceOrientationPortrait) { //portrait
-            bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerPortrait];
+        if ([size isEqualToString:@"BANNER"]) {
+            bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
+            NSLog(@"Banner created");
+        } else if ([size isEqualToString:@"LARGE_BANNER"]) {
+            bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeLargeBanner];
+            NSLog(@"Large banner created");
+        } else if ([size isEqualToString:@"MEDIUM_RECTANGLE"]) {
+            bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeMediumRectangle];
+            NSLog(@"Medium banner created");
+        } else if ([size isEqualToString:@"FULL_BANNER"]) {
+            bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeFullBanner];
+            NSLog(@"Full banner created");
+        } else if ([size isEqualToString:@"LEADERBOARD"]) {
+            bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeLeaderboard];
+            NSLog(@"Leaderboard banner created");
+        } else { //smart banner
+            if (orientation == 0 || orientation == UIInterfaceOrientationPortrait) { //portrait
+                bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerPortrait];
+                NSLog(@"Smart portait banner created");
+            }
+            else { //landscape
+                bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerLandscape];
+                NSLog(@"Smart landscape banner created");
+            }
         }
-        else { //landscape
-            bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerLandscape];
-        }
+        
+
         
         if(!isReal) {
             bannerView.adUnitID = @"ca-app-pub-3940256099942544/2934735716";
