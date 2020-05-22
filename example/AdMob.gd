@@ -84,7 +84,6 @@ func init(is_for_child_directed_treatment := true, is_personalized := false, max
 	if AdMob and !initialized:
 		#IF test_device_id == "", then will be running as a test device
 		AdMob.init(is_for_child_directed_treatment, is_personalized, max_ad_content_rating, instance_id, test_device_id)
-		print("init on the gdscript code!")
 		initialized = !initialized
 
 func load_banner(gravity : int = GRAVITY.BOTTOM, size : String = "SMART_BANNER", unit_id : String = ad.banner.unit_id[OS.get_name()]):
