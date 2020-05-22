@@ -129,5 +129,20 @@
     }
 }
 
+- (void)destroy_banner
+{
+	if (!initialized)
+		return;
+
+	if (bannerView != nil)
+	{
+		[bannerView setHidden:YES];
+	    [bannerView removeFromSuperview];
+	    bannerView = nil;
+		Object *obj = ObjectDB::get_instance(instanceId);
+	    obj->call_deferred("_on_AdMob_banner_destroyed");
+	}
+}
+
 
 @end

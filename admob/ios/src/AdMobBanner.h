@@ -13,5 +13,6 @@
 
 - (void)initialize:(BOOL)is_real: (int)instance_id;
 - (void)load_banner:(NSString*)ad_unit_id :(int)gravity :(NSString*)size;
+- (void)destroy_banner;
 
 @end
