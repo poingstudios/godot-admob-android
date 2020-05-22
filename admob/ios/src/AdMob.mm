@@ -47,9 +47,16 @@ void AdMob::load_banner(const String &ad_unit_id, int gravity, const String &siz
 
 }
 
+void AdMob::destroy_banner() {
+    if (!initialized) return;
+    
+    [banner destroy_banner];
+}
+
 
 
 void AdMob::_bind_methods() {
     ClassDB::bind_method("init", &AdMob::init);
     ClassDB::bind_method("load_banner", &AdMob::load_banner);
+    ClassDB::bind_method("destroy_banner", &AdMob::destroy_banner);
 }
