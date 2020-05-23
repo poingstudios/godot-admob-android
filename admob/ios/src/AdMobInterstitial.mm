@@ -51,9 +51,8 @@
 
     if (interstitial.isReady) {
         [interstitial presentFromRootViewController:rootController];
-        NSLog(@"Ad should be visible now");
     } else {
-        NSLog(@"Ad wasn't ready");
+        NSLog(@"Interstitial ad wasn't ready");
     }
 }
 

@@ -9,9 +9,12 @@
 typedef AdMobBanner *bannerPtr;
 @class AdMobInterstitial;
 typedef AdMobInterstitial *interstitialPtr;
+@class AdMobRewarded;
+typedef AdMobRewarded *rewardedPtr;
 #else
 typedef void *bannerPtr;
 typedef void *interstitialPtr;
+typedef void *rewardedPtr;
 #endif
 
 
@@ -25,7 +28,7 @@ class AdMob : public Reference {
     
     bannerPtr banner;
     interstitialPtr interstitial;
-
+    rewardedPtr rewarded;
 
 protected:
     static void _bind_methods();
@@ -36,6 +39,9 @@ public:
     void destroy_banner();
     void load_interstitial(const String &ad_unit_id);
     void show_interstitial();
+    void load_rewarded(const String &ad_unit_id);
+    void show_rewarded();
+
 
     AdMob();
     ~AdMob();
