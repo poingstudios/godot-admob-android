@@ -1,0 +1,1 @@
+You need to put the all ".framework" from Google Mobile Ads SDK iOS on this folder!
