@@ -6,6 +6,7 @@ AdMob *AdMob::instance = NULL;
 AdMob::AdMob() {
     initialized = false;
     banner = NULL; 
+    interstitial = NULL;
 
     ERR_FAIL_COND(instance != NULL); 
 
@@ -15,6 +16,7 @@ AdMob::AdMob() {
 AdMob::~AdMob() {
    if (initialized) {
        [banner release]; //free banner
+       [interstitial release]; //free interstitial
    }
 
    if (instance == this) {
@@ -31,7 +33,9 @@ void AdMob::init(bool is_for_child_directed_treatment, bool is_personalized, con
     
     banner = [[AdMobBanner alloc] init];
     [banner initialize :false :instance_id];
-    
+
+    interstitial = [[AdMobInterstitial alloc] init];
+    [interstitial initialize :false :instance_id];
 }
 
 
@@ -53,10 +57,29 @@ void AdMob::destroy_banner() {
     [banner destroy_banner];
 }
 
+void AdMob::load_interstitial(const String &ad_unit_id) {
+    if (!initialized) {
+        NSLog(@"AdMob Module not initialized");
+        return;
+    }
+    
+    NSString *ad_unit_id_NSString = [NSString stringWithCString:ad_unit_id.utf8().get_data() encoding: NSUTF8StringEncoding];
+    [interstitial load_interstitial: ad_unit_id_NSString];
+
+}
+
+void AdMob::show_interstitial() {
+    if (!initialized) return;
+    
+    [interstitial show_interstitial];
+}
+
 
 
 void AdMob::_bind_methods() {
     ClassDB::bind_method("init", &AdMob::init);
     ClassDB::bind_method("load_banner", &AdMob::load_banner);
     ClassDB::bind_method("destroy_banner", &AdMob::destroy_banner);
+    ClassDB::bind_method("load_interstitial", &AdMob::load_interstitial);
+    ClassDB::bind_method("show_interstitial", &AdMob::show_interstitial);
 }
