@@ -1,8 +1,8 @@
 #import <GoogleMobileAds/GADInterstitial.h>
 #import "app_delegate.h"
  
-@interface AdMobInterstitial {
-    GADInterstitial *interstitia;
+@interface AdMobInterstitial: NSObject <GADInterstitialDelegate> {
+    GADInterstitial *interstitial;
     bool initialized;
     bool isReal;
     int instanceId;

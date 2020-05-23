@@ -4,8 +4,8 @@
 @implementation AdMobInterstitial
 
 - (void)dealloc {
-    interstitialView.delegate = nil;
-    [interstitialView release];
+    interstitial.delegate = nil;
+    [interstitial release];
     [super dealloc];
 }
 
@@ -20,7 +20,7 @@
 - (void) load_interstitial:(NSString*)ad_unit_id {
     NSLog(@"Calling load_interstitial");
     
-    if (!initialized || (!ad_unit_id.length)) {
+    if (!initialized) {
         return;
     }
     else{
@@ -28,21 +28,19 @@
         NSLog(ad_unit_id);
     }
     
-    if (interstitialView == nil) {
-        
-        if(!isReal) {
-            interstitialView = [[GADInterstitial alloc] initWithAdUnitID:"ca-app-pub-3940256099942544/4411468910"];
-        }
-        else {
-            interstitialView = [[GADInterstitial alloc] initWithAdUnitID:ad_unit_id];
-        }
-
-        interstitialView.delegate = self;
-        interstitialView.rootViewController = rootController;
+    if(!isReal) {
+        interstitial = [[GADInterstitial alloc] initWithAdUnitID:@"ca-app-pub-3940256099942544/4411468910"];
+        NSLog(@"interstitial with test id created");
     }
-    
+    else {
+        interstitial = [[GADInterstitial alloc] initWithAdUnitID:ad_unit_id];
+        NSLog(@"interstitial created with the id");
+        NSLog(ad_unit_id);
+    }
+    interstitial.delegate = self;
+
     GADRequest *request = [GADRequest request];
-    [interstitialView loadRequest:request];
+    [interstitial loadRequest:request];
     
 }
 
@@ -51,8 +49,9 @@
         return;
     }
 
-    if (interstitialView.isReady) {
-        [interstitialView presentFromRootViewController];
+    if (interstitial.isReady) {
+        [interstitial presentFromRootViewController:rootController];
+        NSLog(@"Ad should be visible now");
     } else {
         NSLog(@"Ad wasn't ready");
     }
@@ -62,6 +61,8 @@
 /// Tells the delegate an ad request succeeded.
 - (void)interstitialDidReceiveAd:(GADInterstitial *)ad {
   NSLog(@"interstitialDidReceiveAd");
+  Object *obj = ObjectDB::get_instance(instanceId);
+  obj->call_deferred("_on_AdMob_interstitial_loaded");
 }
 
 /// Tells the delegate an ad request failed.
@@ -83,6 +84,8 @@
 /// Tells the delegate the interstitial had been animated off the screen.
 - (void)interstitialDidDismissScreen:(GADInterstitial *)ad {
   NSLog(@"interstitialDidDismissScreen");
+  Object *obj = ObjectDB::get_instance(instanceId);
+  obj->call_deferred("_on_AdMob_interstitial_closed");
 }
 
 /// Tells the delegate that a user click will open another app
