@@ -32,15 +32,17 @@ void AdMob::init(bool is_for_child_directed_treatment, bool is_personalized, con
     }
     
     initialized = true;
+
+    NSString *testDeviceId = [NSString stringWithCString:test_device_id.utf8().get_data() encoding: NSUTF8StringEncoding];
     
     banner = [[AdMobBanner alloc] init];
-    [banner initialize :false :instance_id];
+    [banner initialize :false :instance_id :testDeviceId];
 
     interstitial = [[AdMobInterstitial alloc] init];
-    [interstitial initialize :false :instance_id];
+    [interstitial initialize :false :instance_id :testDeviceId];
 
     rewarded = [[AdMobRewarded alloc] init];
-    [rewarded initialize :false :instance_id];
+    [rewarded initialize :false :instance_id :testDeviceId];
 }
 
 

@@ -9,10 +9,11 @@
     [super dealloc];
 }
 
-- (void)initialize:(BOOL)is_real: (int)instance_id {
+- (void)initialize:(BOOL)is_real: (int)instance_id: (NSString*)test_device_id {
     isReal = is_real;
     initialized = true;
     instanceId = instance_id;
+    testDeviceId = test_device_id;
     rootController = [AppDelegate getViewController];
 }
 
@@ -27,7 +28,6 @@
         NSLog(@"interstitial will load with the id");
         NSLog(ad_unit_id);
     }
-    
     if(!isReal) {
         interstitial = [[GADInterstitial alloc] initWithAdUnitID:@"ca-app-pub-3940256099942544/4411468910"];
         NSLog(@"interstitial with test id created");
@@ -40,6 +40,11 @@
     interstitial.delegate = self;
 
     GADRequest *request = [GADRequest request];
+    if (!testDeviceId.length){
+        request.testDevices = @[testDeviceId];
+        NSLog(@"Using test device with id");
+        NSLog(testDeviceId);
+    }
     [interstitial loadRequest:request];
     
 }
