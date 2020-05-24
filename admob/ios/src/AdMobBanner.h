@@ -7,12 +7,11 @@
 	bool initialized;
 	bool isOnTop;
 	int instanceId;
-	NSString *testDeviceId;
 	NSString *adUnitId;
 	ViewController *rootController;
 }
 
-- (void)initialize :(int)instance_id :(NSString*)test_device_id;
+- (void)initialize :(int)instance_id;
 - (void)load_banner :(NSString*)ad_unit_id :(int)gravity :(NSString*)size;
 - (void)destroy_banner;
 
