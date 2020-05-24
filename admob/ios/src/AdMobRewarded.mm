@@ -8,10 +8,11 @@
     [super dealloc];
 }
 
-- (void)initialize:(BOOL)is_real: (int)instance_id {
+- (void)initialize:(BOOL)is_real: (int)instance_id: (NSString*)test_device_id {
     isReal = is_real;
     initialized = true;
     instanceId = instance_id;
+    testDeviceId = test_device_id;
     rootController = [AppDelegate getViewController];
 }
 
@@ -38,6 +39,11 @@
     }
 
     GADRequest *request = [GADRequest request];
+    if (!testDeviceId.length){
+        request.testDevices = @[testDeviceId];
+        NSLog(@"Using test device with id");
+        NSLog(testDeviceId);
+    }
     [rewarded loadRequest:request completionHandler:^(GADRequestError * _Nullable error) {
         if (error) {
             NSLog(@"error while creating reward");
