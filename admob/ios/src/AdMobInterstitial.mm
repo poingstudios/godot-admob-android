@@ -9,8 +9,7 @@
 	[super dealloc];
 }
 
-- (void)initialize:(BOOL)is_real: (int)instance_id {
-	isReal = is_real;
+- (void)initialize: (int)instance_id {
 	initialized = true;
 	instanceId = instance_id;
 	rootController = [AppDelegate getViewController];
@@ -28,15 +27,10 @@
 		NSLog(ad_unit_id);
 	}
 
-	if(!isReal) {
-		interstitial = [[GADInterstitial alloc] initWithAdUnitID:@"ca-app-pub-3940256099942544/4411468910"];
-		NSLog(@"interstitial with test id created");
-	}
-	else {
-		interstitial = [[GADInterstitial alloc] initWithAdUnitID:ad_unit_id];
-		NSLog(@"interstitial created with the id");
-		NSLog(ad_unit_id);
-	}
+	interstitial = [[GADInterstitial alloc] initWithAdUnitID:ad_unit_id];
+	NSLog(@"interstitial created with the id");
+	NSLog(ad_unit_id);
+
 	interstitial.delegate = self;
 
 	GADRequest *request = [GADRequest request];

@@ -9,8 +9,7 @@
 	[super dealloc];
 }
 
-- (void)initialize:(BOOL)is_real: (int)instance_id {
-	isReal = is_real;
+- (void)initialize: (int)instance_id {
 	initialized = true;
 	instanceId = instance_id;
 	rootController = [AppDelegate getViewController];
@@ -60,12 +59,7 @@
 			}
 		}
 
-		if(!isReal) {
-			bannerView.adUnitID = @"ca-app-pub-3940256099942544/2934735716";
-		}
-		else {
-			bannerView.adUnitID = ad_unit_id;
-		}
+		bannerView.adUnitID = ad_unit_id;
 
 		bannerView.delegate = self;
 		bannerView.rootViewController = rootController;
@@ -75,7 +69,7 @@
 
 	GADRequest *request = [GADRequest request];
 	[bannerView loadRequest:request];
-	
+
 }
 
 
