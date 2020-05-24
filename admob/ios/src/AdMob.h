@@ -20,10 +20,10 @@ typedef void *rewardedPtr;
 
 
 class AdMob : public Reference {
-    
-    GDCLASS(AdMob, Reference);
+	
+	GDCLASS(AdMob, Reference);
 
-    bool initialized;
+	bool initialized;
     static AdMob *instance; //fix
     
     bannerPtr banner;
@@ -31,20 +31,20 @@ class AdMob : public Reference {
     rewardedPtr rewarded;
 
 protected:
-    static void _bind_methods();
+	static void _bind_methods();
 
 public:
-    void init(bool is_for_child_directed_treatment, bool is_personalized, const String &max_ad_content_rating, int instance_id, const String &test_device_id);
-    void load_banner(const String &ad_unit_id, int gravity, const String &size);
-    void destroy_banner();
-    void load_interstitial(const String &ad_unit_id);
-    void show_interstitial();
-    void load_rewarded(const String &ad_unit_id);
-    void show_rewarded();
+	void init(bool is_for_child_directed_treatment, bool is_personalized, const String &max_ad_content_rating, int instance_id, const String &test_device_id);
+	void load_banner(const String &ad_unit_id, int gravity, const String &size);
+	void destroy_banner();
+	void load_interstitial(const String &ad_unit_id);
+	void show_interstitial();
+	void load_rewarded(const String &ad_unit_id);
+	void show_rewarded();
 
 
-    AdMob();
-    ~AdMob();
+	AdMob();
+	~AdMob();
 };
 
 #endif

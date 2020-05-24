@@ -1,14 +1,14 @@
 #import <GoogleMobileAds/GADBannerView.h>
 #import "app_delegate.h"
- 
+
 @interface AdMobBanner: NSObject <GADBannerViewDelegate> {
-    GADBannerView *bannerView;
-    bool initialized;
-    bool isReal;
-    bool isOnTop;
-    int instanceId;
-    NSString *adUnitId;
-    ViewController *rootController;
+	GADBannerView *bannerView;
+	bool initialized;
+	bool isReal;
+	bool isOnTop;
+	int instanceId;
+	NSString *adUnitId;
+	ViewController *rootController;
 }
 
 - (void)initialize:(BOOL)is_real: (int)instance_id;
