@@ -1,4 +1,4 @@
-# Godot AdMob (3.1.2)
+# Godot AdMob (3.2.1)
 ### Android only, iOS still in development
 - Banner 
 - Interstitial
@@ -18,14 +18,12 @@ banner_loaded #when an ad finishes loading
 banner_destroyed #when banner view is destroyed
 banner_failed_to_load(error_code : int) #when an ad request fails
 banner_opened #when an ad opens an overlay that
-banner_clicked #when the user clicks on an ad
 banner_left_application #when the user has left the app
 banner_closed #when the user is about to return to the app after tapping on an ad
 
 interstitial_loaded #when an ad finishes loading
 interstitial_failed_to_load(error_code : int) #when an ad request fails
 interstitial_opened #when the ad is displayed
-interstitial_clicked #when the user clicks on an ad
 interstitial_left_application #when the user has left the app
 interstitial_closed #when the interstitial ad is closed
 
