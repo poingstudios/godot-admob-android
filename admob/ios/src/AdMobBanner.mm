@@ -64,84 +64,35 @@
 		bannerView.delegate = self;
 		bannerView.rootViewController = rootController;
 
-		[self addBannerViewToView:bannerView:isOnTop];
+		GADRequest *request = [GADRequest request];
+		[bannerView loadRequest:request];
+
 	}
 
-	GADRequest *request = [GADRequest request];
-	[bannerView loadRequest:request];
 
 }
 
-
-- (void)addBannerViewToView:(UIView *_Nonnull)bannerView: (BOOL)is_on_top{
-	bannerView.translatesAutoresizingMaskIntoConstraints = NO;
-	[rootController.view addSubview:bannerView];
-	if (@available(ios 11.0, *)) {
-		[self positionBannerViewFullWidthAtSafeArea:bannerView:is_on_top];
-	} else {
-		[self positionBannerViewFullWidthAtView:bannerView:is_on_top];
-	}
-    Object *obj = ObjectDB::get_instance(instanceId);
-    obj->call_deferred("_on_AdMob_banner_opened");
+- (void)addBannerViewToView:(UIView *)bannerView {
+  bannerView.translatesAutoresizingMaskIntoConstraints = NO;
+  [rootController.view addSubview:bannerView];
+  [rootController.view addConstraints:@[
+    [NSLayoutConstraint constraintWithItem:bannerView
+                               attribute:NSLayoutAttributeBottom
+                               relatedBy:NSLayoutRelationEqual
+                                  toItem:rootController.bottomLayoutGuide
+                               attribute:NSLayoutAttributeTop
+                              multiplier:1
+                                constant:0],
+    [NSLayoutConstraint constraintWithItem:bannerView
+                               attribute:NSLayoutAttributeCenterX
+                               relatedBy:NSLayoutRelationEqual
+                                  toItem:rootController.view
+                               attribute:NSLayoutAttributeCenterX
+                              multiplier:1
+                                constant:0]
+                                ]];
 }
 
-
-
-- (void)positionBannerViewFullWidthAtSafeArea:(UIView *_Nonnull)bannerView: (BOOL)is_on_top  NS_AVAILABLE_IOS(11.0) {
-	UILayoutGuide *guide = rootController.view.safeAreaLayoutGuide;
-
-	if (is_on_top) {
-		[NSLayoutConstraint activateConstraints:@[
-			[guide.leftAnchor constraintEqualToAnchor:bannerView.leftAnchor],
-			[guide.rightAnchor constraintEqualToAnchor:bannerView.rightAnchor],
-			[guide.topAnchor constraintEqualToAnchor:bannerView.topAnchor]
-			]];
-	} else {
-		[NSLayoutConstraint activateConstraints:@[
-			[guide.leftAnchor constraintEqualToAnchor:bannerView.leftAnchor],
-			[guide.rightAnchor constraintEqualToAnchor:bannerView.rightAnchor],
-			[guide.bottomAnchor constraintEqualToAnchor:bannerView.bottomAnchor]
-			]];
-	}
-}
-
-
-- (void)positionBannerViewFullWidthAtView:(UIView *_Nonnull)bannerView: (BOOL)is_on_top {
-
-	[rootController.view addConstraint:[NSLayoutConstraint constraintWithItem:bannerView
-		attribute:NSLayoutAttributeLeading
-		relatedBy:NSLayoutRelationEqual
-		toItem:rootController.view
-		attribute:NSLayoutAttributeLeading
-		multiplier:1
-		constant:0]];
-	[rootController.view addConstraint:[NSLayoutConstraint constraintWithItem:bannerView
-		attribute:NSLayoutAttributeTrailing
-		relatedBy:NSLayoutRelationEqual
-		toItem:rootController.view
-		attribute:NSLayoutAttributeTrailing
-		multiplier:1
-		constant:0]];
-
-	if (is_on_top) {
-		[rootController.view addConstraint:[NSLayoutConstraint constraintWithItem:bannerView
-			attribute:NSLayoutAttributeTop
-			relatedBy:NSLayoutRelationEqual
-			toItem:rootController.topLayoutGuide
-			attribute:NSLayoutAttributeTop
-			multiplier:1
-			constant:0]];
-
-	} else {
-		[rootController.view addConstraint:[NSLayoutConstraint constraintWithItem:bannerView
-			attribute:NSLayoutAttributeBottom
-			relatedBy:NSLayoutRelationEqual
-			toItem:rootController.bottomLayoutGuide
-			attribute:NSLayoutAttributeTop
-			multiplier:1
-			constant:0]];
-	}
-}
 
 - (void)destroy_banner
 {
@@ -152,7 +103,6 @@
 	{
 		[bannerView setHidden:YES];
 		[bannerView removeFromSuperview];
-        [rootController.view endEditing:YES];
 		bannerView = nil;
 		Object *obj = ObjectDB::get_instance(instanceId);
 		obj->call_deferred("_on_AdMob_banner_destroyed");
@@ -161,6 +111,8 @@
 
 - (void)adViewDidReceiveAd:(GADBannerView *)adView {
   NSLog(@"adViewDidReceiveAd");
+  [rootController.view endEditing:YES];
+  [self addBannerViewToView:bannerView];
   Object *obj = ObjectDB::get_instance(instanceId);
   obj->call_deferred("_on_AdMob_banner_loaded");
 }
