@@ -10,11 +10,10 @@
 	[super dealloc];
 }
 
-- (void)initialize :(int)instance_id :(NSString*)test_device_id 
+- (void)initialize :(int)instance_id
 {
 	initialized = true;
 	instanceId = instance_id;
-	testDeviceId = test_device_id;
 	rootController = [AppDelegate getViewController];
 }
 
