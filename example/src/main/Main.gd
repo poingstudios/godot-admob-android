@@ -8,6 +8,9 @@ onready var Rewarded : Button = $CenterContainer/VBoxContainer/Rewarded
 onready var EnableNative : Button = $CenterContainer/VBoxContainer/UnifiedNative/EnableUnifiedNative
 onready var DisableNative : Button = $CenterContainer/VBoxContainer/UnifiedNative/DisableUnifiedNative
 
+onready var UnifiedNativePanel : Panel = $UnifiedNative
+onready var UnifiedNativeHBox : HBoxContainer = $CenterContainer/VBoxContainer/UnifiedNative
+
 onready var Advice : Button = $Advice
 
 func _ready():
@@ -21,8 +24,12 @@ func _ready():
 		AdMob.connect("interstitial_closed", self, "_on_AdMob_interstitial_closed")
 		AdMob.connect("rewarded_ad_closed", self, "_on_AdMob_rewarded_ad_closed")
 		AdMob.connect("rewarded_ad_loaded", self, "_on_AdMob_rewarded_ad_loaded")
-		AdMob.connect("rewarded_user_earned_rewarded", self, "_on_AdMob_rewarded_user_earned_rewarded")
-		AdMob.connect("unified_native_destroyed", self, "_on_AdMob_unified_native_destroyed")
+		if OS.get_name() == "Android":
+			AdMob.connect("rewarded_user_earned_rewarded", self, "_on_AdMob_rewarded_user_earned_rewarded")
+			AdMob.connect("unified_native_destroyed", self, "_on_AdMob_unified_native_destroyed")
+		else:
+			UnifiedNativePanel.hide()
+			UnifiedNativeHBox.hide()
 	else:
 		Advice.text = "Module only works on Android or iOS devices!"
 	

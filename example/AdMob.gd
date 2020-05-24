@@ -29,6 +29,8 @@ signal unified_native_opened
 signal unified_native_closed
 
 
+var AdMob
+
 var initialized := false
 
 onready var ad := {
@@ -40,13 +42,13 @@ onready var ad := {
 	},
 	"interstitial" : {
 		"unit_id": {
-			"iOS" : "",
+			"iOS" : "ca-app-pub-3940256099942544/4411468910",
 			"Android" : "ca-app-pub-3940256099942544/1033173712",
 		},
 	},
 	"rewarded" : {
 		"unit_id": {
-			"iOS" : "",
+			"iOS" : "ca-app-pub-3940256099942544/1712485313",
 			"Android" : "ca-app-pub-3940256099942544/5224354917",
 		},
 	},
@@ -69,16 +71,13 @@ const GRAVITY = {
 	"NO_GRAVITY" : 0
 }
 
-var test_device_id := {
-	"REAL_DEVICE" : OS.get_unique_id().md5_text()
-}
+var test_device_id := OS.get_unique_id().md5_text()
 
-var AdMob
 
 func _ready():
 	if (Engine.has_singleton("AdMob")):
 		AdMob = Engine.get_singleton("AdMob")
-		AdMob.init(true, false, "G", get_instance_id(), test_device_id["REAL_DEVICE"])
+		init(true, false, "G", get_instance_id(), test_device_id)
 		get_tree().connect("screen_resized", self, "_on_get_tree_resized")
 
 func init(is_for_child_directed_treatment := true, is_personalized := false, max_ad_content_rating := "G", instance_id := get_instance_id(), test_device_id := ""):
@@ -111,9 +110,8 @@ func load_unified_native(control_node_to_be_replaced : Control = Control.new(), 
 				"y" : control_node_to_be_replaced.rect_position.y * ad.unified_native.scale.y
 			}
 		}
-
 		AdMob.load_unified_native(unit_id, [params.size.w, params.size.h], [params.position.x, params.position.y])
-		
+
 func destroy_banner():
 	if AdMob:
 		AdMob.destroy_banner()

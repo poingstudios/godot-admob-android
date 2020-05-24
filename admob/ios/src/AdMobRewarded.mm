@@ -32,12 +32,6 @@
 	NSLog(ad_unit_id);
 	GADRequest *request = [GADRequest request];
 
-	if (testDeviceId.length)
-	{
-		request.testDevices = @[testDeviceId];
-		NSLog(@"Using test device with id");
-		NSLog(testDeviceId);
-	}
 	[rewarded loadRequest :request completionHandler :^(GADRequestError * _Nullable error) {
 		if (error) 
 		{
