@@ -32,7 +32,7 @@
 	NSLog(ad_unit_id);
 	GADRequest *request = [GADRequest request];
 
-	if (!testDeviceId.length)
+	if (testDeviceId.length)
 	{
 		request.testDevices = @[testDeviceId];
 		NSLog(@"Using test device with id");
