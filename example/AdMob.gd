@@ -70,7 +70,7 @@ const GRAVITY = {
 }
 
 var test_device_id := {
-	"REAL_DEVICE" : OS.get_unique_id().md5_text().to_upper()
+	"REAL_DEVICE" : OS.get_unique_id().md5_text()
 }
 
 var AdMob
@@ -78,6 +78,7 @@ var AdMob
 func _ready():
 	if (Engine.has_singleton("AdMob")):
 		AdMob = Engine.get_singleton("AdMob")
+		AdMob.init(true, false, "G", get_instance_id(), test_device_id["REAL_DEVICE"])
 		get_tree().connect("screen_resized", self, "_on_get_tree_resized")
 
 func init(is_for_child_directed_treatment := true, is_personalized := false, max_ad_content_rating := "G", instance_id := get_instance_id(), test_device_id := ""):

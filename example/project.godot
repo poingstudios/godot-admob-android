@@ -20,7 +20,7 @@ modules="org/godotengine/godot/AdMob"
 [application]
 
 config/name="GodotAdMob"
-run/main_scene="res://Control.tscn"
+run/main_scene="res://src/main/Main.tscn"
 config/icon="res://icon.png"
 
 [autoload]
