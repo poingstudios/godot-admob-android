@@ -8,8 +8,7 @@
 	[super dealloc];
 }
 
-- (void)initialize:(BOOL)is_real: (int)instance_id {
-	isReal = is_real;
+- (void)initialize: (int)instance_id {
 	initialized = true;
 	instanceId = instance_id;
 	rootController = [AppDelegate getViewController];
@@ -18,7 +17,7 @@
 
 - (void) load_rewarded:(NSString*)ad_unit_id {
 	NSLog(@"Calling load_rewarded");
-	
+
 	if (!initialized) {
 		return;
 	}
@@ -26,16 +25,10 @@
 		NSLog(@"rewarded will load with the id");
 		NSLog(ad_unit_id);
 	}
-	
-	if(!isReal) {
-		rewarded = [[GADRewardedAd alloc] initWithAdUnitID:@"ca-app-pub-3940256099942544/1712485313"];
-		NSLog(@"rewarded with test id created");
-	}
-	else {
-		rewarded = [[GADRewardedAd alloc] initWithAdUnitID:ad_unit_id];
-		NSLog(@"rewarded created with the id");
-		NSLog(ad_unit_id);
-	}
+
+	rewarded = [[GADRewardedAd alloc] initWithAdUnitID:ad_unit_id];
+	NSLog(@"rewarded created with the id");
+	NSLog(ad_unit_id);
 
 	GADRequest *request = [GADRequest request];
 	[rewarded loadRequest:request completionHandler:^(GADRequestError * _Nullable error) {
@@ -47,7 +40,7 @@
 			obj->call_deferred("_on_AdMob_rewarded_ad_loaded");
 		}
 	}];
-	
+
 }
 
 - (void) show_rewarded {
