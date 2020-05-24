@@ -36,17 +36,18 @@ void AdMob::init(bool is_for_child_directed_treatment, bool is_personalized, con
     NSString *testDeviceId = [NSString stringWithCString:test_device_id.utf8().get_data() encoding: NSUTF8StringEncoding];
     
     banner = [[AdMobBanner alloc] init];
-    [banner initialize :false :instance_id :testDeviceId];
+    [banner initialize :instance_id :testDeviceId];
 
     interstitial = [[AdMobInterstitial alloc] init];
-    [interstitial initialize :false :instance_id :testDeviceId];
+    [interstitial initialize :instance_id :testDeviceId];
 
     rewarded = [[AdMobRewarded alloc] init];
-    [rewarded initialize :false :instance_id :testDeviceId];
+    [rewarded initialize :instance_id :testDeviceId];
 }
 
 
-void AdMob::load_banner(const String &ad_unit_id, int gravity, const String &size) {
+void AdMob::load_banner(const String &ad_unit_id, int gravity, const String &size) 
+{
     if (!initialized) {
         NSLog(@"AdMob Module not initialized");
         return;
@@ -58,13 +59,15 @@ void AdMob::load_banner(const String &ad_unit_id, int gravity, const String &siz
 
 }
 
-void AdMob::destroy_banner() {
+void AdMob::destroy_banner() 
+{
     if (!initialized) return;
     
     [banner destroy_banner];
 }
 
-void AdMob::load_interstitial(const String &ad_unit_id) {
+void AdMob::load_interstitial(const String &ad_unit_id) 
+{
     if (!initialized) {
         NSLog(@"AdMob Module not initialized");
         return;
@@ -75,7 +78,8 @@ void AdMob::load_interstitial(const String &ad_unit_id) {
 
 }
 
-void AdMob::show_interstitial() {
+void AdMob::show_interstitial() 
+{
     if (!initialized) return;
     
     [interstitial show_interstitial];
