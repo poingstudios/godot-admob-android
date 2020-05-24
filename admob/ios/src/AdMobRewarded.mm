@@ -34,6 +34,8 @@
 	[rewarded loadRequest:request completionHandler:^(GADRequestError * _Nullable error) {
 		if (error) {
 			NSLog(@"error while creating reward");
+            Object *obj = ObjectDB::get_instance(instanceId);
+            obj->call_deferred("_on_AdMob_rewarded_ad_failed_to_show", error.code);
 		} else {
 			NSLog(@"reward successfully loaded");
 			Object *obj = ObjectDB::get_instance(instanceId);
@@ -50,6 +52,8 @@
 
 	if (rewarded.isReady) {
 		[rewarded presentFromRootViewController:rootController delegate:self];
+        Object *obj = ObjectDB::get_instance(instanceId);
+        obj->call_deferred("_on_AdMob_rewarded_ad_opened");
 	} else {
 		NSLog(@"reward ad wasn't ready");
 	}
@@ -77,11 +81,15 @@
 /// Tells the delegate that the rewarded ad failed to present.
 - (void)rewardedAd:(GADRewardedAd *)rewardedAd didFailToPresentWithError:(NSError *)error {
 	NSLog(@"rewardedAd:didFailToPresentWithError");
+    Object *obj = ObjectDB::get_instance(instanceId);
+    obj->call_deferred("_on_AdMob_rewarded_ad_failed_to_show", error.code);
 }
 
 /// Tells the delegate that the rewarded ad was dismissed.
 - (void)rewardedAdDidDismiss:(GADRewardedAd *)rewardedAd {
 	NSLog(@"rewardedAdDidDismiss:");
+    Object *obj = ObjectDB::get_instance(instanceId);
+    obj->call_deferred("_on_AdMob_rewarded_ad_closed");
 }
 
 

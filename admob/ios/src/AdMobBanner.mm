@@ -81,6 +81,8 @@
 	} else {
 		[self positionBannerViewFullWidthAtView:bannerView:is_on_top];
 	}
+    Object *obj = ObjectDB::get_instance(instanceId);
+    obj->call_deferred("_on_AdMob_banner_opened");
 }
 
 
@@ -156,5 +158,46 @@
 	}
 }
 
+- (void)adViewDidReceiveAd:(GADBannerView *)adView {
+  NSLog(@"adViewDidReceiveAd");
+  Object *obj = ObjectDB::get_instance(instanceId);
+  obj->call_deferred("_on_AdMob_banner_loaded");
+}
+
+/// Tells the delegate an ad request failed.
+- (void)adView:(GADBannerView *)adView
+    didFailToReceiveAdWithError:(GADRequestError *)error {
+  NSLog(@"adView:didFailToReceiveAdWithError: %@", [error localizedDescription]);
+  Object *obj = ObjectDB::get_instance(instanceId);
+  obj->call_deferred("_on_AdMob_banner_failed_to_load", error.code);  
+}
+
+/// Tells the delegate that a full-screen view will be presented in response
+/// to the user clicking on an ad.
+- (void)adViewWillPresentScreen:(GADBannerView *)adView {
+  NSLog(@"adViewWillPresentScreen");
+  Object *obj = ObjectDB::get_instance(instanceId);
+  obj->call_deferred("_on_AdMob_banner_clicked");
+}
+
+/// Tells the delegate that the full-screen view will be dismissed.
+- (void)adViewWillDismissScreen:(GADBannerView *)adView {
+  NSLog(@"adViewWillDismissScreen");
+  Object *obj = ObjectDB::get_instance(instanceId);
+  obj->call_deferred("_on_AdMob_banner_closed");
+}
+
+/// Tells the delegate that the full-screen view has been dismissed.
+- (void)adViewDidDismissScreen:(GADBannerView *)adView {
+  NSLog(@"adViewDidDismissScreen");
+}
+
+/// Tells the delegate that a user click will open another app (such as
+/// the App Store), backgrounding the current app.
+- (void)adViewWillLeaveApplication:(GADBannerView *)adView {
+  NSLog(@"adViewWillLeaveApplication");
+  Object *obj = ObjectDB::get_instance(instanceId);
+  obj->call_deferred("_on_AdMob_banner_left_application");
+}
 
 @end
