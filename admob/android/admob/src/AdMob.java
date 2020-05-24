@@ -130,12 +130,6 @@ public class AdMob extends Godot.SingletonBase
                     }
 
                     @Override
-                    public void onAdClicked() {
-                        // Code to be executed when the user clicks on an ad.
-                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_banner_clicked", new Object[]{ });
-                    }
-
-                    @Override
                     public void onAdLeftApplication() {
                         // Code to be executed when the user has left the app.
                         GodotLib.calldeferred(aInstanceId, "_on_AdMob_banner_left_application", new Object[]{ });
@@ -204,13 +198,6 @@ public class AdMob extends Godot.SingletonBase
                     {
                         // Code to be executed when the ad is displayed.
                         GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_opened", new Object[]{ });
-                    }
-
-                    @Override
-                    public void onAdClicked() 
-                    {
-                        // Code to be executed when the user clicks on an ad.
-                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_clicked", new Object[]{ });
                     }
 
                     @Override
