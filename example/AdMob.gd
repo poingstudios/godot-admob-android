@@ -4,14 +4,12 @@ signal banner_loaded
 signal banner_destroyed
 signal banner_failed_to_load(error_code)
 signal banner_opened
-signal banner_clicked
 signal banner_left_application
 signal banner_closed
 
 signal interstitial_loaded
 signal interstitial_failed_to_load(error_code)
 signal interstitial_opened
-signal interstitial_clicked
 signal interstitial_left_application
 signal interstitial_closed
 
@@ -146,10 +144,7 @@ func _on_AdMob_banner_failed_to_load(error_code : int):
 	
 func _on_AdMob_banner_opened():
 	emit_signal("banner_opened")
-	
-func _on_AdMob_banner_clicked():
-	emit_signal("banner_clicked")
-	
+		
 func _on_AdMob_banner_left_application():
 	emit_signal("banner_left_application")
 	
@@ -164,10 +159,7 @@ func _on_AdMob_interstitial_failed_to_load(error_code : int):
 
 func _on_AdMob_interstitial_opened():
 	emit_signal("interstitial_opened")
-	
-func _on_AdMob_interstitial_clicked():
-	emit_signal("interstitial_clicked")
-	
+		
 func _on_AdMob_interstitial_left_application():
 	emit_signal("interstitial_left_application")
 
