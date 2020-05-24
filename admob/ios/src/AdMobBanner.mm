@@ -152,6 +152,7 @@
 	{
 		[bannerView setHidden:YES];
 		[bannerView removeFromSuperview];
+        [rootController.view endEditing:YES];
 		bannerView = nil;
 		Object *obj = ObjectDB::get_instance(instanceId);
 		obj->call_deferred("_on_AdMob_banner_destroyed");
