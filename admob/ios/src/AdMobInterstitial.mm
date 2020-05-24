@@ -73,11 +73,15 @@
 - (void)interstitial:(GADInterstitial *)ad
     didFailToReceiveAdWithError:(GADRequestError *)error {
   NSLog(@"interstitial:didFailToReceiveAdWithError: %@", [error localizedDescription]);
+  Object *obj = ObjectDB::get_instance(instanceId);
+  obj->call_deferred("_on_AdMob_interstitial_failed_to_load", error.code);
 }
 
 /// Tells the delegate that an interstitial will be presented.
 - (void)interstitialWillPresentScreen:(GADInterstitial *)ad {
   NSLog(@"interstitialWillPresentScreen");
+  Object *obj = ObjectDB::get_instance(instanceId);
+  obj->call_deferred("_on_AdMob_interstitial_opened");
 }
 
 /// Tells the delegate the interstitial is to be animated off the screen.
@@ -96,6 +100,8 @@
 /// (such as the App Store), backgrounding the current app.
 - (void)interstitialWillLeaveApplication:(GADInterstitial *)ad {
   NSLog(@"interstitialWillLeaveApplication");
+  Object *obj = ObjectDB::get_instance(instanceId);
+  obj->call_deferred("_on_AdMob_interstitial_left_application");
 }
 
 @end
