@@ -8,3 +8,6 @@ export_presets.cfg
 .mono/
 data_*/
 *.pyc
+
+example/android
+.DS_Store
