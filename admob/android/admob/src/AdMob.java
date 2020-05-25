@@ -35,11 +35,16 @@ import android.os.Bundle;
 
 import com.google.ads.mediation.admob.AdMobAdapter;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
+import android.provider.Settings;
+
 public class AdMob extends Godot.SingletonBase 
 {
     private Activity aActivity;
     private int aInstanceId;
-    private String aTestDeviceId = "";
+    private boolean aIsReal;
 
     private FrameLayout aGodotLayout; // store the godot layout
     private FrameLayout.LayoutParams aGodotLayoutParams; // Store the godot layout params
@@ -58,19 +63,20 @@ public class AdMob extends Godot.SingletonBase
     private String aMaxAdContentRating;
 
     @Override
-    public View onMainCreateView(Activity pActivity) {
+    public View onMainCreateView(Activity pActivity) 
+    {
         aGodotLayout= new FrameLayout(pActivity);
         return aGodotLayout;
     }
 
-    public void init(boolean pIsForChildDirectedTreatment, boolean pIsPersonalized, String pMaxAdContentRating, int pInstanceId, String pTestDeviceId) 
+    public void init(boolean pIsForChildDirectedTreatment, boolean pIsPersonalized, String pMaxAdContentRating, int pInstanceId, boolean pIsReal) 
     {
         aInstanceId = pInstanceId;
         MobileAds.initialize(aActivity); //initialize(Context context, OnInitializationCompleteListener listener) doesnt work due Godot cant download the package
         aIsForChildDirectedTreatment = pIsForChildDirectedTreatment;
         aIsPersonalized = pIsPersonalized;
         aMaxAdContentRating = pMaxAdContentRating;
-        aTestDeviceId = pTestDeviceId;
+        aIsReal = pIsReal;
     }
 
     //BANNER only one is allowed, please do not try to place more than one, as your ads on the app may have the chance to be banned!
@@ -406,25 +412,65 @@ public class AdMob extends Godot.SingletonBase
             extras.putString("npa", "1");
             adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, extras);
         }
-        if (aTestDeviceId != "") {
-            adRequestBuilder.addTestDevice(aTestDeviceId);
+        if (!aIsReal) {
+            adRequestBuilder.addTestDevice(getDeviceId());
         }
 
         return adRequestBuilder.build();
+    }
+    /**
+     * Generate MD5 for the deviceID
+     * @param String s The string to generate de MD5
+     * @return String The MD5 generated
+     */
+    private String md5(final String s)
+    {
+        try 
+        {
+            // Create MD5 Hash
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            digest.update(s.getBytes());
+            byte messageDigest[] = digest.digest();
+
+            // Create Hex String
+            StringBuffer hexString = new StringBuffer();
+            for (int i=0; i<messageDigest.length; i++) 
+            {
+                String h = Integer.toHexString(0xFF & messageDigest[i]);
+                while (h.length() < 2) h = "0" + h;
+                hexString.append(h);
+            }
+            return hexString.toString();
+        } 
+        catch(NoSuchAlgorithmException e) 
+        {
+            //Logger.logStackTrace(TAG,e);
+        }
+        return "";
+    }
+
+    /**
+     * Get the Device ID for AdMob
+     * @return String Device ID
+     */
+    private String getDeviceId()
+    {
+        String android_id = Settings.Secure.getString(aActivity.getContentResolver(), Settings.Secure.ANDROID_ID);
+        String deviceId = md5(android_id).toUpperCase(Locale.US);
+        return deviceId;
     }
 
     static public Godot.SingletonBase initialize(Activity pActivity) 
     {
         return new AdMob(pActivity);
     }
-
+    
     public AdMob(Activity pActivity) 
     {
         //register class name and functions to bind
         registerClass("AdMob", new String[]
         {
             "init",
-            "test_init",
             "load_banner",
             "destroy_banner",
             "load_interstitial",
