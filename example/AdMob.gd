@@ -4,12 +4,14 @@ signal banner_loaded
 signal banner_destroyed
 signal banner_failed_to_load(error_code)
 signal banner_opened
+signal banner_clicked
 signal banner_left_application
 signal banner_closed
 
 signal interstitial_loaded
 signal interstitial_failed_to_load(error_code)
 signal interstitial_opened
+signal interstitial_clicked
 signal interstitial_left_application
 signal interstitial_closed
 
@@ -69,19 +71,21 @@ const GRAVITY = {
 	"NO_GRAVITY" : 0
 }
 
-var test_device_id := OS.get_unique_id().md5_text()
-
+var _test_device_id := OS.get_unique_id().md5_text()
+var _instance_id := get_instance_id()
 
 func _ready():
 	if (Engine.has_singleton("AdMob")):
 		AdMob = Engine.get_singleton("AdMob")
-		init(true, false, "G", get_instance_id(), test_device_id)
+		init()
+		print(_test_device_id)
 		get_tree().connect("screen_resized", self, "_on_get_tree_resized")
 
-func init(is_for_child_directed_treatment := true, is_personalized := false, max_ad_content_rating := "G", instance_id := get_instance_id(), test_device_id := ""):
+func init(is_for_child_directed_treatment := true, is_personalized := false, max_ad_content_rating := "G", is_real := false):
 	if AdMob and !initialized:
 		#IF test_device_id == "", then will be running as a test device
-		AdMob.init(is_for_child_directed_treatment, is_personalized, max_ad_content_rating, instance_id, test_device_id)
+		AdMob.init(is_for_child_directed_treatment, is_personalized, max_ad_content_rating, _instance_id, is_real)
+		
 		initialized = !initialized
 
 func load_banner(gravity : int = GRAVITY.BOTTOM, size : String = "SMART_BANNER", unit_id : String = ad.banner.unit_id[OS.get_name()]):
@@ -144,7 +148,10 @@ func _on_AdMob_banner_failed_to_load(error_code : int):
 	
 func _on_AdMob_banner_opened():
 	emit_signal("banner_opened")
-		
+	
+func _on_AdMob_banner_clicked():
+	emit_signal("banner_clicked")
+	
 func _on_AdMob_banner_left_application():
 	emit_signal("banner_left_application")
 	
@@ -159,7 +166,10 @@ func _on_AdMob_interstitial_failed_to_load(error_code : int):
 
 func _on_AdMob_interstitial_opened():
 	emit_signal("interstitial_opened")
-		
+	
+func _on_AdMob_interstitial_clicked():
+	emit_signal("interstitial_clicked")
+	
 func _on_AdMob_interstitial_left_application():
 	emit_signal("interstitial_left_application")
 
