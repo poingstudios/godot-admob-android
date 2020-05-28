@@ -1,4 +1,6 @@
 # Godot AdMob (3.2.1)
+![example](https://i.imgur.com/9Gl22Ta.png)
+
 ### Android and iOS
 - Banner 
 - Interstitial
@@ -43,8 +45,6 @@ Download example project to see how the Plugin works!
 - Update your GAMENAME-Info.plist file, add a GADApplicationIdentifier key with a string value of your [AdMob app ID](https://support.google.com/admob/answer/7356431):
 
 ![plist](https://i.imgur.com/1tcKXx5.png)
-
-
 
 ### API References
 ---
