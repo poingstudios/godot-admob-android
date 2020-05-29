@@ -231,8 +231,6 @@ public class AdMob extends Godot.SingletonBase
             @Override public void run()
             {
                 if (aInterstitialAd != null && aInterstitialAd.isLoaded()) {
-                    if (aAdView != null) destroy_banner();
-                    if (aUnifiedNativeAdView != null) destroy_unified_native();
 
                     aInterstitialAd.show();
                 }
@@ -305,8 +303,6 @@ public class AdMob extends Godot.SingletonBase
                             GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_failed_to_show", new Object[] { errorCode });                         
                         }
                     };
-                if (aAdView != null) destroy_banner();
-                if (aUnifiedNativeAdView != null) destroy_unified_native();
 
                 pRewardedAd.show(aActivity, adCallback);
                 }
