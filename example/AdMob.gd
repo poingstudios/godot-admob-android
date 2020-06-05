@@ -36,32 +36,40 @@ var initialized := false
 onready var ad := {
 	"banner" : {
 		"unit_id": {
+			"Windows" : "",
+			"OSX" : "",
 			"iOS" : "ca-app-pub-3940256099942544/2934735716",
 			"Android" : "ca-app-pub-3940256099942544/6300978111",
 		},
 	},
 	"interstitial" : {
 		"unit_id": {
+			"Windows" : "",
+			"OSX" : "",
 			"iOS" : "ca-app-pub-3940256099942544/4411468910",
 			"Android" : "ca-app-pub-3940256099942544/1033173712",
 		},
 	},
 	"rewarded" : {
 		"unit_id": {
+			"Windows" : "",
+			"OSX" : "",
 			"iOS" : "ca-app-pub-3940256099942544/1712485313",
 			"Android" : "ca-app-pub-3940256099942544/5224354917",
 		},
 	},
 	"unified_native" : {
 		"unit_id": {
+			"Windows" : "",
+			"OSX" : "",
 			"iOS" : "",
 			"Android" : "ca-app-pub-3940256099942544/2247696110",
 		},
 		"scale" : {
 			"x" : OS.get_screen_size().x / get_viewport_rect().size.x,
 			"y" : OS.get_screen_size().y / get_viewport_rect().size.y,
-		}
-	}
+		},
+	},
 }
 
 const GRAVITY = {
@@ -85,7 +93,8 @@ func init(is_for_child_directed_treatment := true, is_personalized := false, max
 	if AdMob and !initialized:
 		#IF test_device_id == "", then will be running as a test device
 		AdMob.init(is_for_child_directed_treatment, is_personalized, max_ad_content_rating, _instance_id, is_real)
-		
+		load_interstitial()
+		load_rewarded()
 		initialized = !initialized
 
 func load_banner(gravity : int = GRAVITY.BOTTOM, size : String = "SMART_BANNER", unit_id : String = ad.banner.unit_id[OS.get_name()]):
@@ -174,6 +183,7 @@ func _on_AdMob_interstitial_left_application():
 	emit_signal("interstitial_left_application")
 
 func _on_AdMob_interstitial_closed():
+	load_interstitial()
 	emit_signal("interstitial_closed")
 
 func _on_AdMob_rewarded_ad_loaded():
@@ -186,6 +196,7 @@ func _on_AdMob_rewarded_ad_opened():
 	emit_signal("rewarded_ad_opened")
 	
 func _on_AdMob_rewarded_ad_closed():
+	load_rewarded()
 	emit_signal("rewarded_ad_closed")
 
 func _on_AdMob_user_earned_rewarded(currency : String, amount : int):

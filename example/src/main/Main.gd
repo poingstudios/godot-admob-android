@@ -21,8 +21,6 @@ func _ready():
 		AdMob.load_rewarded()
 		AdMob.connect("banner_destroyed", self, "_on_AdMob_banner_destroyed")
 		AdMob.connect("interstitial_loaded", self, "_on_AdMob_interstitial_loaded")
-		AdMob.connect("interstitial_closed", self, "_on_AdMob_interstitial_closed")
-		AdMob.connect("rewarded_ad_closed", self, "_on_AdMob_rewarded_ad_closed")
 		AdMob.connect("rewarded_ad_loaded", self, "_on_AdMob_rewarded_ad_loaded")
 		AdMob.connect("rewarded_user_earned_rewarded", self, "_on_AdMob_rewarded_user_earned_rewarded")
 		if OS.get_name() == "Android":
@@ -41,10 +39,7 @@ func _on_Interstitial_pressed():
 	AdMob.show_interstitial()
 	Interstitial.disabled = true
 	
-func _on_AdMob_interstitial_closed():
-	AdMob.load_interstitial()
 	
-
 func reset_banner_and_unified_buttons():
 	DisableBanner.disabled = true
 	DisableNative.disabled = true
@@ -73,9 +68,6 @@ func _on_Rewarded_pressed():
 	AdMob.show_rewarded()
 	Rewarded.disabled = true
 	
-func _on_AdMob_rewarded_ad_closed():
-	AdMob.load_rewarded()
-
 func _on_AdMob_rewarded_ad_loaded():
 	Rewarded.disabled = false
 	
