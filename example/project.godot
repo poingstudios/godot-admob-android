@@ -19,7 +19,7 @@ modules="org/godotengine/godot/AdMob"
 
 [application]
 
-config/name="GodotAdMob"
+config/name="AdMob"
 run/main_scene="res://src/main/Main.tscn"
 config/icon="res://icon.png"
 
