@@ -20,31 +20,6 @@ Download example project to see how the Plugin works!
 # iOS:
 - Clone or download the repository
 - Download Godot's source-code: https://downloads.tuxfamily.org/godotengine/3.2.1/godot-3.2.1-stable.tar.xz
-- Copy and paste the folder "admob" to folder "modules" of Godot's source-code
-- Download and extract the [Google Mobile Ads SDK](https://developers.google.com/admob/ios/download) **(recommended 7.58.0)** inside the directory "admob/ios/lib"; (If you are unable to download the version informed above, you can alternatively download it through [Cocoapods](https://cocoapods.org/#install) or [HERE](https://srv-file12.gofile.io/download/5qrR3L/GoogleMobileAdsSdkiOS-7.58.0.zip)
-- Compile for iOS: http://docs.godotengine.org/en/stable/development/compiling/compiling_for_ios.html
-- Export your game to iOS
-- Copy the library (.a) you have compiled following the official documentation inside the exported Xcode project. You must override the 'your_project_name.a' file with this file.
-- Add the following frameworks to the project linking it using the "Link Binary with Libraries" option:
-	- GoogleAppMeasurement.framework (from GoogleMobileAdsSdkiOS)
-	- GoogleMobileAds.framework (from GoogleMobileAdsSdkiOS)
-	- GoogleUtilities.xcframework (from GoogleMobileAdsSdkiOS)
-	- nanopb.xcframework (from GoogleMobileAdsSdkiOS)
-	- StoreKit
-	- GameKit
-	- CoreVideo
-	- AdSupport
-	- MessageUI
-	- CoreTelephony
-	- CFNetwork
-	- MobileCoreServices
-	- SQLite (libsqlite3.0.tbd)
-- Add the -ObjC linker flag to Other Linker Flags in your project's build settings:
-![-ObjC](https://developers.google.com/admob/images/ios/objc_linker_flag.png)
-
-- Update your GAMENAME-Info.plist file, add a GADApplicationIdentifier key with a string value of your [AdMob app ID](https://support.google.com/admob/answer/7356431):
-
-![plist](https://i.imgur.com/1tcKXx5.png)
 
 ### API References
 ---
