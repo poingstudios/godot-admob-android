@@ -1,4 +1,4 @@
-# Godot AdMob (3.2.1)
+# Godot AdMob (All Godot 3 versions)
 ![example](https://i.imgur.com/9Gl22Ta.png)
 
 ### Android and iOS
