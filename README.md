@@ -19,9 +19,9 @@ Download example project to see how the Plugin works!
 
 # iOS:
 - Clone or download the repository
-- Download Godot's source-code: https://downloads.tuxfamily.org/godotengine/3.2.1/godot-3.2.1-stable.tar.xz
+- Download Godot's source-code version that your game is using **(recommended above 3.2)**: https://github.com/godotengine/godot/releases
 - Copy and paste the folder "admob" to folder "modules" of Godot's source-code
-- Download and extract the [Google Mobile Ads SDK](https://developers.google.com/admob/ios/download) **(recommended 7.58.0)** inside the directory "admob/ios/lib"; (If you are unable to download the version informed above, you can alternatively download it through [Cocoapods](https://cocoapods.org/#install) or [HERE](https://srv-file12.gofile.io/download/5qrR3L/GoogleMobileAdsSdkiOS-7.58.0.zip)
+- Download and extract the [Google Mobile Ads SDK](https://developers.google.com/admob/ios/download) **(recommended 7.58.0)** inside the directory "admob/ios/lib"; (If you are unable to download the version informed above, you can alternatively download it through [Cocoapods](https://cocoapods.org/#install))
 - Compile for iOS: http://docs.godotengine.org/en/stable/development/compiling/compiling_for_ios.html
 - Export your game to iOS
 - Copy the library (.a) you have compiled following the official documentation inside the exported Xcode project. You must override the 'your_project_name.a' file with this file.
