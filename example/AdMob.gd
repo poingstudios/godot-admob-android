@@ -85,11 +85,10 @@ var _instance_id := get_instance_id()
 func _ready():
 	if (Engine.has_singleton("AdMob")):
 		AdMob = Engine.get_singleton("AdMob")
-		init()
-		print(_test_device_id)
+		_init()
 		get_tree().connect("screen_resized", self, "_on_get_tree_resized")
 
-func init(is_for_child_directed_treatment := true, is_personalized := false, max_ad_content_rating := "G", is_real := false):
+func _init(is_for_child_directed_treatment := true, is_personalized := false, max_ad_content_rating := "G", is_real := false):
 	if AdMob and !initialized:
 		#IF test_device_id == "", then will be running as a test device
 		AdMob.init(is_for_child_directed_treatment, is_personalized, max_ad_content_rating, _instance_id, is_real)
@@ -97,11 +96,13 @@ func init(is_for_child_directed_treatment := true, is_personalized := false, max
 		load_rewarded()
 		initialized = !initialized
 
+
+
 func load_banner(gravity : int = GRAVITY.BOTTOM, size : String = "SMART_BANNER", unit_id : String = ad.banner.unit_id[OS.get_name()]):
 	if AdMob:
 		AdMob.load_banner(unit_id, gravity, size)
 
-func load_interstitial(unit_id: String = ad.interstitial.unit_id[OS.get_name()]):
+func load_interstitial(unit_id : String = ad.interstitial.unit_id[OS.get_name()]):
 	if AdMob:
 		AdMob.load_interstitial(unit_id)
 
@@ -146,6 +147,8 @@ func _on_get_tree_resized():
 			"y" : OS.get_screen_size().y / get_viewport_rect().size.y
 		}
 
+
+#SIGNALS
 func _on_AdMob_banner_loaded():
 	emit_signal("banner_loaded")
 	
