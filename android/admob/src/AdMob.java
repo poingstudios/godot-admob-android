@@ -54,7 +54,7 @@ public class AdMob extends Godot.SingletonBase
 
     private InterstitialAd aInterstitialAd;
 
-    private RewardedAd pRewardedAd;
+    private RewardedAd aRewardedAd;
 
     private UnifiedNativeAdView aUnifiedNativeAdView;
 
@@ -245,7 +245,7 @@ public class AdMob extends Godot.SingletonBase
         {
             @Override public void run()
             {
-                pRewardedAd = new RewardedAd(aActivity, pAdUnitId);
+                aRewardedAd = new RewardedAd(aActivity, pAdUnitId);
                 RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() 
                 {
                     @Override
@@ -262,7 +262,7 @@ public class AdMob extends Godot.SingletonBase
                         GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_failed_to_load", new Object[] { errorCode });
                     }
                 };
-                pRewardedAd.loadAd(getAdRequest(), adLoadCallback);
+                aRewardedAd.loadAd(getAdRequest(), adLoadCallback);
             }
         });
     }
@@ -272,7 +272,7 @@ public class AdMob extends Godot.SingletonBase
         {
             @Override public void run()
             {
-                if (pRewardedAd != null && pRewardedAd.isLoaded()) 
+                if (aRewardedAd != null && aRewardedAd.isLoaded()) 
                 {
                     RewardedAdCallback adCallback = new RewardedAdCallback() 
                     {
@@ -304,7 +304,7 @@ public class AdMob extends Godot.SingletonBase
                         }
                     };
 
-                pRewardedAd.show(aActivity, adCallback);
+                aRewardedAd.show(aActivity, adCallback);
                 }
             }
         });
