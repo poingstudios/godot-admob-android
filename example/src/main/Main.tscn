@@ -124,6 +124,7 @@ anchor_bottom = 0.84082
 margin_top = 0.359985
 margin_right = 0.039978
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": true
 }
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Banner/EnableBanner" to="." method="_on_EnableBanner_pressed"]

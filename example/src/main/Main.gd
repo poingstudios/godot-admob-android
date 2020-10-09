@@ -7,11 +7,10 @@ onready var Interstitial : Button = $CenterContainer/VBoxContainer/Interstitial
 onready var Rewarded : Button = $CenterContainer/VBoxContainer/Rewarded
 onready var EnableNative : Button = $CenterContainer/VBoxContainer/UnifiedNative/EnableUnifiedNative
 onready var DisableNative : Button = $CenterContainer/VBoxContainer/UnifiedNative/DisableUnifiedNative
-
 onready var UnifiedNativePanel : Panel = $UnifiedNative
 onready var UnifiedNativeHBox : HBoxContainer = $CenterContainer/VBoxContainer/UnifiedNative
+onready var Advice : Label = $Advice
 
-onready var Advice : Button = $Advice
 
 func _ready():
 	if OS.get_name() == "Android" or OS.get_name() == "iOS":
