@@ -8,6 +8,7 @@ import android.app.Activity;
 
 import android.widget.FrameLayout; //get Godot Layout
 
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds; //used for initialize
 import com.google.android.gms.ads.AdRequest; //used for make requests of ads
 
@@ -44,6 +45,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import android.provider.Settings;
 
+import androidx.annotation.NonNull;
+
 public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
 {
     private Activity aActivity;
@@ -73,6 +76,7 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
         return aGodotLayout;
     }
 
+    @NonNull
     @Override
     public String getPluginName() {
         return getClass().getName();
@@ -132,9 +136,9 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
                     }
 
                     @Override
-                    public void onAdFailedToLoad(int errorCode) {
+                    public void onAdFailedToLoad(LoadAdError adError) {
                         // Code to be executed when an ad request fails.
-                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_banner_failed_to_load", new Object[]{ errorCode });
+                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_banner_failed_to_load", new Object[]{ adError.getCode() });
                     }
 
                     @Override
@@ -202,10 +206,10 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
                     }
 
                     @Override
-                    public void onAdFailedToLoad(int errorCode)
+                    public void onAdFailedToLoad(LoadAdError adError)
                     {
                         // Code to be executed when an ad request fails.
-                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_failed_to_load", new Object[]{ errorCode });
+                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_failed_to_load", new Object[]{ adError.getCode() });
                     }
 
                     @Override
@@ -265,10 +269,10 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
                     }
 
                     @Override
-                    public void onRewardedAdFailedToLoad(int errorCode)
+                    public void onRewardedAdFailedToLoad(LoadAdError adError)
                     {
                         // Ad failed to load
-                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_failed_to_load", new Object[] { errorCode });
+                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_failed_to_load", new Object[] { adError.getCode() });
                     }
                 };
                 aRewardedAd.loadAd(getAdRequest(), adLoadCallback);
@@ -306,10 +310,10 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
                         }
 
                         @Override
-                        public void onRewardedAdFailedToShow(int errorCode)
+                        public void onRewardedAdFailedToShow(LoadAdError adError)
                         {
                             // Ad failed to display.
-                            GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_failed_to_show", new Object[] { errorCode });
+                            GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_failed_to_show", new Object[] { adError.getCode() });
                         }
                     };
 
@@ -349,10 +353,10 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
                         })
                         .withAdListener(new AdListener() {
                             @Override
-                            public void onAdFailedToLoad(int errorCode)
+                            public void onAdFailedToLoad(LoadAdError adError)
                             {
                                 // Code to be executed when an ad request fails.
-                                GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_failed_to_load", new Object[]{ errorCode });
+                                GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_failed_to_load", new Object[]{ adError.getCode() });
                             }
 
                             @Override
