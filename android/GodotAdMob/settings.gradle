@@ -1,0 +1,3 @@
+rootProject.name='GodotAdMob'
+include ':app', ':godot-lib'
+include ':admob'
