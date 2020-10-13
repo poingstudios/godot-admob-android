@@ -37,10 +37,10 @@ void AdMob::init(bool is_for_child_directed_treatment, bool is_personalized, con
 	[banner initialize :instance_id: is_personalized];
 
 	interstitial = [[AdMobInterstitial alloc] init];
-	[interstitial initialize :instance_id];
+	[interstitial initialize :instance_id : is_personalized];
 
 	rewarded = [[AdMobRewarded alloc] init];
-	[rewarded initialize :instance_id];
+	[rewarded initialize :instance_id : is_personalized];
 }
 
 
