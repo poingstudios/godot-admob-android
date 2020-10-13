@@ -9,9 +9,10 @@
 	[super dealloc];
 }
 
-- (void)initialize: (int)instance_id {
+- (void)initialize: (int)instance_id : (bool) is_personalized{
 	initialized = true;
 	instanceId = instance_id;
+	isPersonalized = is_personalized;
 	rootController = [AppDelegate getViewController];
 }
 
@@ -65,6 +66,9 @@
 		bannerView.rootViewController = rootController;
 
 		GADRequest *request = [GADRequest request];
+		GADExtras *extras = [[GADExtras alloc] init];
+		extras.additionalParameters = @{@"npa": !isPersonalized};
+		[request registerAdNetworkExtras:extras];
 		[bannerView loadRequest:request];
 
 	}

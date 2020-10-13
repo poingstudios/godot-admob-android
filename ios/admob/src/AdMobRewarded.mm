@@ -8,9 +8,10 @@
 	[super dealloc];
 }
 
-- (void)initialize: (int)instance_id {
+- (void)initialize: (int)instance_id : (bool) is_personalized{
 	initialized = true;
 	instanceId = instance_id;
+	isPersonalized = is_personalized;
 	rootController = [AppDelegate getViewController];
 }
 
@@ -31,6 +32,10 @@
 	NSLog(ad_unit_id);
 
 	GADRequest *request = [GADRequest request];
+	GADExtras *extras = [[GADExtras alloc] init];
+	extras.additionalParameters = @{@"npa": !isPersonalized};
+	[request registerAdNetworkExtras:extras];
+
 	[rewarded loadRequest:request completionHandler:^(GADRequestError * _Nullable error) {
 		if (error) {
 			NSLog(@"error while creating reward");
