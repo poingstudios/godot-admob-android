@@ -13,14 +13,10 @@ _global_script_class_icons={
 
 }
 
-[android]
-
-modules="org/godotengine/godot/AdMob"
-
 [application]
 
-config/name="AdMob"
-run/main_scene="res://src/main/Main.tscn"
+config/name="GodotAdMob"
+run/main_scene="res://Test.tscn"
 config/icon="res://icon.png"
 
 [autoload]
@@ -29,14 +25,13 @@ AdMob="*res://AdMob.gd"
 
 [display]
 
-window/size/width=720
-window/size/height=1024
-window/handheld/orientation="sensor_portrait"
+window/size/width=640
+window/size/height=480
+window/handheld/orientation="sensor"
 window/stretch/mode="2d"
+window/stretch/aspect="keep_height"
 
 [rendering]
 
 quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
-vram_compression/import_etc2=false
-environment/default_clear_color=Color( 1, 0.537255, 0, 1 )

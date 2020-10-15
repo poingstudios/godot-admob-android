@@ -16,8 +16,6 @@ func _ready():
 	if OS.get_name() == "Android" or OS.get_name() == "iOS":
 		EnableBanner.disabled = false
 		EnableNative.disabled = false
-		AdMob.load_interstitial()
-		AdMob.load_rewarded()
 		AdMob.connect("banner_destroyed", self, "_on_AdMob_banner_destroyed")
 		AdMob.connect("interstitial_loaded", self, "_on_AdMob_interstitial_loaded")
 		AdMob.connect("rewarded_ad_loaded", self, "_on_AdMob_rewarded_ad_loaded")
