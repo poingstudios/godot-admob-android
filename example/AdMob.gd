@@ -92,15 +92,14 @@ func init_test(is_for_child_directed_treatment := true, is_personalized := false
 	if _AdMob and !initialized:
 		#IF test_device_id == "", then will be running as a test device
 		_AdMob.init(is_for_child_directed_treatment, is_personalized, max_ad_content_rating, _instance_id, is_real)
-		load_banner()
-		print("ON INIT_TEST")
+		load_interstitial()
+		load_rewarded()
 		initialized = !initialized
 
 
 
 func load_banner(gravity : int = GRAVITY.BOTTOM, size : String = "SMART_BANNER", unit_id : String = ad.banner.unit_id[OS.get_name()]):
 	if _AdMob:
-		print("ON load_banner")
 		_AdMob.load_banner(unit_id, gravity, size)
 
 func load_interstitial(unit_id : String = ad.interstitial.unit_id[OS.get_name()]):

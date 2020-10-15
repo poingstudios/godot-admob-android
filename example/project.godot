@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="GodotAdMob"
-run/main_scene="res://Test.tscn"
+run/main_scene="res://src/main/Main.tscn"
 config/icon="res://icon.png"
 
 [autoload]
@@ -25,13 +25,13 @@ AdMob="*res://AdMob.gd"
 
 [display]
 
-window/size/width=640
-window/size/height=480
-window/handheld/orientation="sensor"
+window/size/width=720
+window/size/height=1024
+window/handheld/orientation="sensor_portrait"
 window/stretch/mode="2d"
-window/stretch/aspect="keep_height"
 
 [rendering]
 
 quality/driver/driver_name="GLES2"
 vram_compression/import_etc=true
+environment/default_clear_color=Color( 1, 0.54, 0, 1 )
