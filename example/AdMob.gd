@@ -29,7 +29,7 @@ signal unified_native_opened
 signal unified_native_closed
 
 
-var AdMob
+var _AdMob
 
 var initialized := false
 
@@ -84,34 +84,35 @@ var _instance_id := get_instance_id()
 
 func _ready():
 	if (Engine.has_singleton("AdMob")):
-		AdMob = Engine.get_singleton("AdMob")
-		_init()
+		_AdMob = Engine.get_singleton("AdMob")
+		init_test()
 		get_tree().connect("screen_resized", self, "_on_get_tree_resized")
 
-func _init(is_for_child_directed_treatment := true, is_personalized := false, max_ad_content_rating := "G", is_real := false):
-	if AdMob and !initialized:
+func init_test(is_for_child_directed_treatment := true, is_personalized := false, max_ad_content_rating := "G", is_real := false):
+	if _AdMob and !initialized:
 		#IF test_device_id == "", then will be running as a test device
-		AdMob.init(is_for_child_directed_treatment, is_personalized, max_ad_content_rating, _instance_id, is_real)
-		load_interstitial()
-		load_rewarded()
+		_AdMob.init(is_for_child_directed_treatment, is_personalized, max_ad_content_rating, _instance_id, is_real)
+		load_banner()
+		print("ON INIT_TEST")
 		initialized = !initialized
 
 
 
 func load_banner(gravity : int = GRAVITY.BOTTOM, size : String = "SMART_BANNER", unit_id : String = ad.banner.unit_id[OS.get_name()]):
-	if AdMob:
-		AdMob.load_banner(unit_id, gravity, size)
+	if _AdMob:
+		print("ON load_banner")
+		_AdMob.load_banner(unit_id, gravity, size)
 
 func load_interstitial(unit_id : String = ad.interstitial.unit_id[OS.get_name()]):
-	if AdMob:
-		AdMob.load_interstitial(unit_id)
+	if _AdMob:
+		_AdMob.load_interstitial(unit_id)
 
 func load_rewarded(unit_id : String = ad.rewarded.unit_id[OS.get_name()]):
-	if AdMob:
-		AdMob.load_rewarded(unit_id)
+	if _AdMob:
+		_AdMob.load_rewarded(unit_id)
 
 func load_unified_native(control_node_to_be_replaced : Control = Control.new(), unit_id : String = ad.unified_native.unit_id[OS.get_name()]):
-	if AdMob:
+	if _AdMob:
 		var params := {
 			"size" : {
 				"w" : control_node_to_be_replaced.rect_size.x * ad.unified_native.scale.x,
@@ -122,26 +123,26 @@ func load_unified_native(control_node_to_be_replaced : Control = Control.new(), 
 				"y" : control_node_to_be_replaced.rect_position.y * ad.unified_native.scale.y
 			}
 		}
-		AdMob.load_unified_native(unit_id, [params.size.w, params.size.h], [params.position.x, params.position.y])
+		_AdMob.load_unified_native(unit_id, [params.size.w, params.size.h], [params.position.x, params.position.y])
 
 func destroy_banner():
-	if AdMob:
-		AdMob.destroy_banner()
+	if _AdMob:
+		_AdMob.destroy_banner()
 
 func destroy_unified_native():
-	if AdMob:
-		AdMob.destroy_unified_native()
+	if _AdMob:
+		_AdMob.destroy_unified_native()
 
 func show_interstitial():
-	if AdMob:
-		AdMob.show_interstitial()
+	if _AdMob:
+		_AdMob.show_interstitial()
 
 func show_rewarded():
-	if AdMob:
-		AdMob.show_rewarded()
+	if _AdMob:
+		_AdMob.show_rewarded()
 
 func _on_get_tree_resized():
-	if AdMob:
+	if _AdMob:
 		ad.unified_native.scale = {
 			"x" : OS.get_screen_size().x / get_viewport_rect().size.x,
 			"y" : OS.get_screen_size().y / get_viewport_rect().size.y
