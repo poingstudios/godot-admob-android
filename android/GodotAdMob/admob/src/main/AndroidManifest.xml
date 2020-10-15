@@ -1,10 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.poing.admob">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <application>
         <meta-data
-        android:name="org.godotengine.plugin.v1.AdMob"
-        android:value="com.poing.admob.AdMob" />
+            android:name="org.godotengine.plugin.v1.AdMob"
+            android:value="com.poing.admob.AdMob" />
     </application>
 
 </manifest>

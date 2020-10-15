@@ -42,10 +42,15 @@ import com.google.ads.mediation.admob.AdMobAdapter;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+
 import android.provider.Settings;
 
 import androidx.annotation.NonNull;
+import androidx.collection.ArraySet;
 
 public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
 {
@@ -79,7 +84,7 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
     @NonNull
     @Override
     public String getPluginName() {
-        return getClass().getName();
+        return getClass().getSimpleName();
     }
 
     public void init(boolean pIsForChildDirectedTreatment, boolean pIsPersonalized, String pMaxAdContentRating, int pInstanceId, boolean pIsReal)
@@ -91,6 +96,7 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
         aMaxAdContentRating = pMaxAdContentRating;
         aIsReal = pIsReal;
     }
+
 
     //BANNER only one is allowed, please do not try to place more than one, as your ads on the app may have the chance to be banned!
     public void load_banner(final String pAdUnitId, final int pGravity, final String pSize)
@@ -132,33 +138,33 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
                     public void onAdLoaded()
                     {
                         // Code to be executed when an ad finishes loading.
-                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_banner_loaded", new Object[]{ });
+                        emitSignal("_on_AdMob_banner_loaded");
                     }
 
                     @Override
                     public void onAdFailedToLoad(LoadAdError adError) {
                         // Code to be executed when an ad request fails.
-                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_banner_failed_to_load", new Object[]{ adError.getCode() });
+                        emitSignal("_on_AdMob_banner_failed_to_load", adError.getCode());
                     }
 
                     @Override
                     public void onAdOpened() {
                         // Code to be executed when an ad opens an overlay that
                         // covers the screen.
-                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_banner_opened", new Object[]{ });
+                        emitSignal("_on_AdMob_banner_opened");
                     }
 
                     @Override
                     public void onAdLeftApplication() {
                         // Code to be executed when the user has left the app.
-                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_banner_left_application", new Object[]{ });
+                        emitSignal("_on_AdMob_banner_left_application");
                     }
 
                     @Override
                     public void onAdClosed() {
                         // Code to be executed when the user is about to return
                         // to the app after tapping on an ad.
-                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_banner_closed", new Object[]{ });
+                        emitSignal("_on_AdMob_banner_closed");
                     }
                 });
 
@@ -181,7 +187,7 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
                     aGodotLayout.removeView(aAdView);
                     aAdView.destroy();
                     aAdView = null;
-                    GodotLib.calldeferred(aInstanceId, "_on_AdMob_banner_destroyed", new Object[]{ });
+                    emitSignal("_on_AdMob_banner_destroyed");
                 }
             }
         });
@@ -202,35 +208,35 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
                     public void onAdLoaded()
                     {
                         // Code to be executed when an ad finishes loading.
-                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_loaded", new Object[]{ });
+                        emitSignal("_on_AdMob_interstitial_loaded");
                     }
 
                     @Override
                     public void onAdFailedToLoad(LoadAdError adError)
                     {
                         // Code to be executed when an ad request fails.
-                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_failed_to_load", new Object[]{ adError.getCode() });
+                        emitSignal("_on_AdMob_interstitial_failed_to_load", adError.getCode());
                     }
 
                     @Override
                     public void onAdOpened()
                     {
                         // Code to be executed when the ad is displayed.
-                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_opened", new Object[]{ });
+                        emitSignal("_on_AdMob_interstitial_opened");
                     }
 
                     @Override
                     public void onAdLeftApplication()
                     {
                         // Code to be executed when the user has left the app.
-                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_left_application", new Object[]{ });
+                        emitSignal("_on_AdMob_interstitial_left_application");
                     }
 
                     @Override
                     public void onAdClosed()
                     {
                         // Code to be executed when the interstitial ad is closed.
-                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_closed", new Object[]{ });
+                        emitSignal("_on_AdMob_interstitial_closed");
                     }
                 });
                 aInterstitialAd.loadAd(getAdRequest());
@@ -265,14 +271,14 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
                     public void onRewardedAdLoaded()
                     {
                         // Ad successfully loaded
-                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_loaded", new Object[] { });
+                        emitSignal("_on_AdMob_rewarded_ad_loaded");
                     }
 
                     @Override
                     public void onRewardedAdFailedToLoad(LoadAdError adError)
                     {
                         // Ad failed to load
-                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_failed_to_load", new Object[] { adError.getCode() });
+                        emitSignal("_on_AdMob_rewarded_ad_failed_to_load", adError.getCode());
                     }
                 };
                 aRewardedAd.loadAd(getAdRequest(), adLoadCallback);
@@ -293,28 +299,22 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
                         public void onRewardedAdOpened()
                         {
                             // Ad opened.
-                            GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_opened", new Object[] { });
+                            emitSignal("_on_AdMob_rewarded_ad_opened");
                         }
 
                         @Override
                         public void onRewardedAdClosed() {
                             // Ad closed.
-                            GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_closed", new Object[] { });
+                            emitSignal("_on_AdMob_rewarded_ad_closed");
                         }
 
                         @Override
                         public void onUserEarnedReward(RewardItem reward)
                         {
                             // User earned reward.
-                            GodotLib.calldeferred(aInstanceId, "_on_AdMob_user_earned_rewarded", new Object[] { reward.getType(), reward.getAmount() });
+                            emitSignal("_on_AdMob_user_earned_rewarded", reward.getType(), reward.getAmount());
                         }
 
-                        @Override
-                        public void onRewardedAdFailedToShow(LoadAdError adError)
-                        {
-                            // Ad failed to display.
-                            GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_failed_to_show", new Object[] { adError.getCode() });
-                        }
                     };
 
                     aRewardedAd.show(aActivity, adCallback);
@@ -348,7 +348,7 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
                                 aGodotLayoutParams = new FrameLayout.LayoutParams(pSize[0], pSize[1]);
                                 aGodotLayoutParams.setMargins(pMargins[0], pMargins[1], 0, 0);
                                 aGodotLayout.addView(aUnifiedNativeAdView, aGodotLayoutParams);
-                                GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_loaded", new Object[] { });
+                                emitSignal("_on_AdMob_unified_native_loaded");
                             }
                         })
                         .withAdListener(new AdListener() {
@@ -356,20 +356,20 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
                             public void onAdFailedToLoad(LoadAdError adError)
                             {
                                 // Code to be executed when an ad request fails.
-                                GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_failed_to_load", new Object[]{ adError.getCode() });
+                                emitSignal("_on_AdMob_unified_native_failed_to_load", adError.getCode());
                             }
 
                             @Override
                             public void onAdOpened()
                             {
                                 // Code to be executed when the ad is displayed.
-                                GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_opened", new Object[]{ });
+                                emitSignal("_on_AdMob_unified_native_opened");
                             }
                             @Override
                             public void onAdClosed()
                             {
                                 // Code to be executed when the unified native ad is closed.
-                                GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_closed", new Object[]{ });
+                                emitSignal("_on_AdMob_unified_native_closed");
                             }
 
                         })
@@ -391,7 +391,7 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
                     aGodotLayout.removeView(aUnifiedNativeAdView);
                     aUnifiedNativeAdView.destroy();
                     aUnifiedNativeAdView = null;
-                    GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_destroyed", new Object[]{ });
+                    emitSignal("_on_AdMob_unified_native_destroyed");
                 }
             }
         });
@@ -429,7 +429,7 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
     }
     /**
      * Generate MD5 for the deviceID
-     * @param String s The string to generate de MD5
+     * @param  s The string to generate de MD5
      * @return String The MD5 generated
      */
     private String md5(final String s)
@@ -469,27 +469,59 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
         return deviceId;
     }
 
-    static public Godot.SingletonBase initialize(Activity pActivity)
-    {
-        return new AdMob(pActivity);
+    public AdMob(Godot godot) {
+        super(godot);
+        aActivity = godot;
     }
 
-    public AdMob(Activity pActivity)
-    {
-        //register class name and functions to bind
-        registerClass("AdMob", new String[]
-                {
-                        "init",
-                        "load_banner",
-                        "destroy_banner",
-                        "load_interstitial",
-                        "show_interstitial",
-                        "load_rewarded",
-                        "show_rewarded",
-                        "load_unified_native",
-                        "destroy_unified_native"
-                });
 
-        this.aActivity = pActivity;
+    @NonNull
+    @Override
+    public List<String> getPluginMethods() {
+        return Arrays.asList(
+                "init",
+                "load_banner",
+                "destroy_banner",
+                "load_interstitial",
+                "show_interstitial",
+                "load_rewarded",
+                "show_rewarded",
+                "load_unified_native",
+                "destroy_unified_native");
     }
+
+    @NonNull
+    @Override
+    public Set<SignalInfo> getPluginSignals() {
+        Set<SignalInfo> signals = new ArraySet<>();
+
+        signals.add(new SignalInfo("_on_AdMob_banner_loaded"));
+        signals.add(new SignalInfo("_on_AdMob_banner_failed_to_load", Integer.class));
+        signals.add(new SignalInfo("_on_AdMob_banner_opened"));
+        signals.add(new SignalInfo("_on_AdMob_banner_left_application"));
+        signals.add(new SignalInfo("_on_AdMob_banner_closed"));
+        signals.add(new SignalInfo("_on_AdMob_banner_destroyed"));
+
+        signals.add(new SignalInfo("_on_AdMob_interstitial_loaded"));
+        signals.add(new SignalInfo("_on_AdMob_interstitial_failed_to_load", Integer.class));
+        signals.add(new SignalInfo("_on_AdMob_interstitial_opened"));
+        signals.add(new SignalInfo("_on_AdMob_interstitial_left_application"));
+        signals.add(new SignalInfo("_on_AdMob_interstitial_closed"));
+
+        signals.add(new SignalInfo("_on_AdMob_rewarded_ad_loaded"));
+        signals.add(new SignalInfo("_on_AdMob_rewarded_ad_failed_to_load", Integer.class));
+        signals.add(new SignalInfo("_on_AdMob_rewarded_ad_opened"));
+        signals.add(new SignalInfo("_on_AdMob_rewarded_ad_closed"));
+        signals.add(new SignalInfo("_on_AdMob_user_earned_rewarded", String.class, Integer.class));
+        signals.add(new SignalInfo("_on_AdMob_rewarded_ad_failed_to_show", Integer.class));
+
+        signals.add(new SignalInfo("_on_AdMob_unified_native_loaded"));
+        signals.add(new SignalInfo("_on_AdMob_unified_native_failed_to_load", Integer.class));
+        signals.add(new SignalInfo("_on_AdMob_unified_native_opened"));
+        signals.add(new SignalInfo("_on_AdMob_unified_native_closed"));
+        signals.add(new SignalInfo("_on_AdMob_unified_native_destroyed"));
+
+        return signals;
+    }
+
 }
