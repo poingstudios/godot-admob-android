@@ -23,4 +23,4 @@ jobs:
     - name: Grant execute permission for gradlew
       run: cd android/admob && chmod +x gradlew
     - name: Build with Gradle
-      run: cd android/admob && ./gradlew build
+      run: cd android/admob && ./gradlew clean && ./gradlew build
