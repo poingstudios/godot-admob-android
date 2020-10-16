@@ -1,10 +1,11 @@
-package org.godotengine.godot;
-import com.godot.game.R;
-import android.app.Activity; 
+package com.poing.admob;
 
-import android.widget.FrameLayout; //get Godot Layout
+import org.godotengine.godot.Godot;
+import org.godotengine.godot.GodotLib;
 
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.MobileAds; //used for initialize
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.AdRequest; //used for make requests of ads
 
 import com.google.android.gms.ads.AdView; //used to banner ads
@@ -13,7 +14,8 @@ import com.google.android.gms.ads.AdListener; //used to get events of ads (banne
 
 import com.google.android.gms.ads.InterstitialAd; //interstitialAd
 
-import com.google.android.gms.ads.rewarded.RewardedAd; //rewardedAd 
+import com.google.android.gms.ads.RequestConfiguration;
+import com.google.android.gms.ads.rewarded.RewardedAd; //rewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
 import com.google.android.gms.ads.rewarded.RewardItem;
@@ -21,62 +23,126 @@ import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.AdLoader; //used to native ads
 import com.google.android.gms.ads.formats.UnifiedNativeAd; //
 import com.google.android.gms.ads.formats.UnifiedNativeAdView; //view of native ads
-import com.google.android.gms.ads.formats.NativeAdOptions;
-import com.google.android.gms.ads.formats.NativeAd.Image;
-
-import com.google.android.gms.ads.formats.MediaView;
-import android.widget.TextView;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RatingBar;
-
-import android.os.Bundle;
+import com.google.android.gms.ads.formats.MediaView; // to mapUnifiedNativeAdToLayout
 
 import com.google.ads.mediation.admob.AdMobAdapter;
 
+import android.app.Activity;
+import android.widget.FrameLayout; //get Godot Layout
+import android.view.View;
+import android.os.Bundle;
+import android.provider.Settings;
+import androidx.annotation.NonNull;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
-import android.provider.Settings;
 
-public class AdMob extends Godot.SingletonBase 
+public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
 {
     private Activity aActivity;
     private int aInstanceId;
-    private boolean aIsReal;
 
     private FrameLayout aGodotLayout; // store the godot layout
     private FrameLayout.LayoutParams aGodotLayoutParams; // Store the godot layout params
 
     private AdView aAdView; //view of banner
-    private String aSize = ""; //size of banner
-
     private InterstitialAd aInterstitialAd;
-
     private RewardedAd aRewardedAd;
-
     private UnifiedNativeAdView aUnifiedNativeAdView;
 
-    private boolean aIsForChildDirectedTreatment;
     private boolean aIsPersonalized;
-    private String aMaxAdContentRating;
+
+    public AdMob(Godot godot)
+    {
+        super(godot);
+        aActivity = godot;
+    }
+
+    @NonNull
+    @Override
+    public List<String> getPluginMethods()
+    {
+        return Arrays.asList(
+                "initialize",
+                "load_banner",
+                "destroy_banner",
+                "load_interstitial",
+                "show_interstitial",
+                "load_rewarded",
+                "show_rewarded",
+                "load_unified_native",
+                "destroy_unified_native"
+        );
+    }
 
     @Override
-    public View onMainCreateView(Activity pActivity) 
+    public View onMainCreate(Activity pActivity)
     {
         aGodotLayout= new FrameLayout(pActivity);
         return aGodotLayout;
     }
 
-    public void init(boolean pIsForChildDirectedTreatment, boolean pIsPersonalized, String pMaxAdContentRating, int pInstanceId, boolean pIsReal) 
+    @NonNull
+    @Override
+    public String getPluginName() {
+        return getClass().getSimpleName();
+    }
+
+    public void initialize(boolean pIsForChildDirectedTreatment, boolean pIsPersonalized, String pMaxAdContentRating, boolean pIsReal, int pInstanceId)
     {
         aInstanceId = pInstanceId;
-        MobileAds.initialize(aActivity); //initialize(Context context, OnInitializationCompleteListener listener) doesnt work due Godot cant download the package
-        aIsForChildDirectedTreatment = pIsForChildDirectedTreatment;
         aIsPersonalized = pIsPersonalized;
-        aMaxAdContentRating = pMaxAdContentRating;
-        aIsReal = pIsReal;
+
+        setRequestConfiguration(pIsForChildDirectedTreatment, pIsPersonalized, pMaxAdContentRating, pIsReal); //First call MobileAds.setRequestConfigurationhttps://groups.google.com/g/google-admob-ads-sdk/c/17oVu0sABjs
+        MobileAds.initialize(aActivity); //initializes the admob
+    }
+
+    private void setRequestConfiguration(boolean pIsForChildDirectedTreatment, boolean pIsPersonalized, String pMaxAdContentRating, boolean pIsReal)
+    {
+        RequestConfiguration requestConfiguration;
+        RequestConfiguration.Builder requestConfigurationBuilder = new RequestConfiguration.Builder();
+
+        if (!pIsReal) {
+            requestConfigurationBuilder.setTestDeviceIds(Arrays.asList(getDeviceId()));
+        }
+
+        requestConfigurationBuilder.setTagForChildDirectedTreatment(pIsForChildDirectedTreatment ? 1 : 0);
+
+        if (pIsForChildDirectedTreatment)
+        {
+            requestConfigurationBuilder.setMaxAdContentRating(RequestConfiguration.MAX_AD_CONTENT_RATING_G);
+        }
+        else
+        {
+            switch (pMaxAdContentRating)
+            {
+                case RequestConfiguration.MAX_AD_CONTENT_RATING_G:
+                case RequestConfiguration.MAX_AD_CONTENT_RATING_MA:
+                case RequestConfiguration.MAX_AD_CONTENT_RATING_PG:
+                case RequestConfiguration.MAX_AD_CONTENT_RATING_T:
+                case RequestConfiguration.MAX_AD_CONTENT_RATING_UNSPECIFIED:
+                    requestConfigurationBuilder.setMaxAdContentRating(pMaxAdContentRating);
+                break;
+            }
+        }
+
+        requestConfiguration = requestConfigurationBuilder.build();
+
+        MobileAds.setRequestConfiguration(requestConfiguration);
+    }
+
+    private AdRequest getAdRequest()
+    {
+        AdRequest.Builder adRequestBuilder = new AdRequest.Builder();
+
+        Bundle extras = new Bundle();
+        extras.putString("npa", String.valueOf(!aIsPersonalized));
+        adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, extras);
+
+        return adRequestBuilder.build();
     }
 
     //BANNER only one is allowed, please do not try to place more than one, as your ads on the app may have the chance to be banned!
@@ -86,13 +152,12 @@ public class AdMob extends Godot.SingletonBase
         {
             @Override public void run()
             {
-                if (pSize != "") aSize = pSize;
                 if (aAdView != null) destroy_banner();
                 if (aUnifiedNativeAdView != null) destroy_unified_native();
 
                 aAdView = new AdView(aActivity);
                 aAdView.setAdUnitId(pAdUnitId);
-                switch (aSize){
+                switch (pSize){
                     case "BANNER":
                         aAdView.setAdSize(AdSize.BANNER);
                         break;
@@ -112,20 +177,21 @@ public class AdMob extends Godot.SingletonBase
                         aAdView.setAdSize(AdSize.SMART_BANNER);
                         break;
                 }//ADAPTATIVE DOESNT WORK, NEED TO UPDATE THE PROJECT TO 18.3.0 MINIMUM ON FUTURE
+                GodotLib.calldeferred(aInstanceId, "testeee", new Object[]{ pAdUnitId, pGravity, pSize });
 
-                aAdView.setAdListener(new AdListener() 
+                aAdView.setAdListener(new AdListener()
                 {
                     @Override
-                    public void onAdLoaded() 
+                    public void onAdLoaded()
                     {
                         // Code to be executed when an ad finishes loading.
                         GodotLib.calldeferred(aInstanceId, "_on_AdMob_banner_loaded", new Object[]{ });
                     }
 
                     @Override
-                    public void onAdFailedToLoad(int errorCode) {
+                    public void onAdFailedToLoad(LoadAdError adError) {
                         // Code to be executed when an ad request fails.
-                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_banner_failed_to_load", new Object[]{ errorCode });
+                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_banner_failed_to_load", new Object[]{ adError.getCode() });
                     }
 
                     @Override
@@ -155,7 +221,7 @@ public class AdMob extends Godot.SingletonBase
 
                 aAdView.loadAd(getAdRequest());
             }
-        });     
+        });
     }
     public void destroy_banner()//IF THIS METHOD IS CALLED ON GODOT, THE BANNER WILL ONLY APPEAR AGAIN IF THE BANNER IS LOADED AGAIN
     {
@@ -183,38 +249,37 @@ public class AdMob extends Godot.SingletonBase
             {
                 aInterstitialAd = new InterstitialAd(aActivity);
                 aInterstitialAd.setAdUnitId(pAdUnitId);
-                aInterstitialAd.setAdListener(new AdListener() 
+                aInterstitialAd.setAdListener(new AdListener()
                 {
                     @Override
-                    public void onAdLoaded() 
+                    public void onAdLoaded()
                     {
                         // Code to be executed when an ad finishes loading.
                         GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_loaded", new Object[]{ });
                     }
 
                     @Override
-                    public void onAdFailedToLoad(int errorCode) 
+                    public void onAdFailedToLoad(LoadAdError adError)
                     {
                         // Code to be executed when an ad request fails.
-                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_failed_to_load", new Object[]{ errorCode });
+                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_failed_to_load", new Object[]{ adError.getCode() });
                     }
-
                     @Override
-                    public void onAdOpened() 
+                    public void onAdOpened()
                     {
                         // Code to be executed when the ad is displayed.
                         GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_opened", new Object[]{ });
                     }
 
                     @Override
-                    public void onAdLeftApplication() 
+                    public void onAdLeftApplication()
                     {
                         // Code to be executed when the user has left the app.
                         GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_left_application", new Object[]{ });
                     }
 
                     @Override
-                    public void onAdClosed() 
+                    public void onAdClosed()
                     {
                         // Code to be executed when the interstitial ad is closed.
                         GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_closed", new Object[]{ });
@@ -246,20 +311,20 @@ public class AdMob extends Godot.SingletonBase
             @Override public void run()
             {
                 aRewardedAd = new RewardedAd(aActivity, pAdUnitId);
-                RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback() 
+                RewardedAdLoadCallback adLoadCallback = new RewardedAdLoadCallback()
                 {
                     @Override
-                    public void onRewardedAdLoaded() 
+                    public void onRewardedAdLoaded()
                     {
                         // Ad successfully loaded
                         GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_loaded", new Object[] { });
                     }
 
                     @Override
-                    public void onRewardedAdFailedToLoad(int errorCode) 
+                    public void onRewardedAdFailedToLoad(LoadAdError adError)
                     {
                         // Ad failed to load
-                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_failed_to_load", new Object[] { errorCode });
+                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_failed_to_load", new Object[] { adError.getCode() });
                     }
                 };
                 aRewardedAd.loadAd(getAdRequest(), adLoadCallback);
@@ -272,12 +337,12 @@ public class AdMob extends Godot.SingletonBase
         {
             @Override public void run()
             {
-                if (aRewardedAd != null && aRewardedAd.isLoaded()) 
+                if (aRewardedAd != null && aRewardedAd.isLoaded())
                 {
-                    RewardedAdCallback adCallback = new RewardedAdCallback() 
+                    RewardedAdCallback adCallback = new RewardedAdCallback()
                     {
                         @Override
-                        public void onRewardedAdOpened() 
+                        public void onRewardedAdOpened()
                         {
                             // Ad opened.
                             GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_opened", new Object[] { });
@@ -290,21 +355,22 @@ public class AdMob extends Godot.SingletonBase
                         }
 
                         @Override
-                        public void onUserEarnedReward(RewardItem reward) 
+                        public void onUserEarnedReward(RewardItem reward)
                         {
                             // User earned reward.
                             GodotLib.calldeferred(aInstanceId, "_on_AdMob_user_earned_rewarded", new Object[] { reward.getType(), reward.getAmount() });
                         }
 
                         @Override
-                        public void onRewardedAdFailedToShow(int errorCode) 
+                        public void onRewardedAdFailedToShow(AdError adError)
                         {
                             // Ad failed to display.
-                            GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_failed_to_show", new Object[] { errorCode });                         
+                            GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_ad_failed_to_show", new Object[] { adError.getCode() });
                         }
+
                     };
 
-                aRewardedAd.show(aActivity, adCallback);
+                    aRewardedAd.show(aActivity, adCallback);
                 }
             }
         });
@@ -321,53 +387,53 @@ public class AdMob extends Godot.SingletonBase
                 if (aAdView != null) destroy_banner();
 
                 AdLoader adLoader = new AdLoader.Builder(aActivity, pAdUnitId)
-                    .forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
-                        @Override
-                        public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
-                            // Show the ad.
-                            //SECURE TO DESTROY THE UNIFIED NATIVE AND THE BANNER
-                            if (aUnifiedNativeAdView != null) destroy_unified_native();
-                            if (aAdView != null) destroy_banner();
+                        .forUnifiedNativeAd(new UnifiedNativeAd.OnUnifiedNativeAdLoadedListener() {
+                            @Override
+                            public void onUnifiedNativeAdLoaded(UnifiedNativeAd unifiedNativeAd) {
+                                // Show the ad.
+                                //SECURE TO DESTROY THE UNIFIED NATIVE AND THE BANNER
+                                if (aUnifiedNativeAdView != null) destroy_unified_native();
+                                if (aAdView != null) destroy_banner();
 
-                            aUnifiedNativeAdView = (UnifiedNativeAdView) aActivity.getLayoutInflater().inflate(R.layout.ad_unified, null);
+                                aUnifiedNativeAdView = (UnifiedNativeAdView) aActivity.getLayoutInflater().inflate(R.layout.ad_unified, null);
 
-                            mapUnifiedNativeAdToLayout(unifiedNativeAd, aUnifiedNativeAdView);
-                            aGodotLayoutParams = new FrameLayout.LayoutParams(pSize[0], pSize[1]);
-                            aGodotLayoutParams.setMargins(pMargins[0], pMargins[1], 0, 0);
-                            aGodotLayout.addView(aUnifiedNativeAdView, aGodotLayoutParams);
-                            GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_loaded", new Object[] { });
-                        }
-                    })
-                    .withAdListener(new AdListener() {
-                        @Override
-                        public void onAdFailedToLoad(int errorCode) 
-                        {
-                            // Code to be executed when an ad request fails.
-                            GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_failed_to_load", new Object[]{ errorCode });
-                        }
+                                mapUnifiedNativeAdToLayout(unifiedNativeAd, aUnifiedNativeAdView);
+                                aGodotLayoutParams = new FrameLayout.LayoutParams(pSize[0], pSize[1]);
+                                aGodotLayoutParams.setMargins(pMargins[0], pMargins[1], 0, 0);
+                                aGodotLayout.addView(aUnifiedNativeAdView, aGodotLayoutParams);
+                                GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_loaded", new Object[] { });
+                            }
+                        })
+                        .withAdListener(new AdListener() {
+                            @Override
+                            public void onAdFailedToLoad(LoadAdError adError)
+                            {
+                                // Code to be executed when an ad request fails.
+                                GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_failed_to_load", new Object[]{ adError.getCode() });
+                            }
 
-                        @Override
-                        public void onAdOpened() 
-                        {
-                            // Code to be executed when the ad is displayed.
-                            GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_opened", new Object[]{ });
-                        }
-                        @Override
-                        public void onAdClosed() 
-                        {
-                            // Code to be executed when the unified native ad is closed.
-                            GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_closed", new Object[]{ });
-                        }
+                            @Override
+                            public void onAdOpened()
+                            {
+                                // Code to be executed when the ad is displayed.
+                                GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_opened", new Object[]{ });
+                            }
+                            @Override
+                            public void onAdClosed()
+                            {
+                                // Code to be executed when the unified native ad is closed.
+                                GodotLib.calldeferred(aInstanceId, "_on_AdMob_unified_native_closed", new Object[]{ });
+                            }
 
-                    })
-                    .build();
+                        })
+                        .build();
 
 
                 adLoader.loadAd(getAdRequest());
             }
         });
     }
-    public void destroy_unified_native()//IF THIS METHOD IS CALLED ON GODOT, THE UNIFIED NATIVE AD WILL ONLY APPEAR AGAIN IF THE BANNER IS LOADED AGAIN
+    public void destroy_unified_native()//IF THIS METHOD IS CALLED ON GODOT, THE UNIFIED NATIVE AD WILL ONLY APPEAR AGAIN IF THE AD IS LOADED AGAIN
     {
         aActivity.runOnUiThread(new Runnable()
         {
@@ -383,7 +449,7 @@ public class AdMob extends Godot.SingletonBase
             }
         });
     }
-    public void mapUnifiedNativeAdToLayout(UnifiedNativeAd adFromGoogle, UnifiedNativeAdView myAdView) 
+    public void mapUnifiedNativeAdToLayout(UnifiedNativeAd adFromGoogle, UnifiedNativeAdView myAdView)
     {
         MediaView mediaView = myAdView.findViewById(R.id.ad_media);
         myAdView.setMediaView(mediaView);
@@ -392,36 +458,14 @@ public class AdMob extends Godot.SingletonBase
     }
 
     //NATIVE
-    private AdRequest getAdRequest()
-    {
-        AdRequest.Builder adRequestBuilder = new AdRequest.Builder();
-
-        adRequestBuilder.tagForChildDirectedTreatment(aIsForChildDirectedTreatment);
-        if (aIsForChildDirectedTreatment) {
-            adRequestBuilder.setMaxAdContentRating("G");
-        }
-        else{
-            adRequestBuilder.setMaxAdContentRating(aMaxAdContentRating);
-        }
-        if (!aIsPersonalized) {
-            Bundle extras = new Bundle();
-            extras.putString("npa", "1");
-            adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, extras);
-        }
-        if (!aIsReal) {
-            adRequestBuilder.addTestDevice(getDeviceId());
-        }
-
-        return adRequestBuilder.build();
-    }
     /**
      * Generate MD5 for the deviceID
-     * @param String s The string to generate de MD5
+     * @param  s The string to generate de MD5
      * @return String The MD5 generated
      */
     private String md5(final String s)
     {
-        try 
+        try
         {
             // Create MD5 Hash
             MessageDigest digest = MessageDigest.getInstance("MD5");
@@ -430,15 +474,15 @@ public class AdMob extends Godot.SingletonBase
 
             // Create Hex String
             StringBuffer hexString = new StringBuffer();
-            for (int i=0; i<messageDigest.length; i++) 
+            for (int i=0; i<messageDigest.length; i++)
             {
                 String h = Integer.toHexString(0xFF & messageDigest[i]);
                 while (h.length() < 2) h = "0" + h;
                 hexString.append(h);
             }
             return hexString.toString();
-        } 
-        catch(NoSuchAlgorithmException e) 
+        }
+        catch(NoSuchAlgorithmException e)
         {
             //Logger.logStackTrace(TAG,e);
         }
@@ -454,29 +498,5 @@ public class AdMob extends Godot.SingletonBase
         String android_id = Settings.Secure.getString(aActivity.getContentResolver(), Settings.Secure.ANDROID_ID);
         String deviceId = md5(android_id).toUpperCase(Locale.US);
         return deviceId;
-    }
-
-    static public Godot.SingletonBase initialize(Activity pActivity) 
-    {
-        return new AdMob(pActivity);
-    }
-    
-    public AdMob(Activity pActivity) 
-    {
-        //register class name and functions to bind
-        registerClass("AdMob", new String[]
-        {
-            "init",
-            "load_banner",
-            "destroy_banner",
-            "load_interstitial",
-            "show_interstitial",
-            "load_rewarded",
-            "show_rewarded",
-            "load_unified_native",
-            "destroy_unified_native"
-        });
-
-        this.aActivity = pActivity;
     }
 }
