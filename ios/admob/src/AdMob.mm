@@ -26,7 +26,7 @@ AdMob::~AdMob() {
 	}
 }
 
-void AdMob::init(bool is_for_child_directed_treatment, bool is_personalized, const String &max_ad_content_rating, int instance_id, const String &test_device_id) {
+void AdMob::initialize(bool is_for_child_directed_treatment, bool is_personalized, const String &max_ad_content_rating, const String &test_device_id, int instance_id) {
 	if (instance != this || initialized) {
 		return;
 	}
