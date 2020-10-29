@@ -28,9 +28,9 @@ signal unified_native_failed_to_load(error_code)
 signal unified_native_opened
 signal unified_native_closed
 
+var admob_enabled := true
 
 var _AdMob
-
 var initialized := false
 
 onready var ad_formats : Dictionary = {
@@ -73,28 +73,22 @@ onready var ad_formats : Dictionary = {
 var local_size = ["BANNER", "MEDIUM_RECTANGLE", "FULL_BANNER", "LEADERBOARD", "SMART_BANNER"]
 
 func _ready():
-	if (Engine.has_singleton("AdMob")):
-		_AdMob = Engine.get_singleton("AdMob")
-		_initialize()
-		get_tree().connect("screen_resized", self, "_on_get_tree_resized")
+	if admob_enabled:
+		if (Engine.has_singleton("AdMob")):
+			_AdMob = Engine.get_singleton("AdMob")
+			_initialize()
+			get_tree().connect("screen_resized", self, "_on_get_tree_resized")
 
 func _initialize(is_for_child_directed_treatment := true, is_personalized := false, max_ad_content_rating := "G", is_real := false):
 	if _AdMob and !initialized:
-		print("on _initialize")
 		_AdMob.initialize(is_for_child_directed_treatment, is_personalized, max_ad_content_rating, is_real, get_instance_id())
 		load_interstitial()
 		load_rewarded()
 		initialized = !initialized
 
-func testeee(pAdUnitId, pGravity, pSize):
-	print(pAdUnitId, pGravity, pSize, " teste")
-var count = 0
-
 func load_banner(gravity : int = ad_formats.banner.gravity.BOTTOM, size : String = "SMART_BANNER", unit_id : String = ad_formats.banner.unit_id[OS.get_name()]):
 	if _AdMob:
 		_AdMob.load_banner(unit_id, gravity, local_size[count])
-		count+=1
-		if count >= 5: count = 0
 
 func load_interstitial(unit_id : String = ad_formats.interstitial.unit_id[OS.get_name()]):
 	if _AdMob:
