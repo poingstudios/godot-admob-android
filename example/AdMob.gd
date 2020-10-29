@@ -88,7 +88,7 @@ func _initialize(is_for_child_directed_treatment := true, is_personalized := fal
 
 func load_banner(gravity : int = ad_formats.banner.gravity.BOTTOM, size : String = "SMART_BANNER", unit_id : String = ad_formats.banner.unit_id[OS.get_name()]):
 	if _AdMob:
-		_AdMob.load_banner(unit_id, gravity, local_size[count])
+		_AdMob.load_banner(unit_id, gravity, local_size[0])
 
 func load_interstitial(unit_id : String = ad_formats.interstitial.unit_id[OS.get_name()]):
 	if _AdMob:

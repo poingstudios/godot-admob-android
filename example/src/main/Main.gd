@@ -13,6 +13,7 @@ onready var Advice : Label = $Advice
 
 
 func _ready():
+	OS.center_window()
 	if OS.get_name() == "Android" or OS.get_name() == "iOS":
 		EnableBanner.disabled = false
 		EnableNative.disabled = false
