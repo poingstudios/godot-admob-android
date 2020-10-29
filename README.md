@@ -1,7 +1,10 @@
-# Godot AdMob (All Godot 3 versions)
-![example](https://i.imgur.com/9Gl22Ta.png)
+# Godot AdMob for Android and iOS
 
-### Android and iOS
+<p align="center">
+	<img align="center" src="https://i.imgur.com/9Gl22Ta.png">
+</p>
+
+### Ad Formats
 - Banner 
 - Interstitial
 - Rewarded
@@ -11,13 +14,13 @@ Is high recommended that when you use AdMob, please include it as AutoLoad and S
 
 Download example project to see how the Plugin works!
 
-# Android:
+# Android (v3.2.2+):
 - Clone or download the repository
 - Follow this tutorial: https://godotengine.org/article/godot-3-2-will-get-new-android-plugin-system
 - Copy and paste the folder "admob/android/admob" to "res://android/build" into your game project
 - Change "admob/AndroidManifest.conf" to your APPLICATION_ID on https://admob.google.com/
 
-# iOS:
+# iOS (v3.0.0+):
 - Clone or download the repository
 - Download Godot's source-code version that your game is using **(recommended above 3.2)**: https://github.com/godotengine/godot/releases
 - Copy and paste the folder "admob" to folder "modules" of Godot's source-code
@@ -39,6 +42,7 @@ Download example project to see how the Plugin works!
 	- CFNetwork
 	- MobileCoreServices
 	- SQLite (libsqlite3.0.tbd)
+	- JavaScriptCore
 - Add the -ObjC linker flag to Other Linker Flags in your project's build settings:
 ![-ObjC](https://developers.google.com/admob/images/ios/objc_linker_flag.png)
 - Update your GAMENAME-Info.plist file, add a GADApplicationIdentifier key with a string value of your [AdMob app ID](https://support.google.com/admob/answer/7356431):
