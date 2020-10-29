@@ -20,7 +20,26 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+    
+    - name: Download and prepare the Stable Godot .AAR LIB
+      run: | 
+        cd android/admob/godot-lib 
+        #variables
+        STABLE_GODOT_VERSION="3.2.3"
+        GODOT_AAR_LIB="godot-lib.aar"
+        GODOT_AAR_FILENAME="godot-lib.${STABLE_GODOT_VERSION}.stable.release.aar"
+        FULL_PATHNAME_DOWNLOAD_GODOT_AAR="https://downloads.tuxfamily.org/godotengine/${STABLE_GODOT_VERSION}/${GODOT_AAR_FILENAME}"
+        #get file on Godot's server and rename
+        wget $FULL_PATHNAME_DOWNLOAD_GODOT_AAR
+        mv $GODOT_AAR_FILENAME $GODOT_AAR_LIB
+    
     - name: Grant execute permission for gradlew
-      run: cd android/admob && chmod +x gradlew
+      run: |
+        cd android/admob
+        chmod +x gradlew
+        
     - name: Build with Gradle
-      run: cd android/admob && ./gradlew clean && ./gradlew build
+      run: | 
+        cd android/admob
+        ./gradlew clean 
+        ./gradlew build
