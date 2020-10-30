@@ -68,7 +68,7 @@ jobs:
         SCONS_CACHE: ${{github.workspace}}/godot-${{env.STABLE_GODOT_VERSION}}-stable/.scons_cache/
       run: |
         cd godot-${{env.STABLE_GODOT_VERSION}}-stable
-        mkdir -p /bin/release/
+        mkdir -p bin/release/
         scons p=iphone tools=no target=release arch=arm
         scons p=iphone tools=no target=release arch=arm64
         scons p=iphone tools=no target=release arch=x86_64
