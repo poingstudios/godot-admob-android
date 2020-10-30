@@ -11,7 +11,7 @@ env:
 
 jobs:
   ios-template:
-    name: Running on Godot v${{env.STABLE_GODOT_VERSION}}
+    name: Running on Gradle
     runs-on: "macos-latest"
 
     steps:
