@@ -31,8 +31,10 @@ jobs:
         scons --version
     - name: Download and unzip stable Godot version source code
       run: |
-        FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE="https://codeload.github.com/godotengine/godot/zip/${{env.STABLE_GODOT_VERSION}}-stable"
-        curl -O godot-${{env.STABLE_GODOT_VERSION}}-stable.zip $FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE
+        FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE="https://github.com/godotengine/godot/archive/${{env.STABLE_GODOT_VERSION}}-stable.zip"
+        curl -O $FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE
+        ls
+        mv ${{env.STABLE_GODOT_VERSION}}-stable.zip godot-${{env.STABLE_GODOT_VERSION}}-stable.zip
         ls
         unzip godot-${{env.STABLE_GODOT_VERSION}}-stable.zip
 
