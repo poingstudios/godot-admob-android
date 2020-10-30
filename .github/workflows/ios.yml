@@ -67,12 +67,13 @@ jobs:
         scons p=iphone tools=no target=release arch=arm64
     - uses: actions/upload-artifact@v2
       with:
+        id: upload_artifact
         name: ${{ github.job }}
         path: godot-${{env.STABLE_GODOT_VERSION}}-stable/bin/*
     - name: Verify artifactory file
       run: |
         ls
-        cd godot-${{env.STABLE_GODOT_VERSION}}-stable/bin/
+        echo ${{ steps.upload_artifact.outputs }}
         ls
     - name: Create Release
       id: create_release
