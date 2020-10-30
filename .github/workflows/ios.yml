@@ -65,16 +65,9 @@ jobs:
       run: |
         cd godot-${{env.STABLE_GODOT_VERSION}}-stable
         scons p=iphone tools=no target=release arch=arm64
-    - uses: actions/upload-artifact@v2
-      with:
-        id: upload_artifact
-        name: ${{ github.job }}
-        path: godot-${{env.STABLE_GODOT_VERSION}}-stable/bin/*
-    - name: Verify artifactory file
+    - name: Compress the binaries
       run: |
-        ls
-        echo ${{ steps.upload_artifact.outputs }}
-        ls
+        zip ${{github.job}}.zip godot-${{env.STABLE_GODOT_VERSION}}-stable/bin/
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
