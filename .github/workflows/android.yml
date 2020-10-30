@@ -48,4 +48,4 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: ${{ github.job }}
-        path: godot-${{env.STABLE_GODOT_VERSION}}-stable/bin/*
+        path: android/admob/admob/build/outputs/aar/*

@@ -17,6 +17,18 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    # Upload cache on completion and check it out now
+    - name: Load .scons_cache directory
+      id: ios-template-cache
+      uses: actions/cache@v2
+      with:
+        path: ${{github.workspace}}/godot-${{env.STABLE_GODOT_VERSION}}-stable/.scons_cache/
+        key: ${{github.job}}-master-${{github.ref}}-${{github.sha}}
+        restore-keys: |
+          ${{github.job}}-master-${{github.ref}}-${{github.sha}}
+          ${{github.job}}-master-${{github.ref}}
+          ${{github.job}}-master
+
     - name: Set up Python 3.x
       uses: actions/setup-python@v2
       with:
@@ -53,6 +65,8 @@ jobs:
         cd admob
         ls
     - name: Compiles the Source Code
+      env:
+        SCONS_CACHE: ${{github.workspace}}/godot-${{env.STABLE_GODOT_VERSION}}-stable/.scons_cache/
       run: |
         cd godot-${{env.STABLE_GODOT_VERSION}}-stable
         ls
