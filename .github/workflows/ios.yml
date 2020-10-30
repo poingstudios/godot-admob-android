@@ -67,7 +67,7 @@ jobs:
         scons p=iphone tools=no target=release arch=arm64
     - name: Compress the binaries
       run: |
-        zip ${{github.job}}.zip godot-${{env.STABLE_GODOT_VERSION}}-stable/bin/
+        zip -j ${{github.job}}.zip godot-${{env.STABLE_GODOT_VERSION}}-stable/bin/*
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
