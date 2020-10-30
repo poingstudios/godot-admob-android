@@ -9,9 +9,12 @@ on:
   pull_request:
     branches: [ master ]
 
-jobs:
-  build:
+env:
+  STABLE_GODOT_VERSION: 3.2.3
 
+jobs:
+  android-template:
+    name: Running on Godot v${{env.STABLE_GODOT_VERSION}}
     runs-on: ubuntu-latest
 
     steps:
@@ -25,10 +28,9 @@ jobs:
       run: | 
         cd android/admob/godot-lib 
         #variables
-        STABLE_GODOT_VERSION="3.2.3"
         GODOT_AAR_LIB="godot-lib.aar"
-        GODOT_AAR_FILENAME="godot-lib.${STABLE_GODOT_VERSION}.stable.release.aar"
-        FULL_PATHNAME_DOWNLOAD_GODOT_AAR="https://downloads.tuxfamily.org/godotengine/${STABLE_GODOT_VERSION}/${GODOT_AAR_FILENAME}"
+        GODOT_AAR_FILENAME="godot-lib.${{env.STABLE_GODOT_VERSION}}.stable.release.aar"
+        FULL_PATHNAME_DOWNLOAD_GODOT_AAR="https://downloads.tuxfamily.org/godotengine/${{env.STABLE_GODOT_VERSION}}/${GODOT_AAR_FILENAME}"
         #get file on Godot's server and rename
         wget $FULL_PATHNAME_DOWNLOAD_GODOT_AAR
         mv $GODOT_AAR_FILENAME $GODOT_AAR_LIB
@@ -43,3 +45,7 @@ jobs:
         cd android/admob
         ./gradlew clean 
         ./gradlew build
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{ github.job }}
+        path: godot-${{env.STABLE_GODOT_VERSION}}-stable/bin/*
