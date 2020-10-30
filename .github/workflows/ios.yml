@@ -39,8 +39,11 @@ jobs:
       run: |
         curl -LO https://dl.google.com/googleadmobadssdk/googlemobileadssdkios.zip
         ls
-        unzip googlemobileadssdkios.zip
-        mv googlemobileadssdkios/ ios/admob/lib/
+        unzip googlemobileadssdkios.zip -d ios/admob/lib/
+        cd ios
+        cd admob
+        cd lib
+        ls
 
     - name: Move the iOS module to Godot's /modules folder
       run: |
