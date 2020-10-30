@@ -14,7 +14,7 @@ env:
 
 jobs:
   android-template:
-    name: Running on Godot v${{env.STABLE_GODOT_VERSION}}
+    name: Running on Godot Scons
     runs-on: ubuntu-latest
 
     steps:
