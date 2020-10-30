@@ -67,10 +67,9 @@
 
 		GADRequest *request = [GADRequest request];
 		GADExtras *extras = [[GADExtras alloc] init];
-		extras.additionalParameters = @{@"npa": !isPersonalized};
+		extras.additionalParameters = @{@"npa": (isPersonalized) ? @"0" : @"1"};
 		[request registerAdNetworkExtras:extras];
 		[bannerView loadRequest:request];
-
 	}
 
 
