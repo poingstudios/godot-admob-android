@@ -10,7 +10,8 @@ env:
   STABLE_GODOT_VERSION: 3.2.3
 
 jobs:
-  build:
+  ios-template:
+    name: Running on Godot v${{env.STABLE_GODOT_VERSION}}
     runs-on: "macos-latest"
 
     steps:
@@ -56,3 +57,7 @@ jobs:
         cd godot-${{env.STABLE_GODOT_VERSION}}-stable
         ls
         scons p=iphone tools=no target=release arch=arm64
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{ github.job }}
+        path: godot-${{env.STABLE_GODOT_VERSION}}-stable/bin/*
