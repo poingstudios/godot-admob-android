@@ -33,8 +33,7 @@ jobs:
       run: |
         FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE="https://github.com/godotengine/godot/archive/${{env.STABLE_GODOT_VERSION}}-stable.zip"
         curl -LO $FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE
-        mv ${{env.STABLE_GODOT_VERSION}}-stable.zip godot-${{env.STABLE_GODOT_VERSION}}-stable
-        unzip godot-${{env.STABLE_GODOT_VERSION}}-stable
+        unzip ${{env.STABLE_GODOT_VERSION}}-stable.zip
         ls
     - name: Download and unzip the lastest Google Mobile Ads SDK on iOS module folder
       run: |
