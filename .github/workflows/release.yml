@@ -71,11 +71,10 @@ jobs:
         mkdir -p bin/release/
         scons p=iphone tools=no target=release arch=arm
         scons p=iphone tools=no target=release arch=arm64
-        scons p=iphone tools=no target=release arch=x86_64
-        lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a bin/libgodot.iphone.opt.x86_64.a -output bin/release/libgodot.iphone.release.fat.a
-        lipo -create bin/libgodot_camera_module.iphone.opt.arm.a bin/libgodot_camera_module.iphone.opt.arm64.a bin/libgodot_camera_module.iphone.opt.x86_64.a -output bin/release/libgodot_camera_module.iphone.release.fat.a
-        lipo -create bin/libgodot_arkit_module.iphone.opt.arm.a bin/libgodot_arkit_module.iphone.opt.arm64.a bin/libgodot_arkit_module.iphone.opt.x86_64.a -output bin/release/libgodot_arkit_module.iphone.release.fat.a
-
+        echo "LIPO COMMANDS"
+        lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a -output bin/release/libgodot.iphone.release.fat.a
+        lipo -create bin/libgodot_camera_module.iphone.opt.arm.a bin/libgodot_camera_module.iphone.opt.arm64.a -output bin/release/libgodot_camera_module.iphone.release.fat.a
+        lipo -create bin/libgodot_arkit_module.iphone.opt.arm.a bin/libgodot_arkit_module.iphone.opt.arm64.a -output bin/release/libgodot_arkit_module.iphone.release.fat.a
         
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
