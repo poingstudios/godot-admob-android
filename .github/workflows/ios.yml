@@ -42,16 +42,15 @@ jobs:
         cd ios/admob/lib
         cd */
         mv * ../
-        cd ../
-        ls
-        cd ../
-        cd src
-        ls
         
     - name: Move the iOS module to Godot's /modules folder
       run: |
         ls
         mv ios/admob godot-${{env.STABLE_GODOT_VERSION}}-stable/modules/
+        cd godot-${{env.STABLE_GODOT_VERSION}}-stable/modules/
+        ls
+        cd admob
+        ls
     - name: Compiles the Source Code
       run: |
         cd godot-${{env.STABLE_GODOT_VERSION}}-stable
