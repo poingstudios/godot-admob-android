@@ -101,7 +101,7 @@ void AdMob::show_rewarded() {
 
 
 void AdMob::_bind_methods() {
-	ClassDB::bind_method("init", &AdMob::init);
+	ClassDB::bind_method("initialize", &AdMob::initialize);
 	ClassDB::bind_method("load_banner", &AdMob::load_banner);
 	ClassDB::bind_method("destroy_banner", &AdMob::destroy_banner);
 	ClassDB::bind_method("load_interstitial", &AdMob::load_interstitial);
