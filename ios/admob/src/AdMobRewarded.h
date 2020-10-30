@@ -1,4 +1,5 @@
 #import <GoogleMobileAds/GADRewardedAd.h>
+#import <GoogleMobileAds/GADExtras.h>
 #import "app_delegate.h"
 
 @interface AdMobRewarded: NSObject <GADRewardedAdDelegate> {
