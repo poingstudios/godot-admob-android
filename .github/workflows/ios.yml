@@ -8,7 +8,6 @@ on:
 
 env:
   STABLE_GODOT_VERSION: 3.2.3
-  STABLE_GODOT_VERSION_FULLNAME: godot-${{env.STABLE_GODOT_VERSION}}-stable
 
 jobs:
   build:
@@ -34,7 +33,7 @@ jobs:
       run: |
         FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE="https://github.com/godotengine/godot/archive/${{env.STABLE_GODOT_VERSION}}-stable.zip"
         curl -LO $FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE
-        mv ${{env.STABLE_GODOT_VERSION}}-stable.zip ${{env.STABLE_GODOT_VERSION_FULLNAME}}
+        mv ${{env.STABLE_GODOT_VERSION}}-stable.zip godot-${{env.STABLE_GODOT_VERSION}}-stable
         unzip ${{env.STABLE_GODOT_VERSION}}-stable.zip
         ls
     - name: Download and unzip the lastest Google Mobile Ads SDK on iOS module folder
@@ -50,6 +49,6 @@ jobs:
         mv ios/admob godot-${{env.STABLE_GODOT_VERSION}}-stable/modules/
     - name: Compiles the Source Code
       run: |
-        cd ${{env.STABLE_GODOT_VERSION_FULLNAME}}
+        cd godot-${{env.STABLE_GODOT_VERSION}}-stable
         ls
         scons p=iphone target=release
