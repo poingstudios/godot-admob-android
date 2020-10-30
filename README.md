@@ -1,6 +1,5 @@
 # Godot AdMob for Android and iOS
-[![Android Build](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/👾%20Android/badge.svg)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions)
-[![iOS build](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/🍎%20iOS/badge.svg)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions)
+[![Release](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/Build/badge.svg)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions)
 
 
 <p align="center">
