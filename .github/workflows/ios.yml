@@ -32,14 +32,14 @@ jobs:
     - name: Download and unzip stable Godot version source code
       run: |
         FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE="https://github.com/godotengine/godot/archive/${{env.STABLE_GODOT_VERSION}}-stable.zip"
-        curl -O $FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE
+        curl -LO $FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE
         ls
         file ${{env.STABLE_GODOT_VERSION}}-stable.zip
         unzip ${{env.STABLE_GODOT_VERSION}}-stable.zip
 
     - name: Download and unzip the lastest Google Mobile Ads SDK on iOS module folder
       run: |
-        curl -O https://dl.google.com/googleadmobadssdk/googlemobileadssdkios.zip
+        curl -LO https://dl.google.com/googleadmobadssdk/googlemobileadssdkios.zip
         ls
         unzip googlemobileadssdkios.zip
         mv googlemobileadssdkios/ ios/admob/lib/
