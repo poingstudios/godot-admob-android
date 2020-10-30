@@ -1,0 +1,94 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  STABLE_GODOT_VERSION: 3.2.3
+
+jobs:
+  ios-template:
+    name: Running on Gradle
+    runs-on: "macos-latest"
+
+    steps:
+    - uses: actions/checkout@v2
+
+    # Upload cache on completion and check it out now
+    - name: Load .scons_cache directory
+      id: ios-template-cache
+      uses: actions/cache@v2
+      with:
+        path: ${{github.workspace}}/godot-${{env.STABLE_GODOT_VERSION}}-stable/.scons_cache/
+        key: ${{github.job}}-master-${{github.ref}}-${{github.sha}}
+        restore-keys: |
+          ${{github.job}}-master-${{github.ref}}-${{github.sha}}
+          ${{github.job}}-master-${{github.ref}}
+          ${{github.job}}-master
+
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v2
+      with:
+        # Semantic version range syntax or exact version of a Python version
+        python-version: '3.x'
+        # Optional - x64 or x86 architecture, defaults to x64
+        architecture: 'x64'
+    - name: Configuring Python packages
+      run: |
+        python -c "import sys; print(sys.version)"
+        python -m pip install scons
+        python --version
+        scons --version
+    - name: Download and unzip stable Godot version source code
+      run: |
+        FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE="https://github.com/godotengine/godot/archive/${{env.STABLE_GODOT_VERSION}}-stable.zip"
+        curl -LO $FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE
+        unzip ${{env.STABLE_GODOT_VERSION}}-stable.zip
+    - name: Download and unzip the lastest Google Mobile Ads SDK on iOS module folder
+      run: |
+        curl -LO https://dl.google.com/googleadmobadssdk/googlemobileadssdkios.zip
+        unzip googlemobileadssdkios.zip -d ios/admob/lib/
+        cd ios/admob/lib
+        cd */
+        mv * ../
+        
+    - name: Move the iOS module to Godot's /modules folder
+      run: |
+        mv ios/admob godot-${{env.STABLE_GODOT_VERSION}}-stable/modules/
+        cd godot-${{env.STABLE_GODOT_VERSION}}-stable/modules/
+    - name: Compiles the Source Code
+      env:
+        SCONS_CACHE: ${{github.workspace}}/godot-${{env.STABLE_GODOT_VERSION}}-stable/.scons_cache/
+      run: |
+        cd godot-${{env.STABLE_GODOT_VERSION}}-stable
+        scons p=iphone tools=no target=release arch=arm64
+    - name: Compress the binaries
+      run: |
+        zip -j ${{github.job}}.zip godot-${{env.STABLE_GODOT_VERSION}}-stable/bin/*
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body: |
+          Changes in this Release
+          - First Change
+          - Second Change
+        draft: false
+        prerelease: false
+    - name: Upload Release Asset
+      id: upload-release-asset 
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./${{ github.job }}.zip
+        asset_name: ${{ github.job }}.zip
+        asset_content_type: application/zip
