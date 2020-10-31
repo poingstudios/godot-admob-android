@@ -107,6 +107,7 @@ jobs:
       run: |
         zip -j android-template.zip android/admob/admob/build/outputs/aar/*
         zip -j ios-template.zip godot-${{env.STABLE_GODOT_VERSION}}-stable/bin/release/*
+        ls
 
     - name: Create Release
       id: create_release
@@ -123,6 +124,16 @@ jobs:
         draft: false
         prerelease: false
 
+    - name: Upload iOS template
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./ios_template.zip
+        asset_name: ios_template.zip
+        asset_content_type: application/zip
+    
     - name: Upload Android template
       uses: actions/upload-release-asset@v1
       env:
@@ -133,12 +144,3 @@ jobs:
         asset_name: android_template.zip
         asset_content_type: application/zip
       
-    - name: Upload iOS template
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: ./ios_template.zip
-        asset_name: ios_template.zip
-        asset_content_type: application/zip
