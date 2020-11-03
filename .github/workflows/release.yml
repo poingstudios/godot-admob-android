@@ -34,7 +34,7 @@ jobs:
         asset_name: ${{ github.workflow }}-CHANGELOG.txt
         tag: ${{env.STABLE_GODOT_VERSION}}
         overwrite: true
-        body: "This is my release text"
+        body: "This is my release text test2"
 
     # Upload cache on completion and check it out now
     - name: Load .scons_cache directory
