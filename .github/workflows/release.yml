@@ -21,7 +21,7 @@ jobs:
       run: echo "# Good things have arrived" > ${{ github.workflow }}-CHANGELOG.txt
     
     - name: Release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v0.1.5
       if: startsWith(github.ref, 'refs/tags/')
       with:
         body_path: ${{ github.workflow }}-CHANGELOG.txt
