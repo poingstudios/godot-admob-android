@@ -129,5 +129,4 @@ jobs:
           DRAFT_RELEASE: "false"
           PRE_RELEASE: "false"
           CHANGELOG_FILE: none
-          ALLOW_EMPTY_CHANGELOG: "false"
-          ALLOW_TAG_PREFIX: "true"
+          ALLOW_EMPTY_CHANGELOG: "true"
