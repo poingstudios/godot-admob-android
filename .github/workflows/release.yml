@@ -2,6 +2,8 @@ name: Build
 
 on:
   push:
+    tags:
+      - 'v*.*.*'
     branches: [ master ]
   pull_request:
     branches: [ master ]
@@ -25,6 +27,11 @@ jobs:
       with:
         custom_tag : ${{env.STABLE_GODOT_VERSION}}
         github_token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     # Upload cache on completion and check it out now
     - name: Load .scons_cache directory
