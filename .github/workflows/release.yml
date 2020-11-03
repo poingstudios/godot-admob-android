@@ -111,10 +111,5 @@ jobs:
     - name: Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref, 'refs/tags/')
-      with:
-        name: ${{env.STABLE_GODOT_VERSION}}
-        files: |
-          ios-template.zip
-          android-template.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
