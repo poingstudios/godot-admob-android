@@ -18,20 +18,20 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Generate Changelog
-      run: echo "# Good things have arrived" > ${{ github.workflow }}-CHANGELOG.txt
+      run: |
+        echo "# Good things have arrived" > ${{ github.workflow }}-CHANGELOG.txt
+        echo "# Good things have arrived" > ${{ github.workflow }}-CHANGELOG2.txt
 
-    - name: Bump version and push tag
-      uses: mathieudutour/github-tag-action@v4.6
-      with:
-        custom_tag : ${{env.STABLE_GODOT_VERSION}}
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-    
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{ github.workflow }}-CHANGELOG.txt
-        asset_name: ${{ github.workflow }}-CHANGELOG.txt
+        file: | 
+          ${{ github.workflow }}-CHANGELOG.txt
+          ${{ github.workflow }}-CHANGELOG2.txt
+        asset_name: |
+          ${{ github.workflow }}-CHANGELOG.txt
+          ${{ github.workflow }}-CHANGELOG2.txt
         tag: ${{env.STABLE_GODOT_VERSION}}
         overwrite: true
         body: "This is my release text test2"
