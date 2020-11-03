@@ -8,6 +8,7 @@ on:
 
 env:
   STABLE_GODOT_VERSION: 3.2.3
+  RELEASE_NAME : Release Android + iOS 
 
 jobs:
   android-ios-template:
@@ -100,7 +101,6 @@ jobs:
     - name: Build with Gradle
       run: | 
         cd android/admob
-        ./gradlew clean 
         ./gradlew build
 
     - name: Compress the binaries
@@ -115,8 +115,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        tag_name: ${{env.RELEASE_NAME}} ${{env.STABLE_GODOT_VERSION}}
+        release_name: Made by GitHub Actions 
         body: |
           Changes in this Release
           - First Change
