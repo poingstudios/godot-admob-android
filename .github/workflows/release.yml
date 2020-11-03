@@ -28,16 +28,6 @@ jobs:
         custom_tag : ${{env.STABLE_GODOT_VERSION}}
         github_token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Release
-      uses: anton-yurchenko/git-release@v3.4.2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        DRAFT_RELEASE: "false"
-        PRE_RELEASE: "false"
-        CHANGELOG_FILE: none
-        ALLOW_EMPTY_CHANGELOG: "false"
-        ALLOW_TAG_PREFIX: "true"
-    
     # Upload cache on completion and check it out now
     - name: Load .scons_cache directory
       id: ios-template-cache
@@ -128,3 +118,16 @@ jobs:
         zip -j android-template.zip android/admob/admob/build/outputs/aar/*
         zip -j ios-template.zip godot-${{env.STABLE_GODOT_VERSION}}-stable/bin/release/*
 
+  Release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Release
+        uses: docker://antonyurchenko/git-release:latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRAFT_RELEASE: "false"
+          PRE_RELEASE: "false"
+          CHANGELOG_FILE: none
+          ALLOW_EMPTY_CHANGELOG: "false"
+          ALLOW_TAG_PREFIX: "true"
