@@ -17,6 +17,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Generate Changelog
+      run: echo "# Good things have arrived" > ${{ github.workflow }}-CHANGELOG.txt
+    
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        body_path: ${{ github.workflow }}-CHANGELOG.txt
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     # Upload cache on completion and check it out now
     - name: Load .scons_cache directory
@@ -108,10 +118,3 @@ jobs:
         zip -j android-template.zip android/admob/admob/build/outputs/aar/*
         zip -j ios-template.zip godot-${{env.STABLE_GODOT_VERSION}}-stable/bin/release/*
 
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      if: startsWith(github.ref, 'refs/tags/')
-      with:
-        body: release using gh-release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
