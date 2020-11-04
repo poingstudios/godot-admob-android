@@ -109,7 +109,7 @@ jobs:
         zip -j ios-template.zip godot-${{env.STABLE_GODOT_VERSION}}-stable/bin/release/*
 
     - name: Upload android-template.zip to release
-      uses: svenstaro/upload-release-action@v2.2.0
+      uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: android-template.zip
@@ -119,7 +119,7 @@ jobs:
         body: "This release was made from the version Godot v${{env.STABLE_GODOT_VERSION}}"
 
     - name: Upload ios-template.zip to release
-      uses: svenstaro/upload-release-action@v2.2.0
+      uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: ios-template.zip
