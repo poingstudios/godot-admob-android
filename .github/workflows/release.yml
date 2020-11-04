@@ -111,8 +111,8 @@ jobs:
     - name: test delete inexistent tag
       uses: dev-drprasad/delete-tag-and-release@v0.1.2
       with:
-        delete_release: true # default: false
-        tag_name: v0.1.0 # tag name to delete
+        delete_release: true 
+        tag_name: v${{env.STABLE_GODOT_VERSION}}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
