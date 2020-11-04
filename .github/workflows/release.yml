@@ -17,18 +17,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Generate Changelog
-      run: echo "# Good things have arrived" > ${{ github.workflow }}-CHANGELOG2.txt
-
-    - name: Upload binaries to release
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ${{ github.workflow }}-CHANGELOG2.txt
-        asset_name: ${{ github.workflow }}-CHANGELOG2.txt
-        tag: ${{env.STABLE_GODOT_VERSION}}
-        overwrite: true
-        body: "This is my release text test2"
 
     # Upload cache on completion and check it out now
     - name: Load .scons_cache directory
@@ -119,3 +107,23 @@ jobs:
       run: |
         zip -j android-template.zip android/admob/admob/build/outputs/aar/*
         zip -j ios-template.zip godot-${{env.STABLE_GODOT_VERSION}}-stable/bin/release/*
+
+    - name: Upload android-template.zip to release
+      uses: svenstaro/upload-release-action@v2.2.0
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: android-template.zip
+        asset_name: android-template.zip
+        tag: v${{env.STABLE_GODOT_VERSION}}
+        overwrite: true
+        body: "This release was made from the version Godot v${{STABLE_GODOT_VERSION}}"
+
+    - name: Upload ios-template.zip to release
+      uses: svenstaro/upload-release-action@v2.2.0
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ios-template.zip
+        asset_name: ios-template.zip
+        tag: v${{env.STABLE_GODOT_VERSION}}
+        overwrite: true
+        body: "This release was made from the version Godot v${{STABLE_GODOT_VERSION}}"
