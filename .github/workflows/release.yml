@@ -133,7 +133,6 @@ jobs:
         asset_name: android-template.zip
         tag: v${{env.STABLE_GODOT_VERSION}}
         overwrite: true
-        body: "This release was made from the version Godot v${{env.STABLE_GODOT_VERSION}}"
 
     - name: Upload ios-template.zip to release
       uses: svenstaro/upload-release-action@v2
@@ -143,4 +142,3 @@ jobs:
         asset_name: ios-template.zip
         tag: v${{env.STABLE_GODOT_VERSION}}
         overwrite: true
-        body: "This release was made from the version Godot v${{env.STABLE_GODOT_VERSION}}"
