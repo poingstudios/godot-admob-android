@@ -3,7 +3,7 @@
 
 
 <p align="center">
-	<img align="center" src="https://i.imgur.com/9Gl22Ta.png">
+	<img align="center" src="https://i.imgur.com/u5y2GEx.png">
 </p>
 
 ### Ad Formats
