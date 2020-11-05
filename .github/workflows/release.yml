@@ -50,9 +50,11 @@ jobs:
         curl -LO $FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE
         unzip ${{matrix.GODOT_VERSIONS}}-stable.zip
 
-    - name: Download and unzip the lastest Google Mobile Ads SDK on iOS module folder
+    - name: Download, copy and unzip the lastest Google Mobile Ads SDK on release binaries and iOS module folder
       run: |
         curl -LO https://dl.google.com/googleadmobadssdk/googlemobileadssdkios.zip
+        mkdir -p godot-${{matrix.GODOT_VERSIONS}}-stable/bin/release/
+        cp -R googlemobileadssdkios.zip godot-${{matrix.GODOT_VERSIONS}}-stable/bin/release/
         unzip googlemobileadssdkios.zip -d ios/admob/lib/
         cd ios/admob/lib
         cd */
@@ -68,7 +70,6 @@ jobs:
         SCONS_CACHE: ${{github.workspace}}/godot-${{matrix.GODOT_VERSIONS}}-stable/.scons_cache/
       run: |
         cd godot-${{matrix.GODOT_VERSIONS}}-stable
-        mkdir -p bin/release/
         scons p=iphone tools=no target=release arch=arm
         scons p=iphone tools=no target=release arch=arm64
         echo "LIPO COMMANDS"
