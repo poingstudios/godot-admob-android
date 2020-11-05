@@ -4,8 +4,14 @@ on:
   schedule:
     - cron: "0 0 * * *"
   push:
+    paths: 
+      - 'android/**'
+      - 'ios/**'
     branches: [ master ]
   pull_request:
+    paths: 
+      - 'android/**'
+      - 'ios/**'
     branches: [ master ]
 
 jobs:
