@@ -16,6 +16,7 @@ jobs:
     - uses: actions/checkout@master
     - name: Copy the admob_api/
       run: |
+        rm -r admob_api/
         cp -Rf example/admob_api admob_api/
     
     - name: Declare SHA
