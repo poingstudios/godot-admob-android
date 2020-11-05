@@ -1,4 +1,4 @@
-name: Copy admob_api
+name: Copy admob_api/
 on:
   push:
     branches: [ master ]
@@ -9,6 +9,7 @@ on:
 
 jobs:
   copy:
+    name: Copying example/admob_api/
     runs-on: ubuntu-latest
 
     steps:
@@ -16,14 +17,20 @@ jobs:
     - name: Copy the admob_api/
       run: |
         cp -Rf example/admob_api admob_api/
-        
+    
+    - name: Declare SHA
+      id: vars
+      shell: bash
+      run: |
+        echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add admob_api/
         git status
-        git commit -m "Add changes"
+        git commit -m "Copied from example/admob_api SHA: ${{ steps.vars.outputs.sha_short }}"
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
