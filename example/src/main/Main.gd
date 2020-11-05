@@ -17,11 +17,16 @@ func _ready():
 	if OS.get_name() == "Android" or OS.get_name() == "iOS":
 		EnableBanner.disabled = false
 		EnableNative.disabled = false
+		# warning-ignore:return_value_discarded
 		AdMob.connect("banner_destroyed", self, "_on_AdMob_banner_destroyed")
+		# warning-ignore:return_value_discarded
 		AdMob.connect("interstitial_loaded", self, "_on_AdMob_interstitial_loaded")
+		# warning-ignore:return_value_discarded
 		AdMob.connect("rewarded_ad_loaded", self, "_on_AdMob_rewarded_ad_loaded")
+		# warning-ignore:return_value_discarded
 		AdMob.connect("rewarded_user_earned_rewarded", self, "_on_AdMob_rewarded_user_earned_rewarded")
 		if OS.get_name() == "Android":
+			# warning-ignore:return_value_discarded
 			AdMob.connect("unified_native_destroyed", self, "_on_AdMob_unified_native_destroyed")
 		else:
 			UnifiedNativePanel.hide()

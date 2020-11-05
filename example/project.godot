@@ -21,12 +21,12 @@ config/icon="res://icon.png"
 
 [autoload]
 
-AdMob="*res://AdMob.gd"
+AdMob="*res://admob_api/AdMob.tscn"
 
 [display]
 
-window/size/width=1792
-window/size/height=828
+window/size/width=828
+window/size/height=1792
 window/handheld/orientation="sensor"
 window/stretch/mode="2d"
 window/stretch/aspect="keep"
