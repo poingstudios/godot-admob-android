@@ -6,14 +6,13 @@ on:
   pull_request:
     branches: [ master ]
 
-env:
-  STABLE_GODOT_VERSION: 3.2.3
-  RELEASE_NAME : Release build Android + iOS 
-
 jobs:
   android-ios-template:
     name: Compiling with Scons (iOS) and Gradle (Android)
     runs-on: "macos-latest"
+    strategy:
+      matrix:
+        GODOT_VERSIONS: [3.2.2, 3.2.3]
 
     steps:
     - uses: actions/checkout@v2
@@ -23,7 +22,7 @@ jobs:
       id: ios-template-cache
       uses: actions/cache@v2
       with:
-        path: ${{github.workspace}}/godot-${{env.STABLE_GODOT_VERSION}}-stable/.scons_cache/
+        path: ${{github.workspace}}/godot-${{matrix.GODOT_VERSIONS}}-stable/.scons_cache/
         key: ${{github.job}}-master-${{github.ref}}-${{github.sha}}
         restore-keys: |
           ${{github.job}}-master-${{github.ref}}-${{github.sha}}
@@ -47,9 +46,9 @@ jobs:
 
     - name: Download and unzip stable Godot version source code
       run: |
-        FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE="https://github.com/godotengine/godot/archive/${{env.STABLE_GODOT_VERSION}}-stable.zip"
+        FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE="https://github.com/godotengine/godot/archive/${{matrix.GODOT_VERSIONS}}-stable.zip"
         curl -LO $FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE
-        unzip ${{env.STABLE_GODOT_VERSION}}-stable.zip
+        unzip ${{matrix.GODOT_VERSIONS}}-stable.zip
 
     - name: Download and unzip the lastest Google Mobile Ads SDK on iOS module folder
       run: |
@@ -61,14 +60,14 @@ jobs:
 
     - name: Move the iOS module to Godot's /modules folder
       run: |
-        mv ios/admob godot-${{env.STABLE_GODOT_VERSION}}-stable/modules/
-        cd godot-${{env.STABLE_GODOT_VERSION}}-stable/modules/
+        mv ios/admob godot-${{matrix.GODOT_VERSIONS}}-stable/modules/
+        cd godot-${{matrix.GODOT_VERSIONS}}-stable/modules/
 
     - name: Compiles the Source Code
       env:
-        SCONS_CACHE: ${{github.workspace}}/godot-${{env.STABLE_GODOT_VERSION}}-stable/.scons_cache/
+        SCONS_CACHE: ${{github.workspace}}/godot-${{matrix.GODOT_VERSIONS}}-stable/.scons_cache/
       run: |
-        cd godot-${{env.STABLE_GODOT_VERSION}}-stable
+        cd godot-${{matrix.GODOT_VERSIONS}}-stable
         mkdir -p bin/release/
         scons p=iphone tools=no target=release arch=arm
         scons p=iphone tools=no target=release arch=arm64
@@ -87,8 +86,8 @@ jobs:
         cd android/admob/godot-lib 
         #variables
         GODOT_AAR_LIB="godot-lib.aar"
-        GODOT_AAR_FILENAME="godot-lib.${{env.STABLE_GODOT_VERSION}}.stable.release.aar"
-        FULL_PATHNAME_DOWNLOAD_GODOT_AAR="https://downloads.tuxfamily.org/godotengine/${{env.STABLE_GODOT_VERSION}}/${GODOT_AAR_FILENAME}"
+        GODOT_AAR_FILENAME="godot-lib.${{matrix.GODOT_VERSIONS}}.stable.release.aar"
+        FULL_PATHNAME_DOWNLOAD_GODOT_AAR="https://downloads.tuxfamily.org/godotengine/${{matrix.GODOT_VERSIONS}}/${GODOT_AAR_FILENAME}"
         #get file on Godot's server and rename
         wget $FULL_PATHNAME_DOWNLOAD_GODOT_AAR
         mv $GODOT_AAR_FILENAME $GODOT_AAR_LIB
@@ -106,13 +105,13 @@ jobs:
     - name: Compress the binaries
       run: |
         zip -j android-template.zip android/admob/admob/build/outputs/aar/*
-        zip -j ios-template.zip godot-${{env.STABLE_GODOT_VERSION}}-stable/bin/release/*
+        zip -j ios-template.zip godot-${{matrix.GODOT_VERSIONS}}-stable/bin/release/*
 
     - name: Delete previous tag
       uses: dev-drprasad/delete-tag-and-release@v0.1.2
       with:
         delete_release: true 
-        tag_name: v${{env.STABLE_GODOT_VERSION}}
+        tag_name: v${{matrix.GODOT_VERSIONS}}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
@@ -122,8 +121,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
-        tag_name: v${{env.STABLE_GODOT_VERSION}}
-        release_name: v${{env.STABLE_GODOT_VERSION}}
+        tag_name: v${{matrix.GODOT_VERSIONS}}
+        release_name: v${{matrix.GODOT_VERSIONS}}
     
     - name: Upload android-template.zip to release
       uses: svenstaro/upload-release-action@v2
@@ -131,7 +130,7 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: android-template.zip
         asset_name: android-template.zip
-        tag: v${{env.STABLE_GODOT_VERSION}}
+        tag: v${{matrix.GODOT_VERSIONS}}
         overwrite: true
 
     - name: Upload ios-template.zip to release
@@ -140,5 +139,5 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: ios-template.zip
         asset_name: ios-template.zip
-        tag: v${{env.STABLE_GODOT_VERSION}}
+        tag: v${{matrix.GODOT_VERSIONS}}
         overwrite: true
