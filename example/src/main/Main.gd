@@ -15,6 +15,9 @@ onready var Advice : Label = $Advice
 func _ready():
 	OS.center_window()
 	if OS.get_name() == "Android" or OS.get_name() == "iOS":
+		AdMob.load_interstitial()
+		AdMob.load_rewarded()
+		
 		EnableBanner.disabled = false
 		EnableNative.disabled = false
 		# warning-ignore:return_value_discarded
