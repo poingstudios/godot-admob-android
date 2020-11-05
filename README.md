@@ -1,5 +1,9 @@
 # Godot AdMob for Android and iOS
-[![Release](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/Build/badge.svg)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions)
+This repository uses [GitHub Actions](https://github.com/features/actions), this means that whenever a new update is sent to the repository, the action will automatically test the code of the module, compile, compress the binary files and export to the "Releases" tab of the repository for the respective versions supported by the module, like v3.2.3.
+
+You can check the status here:[![Release](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/Build/badge.svg)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions)
+
+The releases tab: https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases
 
 
 <p align="center">
@@ -17,34 +21,47 @@ Is high recommended that when you use AdMob, please include it as AutoLoad and S
 Download example project to see how the Plugin works!
 
 # Android (v3.2.2+):
-- Clone or download the repository
-- Follow this tutorial: https://godotengine.org/article/godot-3-2-will-get-new-android-plugin-system
-- Copy and paste the folder "admob/android/admob" to "res://android/build" into your game project
-- Change "admob/AndroidManifest.conf" to your APPLICATION_ID on https://admob.google.com/
+- Download the ```android-template.zip``` in the releases tab. [Choice the Godot version of your game.](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases)
+- Enable Android Build Template. [Check the tutorial here](https://docs.godotengine.org/en/stable/getting_started/workflow/export/android_custom_build.html)
+- Extract the content in android-template.zip into ```res://android/plugins``` directory on your Godot project
+- On your Game Project go to:
+	1. Project
+		1. Export
+			1. Android
+				1. Options
+					1. Custom Package 
+						- [x] ```Use Custom Build```
+					1. Plugins 
+						- [x] ```Ad Mob```
+- Add your AdMob App ID to your app's ```res://android/build/AndroidManifest.xml``` file by adding a ```<meta-data>``` tag with name ```com.google.android.gms.ads.APPLICATION_ID```, as shown below.
+```xml
+<!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+<meta-data
+	android:name="com.google.android.gms.ads.APPLICATION_ID"
+	android:value="ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy"/>
+```
 
 # iOS (v3.0.0+):
-- Clone or download the repository
-- Download Godot's source-code version that your game is using **(recommended above 3.2)**: https://github.com/godotengine/godot/releases
-- Copy and paste the folder "admob" to folder "modules" of Godot's source-code
-- Download and extract the [Google Mobile Ads SDK](https://developers.google.com/admob/ios/download) **(recommended 7.58.0)** inside the directory "admob/ios/lib"; (If you are unable to download the version informed above, you can alternatively download it through [Cocoapods](https://cocoapods.org/#install))
-- Compile for iOS: http://docs.godotengine.org/en/stable/development/compiling/compiling_for_ios.html
+- Download the ```ios-template.zip``` in the releases tab. [Choice the Godot version of your game.](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases)
 - Export your game to iOS
-- Copy the library (.a) you have compiled following the official documentation inside the exported Xcode project. You must override the 'your_project_name.a' file with this file.
+- Copy the library ```libgodot.iphone.release.fat.a``` you have downloaded from releases tab inside the exported Xcode project. **You must override the 'your_project_name.a' file with this file.**
 - Add the following frameworks to the project linking it using the "Link Binary with Libraries" option:
-	- GoogleAppMeasurement.framework (from GoogleMobileAdsSdkiOS)
-	- GoogleMobileAds.framework (from GoogleMobileAdsSdkiOS)
-	- GoogleUtilities.xcframework (from GoogleMobileAdsSdkiOS)
-	- nanopb.xcframework (from GoogleMobileAdsSdkiOS)
-	- StoreKit
-	- GameKit
-	- CoreVideo
-	- AdSupport
-	- MessageUI
-	- CoreTelephony
-	- CFNetwork
-	- MobileCoreServices
-	- SQLite (libsqlite3.0.tbd)
-	- JavaScriptCore
+	- Extract the following .framework from ```ios-template.zip```:
+		- GoogleAppMeasurement.framework (from GoogleMobileAdsSdkiOS)
+		- GoogleMobileAds.framework (from GoogleMobileAdsSdkiOS)
+		- GoogleUtilities.xcframework (from GoogleMobileAdsSdkiOS)
+		- nanopb.xcframework (from GoogleMobileAdsSdkiOS)
+	- These frameworks are already in your computer
+		- StoreKit
+		- GameKit
+		- CoreVideo
+		- AdSupport
+		- MessageUI
+		- CoreTelephony
+		- CFNetwork
+		- MobileCoreServices
+		- SQLite (libsqlite3.0.tbd)
+		- JavaScriptCore
 - Add the -ObjC linker flag to Other Linker Flags in your project's build settings:
 ![-ObjC](https://developers.google.com/admob/images/ios/objc_linker_flag.png)
 - Update your GAMENAME-Info.plist file, add a GADApplicationIdentifier key with a string value of your [AdMob app ID](https://support.google.com/admob/answer/7356431):
