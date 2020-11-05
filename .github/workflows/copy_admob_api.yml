@@ -1,8 +1,6 @@
 name: Copy admob_api/
 on:
   push:
-    paths: 
-      - 'example/admob_api/**'
     branches: [ master ]
   pull_request:
     paths: 
