@@ -21,8 +21,9 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
+        git add admob_api/
         git status
-        git commit -m "Add changes" -a
+        git commit -m "Add changes"
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
