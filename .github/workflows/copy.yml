@@ -23,7 +23,8 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git commit -m "Copy example/admob_api/ into admob_api/ " -a
+        git add -a
+        git commit -m "Copy example/admob_api/ into admob_api/"
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
