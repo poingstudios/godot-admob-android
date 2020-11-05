@@ -12,7 +12,7 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
+        key: ${{ secrets.KEY }}
         source: "example/admob_api"
         target: "admob_api"
