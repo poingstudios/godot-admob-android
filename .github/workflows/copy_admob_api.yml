@@ -1,6 +1,8 @@
 name: Copy admob_api/
 on:
   push:
+    paths: 
+      - 'example/admob_api/**'
     branches: [ master ]
   pull_request:
     paths: 
@@ -30,7 +32,7 @@ jobs:
         git config --local user.name "GitHub Action"
         git add admob_api/
         git status
-        git commit -m "Copied from example/admob_api SHA: ${{ steps.vars.outputs.sha_short }}"
+        git commit -m "Copied from "example/admob_api", SHA: ${{ steps.vars.outputs.sha_short }}"
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
