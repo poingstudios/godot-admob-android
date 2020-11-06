@@ -18,15 +18,14 @@ jobs:
     steps:
     - uses: actions/checkout@master
 
-    - name: Create GitHub release
-      uses: Roang-zero1/github-upload-release-artifacts-action@master
+    - name: Upload ios-template.zip to release
+      uses: svenstaro/upload-release-action@v2
       with:
-        created_tag: ${{env.TAG_NAME}}
-        args: |
-          admob_api/
-          android/
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: admob_api/AdMob.tscn
+        asset_name: AdMob.tscn
+        tag: ${{env.TAG_NAME}}
+        overwrite: true
   delete-create-tag:
     needs: [ios-template]
     name: Delete and create tag
