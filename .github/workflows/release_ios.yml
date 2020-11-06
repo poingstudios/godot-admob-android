@@ -18,10 +18,7 @@ jobs:
     steps:
       - name: set-env
         run: echo "::set-env name=VERSIONS::$[3.2.2, 3.2.3]"
-  upload-artifacts-release:
-    needs: [create-tag]
-    name: Upload artifacts to release
-    runs-on: "macos-latest"
+
   create-tag:
     needs: [ios-template]
     name: Delete and create tag
