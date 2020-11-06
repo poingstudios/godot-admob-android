@@ -14,11 +14,20 @@ env:
 
 jobs:
   create-tag:
+    needs: [ios-template]
     name: Delete and create tag
     runs-on: "macos-latest"
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Delete previous tag
+      uses: dev-drprasad/delete-tag-and-release@v0.1.2
+      with:
+        delete_release: true 
+        tag_name: ${{env.TAG_NAME}}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Create Release and tag
       id: create_release
