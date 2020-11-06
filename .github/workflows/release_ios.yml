@@ -19,6 +19,8 @@ jobs:
     - uses: actions/checkout@master
     - name: Create release
       uses: Roang-zero1/github-create-release-action@master
+      with:
+        created_tag: ${{env.TAG_NAME}}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Create GitHub release
