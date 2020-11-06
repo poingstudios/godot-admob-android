@@ -93,12 +93,16 @@ jobs:
         ls
         mv * ../
         echo "LS3"
+        cd ../
         ls
 
     - name: Move the iOS module to Godot's /modules folder
       run: |
         mv ios/admob godot-${{matrix.GODOT_VERSIONS}}-stable/modules/
         cd godot-${{matrix.GODOT_VERSIONS}}-stable/modules/
+        ls
+        cd ios/admob/lib
+        ls
 
     - name: Compiles the Source Code
       env:
