@@ -13,20 +13,12 @@ env:
   RELEASE_NAME: iOS release for all supported versions available
 
 jobs:
-  define-matrix-env:
-    runs-on: "ubuntu-latest"
-    steps:
-      - name: set-env
-        run: echo "::set-env name=VERSIONS::$[3.2.2, 3.2.3]"
-
   create-tag:
     needs: [ios-template]
     name: Delete and create tag
     runs-on: "macos-latest"
 
     steps:
-    - uses: actions/checkout@v2
-
     - name: Delete previous tag
       uses: dev-drprasad/delete-tag-and-release@v0.1.2
       with:
@@ -45,12 +37,11 @@ jobs:
         release_name: ${{env.RELEASE_NAME}}
 
   ios-template:
-    needs: [define-matrix-env]
     name: Compiling with Scons (iOS)
     runs-on: "macos-latest"
     strategy:
       matrix:
-        GODOT_VERSIONS: ${{VERSIONS}}
+        GODOT_VERSIONS: [3.2.2, 3.2.3]
 
     steps:
     - uses: actions/checkout@v2
