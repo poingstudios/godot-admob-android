@@ -38,7 +38,6 @@ jobs:
 
   upload-assets-release:
     name: Upload assets to release
-    needs: [delete-create-tag]
     runs-on: ubuntu-latest
     strategy:
       matrix: 
