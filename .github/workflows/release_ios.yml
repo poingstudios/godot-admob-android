@@ -35,7 +35,7 @@ jobs:
         name: ${{env.RELEASE_NAME}}
         body: TEST
         allow_override: true
-        gzip: folders
+        gzip: true
         files: artifacts
   ios-template:
     name: Compiling with Scons (iOS)
