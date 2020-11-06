@@ -13,9 +13,38 @@ env:
   RELEASE_NAME: iOS release for all supported versions available
 
 jobs:
-  release:
+  delete-create-tag:
     needs: [ios-template]
+    name: Delete and create tag
+    runs-on: "macos-latest"
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Delete previous tag
+      uses: dev-drprasad/delete-tag-and-release@v0.1.2
+      with:
+        delete_release: true 
+        tag_name: ${{env.TAG_NAME}}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create Release and tag
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{env.TAG_NAME}}
+        release_name: ${{env.RELEASE_NAME}}
+
+  upload-assets-release:
+    name: Upload assets to release
+    needs: [delete-create-tag]
     runs-on: ubuntu-latest
+    strategy:
+      matrix: 
+        GODOT_VERSIONS: [3.2.2, 3.2.3]
     steps:
     - uses: actions/checkout@master
     
@@ -27,17 +56,15 @@ jobs:
       with:
         path: artifacts
 
-    - name: Create tag/release and upload artifacts into assets
-      uses: meeDamian/github-release@2.0
+    - name: Upload ios-template.zip to release
+      uses: svenstaro/upload-release-action@v2
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ios-template-v${{matrix.GODOT_VERSIONS}}.zip
+        asset_name: ios-template-v${{matrix.GODOT_VERSIONS}}.zip
         tag: ${{env.TAG_NAME}}
-        name: ${{env.RELEASE_NAME}}
-        body: TEST
-        allow_override: false
-        gzip: true
-        files: > 
-          [artifacts]
+        overwrite: true
+
   ios-template:
     name: Compiling with Scons (iOS)
     runs-on: "macos-latest"
