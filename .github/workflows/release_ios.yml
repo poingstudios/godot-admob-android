@@ -15,10 +15,14 @@ env:
 jobs:
   release:
     needs: [ios-template]
+    name: Releasing 
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
 
+    - name: Create folder to store the artifacts
+      run: mkdir artifacts
+      
     - name: Download artifacts
       uses: actions/download-artifact@v2
       with:
