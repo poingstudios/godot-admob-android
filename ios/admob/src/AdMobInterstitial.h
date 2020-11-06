@@ -1,4 +1,5 @@
-@import GoogleMobileAds;
+#import <GoogleMobileAds/GADInterstitial.h>
+#import <GoogleMobileAds/GADExtras.h>
 #import "app_delegate.h"
 
 @interface AdMobInterstitial: NSObject <GADInterstitialDelegate> {
