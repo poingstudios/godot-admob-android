@@ -13,7 +13,18 @@ env:
   RELEASE_NAME: iOS release for all supported versions available
 
 jobs:
-
+  release:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: meeDamian/github-release@2.0
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: ${{env.TAG_NAME}}
+        name: ${{env.RELEASE_NAME}}
+        body: TEST
+        allow_override: true
+        files: ios/admob/src
   ios-template:
     name: Compiling with Scons (iOS)
     runs-on: "macos-latest"
