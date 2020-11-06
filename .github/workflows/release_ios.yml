@@ -101,7 +101,7 @@ jobs:
         mv ios/admob godot-${{matrix.GODOT_VERSIONS}}-stable/modules/
         cd godot-${{matrix.GODOT_VERSIONS}}-stable/modules/
         ls
-        cd ios/admob/lib
+        cd admob/lib
         ls
 
     - name: Compiles the Source Code
