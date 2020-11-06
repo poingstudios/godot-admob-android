@@ -1,0 +1,122 @@
+name: Build
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  push:
+    branches: [ master ]
+  pull_request:
+    paths: 
+      - 'ios/**'
+    branches: [ master ]
+
+env:
+  TAG_NAME: iOS Release Versions
+
+jobs:
+  delete-create-tag:
+    name: Delete and create tag
+    runs-on: "macos-latest"
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Delete previous tag
+    uses: dev-drprasad/delete-tag-and-release@v0.1.2
+    with:
+      delete_release: true 
+      tag_name: ${{env.TAG_NAME}}
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+    - name: Create Release and tag
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{env.TAG_NAME}}
+        release_name: ${{env.TAG_NAME}}
+
+  ios-template:
+    name: Compiling with Scons (iOS)
+    runs-on: "macos-latest"
+    strategy:
+      matrix:
+        GODOT_VERSIONS: [3.2.2, 3.2.3]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    # Upload cache on completion and check it out now
+    - name: Load .scons_cache directory
+      id: ios-template-cache
+      uses: actions/cache@v2
+      with:
+        path: ${{github.workspace}}/godot-${{matrix.GODOT_VERSIONS}}-stable/.scons_cache/
+        key: ${{github.job}}-master-${{github.ref}}-${{github.sha}}
+        restore-keys: |
+          ${{github.job}}-master-${{github.ref}}-${{github.sha}}
+          ${{github.job}}-master-${{github.ref}}
+          ${{github.job}}-master
+
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v2
+      with:
+        # Semantic version range syntax or exact version of a Python version
+        python-version: '3.x'
+        # Optional - x64 or x86 architecture, defaults to x64
+        architecture: 'x64'
+
+    - name: Configuring Python packages
+      run: |
+        python -c "import sys; print(sys.version)"
+        python -m pip install scons
+        python --version
+        scons --version
+
+    - name: Download and unzip stable Godot version source code
+      run: |
+        FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE="https://github.com/godotengine/godot/archive/${{matrix.GODOT_VERSIONS}}-stable.zip"
+        curl -LO $FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE
+        unzip ${{matrix.GODOT_VERSIONS}}-stable.zip
+
+    - name: Download, copy and unzip the lastest Google Mobile Ads SDK on release binaries and iOS module folder
+      run: |
+        curl -LO https://dl.google.com/googleadmobadssdk/googlemobileadssdkios.zip
+        mkdir -p godot-${{matrix.GODOT_VERSIONS}}-stable/bin/release/
+        cp -R googlemobileadssdkios.zip godot-${{matrix.GODOT_VERSIONS}}-stable/bin/release/
+        unzip googlemobileadssdkios.zip -d ios/admob/lib/
+        cd ios/admob/lib
+        cd */
+        mv * ../
+
+    - name: Move the iOS module to Godot's /modules folder
+      run: |
+        mv ios/admob godot-${{matrix.GODOT_VERSIONS}}-stable/modules/
+        cd godot-${{matrix.GODOT_VERSIONS}}-stable/modules/
+
+    - name: Compiles the Source Code
+      env:
+        SCONS_CACHE: ${{github.workspace}}/godot-${{matrix.GODOT_VERSIONS}}-stable/.scons_cache/
+      run: |
+        cd godot-${{matrix.GODOT_VERSIONS}}-stable
+        scons p=iphone tools=no target=release arch=arm
+        scons p=iphone tools=no target=release arch=arm64
+        echo "LIPO COMMANDS"
+        lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a -output bin/release/libgodot.iphone.release.fat.a
+        lipo -create bin/libgodot_camera_module.iphone.opt.arm.a bin/libgodot_camera_module.iphone.opt.arm64.a -output bin/release/libgodot_camera_module.iphone.release.fat.a
+        lipo -create bin/libgodot_arkit_module.iphone.opt.arm.a bin/libgodot_arkit_module.iphone.opt.arm64.a -output bin/release/libgodot_arkit_module.iphone.release.fat.a
+        
+    - name: Compress the binaries
+      run: |
+        zip -j ios-template-v${{matrix.GODOT_VERSIONS}}.zip godot-${{matrix.GODOT_VERSIONS}}-stable/bin/release/*
+        
+    - name: Upload ios-template.zip to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: ios-template-v${{matrix.GODOT_VERSIONS}}.zip
+        asset_name: ios-template-v${{matrix.GODOT_VERSIONS}}.zip
+        tag: ${{env.TAG_NAME}}
+        overwrite: true
