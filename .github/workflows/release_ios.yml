@@ -21,6 +21,8 @@ jobs:
       uses: Roang-zero1/github-create-release-action@master
       with:
         created_tag: ${{env.TAG_NAME}}
+        update_existing: true
+        release_title: ${{env.RELEASE_NAME}}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Create GitHub release
