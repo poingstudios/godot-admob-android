@@ -50,7 +50,7 @@ jobs:
     runs-on: "macos-latest"
     strategy:
       matrix:
-        GODOT_VERSIONS: ${{env.VERSIONS}}
+        GODOT_VERSIONS: ${{VERSIONS}}
 
     steps:
     - uses: actions/checkout@v2
