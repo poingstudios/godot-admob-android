@@ -11,7 +11,7 @@ on:
     branches: [ master ]
 
 env:
-  TAG_NAME: iOS Release Versions
+  TAG_NAME: iOS_RELEASE
 
 jobs:
   delete-create-tag:
