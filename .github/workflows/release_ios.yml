@@ -19,8 +19,6 @@ jobs:
     runs-on: "macos-latest"
 
     steps:
-    - uses: actions/checkout@v2
-
     - name: Delete previous tag
       uses: dev-drprasad/delete-tag-and-release@v0.1.2
       with:
@@ -46,7 +44,6 @@ jobs:
       matrix: 
         GODOT_VERSIONS: [3.2.2, 3.2.3]
     steps:
-    - uses: actions/checkout@v2
 
     - name: Create folder to store the artifacts
       run: mkdir artifacts
@@ -61,7 +58,7 @@ jobs:
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: artifacts/ios-template-v${{matrix.GODOT_VERSIONS}}.zip
-        asset_name: artifacts/ios-template-v${{matrix.GODOT_VERSIONS}}.zip
+        asset_name: ios-template-v${{matrix.GODOT_VERSIONS}}.zip
         tag: ${{env.TAG_NAME}}
         overwrite: true
 
