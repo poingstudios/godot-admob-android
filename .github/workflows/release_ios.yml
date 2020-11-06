@@ -13,19 +13,6 @@ env:
   RELEASE_NAME: iOS release for all supported versions available
 
 jobs:
-  release:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-
-    - name: Upload ios-template.zip to release
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: admob_api/AdMob.tscn
-        asset_name: AdMob.tscn
-        tag: ${{env.TAG_NAME}}
-        overwrite: true
   delete-create-tag:
     needs: [ios-template]
     name: Delete and create tag
@@ -56,21 +43,15 @@ jobs:
     strategy:
       matrix: 
         GODOT_VERSIONS: [3.2.2, 3.2.3]
-    steps:
-
-    - name: Create folder to store the artifacts
-      run: mkdir artifacts
-      
+    steps:      
     - name: Download artifacts
       uses: actions/download-artifact@v2
-      with:
-        path: artifacts
 
     - name: Upload ios-template.zip to release
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: artifacts/ios-template-v${{matrix.GODOT_VERSIONS}}.zip
+        file: ios-template-v${{matrix.GODOT_VERSIONS}}.zip
         asset_name: ios-template-v${{matrix.GODOT_VERSIONS}}.zip
         tag: ${{env.TAG_NAME}}
         overwrite: true
