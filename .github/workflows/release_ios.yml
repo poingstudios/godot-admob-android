@@ -14,6 +14,7 @@ env:
 
 jobs:
   release:
+    needs: [ios-template]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
