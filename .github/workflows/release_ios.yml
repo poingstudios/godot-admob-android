@@ -1,4 +1,4 @@
-name: Build
+name: Build iOS
 
 on:
   schedule:
@@ -86,6 +86,7 @@ jobs:
         cp -R googlemobileadssdkios.zip godot-${{matrix.GODOT_VERSIONS}}-stable/bin/release/
         unzip googlemobileadssdkios.zip -d ios/admob/lib/
         cd ios/admob/lib
+        ls
         cd */
         mv * ../
 
