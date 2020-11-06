@@ -17,6 +17,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
+
+    - name: Create folder to store artifacts
+      run: mkdir artifacts
+
+    - name: Download artifacts
+    - uses: actions/download-artifact@v2
+      with:
+        path: artifacts
+      
+    - name: Create tag/release and upload artifacts into assets
     - uses: meeDamian/github-release@2.0
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
@@ -24,7 +34,7 @@ jobs:
         name: ${{env.RELEASE_NAME}}
         body: TEST
         allow_override: true
-        files: ios/admob/src
+        files: artifacts
   create-tag:
     needs: [ios-template]
     name: Delete and create tag
