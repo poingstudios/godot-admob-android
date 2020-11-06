@@ -1,4 +1,4 @@
-name: Build iOS
+name: iOS TEST
 
 on:
   schedule:
@@ -6,36 +6,9 @@ on:
   push:
     branches: [ master ]
   pull_request:
-    branches: [ master ]
-
-env:
-  TAG_NAME: iOS_RELEASE
+     branches: [ master ]
 
 jobs:
-  delete-create-tag:
-    name: Delete and create tag
-    runs-on: "macos-latest"
-
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: Delete previous tag
-      uses: dev-drprasad/delete-tag-and-release@v0.1.2
-      with:
-        delete_release: true 
-        tag_name: ${{env.TAG_NAME}}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Create Release and tag
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-      with:
-        tag_name: ${{env.TAG_NAME}}
-        release_name: ${{env.TAG_NAME}}
-
   ios-template:
     name: Compiling with Scons (iOS)
     runs-on: "macos-latest"
@@ -86,23 +59,13 @@ jobs:
         cp -R googlemobileadssdkios.zip godot-${{matrix.GODOT_VERSIONS}}-stable/bin/release/
         unzip googlemobileadssdkios.zip -d ios/admob/lib/
         cd ios/admob/lib
-        ls
-        echo "LS1"
         cd */
-        echo "LS2"
-        ls
         mv * ../
-        echo "LS3"
-        cd ../
-        ls
 
     - name: Move the iOS module to Godot's /modules folder
       run: |
         mv ios/admob godot-${{matrix.GODOT_VERSIONS}}-stable/modules/
         cd godot-${{matrix.GODOT_VERSIONS}}-stable/modules/
-        ls
-        cd admob/lib
-        ls
 
     - name: Compiles the Source Code
       env:
@@ -116,15 +79,68 @@ jobs:
         lipo -create bin/libgodot_camera_module.iphone.opt.arm.a bin/libgodot_camera_module.iphone.opt.arm64.a -output bin/release/libgodot_camera_module.iphone.release.fat.a
         lipo -create bin/libgodot_arkit_module.iphone.opt.arm.a bin/libgodot_arkit_module.iphone.opt.arm64.a -output bin/release/libgodot_arkit_module.iphone.release.fat.a
         
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    
+    - name: Download and prepare the Stable Godot .AAR LIB
+      run: | 
+        cd android/admob/godot-lib 
+        #variables
+        GODOT_AAR_LIB="godot-lib.aar"
+        GODOT_AAR_FILENAME="godot-lib.${{matrix.GODOT_VERSIONS}}.stable.release.aar"
+        FULL_PATHNAME_DOWNLOAD_GODOT_AAR="https://downloads.tuxfamily.org/godotengine/${{matrix.GODOT_VERSIONS}}/${GODOT_AAR_FILENAME}"
+        #get file on Godot's server and rename
+        wget $FULL_PATHNAME_DOWNLOAD_GODOT_AAR
+        mv $GODOT_AAR_FILENAME $GODOT_AAR_LIB
+    
+    - name: Grant execute permission for gradlew
+      run: |
+        cd android/admob
+        chmod +x gradlew
+        
+    - name: Build with Gradle
+      run: | 
+        cd android/admob
+        ./gradlew build
+
     - name: Compress the binaries
       run: |
-        zip -j ios-template-v${{matrix.GODOT_VERSIONS}}.zip godot-${{matrix.GODOT_VERSIONS}}-stable/bin/release/*
-        
+        zip -j android-template.zip android/admob/admob/build/outputs/aar/*
+        zip -j ios-template.zip godot-${{matrix.GODOT_VERSIONS}}-stable/bin/release/*
+
+    - name: Delete previous tag
+      uses: dev-drprasad/delete-tag-and-release@v0.1.2
+      with:
+        delete_release: true 
+        tag_name: v${{matrix.GODOT_VERSIONS}}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Create Release and tag
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: v${{matrix.GODOT_VERSIONS}}
+        release_name: v${{matrix.GODOT_VERSIONS}}
+    
+    - name: Upload android-template.zip to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: android-template.zip
+        asset_name: android-template.zip
+        tag: v${{matrix.GODOT_VERSIONS}}
+        overwrite: true
+
     - name: Upload ios-template.zip to release
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ios-template-v${{matrix.GODOT_VERSIONS}}.zip
-        asset_name: ios-template-v${{matrix.GODOT_VERSIONS}}.zip
-        tag: ${{env.TAG_NAME}}
+        file: ios-template.zip
+        asset_name: ios-template.zip
+        tag: v${{matrix.GODOT_VERSIONS}}
         overwrite: true
