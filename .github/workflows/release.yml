@@ -7,12 +7,12 @@ on:
    paths: 
       - 'android/**'
       - 'ios/**'
-    branches: [ master ]
+   branches: [ master ]
   pull_request:
     paths: 
       - 'android/**'
       - 'ios/**'
-     branches: [ master ]
+    branches: [ master ]
 
 jobs:
   android-ios-template:
