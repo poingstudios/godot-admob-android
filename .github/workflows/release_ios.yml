@@ -13,22 +13,6 @@ env:
   RELEASE_NAME: iOS release for all supported versions available
 
 jobs:
-  release:
-    needs: [ios-template]
-    name: Releasing 
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@master
-      
-    - name: Create tag/release and upload artifacts into assets
-    - uses: meeDamian/github-release@2.0
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag: ${{env.TAG_NAME}}
-        name: ${{env.RELEASE_NAME}}
-        body: TEST
-        allow_override: true
-        files: artifacts
 
   ios-template:
     name: Compiling with Scons (iOS)
