@@ -26,6 +26,7 @@ jobs:
     - name: Create GitHub release
       uses: Roang-zero1/github-upload-release-artifacts-action@master
       with:
+        created_tag: ${{env.TAG_NAME}}
         args: |
           admob_api/
           android/
