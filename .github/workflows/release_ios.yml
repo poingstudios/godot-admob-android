@@ -13,30 +13,9 @@ env:
   RELEASE_NAME: iOS release for all supported versions available
 
 jobs:
-  delete-create-tag:
-    needs: [ios-template]
-    name: Delete and create tag
-    runs-on: "macos-latest"
-
-    steps:
-    - name: Delete previous tag
-      uses: dev-drprasad/delete-tag-and-release@v0.1.2
-      with:
-        delete_release: true 
-        tag_name: ${{env.TAG_NAME}}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Create Release and tag
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-      with:
-        tag_name: ${{env.TAG_NAME}}
-        release_name: ${{env.RELEASE_NAME}}
 
   upload-assets-release:
+    needs: [ios-template]
     name: Upload assets to release
     runs-on: ubuntu-latest
     strategy:
