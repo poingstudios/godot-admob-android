@@ -46,6 +46,8 @@ jobs:
       matrix: 
         GODOT_VERSIONS: [3.2.2, 3.2.3]
     steps:
+    - uses: actions/checkout@v2
+
     - name: Create folder to store the artifacts
       run: mkdir artifacts
       
