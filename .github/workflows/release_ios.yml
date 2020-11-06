@@ -6,8 +6,6 @@ on:
   push:
     branches: [ master ]
   pull_request:
-    paths: 
-      - 'ios/**'
     branches: [ master ]
 
 env:
