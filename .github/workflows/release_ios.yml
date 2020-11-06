@@ -34,9 +34,10 @@ jobs:
         tag: ${{env.TAG_NAME}}
         name: ${{env.RELEASE_NAME}}
         body: TEST
-        allow_override: true
+        allow_override: false
         gzip: true
-        files: artifacts
+        files: > 
+          [artifacts]
   ios-template:
     name: Compiling with Scons (iOS)
     runs-on: "macos-latest"
