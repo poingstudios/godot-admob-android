@@ -71,8 +71,6 @@ jobs:
         cd godot-${{matrix.GODOT_VERSIONS}}-stable/modules/
 
     - name: Compiles the Source Code
-      env:
-        SCONS_CACHE: ${{github.workspace}}/godot-${{matrix.GODOT_VERSIONS}}-stable/.scons_cache/
       run: |
         cd godot-${{matrix.GODOT_VERSIONS}}-stable
         scons p=iphone tools=no target=release arch=arm
