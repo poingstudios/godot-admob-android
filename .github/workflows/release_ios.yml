@@ -19,9 +19,11 @@ jobs:
     steps:
     - uses: actions/checkout@master
 
-    - name: Download artifacts
+    - name: Create folder to store the artifacts
       run: mkdir artifacts
-    - uses: actions/download-artifact@v2
+      
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
       with:
         path: artifacts
       
