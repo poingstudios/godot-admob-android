@@ -86,8 +86,13 @@ jobs:
         cp -R googlemobileadssdkios.zip godot-${{matrix.GODOT_VERSIONS}}-stable/bin/release/
         unzip googlemobileadssdkios.zip -d ios/admob/lib/
         cd ios/admob/lib
+        ls
+        echo "LS1"
         cd */
+        echo "LS2"
+        ls
         mv * ../
+        echo "LS3"
         ls
 
     - name: Move the iOS module to Godot's /modules folder
