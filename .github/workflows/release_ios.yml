@@ -17,21 +17,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: Create release
-      uses: Roang-zero1/github-create-release-action@master
+    - uses: meeDamian/github-release@2.0
       with:
-        created_tag: ${{env.TAG_NAME}}
-        update_existing: true
-        release_title: ${{env.RELEASE_NAME}}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Create GitHub release
-      uses: Roang-zero1/github-upload-release-artifacts-action@master
-      with:
-        created_tag: ${{env.TAG_NAME}}
-        args: ios/admob/src
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        tag: ${{env.TAG_NAME}}
+        name: ${{env.RELEASE_NAME}}
+        body: TEST
+        allow_override: true
+        files: ios/admob/src
   create-tag:
     needs: [ios-template]
     name: Delete and create tag
