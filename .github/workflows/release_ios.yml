@@ -46,8 +46,6 @@ jobs:
       matrix: 
         GODOT_VERSIONS: [3.2.2, 3.2.3]
     steps:
-    - uses: actions/checkout@master
-    
     - name: Create folder to store the artifacts
       run: mkdir artifacts
       
@@ -60,8 +58,8 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ios-template-v${{matrix.GODOT_VERSIONS}}.zip
-        asset_name: ios-template-v${{matrix.GODOT_VERSIONS}}.zip
+        file: artifacts/ios-template-v${{matrix.GODOT_VERSIONS}}.zip
+        asset_name: artifacts/ios-template-v${{matrix.GODOT_VERSIONS}}.zip
         tag: ${{env.TAG_NAME}}
         overwrite: true
 
