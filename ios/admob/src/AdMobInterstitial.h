@@ -1,4 +1,4 @@
-#import <GoogleMobileAds/GADInterstitial.h>
+@import GoogleMobileAds;
 #import <GoogleMobileAds/GADExtras.h>
 #import "app_delegate.h"
 
