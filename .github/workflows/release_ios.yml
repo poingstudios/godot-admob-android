@@ -13,6 +13,15 @@ env:
   RELEASE_NAME: iOS release for all supported versions available
 
 jobs:
+  define-matrix-env:
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: set-env
+        run: echo "::set-env name=VERSIONS::$[3.2.2, 3.2.3]"
+  upload-artifacts-release:
+    needs: [create-tag]
+    name: Upload artifacts to release
+    runs-on: "macos-latest"
   create-tag:
     needs: [ios-template]
     name: Delete and create tag
@@ -21,9 +30,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Verify files
-      run: |
-        ls
     - name: Delete previous tag
       uses: dev-drprasad/delete-tag-and-release@v0.1.2
       with:
@@ -42,11 +48,12 @@ jobs:
         release_name: ${{env.RELEASE_NAME}}
 
   ios-template:
+    needs: [define-matrix-env]
     name: Compiling with Scons (iOS)
     runs-on: "macos-latest"
     strategy:
       matrix:
-        GODOT_VERSIONS: [3.2.2, 3.2.3]
+        GODOT_VERSIONS: ${{env.VERSIONS}}
 
     steps:
     - uses: actions/checkout@v2
@@ -113,12 +120,9 @@ jobs:
     - name: Compress the binaries
       run: |
         zip -j ios-template-v${{matrix.GODOT_VERSIONS}}.zip godot-${{matrix.GODOT_VERSIONS}}-stable/bin/release/*
-        
-    - name: Upload ios-template.zip to release
-      uses: svenstaro/upload-release-action@v2
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
       with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ios-template-v${{matrix.GODOT_VERSIONS}}.zip
-        asset_name: ios-template-v${{matrix.GODOT_VERSIONS}}.zip
-        tag: ${{env.TAG_NAME}}
-        overwrite: true
+        name: ios-template-v${{matrix.GODOT_VERSIONS}}.zip
+        path: ios-template-v${{matrix.GODOT_VERSIONS}}.zip
