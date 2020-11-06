@@ -1,12 +1,18 @@
-name: Build
+name: Build Android and iOS
 
 on:
   schedule:
     - cron: "0 0 * * *"
   push:
+   paths: 
+      - 'android/**'
+      - 'ios/**'
     branches: [ master ]
   pull_request:
-    branches: [ master ]
+    paths: 
+      - 'android/**'
+      - 'ios/**'
+     branches: [ master ]
 
 jobs:
   android-ios-template:
