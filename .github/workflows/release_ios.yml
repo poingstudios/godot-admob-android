@@ -15,13 +15,9 @@ env:
 jobs:
 
   upload-assets-release:
-    needs: [ios-template]
     name: Upload assets to release
     runs-on: ubuntu-latest
-    strategy:
-      matrix: 
-        GODOT_VERSIONS: [3.2.2, 3.2.3]
-    steps:      
+    steps:
     - name: Download artifacts
       uses: actions/download-artifact@v2
 
@@ -29,8 +25,8 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ios-template-v${{matrix.GODOT_VERSIONS}}.zip
-        asset_name: ios-template-v${{matrix.GODOT_VERSIONS}}.zip
+        file: README.md
+        asset_name: README.md
         tag: ${{env.TAG_NAME}}
         overwrite: true
 
