@@ -18,6 +18,8 @@ jobs:
     name: Upload assets to release
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
+
     - name: Download artifacts
       uses: actions/download-artifact@v2
 
