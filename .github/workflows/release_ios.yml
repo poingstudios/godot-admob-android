@@ -29,14 +29,10 @@ jobs:
     - name: Verify files
       run: ls && echo ios-template-v${{matrix.GODOT_VERSIONS}}.zip
       
-    - name: Upload ios-template.zip to release
-      uses: svenstaro/upload-release-action@v2
+    - uses: AButler/upload-release-assets@v2.0
       with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: LICENSE
-        asset_name: LICENSE
-        tag: ${{env.TAG_NAME}}
-        overwrite: true
+        files: '*.zip'
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
 
   ios-template:
     name: Compiling with Scons (iOS)
