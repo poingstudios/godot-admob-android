@@ -28,7 +28,9 @@ jobs:
       uses: actions/download-artifact@v2
       
     - name: Unzip test
-      run: unzip ios-template-v${{matrix.GODOT_VERSIONS}}.zip
+      run: |
+        ls
+        unzip ios-template-v${{matrix.GODOT_VERSIONS}}.zip
 
     - name: Verify files
       run: ls && echo ios-template-v${{matrix.GODOT_VERSIONS}}.zip
