@@ -17,6 +17,9 @@ jobs:
   upload-assets-release:
     name: Upload assets to release
     runs-on: ubuntu-latest
+    strategy:
+      matrix: 
+        GODOT_VERSIONS: [3.2.2, 3.2.3]
     steps:
     - uses: actions/checkout@v2
 
