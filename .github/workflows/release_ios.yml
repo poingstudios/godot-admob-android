@@ -29,6 +29,7 @@ jobs:
       
     - name: Unzip test
       run: |
+        cd ios-template-v${{matrix.GODOT_VERSIONS}}.zip/
         file ios-template-v${{matrix.GODOT_VERSIONS}}.zip
         ls -l ios-template-v${{matrix.GODOT_VERSIONS}}.zip
         unzip ios-template-v${{matrix.GODOT_VERSIONS}}.zip -d ios/
