@@ -44,7 +44,7 @@ jobs:
     - name: Upload artifacts to release
       uses: AButler/upload-release-assets@v2.0
       with:
-        files: 'README.md'
+        files: 'ios-template-*.zip/*'
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         release-tag: ${{env.TAG_NAME}}
 
