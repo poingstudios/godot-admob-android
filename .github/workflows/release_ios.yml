@@ -79,9 +79,7 @@ jobs:
         scons p=iphone tools=no target=release arch=arm64
         echo "LIPO COMMANDS"
         lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a -output bin/release/libgodot.iphone.release.fat.a
-        lipo -create bin/libgodot_camera_module.iphone.opt.arm.a bin/libgodot_camera_module.iphone.opt.arm64.a -output bin/release/libgodot_camera_module.iphone.release.fat.a
-        lipo -create bin/libgodot_arkit_module.iphone.opt.arm.a bin/libgodot_arkit_module.iphone.opt.arm64.a -output bin/release/libgodot_arkit_module.iphone.release.fat.a
-        
+
     - name: Compress the binaries
       run: |
         zip -j ios-template-v${{matrix.GODOT_VERSIONS}}.zip godot-${{matrix.GODOT_VERSIONS}}-stable/bin/release/*
