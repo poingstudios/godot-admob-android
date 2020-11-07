@@ -18,26 +18,14 @@ jobs:
     needs: [ios-template]
     name: Upload assets to release
     runs-on: ubuntu-latest
-    strategy:
-      matrix: 
-        GODOT_VERSIONS: [3.2.2, 3.2.3]
     steps:
     - uses: actions/checkout@v2
 
     - name: Download artifacts
       uses: actions/download-artifact@v2
       
-    - name: Unzip test
-      run: |
-        cd ios-template-v${{matrix.GODOT_VERSIONS}}.zip/
-        file ios-template-v${{matrix.GODOT_VERSIONS}}.zip
-        ls -l ios-template-v${{matrix.GODOT_VERSIONS}}.zip
-        unzip ios-template-v${{matrix.GODOT_VERSIONS}}.zip -d ios/
-
-    - name: Verify files
-      run: cd ios && ls && echo ios-template-v${{matrix.GODOT_VERSIONS}}.zip
-
-    - uses: AButler/upload-release-assets@v2.0
+    - name: Upload artifacts to release
+      uses: AButler/upload-release-assets@v2.0
       with:
         files: 'ios-template-*.zip/*'
         repo-token: ${{ secrets.GITHUB_TOKEN }}
