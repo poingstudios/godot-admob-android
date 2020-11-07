@@ -30,10 +30,10 @@ jobs:
     - name: Unzip test
       run: |
         ls
-        unzip ios-template-v${{matrix.GODOT_VERSIONS}}.zip
+        unzip ios-template-v${{matrix.GODOT_VERSIONS}}.zip -d ios/
 
     - name: Verify files
-      run: ls && echo ios-template-v${{matrix.GODOT_VERSIONS}}.zip
+      run: cd ios && ls && echo ios-template-v${{matrix.GODOT_VERSIONS}}.zip
 
     - uses: AButler/upload-release-assets@v2.0
       with:
