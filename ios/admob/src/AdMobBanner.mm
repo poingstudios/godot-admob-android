@@ -9,6 +9,16 @@
 	[super dealloc];
 }
 
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        // Initialization code here.
+    }
+
+    return self;
+}
+
 - (void)initialize: (int)instance_id : (bool) is_personalized{
 	initialized = true;
 	instanceId = instance_id;
