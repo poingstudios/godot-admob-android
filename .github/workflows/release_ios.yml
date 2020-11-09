@@ -18,17 +18,24 @@ jobs:
     runs-on: "macos-latest"
     strategy:
       matrix:
-        GODOT_VERSIONS: [3.0, 3.0.0, 3.0.1, 3.0.2, 3.0.3, 3.0.4, 3.0.5, 3.0.6, 3.1, 3.1.1, 3.1.2, 3.2, 3.2.1, 3.2.2, 3.2.3]
+        GODOT_VERSIONS: [3.0, 3.0.1, 3.0.2, 3.0.3, 3.0.4, 3.0.5, 3.0.6, 3.1, 3.1.1, 3.1.2, 3.2, 3.2.1, 3.2.2, 3.2.3]
 
     steps:
     - uses: actions/checkout@v2
+
+    # Github Actions Matrix doesnt support x.0 values, it's replaced by ''
+    - name: Verify current matrix's GODOT_VERSIONS
+      run: |
+        CURRENT_GODOT_VERSION=${{matrix.GODOT_VERSIONS}}
+        if [ ${#CURRENT_GODOT_VERSION} -eq 1 ]; then CURRENT_GODOT_VERSION="${CURRENT_GODOT_VERSION}.0"; fi
+        echo ${CURRENT_GODOT_VERSION}
 
     # Upload cache on completion and check it out now
     - name: Load .scons_cache directory
       id: ios-template-cache
       uses: actions/cache@v2
       with:
-        path: ${{github.workspace}}/godot-${{matrix.GODOT_VERSIONS}}-stable/.scons_cache/
+        path: ${{github.workspace}}/godot-${CURRENT_GODOT_VERSION}-stable/.scons_cache/
         key: ${{github.job}}-master-${{github.ref}}-${{github.sha}}
         restore-keys: |
           ${{github.job}}-master-${{github.ref}}-${{github.sha}}
@@ -52,15 +59,15 @@ jobs:
 
     - name: Download and unzip stable Godot version source code
       run: |
-        FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE="https://github.com/godotengine/godot/archive/${{matrix.GODOT_VERSIONS}}-stable.zip"
+        FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE="https://github.com/godotengine/godot/archive/${CURRENT_GODOT_VERSION}-stable.zip"
         curl -LO $FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE
-        unzip ${{matrix.GODOT_VERSIONS}}-stable.zip
+        unzip ${CURRENT_GODOT_VERSION}-stable.zip
 
     - name: Download, copy and unzip the lastest Google Mobile Ads SDK on release binaries and iOS module folder
       run: |
         curl -LO https://dl.google.com/googleadmobadssdk/googlemobileadssdkios.zip
-        mkdir -p godot-${{matrix.GODOT_VERSIONS}}-stable/bin/release/
-        cp -R googlemobileadssdkios.zip godot-${{matrix.GODOT_VERSIONS}}-stable/bin/release/
+        mkdir -p godot-${CURRENT_GODOT_VERSION}-stable/bin/release/
+        cp -R googlemobileadssdkios.zip godot-${CURRENT_GODOT_VERSION}-stable/bin/release/
         unzip googlemobileadssdkios.zip -d ios/admob/lib/
         cd ios/admob/lib
         cd */
@@ -68,13 +75,13 @@ jobs:
 
     - name: Move the iOS module to Godot's /modules folder
       run: |
-        mv ios/admob godot-${{matrix.GODOT_VERSIONS}}-stable/modules/
+        mv ios/admob godot-${CURRENT_GODOT_VERSION}-stable/modules/
 
     - name: Compiles the Source Code
       env:
-        SCONS_CACHE: ${{github.workspace}}/godot-${{matrix.GODOT_VERSIONS}}-stable/.scons_cache/
+        SCONS_CACHE: ${{github.workspace}}/godot-${CURRENT_GODOT_VERSION}-stable/.scons_cache/
       run: |
-        cd godot-${{matrix.GODOT_VERSIONS}}-stable
+        cd godot-${CURRENT_GODOT_VERSION}-stable
         scons p=iphone tools=no target=release arch=arm
         scons p=iphone tools=no target=release arch=arm64
         echo "LIPO COMMANDS"
@@ -82,13 +89,13 @@ jobs:
 
     - name: Compress the binaries
       run: |
-        zip -j ios-template-v${{matrix.GODOT_VERSIONS}}.zip godot-${{matrix.GODOT_VERSIONS}}-stable/bin/release/*
+        zip -j ios-template-v${CURRENT_GODOT_VERSION}.zip godot-${CURRENT_GODOT_VERSION}-stable/bin/release/*
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-        name: ios-template-v${{matrix.GODOT_VERSIONS}}.zip
-        path: ios-template-v${{matrix.GODOT_VERSIONS}}.zip
+        name: ios-template-v${CURRENT_GODOT_VERSION}.zip
+        path: ios-template-v${CURRENT_GODOT_VERSION}.zip
 
   upload-assets-release:
     needs: [ios-template]
