@@ -72,7 +72,7 @@
 didFailToReceiveAdWithError:(GADRequestError *)error {
 	NSLog(@"interstitial:didFailToReceiveAdWithError: %@", [error localizedDescription]);
     Object *obj = ObjectDB::get_instance(instanceId);
-    obj->call_deferred("_on_AdMob_interstitial_failed_to_load", error.code);    
+    obj->call_deferred("_on_AdMob_interstitial_failed_to_load", (int) error.code);    
 }
 
 /// Tells the delegate that an interstitial will be presented.
