@@ -17,11 +17,6 @@ typedef void *interstitialPtr;
 typedef void *rewardedPtr;
 #endif
 
-#import <AppTrackingTransparency/AppTrackingTransparency.h>
-#import <AdSupport/AdSupport.h>
-#import <GoogleMobileAds/GoogleMobileAds.h>
-
-
 
 class AdMob : public Reference {
 	
