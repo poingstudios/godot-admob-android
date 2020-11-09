@@ -89,8 +89,9 @@ jobs:
         cd godot-${{env.CURRENT_GODOT_VERSION}}-stable
         scons p=iphone tools=no target=release arch=arm
         scons p=iphone tools=no target=release arch=arm64
+        scons p=iphone tools=no target=release arch=x86_64
         echo "LIPO COMMANDS"
-        lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a -output bin/release/libgodot.iphone.release.fat.a
+        lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a bin/libgodot.iphone.opt.x86_64.a -output bin/release/libgodot.iphone.release.fat.a
 
     - name: Compress the binaries
       run: |
