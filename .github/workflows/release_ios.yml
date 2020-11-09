@@ -35,7 +35,7 @@ jobs:
       id: ios-template-cache
       uses: actions/cache@v2
       with:
-        path: ${{github.workspace}}/godot-${CURRENT_GODOT_VERSION}-stable/.scons_cache/
+        path: ${{github.workspace}}/godot-${{env.CURRENT_GODOT_VERSION}}-stable/.scons_cache/
         key: ${{github.job}}-master-${{github.ref}}-${{github.sha}}
         restore-keys: |
           ${{github.job}}-master-${{github.ref}}-${{github.sha}}
@@ -59,15 +59,15 @@ jobs:
 
     - name: Download and unzip stable Godot version source code
       run: |
-        FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE="https://github.com/godotengine/godot/archive/${CURRENT_GODOT_VERSION}-stable.zip"
+        FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE="https://github.com/godotengine/godot/archive/${{env.CURRENT_GODOT_VERSION}}-stable.zip"
         curl -LO $FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE
-        unzip ${CURRENT_GODOT_VERSION}-stable.zip
+        unzip ${{env.CURRENT_GODOT_VERSION}}-stable.zip
 
     - name: Download, copy and unzip the lastest Google Mobile Ads SDK on release binaries and iOS module folder
       run: |
         curl -LO https://dl.google.com/googleadmobadssdk/googlemobileadssdkios.zip
-        mkdir -p godot-${CURRENT_GODOT_VERSION}-stable/bin/release/
-        cp -R googlemobileadssdkios.zip godot-${CURRENT_GODOT_VERSION}-stable/bin/release/
+        mkdir -p godot-${{env.CURRENT_GODOT_VERSION}}-stable/bin/release/
+        cp -R googlemobileadssdkios.zip godot-${{env.CURRENT_GODOT_VERSION}}-stable/bin/release/
         unzip googlemobileadssdkios.zip -d ios/admob/lib/
         cd ios/admob/lib
         cd */
@@ -75,13 +75,13 @@ jobs:
 
     - name: Move the iOS module to Godot's /modules folder
       run: |
-        mv ios/admob godot-${CURRENT_GODOT_VERSION}-stable/modules/
+        mv ios/admob godot-${{env.CURRENT_GODOT_VERSION}}-stable/modules/
 
     - name: Compiles the Source Code
       env:
-        SCONS_CACHE: ${{github.workspace}}/godot-${CURRENT_GODOT_VERSION}-stable/.scons_cache/
+        SCONS_CACHE: ${{github.workspace}}/godot-${{env.CURRENT_GODOT_VERSION}}-stable/.scons_cache/
       run: |
-        cd godot-${CURRENT_GODOT_VERSION}-stable
+        cd godot-${{env.CURRENT_GODOT_VERSION}}-stable
         scons p=iphone tools=no target=release arch=arm
         scons p=iphone tools=no target=release arch=arm64
         echo "LIPO COMMANDS"
@@ -89,13 +89,13 @@ jobs:
 
     - name: Compress the binaries
       run: |
-        zip -j ios-template-v${CURRENT_GODOT_VERSION}.zip godot-${CURRENT_GODOT_VERSION}-stable/bin/release/*
+        zip -j ios-template-v${{env.CURRENT_GODOT_VERSION}}.zip godot-${{env.CURRENT_GODOT_VERSION}}-stable/bin/release/*
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-        name: ios-template-v${CURRENT_GODOT_VERSION}.zip
-        path: ios-template-v${CURRENT_GODOT_VERSION}.zip
+        name: ios-template-v${{env.CURRENT_GODOT_VERSION}}.zip
+        path: ios-template-v${{env.CURRENT_GODOT_VERSION}}.zip
 
   upload-assets-release:
     needs: [ios-template]
