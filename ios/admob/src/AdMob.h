@@ -24,7 +24,7 @@ class AdMob : public Reference {
 	GDCLASS(AdMob, Reference);
 
 	bool initialized;
-    static AdMob *instance; //fix
+    static AdMob *instance;
     
     bannerPtr banner;
     interstitialPtr interstitial;
