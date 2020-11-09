@@ -89,10 +89,14 @@ jobs:
         cd godot-${{env.CURRENT_GODOT_VERSION}}-stable
         scons p=iphone tools=no target=release arch=arm
         scons p=iphone tools=no target=release arch=arm64
-        scons p=iphone tools=no target=release arch=x86_64
-        echo "LIPO COMMANDS"
-        lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a bin/libgodot.iphone.opt.x86_64.a -output bin/release/libgodot.iphone.release.fat.a
-
+        
+        #ignore the 3.1.1 version due: https://github.com/godotengine/godot/issues/32301
+        if [ ${{env.CURRENT_GODOT_VERSION}} != 3.1.1 ]; then
+          scons p=iphone tools=no target=release arch=x86_64
+          lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a bin/libgodot.iphone.opt.x86_64.a -output bin/release/libgodot.iphone.release.fat.a
+        else
+          lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a -output bin/release/libgodot.iphone.release.fat.a
+        fi
     - name: Compress the binaries
       run: |
         zip -j ios-template-v${{env.CURRENT_GODOT_VERSION}}.zip godot-${{env.CURRENT_GODOT_VERSION}}-stable/bin/release/*
