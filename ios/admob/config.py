@@ -10,10 +10,5 @@ def configure(env):
 		else:
 			xcframework_arch_directory = 'ios-armv7_arm64'
 
-		env.Append(FRAMEWORKPATH=[
-			'#modules/admob/ios/lib',
-			'#modules/admob/ios/lib/GoogleUtilities.xcframework/' + xcframework_arch_directory, 
-			'#modules/admob/ios/lib/nanopb.xcframework/' + xcframework_arch_directory, 
-			'#modules/admob/ios/lib/PromisesObjC.xcframework/' + xcframework_arch_directory])
-
+		env.Append(FRAMEWORKPATH=['#modules/admob/ios/lib/GoogleMobileAds.xcframework/' + xcframework_arch_directory])
 		env.Append(CPPPATH=['#core'])
