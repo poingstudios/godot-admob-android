@@ -6,12 +6,10 @@ on:
   push:
     paths: 
       - 'android/**'
-      - 'ios/**'
     branches: [ master ]
   pull_request:
     paths: 
       - 'android/**'
-      - 'ios/**'
     branches: [ master ]
 
 jobs:
