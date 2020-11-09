@@ -44,7 +44,7 @@
 		if (error) {
 			NSLog(@"error while creating reward");
             Object *obj = ObjectDB::get_instance(instanceId);
-            obj->call_deferred("_on_AdMob_rewarded_ad_failed_to_show", error.code);
+            obj->call_deferred("_on_AdMob_rewarded_ad_failed_to_show", (int) error.code);
 		} else {
 			NSLog(@"reward successfully loaded");
 			Object *obj = ObjectDB::get_instance(instanceId);
@@ -91,7 +91,7 @@
 - (void)rewardedAd:(GADRewardedAd *)rewardedAd didFailToPresentWithError:(NSError *)error {
 	NSLog(@"rewardedAd:didFailToPresentWithError");
     Object *obj = ObjectDB::get_instance(instanceId);
-    obj->call_deferred("_on_AdMob_rewarded_ad_failed_to_show", error.code);
+    obj->call_deferred("_on_AdMob_rewarded_ad_failed_to_show", (int) error.code);
 }
 
 /// Tells the delegate that the rewarded ad was dismissed.
