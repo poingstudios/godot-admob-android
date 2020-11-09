@@ -28,7 +28,7 @@ jobs:
       run: |
         CURRENT_GODOT_VERSION=${{matrix.GODOT_VERSIONS}}
         if [ ${#CURRENT_GODOT_VERSION} -eq 1 ]; then CURRENT_GODOT_VERSION="${CURRENT_GODOT_VERSION}.0"; fi
-        echo ${CURRENT_GODOT_VERSION}
+        echo "CURRENT_GODOT_VERSION=${CURRENT_GODOT_VERSION}" >> $GITHUB_ENV
 
     # Upload cache on completion and check it out now
     - name: Load .scons_cache directory
