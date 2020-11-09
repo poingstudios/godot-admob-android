@@ -6,7 +6,7 @@ def configure(env):
 	if env['platform'] == 'iphone':
 		xcframework_directory = ''
 		if env['arch'] == 'x86_64':
-			xcframework_directory = 'ios-x86_64-simulator'
+			xcframework_directory = 'ios-i386_x86_64-simulator'
 		else:
 			xcframework_directory = 'ios-armv7_arm64'
 
