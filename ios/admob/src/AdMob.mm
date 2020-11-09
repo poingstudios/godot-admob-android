@@ -31,6 +31,15 @@ void AdMob::initialize(bool is_for_child_directed_treatment, bool is_personalize
 		return;
 	}
 
+	if (@available(iOS 14, *)) {
+		[ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
+			[[GADMobileAds sharedInstance] startWithCompletionHandler:nil];
+	  	}];
+	}
+	else{
+		[[GADMobileAds sharedInstance] startWithCompletionHandler:nil];
+	}
+	
 	initialized = true;
 
 	banner = [[AdMobBanner alloc] initialize :instance_id: is_personalized];
