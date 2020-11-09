@@ -1,6 +1,9 @@
 #ifndef ADMOB_H
 #define ADMOB_H
 
+#import <AppTrackingTransparency/AppTrackingTransparency.h>
+#import <AdSupport/AdSupport.h>
+#import <GoogleMobileAds/GoogleMobileAds.h>
 #include "reference.h"
 
 
