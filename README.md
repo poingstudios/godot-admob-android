@@ -1,7 +1,11 @@
 # Godot AdMob for Android and iOS
 This repository uses [GitHub Actions](https://github.com/features/actions), this means that whenever a new update is sent to the repository, the action will automatically test the code of the module, compile, compress the binary files and export to the "Releases" tab of the repository for the respective versions supported by the module, like v3.2.3.
 
-You can check the status here:[![Release](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/Build/badge.svg)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions)
+You can check the status here: 
+[![Build%20iOS](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/Build%20iOS/badge.svg)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions)
+[![Build%20Android](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/Build%20Android/badge.svg)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions)
+[![Copy%20admob_api%2F](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/Copy%20admob_api%2F/badge.svg)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions)
+
 
 The releases tab: https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases
 
@@ -52,10 +56,11 @@ Download example project to see how the Plugin works!
 		- GoogleUtilities.xcframework (from GoogleMobileAdsSdkiOS)
 		- nanopb.xcframework (from GoogleMobileAdsSdkiOS)
 	- These frameworks are already in your computer
+		- AppTrackingTransparency | ```Status: (Optional) ```
+		- AdSupport 
 		- StoreKit
 		- GameKit
 		- CoreVideo
-		- AdSupport
 		- MessageUI
 		- CoreTelephony
 		- CFNetwork
@@ -64,8 +69,13 @@ Download example project to see how the Plugin works!
 		- JavaScriptCore
 - Add the -ObjC linker flag to Other Linker Flags in your project's build settings:
 ![-ObjC](https://developers.google.com/admob/images/ios/objc_linker_flag.png)
-- Update your GAMENAME-Info.plist file, add a GADApplicationIdentifier key with a string value of your [AdMob app ID](https://support.google.com/admob/answer/7356431):
+- [Update your GAMENAME-Info.plist file](https://developers.google.com/admob/ios/quick-start#update_your_infoplist), add a GADApplicationIdentifier key with a string value of your [AdMob app ID](https://support.google.com/admob/answer/7356431):
 ![plist](https://i.imgur.com/1tcKXx5.png)
+- [Enable SKAdNetwork to track conversions](https://developers.google.com/admob/ios/ios14#skadnetwork):
+![SKAdNetwork](https://developers.google.com/admob/images/idfa/skadnetwork.png)
+- [Request App Tracking Transparency authorization](https://developers.google.com/admob/ios/ios14#request)
+![RequestAuthorization](https://developers.google.com/admob/images/idfa/editor.png)
+
 
 ### API References
 ---
