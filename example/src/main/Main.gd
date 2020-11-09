@@ -9,15 +9,12 @@ onready var EnableNative : Button = $CenterContainer/VBoxContainer/UnifiedNative
 onready var DisableNative : Button = $CenterContainer/VBoxContainer/UnifiedNative/DisableUnifiedNative
 onready var UnifiedNativePanel : Panel = $UnifiedNative
 onready var UnifiedNativeHBox : HBoxContainer = $CenterContainer/VBoxContainer/UnifiedNative
-onready var Advice : Label = $Advice
+onready var Advice : RichTextLabel = $Advice
 
 
 func _ready():
 	OS.center_window()
-	if OS.get_name() == "Android" or OS.get_name() == "iOS":
-		AdMob.load_interstitial()
-		AdMob.load_rewarded()
-		
+	if OS.get_name() == "Android" or OS.get_name() == "iOS":		
 		EnableBanner.disabled = false
 		EnableNative.disabled = false
 		# warning-ignore:return_value_discarded
@@ -35,7 +32,7 @@ func _ready():
 			UnifiedNativePanel.hide()
 			UnifiedNativeHBox.hide()
 	else:
-		Advice.text = "Module only works on Android or iOS devices!"
+		Advice.bbcode_text += "Module only works on Android or iOS devices!\n"
 	
 	
 func _on_AdMob_interstitial_loaded():
@@ -78,7 +75,7 @@ func _on_AdMob_rewarded_ad_loaded():
 	Rewarded.disabled = false
 	
 func _on_AdMob_rewarded_user_earned_rewarded(currency : String, amount : int):
-	Advice.text = "EARNED " + currency + " with amount: " + str(amount)
+	Advice.bbcode_text += "EARNED " + currency + " with amount: " + str(amount) + "\n"
 
 
 func _on_EnableUnifiedNative_pressed():
