@@ -25,7 +25,7 @@ Is high recommended that when you use AdMob, please include it as AutoLoad and S
 Download example project to see how the Plugin works!
 
 # Android (v3.2.2+):
-- Download the ```android-template.zip``` in the releases tab. [Choice the Godot version of your game.](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases)
+- Download the ```android-template.zip``` in the releases tab. [Choice the Godot version of your game.](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/Android_v3.2.2%2B)
 - Enable Android Build Template. [Check the tutorial here](https://docs.godotengine.org/en/stable/getting_started/workflow/export/android_custom_build.html)
 - Extract the content in android-template.zip into ```res://android/plugins``` directory on your Godot project
 - On your Game Project go to:
@@ -46,7 +46,7 @@ Download example project to see how the Plugin works!
 ```
 
 # iOS (v3.0.0+):
-- Download the ```ios-template.zip``` in the releases tab. [Choice the Godot version of your game.](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases)
+- Download the ```ios-template.zip``` in the releases tab. [Choice the Godot version of your game.](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/iOS_v3.0%2B)
 - Export your game to iOS
 - Copy the library ```libgodot.iphone.release.fat.a``` you have downloaded from releases tab inside the exported Xcode project. **You must override the 'your_project_name.a' file with this file.**
 - Add the following frameworks to the project linking it using the "Link Binary with Libraries" option:
@@ -110,12 +110,16 @@ unified_native_closed #when the user is about to return to the app after tapping
 
 Methods
 ```GDScript
-init(is_for_child_directed_treatment := true, is_personalized := false, max_ad_content_rating := "G", instance_id := get_instance_id(), test_device_id := "") #init the AdMob
+#Private
+#-----------------
+_initialize() #init the AdMob
 
-load_banner(gravity : int = GRAVITY.BOTTOM, size : String = "SMART_BANNER", unit_id : String = ad.banner.unit_id[OS.get_name()]) #load the banner will make him appear instantly
-load_interstitial(unit_id: String = ad.interstitial.unit_id[OS.get_name()]) #loads the interstitial and make ready for show
-load_rewarded(unit_id : String = ad.rewarded.unit_id[OS.get_name()]) #loads the rewarded and make ready for show
-load_unified_native(control_node_to_be_replaced : Control = Control.new(), unit_id : String = ad.unified_native.unit_id[OS.get_name()]) #load the unified native will make him appear instantly (unified native and banner are View in Android and iOS, it is recommended to only use one of them at a time, if you try to use both, the module will not allow it, it will remove the older view
+#Public
+#-----------------
+load_banner() #load the banner will make him appear instantly
+load_interstitial() #loads the interstitial and make ready for show
+load_rewarded() #loads the rewarded and make ready for show
+load_unified_native(control_node_to_be_replaced : Control = Control.new()) #load the unified native will make him appear instantly (unified native and banner are View in Android and iOS, it is recommended to only use one of them at a time, if you try to use both, the module will not allow it, it will remove the older view
 
 destroy_banner() #completely destroys the Banner View
 destroy_unified_native() #completely destroys the Unified Native View
