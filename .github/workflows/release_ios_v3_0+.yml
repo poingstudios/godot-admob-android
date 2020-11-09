@@ -14,8 +14,8 @@ on:
     branches: [ master ]
 
 env:
-  TAG_NAME: iOS
-  RELEASE_NAME: iOS 3.0+
+  TAG_NAME: iOS_v3.0+
+  RELEASE_NAME: iOS Compiled files for v3.0+
 
 jobs:
   ios-template:
