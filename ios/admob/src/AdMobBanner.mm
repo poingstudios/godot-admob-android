@@ -9,21 +9,15 @@
 	[super dealloc];
 }
 
-- (id)init
-{
+- (instancetype)initialize: (int)instance_id : (bool) is_personalized{
     self = [super init];
     if (self) {
-        // Initialization code here.
-    }
-
+		initialized = true;
+		instanceId = instance_id;
+		isPersonalized = is_personalized;
+		rootController = [AppDelegate getViewController];
+	}
     return self;
-}
-
-- (void)initialize: (int)instance_id : (bool) is_personalized{
-	initialized = true;
-	instanceId = instance_id;
-	isPersonalized = is_personalized;
-	rootController = [AppDelegate getViewController];
 }
 
 

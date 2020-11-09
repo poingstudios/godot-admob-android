@@ -12,7 +12,7 @@
 	ViewController *rootController;
 }
 
-- (void)initialize:(int)instance_id:(bool)is_personalized;
+- (instancetype)initialize:(int)instance_id:(bool)is_personalized;
 - (void)load_banner:(NSString*)ad_unit_id :(int)gravity :(NSString*)size;
 - (void)destroy_banner;
 
