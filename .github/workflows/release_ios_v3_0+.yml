@@ -5,7 +5,7 @@ on:
     - cron: "0 0 * * *"
   push:
     paths: 
-      - '.github/workflows/release_ios.yml'
+      - '.github/workflows/release_ios_v3_0+.yml'
       - 'ios/**'
     branches: [ master ]
   pull_request:
