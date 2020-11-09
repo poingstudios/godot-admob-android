@@ -1,5 +1,8 @@
 #include "AdMob.h"
 #import "app_delegate.h"
+#import <AppTrackingTransparency/AppTrackingTransparency.h>
+#import <AdSupport/AdSupport.h>
+#import <GoogleMobileAds/GoogleMobileAds.h>
 
 AdMob *AdMob::instance = NULL; 
 
