@@ -1,9 +1,6 @@
 #ifndef ADMOB_H
 #define ADMOB_H
 
-#import <AppTrackingTransparency/AppTrackingTransparency.h>
-#import <AdSupport/AdSupport.h>
-#import <GoogleMobileAds/GoogleMobileAds.h>
 #include "reference.h"
 
 
@@ -19,6 +16,10 @@ typedef void *bannerPtr;
 typedef void *interstitialPtr;
 typedef void *rewardedPtr;
 #endif
+
+#import <AppTrackingTransparency/AppTrackingTransparency.h>
+#import <AdSupport/AdSupport.h>
+#import <GoogleMobileAds/GoogleMobileAds.h>
 
 
 
