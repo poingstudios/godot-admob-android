@@ -49,7 +49,7 @@ Download example project to see how the Plugin works!
 # iOS (v3.0.0+):
 - Download the ```ios-template.zip``` in the releases tab. [Choice the Godot version of your game.](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/iOS_v3.0%2B)
 - Export your game to iOS
-- Copy the library ```libgodot.iphone.release.fat.a``` you have downloaded from releases tab inside the exported Xcode project. **You must override the 'your_project_name.a' file with this file.**
+- Copy the library ```libgodot.iphone.release.fat.a``` you have downloaded from releases tab inside the exported Xcode project. **You must override the '.a' file with "your_project_name", should be like: 'your_project_name.a'.**
 - Add the following frameworks to the project linking it using the "Link Binary with Libraries" option:
 	- Extract the following .framework from ```ios-template.zip```:
 		- GoogleAppMeasurement.framework (from GoogleMobileAdsSdkiOS)
@@ -122,11 +122,11 @@ load_interstitial() #loads the interstitial and make ready for show
 load_rewarded() #loads the rewarded and make ready for show
 load_unified_native(control_node_to_be_replaced : Control = Control.new()) #load the unified native will make him appear instantly (unified native and banner are View in Android and iOS, it is recommended to only use one of them at a time, if you try to use both, the module will not allow it, it will remove the older view
 
-destroy_banner() #completely destroys the Banner View
-destroy_unified_native() #completely destroys the Unified Native View
-
 show_interstitial() #shows interstitial
 show_rewarded() #shows rewarded
+
+destroy_banner() #completely destroys the Banner View
+destroy_unified_native() #completely destroys the Unified Native View
 
 _on_AdMob_*() #just to emit signals
 ```
