@@ -30,6 +30,7 @@ jobs:
         godot_executable_download_url: https://downloads.tuxfamily.org/godotengine/${{matrix.GODOT_VERSIONS}}/Godot_v${{matrix.GODOT_VERSIONS}}-stable_linux_headless.64.zip
         godot_export_templates_download_url: https://downloads.tuxfamily.org/godotengine/${{matrix.GODOT_VERSIONS}}/Godot_v${{matrix.GODOT_VERSIONS}}-stable_export_templates.tpz
         relative_project_path: ./example/
+        use_preset_export_path: true
         create_release: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -37,5 +38,5 @@ jobs:
     - name: Verify build ios folder
       run: |
         ls
-        cd /home/runner/.local/share/godot/builds/iOS
+        cd builds/ios
         ls
