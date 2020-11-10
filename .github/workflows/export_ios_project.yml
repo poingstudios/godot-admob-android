@@ -20,5 +20,18 @@ jobs:
       
     - name: Download binaries from iOS Tag
       run: |
-        wget "https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/iOS_v3.0%2B/ios-template-v${{matrix.GODOT_VERSIONS}}.zip"
+        #wget "https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/iOS_v3.0%2B/ios-template-v${{matrix.GODOT_VERSIONS}}.zip"
         ls
+    - name: export game
+      # Use latest version (see releases for all versions)
+      uses: firebelley/godot-export@v2.6.0
+      with:
+        # Defining all the required inputs
+        godot_executable_download_url: https://downloads.tuxfamily.org/godotengine/${{matrix.GODOT_VERSIONS}}/Godot_v${{matrix.GODOT_VERSIONS}}-stable_linux_headless_64.zip
+        godot_export_templates_download_url: https://downloads.tuxfamily.org/godotengine/${{matrix.GODOT_VERSIONS}}/Godot_v${{matrix.GODOT_VERSIONS}}-stable_export_templates.tpz
+        relative_project_path: ./example/
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Verify build ios folder
+      run: cd examples/builds/ios && ls
