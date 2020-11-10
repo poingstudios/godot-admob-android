@@ -38,5 +38,5 @@ jobs:
     - name: Verify build ios folder
       run: |
         ls
-        cd ../builds/ios
+        cd ../builds/ios/iOS
         ls
