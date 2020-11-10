@@ -37,7 +37,5 @@ jobs:
     - name: Verify build ios folder
       run: |
         ls
-        cd builds
-        ls
-        cd ios
+        cd /home/runner/.local/share/godot/builds/iOS
         ls
