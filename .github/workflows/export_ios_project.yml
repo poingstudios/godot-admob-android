@@ -35,4 +35,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Verify build ios folder
-      run: cd examples/builds/ios && ls
+      run: |
+        ls
+        cd builds
+        ls
+        cd ios
+        ls
