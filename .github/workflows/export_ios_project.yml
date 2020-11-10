@@ -1,0 +1,24 @@
+name: Export and Test on XCode
+on:
+  workflow_run:
+    workflows: [ "Build iOS" ]
+    types: 
+      - completed
+  push:
+    paths: 
+      - '.github/workflows/export_ios_project.yml'
+    branches: [ master ]
+jobs:
+  export:
+    name: Upload assets to release
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        GODOT_VERSIONS: [3.2.3]
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Download binaries from iOS Tag
+      run: |
+        wget "https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/iOS_v3.0%2B/ios-template-v${{matrix.GODOT_VERSIONS}}.zip"
+        ls
