@@ -42,14 +42,14 @@ jobs:
 
     - name: Compress the binaries
       run: |
-        cd ../builds/ios/iOS
-        zip -j -r  AdMob.zip ./*
+        cd ../builds/ios/
+        zip -j -r  AdMob.zip iOS/*
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: AdMob.zip
-        path: /home/runner/work/Godot-AdMob-Android-iOS/builds/ios/iOS/AdMob.zip
+        path: /home/runner/work/Godot-AdMob-Android-iOS/builds/ios/AdMob.zip
 
   test:
     needs: [export]
