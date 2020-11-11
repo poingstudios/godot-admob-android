@@ -46,4 +46,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: AdMob.zip
-        path: ../builds/ios/AdMob.zip
+        path: /home/runner/work/Godot-AdMob-Android-iOS/builds/ios/AdMob.zip 
