@@ -36,6 +36,8 @@ jobs:
         wget "https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/iOS_v3.0%2B/ios-template-v${{matrix.GODOT_VERSIONS}}.zip"
         unzip ios-template-v${{matrix.GODOT_VERSIONS}}.zip
         rm ios-template-v${{matrix.GODOT_VERSIONS}}.zip
+        unzip googlemobileadssdkios.zip
+        rm googlemobileadssdkios.zip
         rm AdMob.a
         mv libgodot.iphone.release.fat.a AdMob.a 
         ls
@@ -64,7 +66,6 @@ jobs:
     - name: Test on XCode
       run: |
         cd AdMob
-        xcodebuild
         xcodebuild --help
         xcodebuild -help
         xcodebuild -framework 
