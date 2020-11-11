@@ -44,7 +44,7 @@ jobs:
       run: |
         cd ../builds/ios/iOS
         zip -D -r ../AdMob.zip .
-        file -I ../AdMob.zip
+        file ../AdMob.zip
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
