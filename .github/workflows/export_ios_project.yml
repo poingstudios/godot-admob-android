@@ -35,6 +35,7 @@ jobs:
         cd ../builds/ios/iOS
         wget "https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/iOS_v3.0%2B/ios-template-v${{matrix.GODOT_VERSIONS}}.zip"
         unzip ios-template-v${{matrix.GODOT_VERSIONS}}.zip
+        rm ios-template-v${{matrix.GODOT_VERSIONS}}.zip
         rm AdMob.a
         mv libgodot.iphone.release.fat.a AdMob.a 
     - name: Zip the exported example project
@@ -47,3 +48,22 @@ jobs:
       with:
         name: AdMob.zip
         path: /home/runner/work/Godot-AdMob-Android-iOS/builds/ios/AdMob.zip 
+
+  test:
+    name: Test on Xcode
+    runs-on: macos-latest
+    
+    steps:    
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: AdMob.zip
+        
+    - name: Unzip project
+      run: unzip AdMob.zip && ls
+
+    - name: Test on XCode
+      run: xcodebuild -project "AdMob.xcodeproj" \
+            -target "AdMob" \
+            -destination platform=iOS\ Simulator,OS=13.3,name=iPhone\ 11 \
+            clean test | xcpretty
