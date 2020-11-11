@@ -1,0 +1,34 @@
+name: Android Build tester
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: croconut/godot-multi-builder@v1
+      with:
+      #comma separated export presets
+        names: "Android"
+        # if path is in the top level of your directory, skip
+        path-to-game: "tester"
+        # defaults to true, Android currently only exports to debug
+        debug-mode: "example"
+        # outputs to path-to-game/builds/builds.zip
+        # if run multiple times, you can use the step's output variable
+        # to retrieve the separate builds.zip files
+        # if any zip files are too big for your purposes, unzipping is
+        # likely your best bet
+    # because we set the id, we can access the output with:
+    # ${{ steps.build_package.outputs.builds }}
+    # but we'll just upload the .zip file directly as our artifact
+    - uses: actions/upload-artifact@v1
+      with:
+        name: my-builds
+        path: example/builds/builds.zip
+    # now another job would be able to access the my-builds artifact
+    # and do something with it
