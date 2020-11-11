@@ -38,6 +38,7 @@ jobs:
         rm ios-template-v${{matrix.GODOT_VERSIONS}}.zip
         rm AdMob.a
         mv libgodot.iphone.release.fat.a AdMob.a 
+        ls
     - name: Zip the exported example project
       run: | 
         cd ../builds/ios
@@ -64,7 +65,4 @@ jobs:
       run: unzip AdMob.zip && ls
 
     - name: Test on XCode
-      run: xcodebuild -project "AdMob.xcodeproj" \
-            -target "AdMob" \
-            -destination platform=iOS\ Simulator,OS=13.3,name=iPhone\ 11 \
-            clean test | xcpretty
+      run: xcodebuild clean test -project AdMob.xcodeproj -scheme AdMob -destination "platform=iOS Simulator,OS=13.1,name=iPhone 8" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
