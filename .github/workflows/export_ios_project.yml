@@ -72,9 +72,7 @@ jobs:
         xcodebuild -target AdMob \
         -configuration Debug build \
         -allowProvisioningUpdates \
-        -sdk iphonesimulator14.0 \
-        COPY_RESOURCES_FROM_STATIC_FRAMEWORKS = YES \
-        
+        -sdk iphonesimulator14.0 \        
         OTHER_LDFLAGS="-ObjC" \
         FRAMEWORK_FLAG_PREFIX = -framework \
         FRAMEWORK_SEARCH_PATHS = "/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/AdMob/GoogleMobileAdsSdkiOS-7.68.0/GoogleMobileAds.xcframework/ios-i386_x86_64-simulator" \
