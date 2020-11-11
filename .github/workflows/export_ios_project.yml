@@ -50,6 +50,7 @@ jobs:
         path: /home/runner/work/Godot-AdMob-Android-iOS/builds/ios/AdMob.zip 
 
   test:
+    needs: [export]
     name: Test on Xcode
     runs-on: macos-latest
     
