@@ -40,6 +40,11 @@ jobs:
         mv libgodot.iphone.release.fat.a AdMob.a 
         ls
 
+    - name: Compress the binaries
+      run: |
+        cd ../builds/ios/iOS
+        zip -j -r  AdMob.zip ./*
+
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
