@@ -72,4 +72,4 @@ jobs:
         cd AdMob.zip
         xcodebuild -showsdks
         
-        xcodebuild -target AdMob -configuration Debug build -allowProvisioningUpdates -sdk iphonesimulator14.0 -arch x86_64 -arch i386 
+        xcodebuild -target AdMob -configuration Debug build -allowProvisioningUpdates -sdk iphonesimulator14.0 -arch x86_64
