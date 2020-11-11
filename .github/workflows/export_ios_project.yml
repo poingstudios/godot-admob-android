@@ -76,6 +76,7 @@ jobs:
         COPY_RESOURCES_FROM_STATIC_FRAMEWORKS = YES \
         
         OTHER_LDFLAGS="-ObjC" \
+        FRAMEWORK_FLAG_PREFIX = -framework \
         FRAMEWORK_SEARCH_PATHS = "/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/AdMob/GoogleMobileAdsSdkiOS-7.68.0/GoogleMobileAds.xcframework/ios-i386_x86_64-simulator" \
         OTHER_LIBTOOLFLAGS="/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/AdMob/GoogleMobileAdsSdkiOS-7.68.0/GoogleMobileAds.xcframework/ios-i386_x86_64-simulator" \
         -arch x86_64
