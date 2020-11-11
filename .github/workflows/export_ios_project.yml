@@ -18,11 +18,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       
-    - name: Download binaries from iOS Tag
-      run: |
-        #wget "https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/iOS_v3.0%2B/ios-template-v${{matrix.GODOT_VERSIONS}}.zip"
-        ls
-    - name: export game
+    - name: Export AdMob example to iOS
       # Use latest version (see releases for all versions)
       uses: firebelley/godot-export@v2.6.0
       with:
@@ -31,12 +27,14 @@ jobs:
         godot_export_templates_download_url: https://downloads.tuxfamily.org/godotengine/${{matrix.GODOT_VERSIONS}}/Godot_v${{matrix.GODOT_VERSIONS}}-stable_export_templates.tpz
         relative_project_path: ./example/
         use_preset_export_path: true
-        create_release: true
+        create_release: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Verify build ios folder
+    - name: Download ios-template from iOS Tag
       run: |
-        ls
         cd ../builds/ios/iOS
+        wget "https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/iOS_v3.0%2B/ios-template-v${{matrix.GODOT_VERSIONS}}.zip"
+        unzip ios-template-v${{matrix.GODOT_VERSIONS}}.zip
+        rm AdMob.a
+        mv libgodot.iphone.release.fat.a AdMob.a
         ls
