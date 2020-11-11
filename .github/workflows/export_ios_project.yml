@@ -10,8 +10,8 @@ on:
     branches: [ master ]
 jobs:
   export:
-    name: Export and Test on XCode
-    runs-on: "macos-latest"
+    name: Export and Upload Artifact
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         GODOT_VERSIONS: [3.2.3]
@@ -30,14 +30,20 @@ jobs:
         create_release: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Download ios-template from iOS Tag
+    - name: Download ios-template from iOS Tag and rename .a file by ios-template downloaded
       run: |
         cd ../builds/ios/iOS
         wget "https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/iOS_v3.0%2B/ios-template-v${{matrix.GODOT_VERSIONS}}.zip"
         unzip ios-template-v${{matrix.GODOT_VERSIONS}}.zip
         rm AdMob.a
-        mv libgodot.iphone.release.fat.a AdMob.a
-        xcodebuild -project "AdMob.xcodeproj" \
-            -target "AdMob" \
-            -destination platform=iOS\ Simulator,OS=13.3,name=iPhone\ 11 \
-            clean test | xcpretty
+        mv libgodot.iphone.release.fat.a AdMob.a 
+    - name: Zip the exported example project
+      run: | 
+        cd ../builds/ios
+        zip -j AdMob.zip iOS/
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: AdMob.zip
+        path: ../builds/ios/AdMob.zip
