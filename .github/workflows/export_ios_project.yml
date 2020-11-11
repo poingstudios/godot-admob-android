@@ -1,9 +1,9 @@
-name: Export and Test on XCode
+name: (NOT WORKING) Export and Test on XCode
 on:
-  workflow_run:
-    workflows: [ "Build iOS" ]
-    types: 
-      - completed
+  #workflow_run:
+  #  workflows: [ "Build iOS" ]
+  #  types: 
+  #    - completed
   push:
     paths: 
       - '.github/workflows/export_ios_project.yml'
