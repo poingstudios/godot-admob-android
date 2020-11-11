@@ -42,8 +42,10 @@ jobs:
 
     - name: Compress the binaries
       run: |
-        cd ../builds/ios/
-        zip -r AdMob.zip iOS/*
+        pushd ../builds/ios/
+        zip -r AdMob.zip .iOS/
+        popd
+        file -I AdMob.zip
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
