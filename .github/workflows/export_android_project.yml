@@ -15,9 +15,9 @@ jobs:
       #comma separated export presets
         names: "Android"
         # if path is in the top level of your directory, skip
-        path-to-game: "tester"
+        path-to-game: "example"
         # defaults to true, Android currently only exports to debug
-        debug-mode: "example"
+        debug-mode: "true"
         # outputs to path-to-game/builds/builds.zip
         # if run multiple times, you can use the step's output variable
         # to retrieve the separate builds.zip files
