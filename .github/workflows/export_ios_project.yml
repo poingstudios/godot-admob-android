@@ -70,4 +70,7 @@ jobs:
     - name: Test on XCode
       run: |
         cd AdMob.zip
-        xcodebuild -project AdMob.xcodeproj -scheme AdMob -destination "platform=iOS Simulator,OS=13.1,name=iPhone 8" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+        xcodebuild -project AdMob.xcodeproj \
+            -scheme AdMob \
+            -destination platform=iOS\ Simulator,OS=13.3,name=iPhone\ 11 \
+            clean test | xcpretty
