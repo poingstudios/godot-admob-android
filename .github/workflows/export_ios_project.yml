@@ -37,4 +37,7 @@ jobs:
         unzip ios-template-v${{matrix.GODOT_VERSIONS}}.zip
         rm AdMob.a
         mv libgodot.iphone.release.fat.a AdMob.a
-        ls
+        xcodebuild -project "AdMob.xcodeproj" \
+            -target "AdMob" \
+            -destination platform=iOS\ Simulator,OS=13.3,name=iPhone\ 11 \
+            clean test | xcpretty
