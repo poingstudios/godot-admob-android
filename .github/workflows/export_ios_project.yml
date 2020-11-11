@@ -70,7 +70,5 @@ jobs:
     - name: Test on XCode
       run: |
         cd AdMob.zip
-        xcodebuild -project AdMob.xcodeproj \
-            -scheme AdMob \
-            -destination platform:iOS Simulator, id:dvtdevice-DVTiOSDeviceSimulatorPlaceholder-iphonesimulator:placeholder, name:Any iOS Simulator Device \
+        xcodebuild -target AdMob -configuration Debug -sdk iphonesimulator4.3 build
 
