@@ -72,5 +72,5 @@ jobs:
         cd AdMob.zip
         xcodebuild -project AdMob.xcodeproj \
             -scheme AdMob \
-            -destination platform=iOS\ Simulator,OS=13.3,name=iPhone\ 11 \
+            -destination platform:iOS Simulator, id:dvtdevice-DVTiOSDeviceSimulatorPlaceholder-iphonesimulator:placeholder, name:Any iOS Simulator Device \
 
