@@ -59,11 +59,11 @@ jobs:
     - name: Unzip project
       run: |
         cd AdMob
-        unzip AdMob.zip
+        ls
 
     - name: Test on XCode
       run: |
-        cd AdMob.zip
+        cd AdMob
         xcodebuild
         xcodebuild --help
         xcodebuild -help
