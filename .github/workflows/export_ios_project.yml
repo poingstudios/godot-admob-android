@@ -74,6 +74,6 @@ jobs:
         -allowProvisioningUpdates \
         -sdk iphonesimulator14.0 \
         OTHER_LDFLAGS="-ObjC" \
-        OTHER_LDFLAGS="/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/AdMob/GoogleMobileAdsSdkiOS-7.68.0/GoogleMobileAds.xcframework/ios-i386_x86_64-simulator" \
+        OTHER_LDFLAGS="/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/AdMob/GoogleMobileAdsSdkiOS-7.68.0/GoogleMobileAds.xcframework/ios-i386_x86_64-simulator/GoogleMobileAds.framework" \
         OTHER_LIBTOOLFLAGS="/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/AdMob/GoogleMobileAdsSdkiOS-7.68.0/GoogleMobileAds.xcframework/ios-i386_x86_64-simulator" \
         -arch x86_64
