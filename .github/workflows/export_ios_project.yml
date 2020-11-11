@@ -39,17 +39,12 @@ jobs:
         rm AdMob.a
         mv libgodot.iphone.release.fat.a AdMob.a 
         ls
-    - name: Zip the exported example project
-      run: | 
-        cd ../builds/ios
-        zip -r AdMob.zip iOS/*
-        ls
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: AdMob.zip
-        path: /home/runner/work/Godot-AdMob-Android-iOS/builds/ios/
+        path: /home/runner/work/Godot-AdMob-Android-iOS/builds/ios/iOS/
 
   test:
     needs: [export]
