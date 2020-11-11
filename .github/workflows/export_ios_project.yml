@@ -40,7 +40,7 @@ jobs:
     - name: Zip the exported example project
       run: | 
         cd ../builds/ios
-        zip -j AdMob.zip iOS/
+        zip -j AdMob.zip iOS/*
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
