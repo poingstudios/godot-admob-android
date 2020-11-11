@@ -40,17 +40,11 @@ jobs:
         mv libgodot.iphone.release.fat.a AdMob.a 
         ls
 
-    - name: Compress the binaries
-      run: |
-        cd ../builds/ios/iOS
-        zip -D -r ../AdMob.zip .
-        file ../AdMob.zip
-
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-        name: AdMob.zip
-        path: /home/runner/work/Godot-AdMob-Android-iOS/builds/ios/AdMob.zip
+        name: AdMob
+        path: /home/runner/work/Godot-AdMob-Android-iOS/builds/ios/iOS/
 
   test:
     needs: [export]
@@ -64,12 +58,16 @@ jobs:
         
     - name: Unzip project
       run: |
-        cd AdMob.zip
-        unzip AdMob.zip 
+        cd AdMob
+        unzip AdMob.zip
 
     - name: Test on XCode
       run: |
         cd AdMob.zip
+        xcodebuild
+        xcodebuild --help
+        xcodebuild -help
+        xcodebuild -framework 
         xcodebuild -showsdks
         
         xcodebuild -target AdMob -configuration Debug build -allowProvisioningUpdates -sdk iphonesimulator14.0 -arch x86_64
