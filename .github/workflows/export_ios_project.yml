@@ -73,4 +73,4 @@ jobs:
         xcodebuild -project AdMob.xcodeproj \
             -scheme AdMob \
             -destination platform=iOS\ Simulator,OS=13.3,name=iPhone\ 11 \
-            clean test | xcpretty
+
