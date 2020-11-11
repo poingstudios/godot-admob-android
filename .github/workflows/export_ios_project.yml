@@ -10,8 +10,8 @@ on:
     branches: [ master ]
 jobs:
   export:
-    name: Upload assets to release
-    runs-on: ubuntu-latest
+    name: Export and Test on XCode
+    runs-on: "macos-latest"
     strategy:
       matrix:
         GODOT_VERSIONS: [3.2.3]
