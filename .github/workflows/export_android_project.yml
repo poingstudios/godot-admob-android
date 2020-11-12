@@ -31,7 +31,7 @@ jobs:
         chmod +x godot/godot_executable/
         unzip -q godot/godot_templates.tpz -d godot
         mv godot/templates godot/tmp
-        mv godot/tmp godot/tmp/3.2.3.stable
+        mv godot/tmp godot/templates/3.2.3.stable
 
     - name: Write Editor Settings
       run: |
