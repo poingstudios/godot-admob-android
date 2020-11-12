@@ -34,7 +34,8 @@ jobs:
         mkdir godot/templates
         mkdir godot/templates/3.2.3.stable
         mv godot/tmp godot/templates/3.2.3.stable
-
+        cd godot/templates/3.2.3.stable
+        ls
 
     - name: Install Android Build Template
       run: |
