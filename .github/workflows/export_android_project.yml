@@ -21,34 +21,23 @@ jobs:
     - name: Downloading executable 
       run: |
         wget -nv https://downloads.tuxfamily.org/godotengine/3.2.3/Godot_v3.2.3-stable_linux_headless.64.zip -O godot/godot.zip
-    - name: Prepare executable
-      run: |
-        unzip godot/godot.zip -d godot/godot_executable 
-        mv godot/godot_executable/Godot_v3.2.3-stable_linux_headless.64 godot/godot_executable/godot
-    - name: Get version
-      run: |
-        pwd
-        chmod +x godot/godot_executable/
-        unzip -q godot/godot_templates.tpz -d godot
-        mv godot/templates godot/tmp
-        mkdir godot/templates
-        mkdir godot/templates/3.2.3.stable
-        mv godot/tmp godot/templates/3.2.3.stable
-        cd godot/templates/3.2.3.stable/tmp
-        ls
 
     - name: Install Android Build Template
       run: |
+        unzip godot/godot_templates.tpz
         wget -nv https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/Android_v3.2.2%2B/android-template-v3.2.3.zip
         mkdir example/android
         mkdir example/android/plugins
         mkdir example/android/build
         echo "3.2.3.stable" >> example/android/.build_version
         unzip android-template-v3.2.3.zip -d example/android/plugins
-        unzip godot/templates/3.2.3.stable/tmp/android_source.zip -d example/android/build
+        unzip templates/android_source.zip -d example/android/build
         
         
-        cd example/android/plugins
+        cd example/android
+        ls
+        echo "ON EXAMPLE/ANDROID"
+        cd plugins
         ls
         cd ../
         cd build
