@@ -24,13 +24,12 @@ jobs:
     - name: Prepare executable
       run: |
         unzip godot/godot.zip -d godot/godot_executable 
-        mkdir godot/godot_executable/godot
         mv godot/godot_executable/Godot_v3.2.3-stable_linux_headless.64 godot/godot_executable/godot
     - name: Get version
       run: |
         pwd
         chmod +x godot/godot_executable/godot/Godot_v3.2.3-stable_linux_headless.64
-        /home/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/godot/godot_executable/godot/Godot_v3.2.3-stable_linux_headless.64 --version
+        /home/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/godot/godot_executable/godot--version
 
     - name: Prepare templates
       run: |
