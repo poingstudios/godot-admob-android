@@ -22,11 +22,8 @@ jobs:
         wget -nv https://downloads.tuxfamily.org/godotengine/3.2.3/Godot_v3.2.3-stable_linux_headless.64.zip -O godot/godot.zip
     - name: Prepare executable
       run: |
-        mkdir godot/godot_executable
-
+        #mkdir godot/godot_executable
         unzip godot/godot.zip -d godot/godot_executable 
-        cd godot
-        ls
-        file godot_executable
-        cd godot_executable
+        mv godot/godot_executable/Godot_v3.2.3-stable_linux_headless.64 godot/godot_executable/godot
+        cd godot/godot_executable/godot
         ls
