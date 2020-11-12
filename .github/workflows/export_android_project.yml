@@ -13,6 +13,7 @@ jobs:
     - name: Setup Godot working directory
       run: |
         mkdir godot
+
     - name: Downloading templates 
       run: |
         wget -nv https://downloads.tuxfamily.org/godotengine/3.2.3/Godot_v3.2.3-stable_export_templates.tpz -O godot/godot_templates.tpz
@@ -26,5 +27,23 @@ jobs:
         mkdir godot/godot_executable/godot
         mv godot/godot_executable/Godot_v3.2.3-stable_linux_headless.64 godot/godot_executable/godot
         chmod +x godot/godot_executable/godot
-        cd godot/godot_executable/godot
-        ls
+    - name: Get version
+      run: |
+        cd godot/godot_executable
+        godot --version
+
+    - name: Prepare templates
+      run: |
+        unzip -q godot/godot_templates.tpz -d godot
+        mv godot/templates godot/tmp
+        mv godot/tmp godot/tmp/3.2.3.stable
+
+    - name: Write Editor Settings
+      run: |
+        echo "[gd_resource type="EditorSettings" format=2] \n \
+        \n \
+        [resource] \n \
+        export/android/adb = "/usr/bin/adb" \n \
+        export/android/jarsigner = "/usr/bin/jarsigner" \n \
+        export/android/custom_build_sdk_path = "/usr/local/lib/android/sdk" >> editor_settings-3.tres
+        cat editor_settings-3.tres
