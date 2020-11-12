@@ -33,7 +33,7 @@ jobs:
         ls
         mv Godot_v3.2.3-stable_linux_headless.64 godot.64
         ls
-        godot.64 --version
+        ./godot.64 --version
 
     - name: Prepare templates
       run: |
