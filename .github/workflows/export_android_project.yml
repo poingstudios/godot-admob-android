@@ -29,7 +29,6 @@ jobs:
       run: |
         pwd
         chmod +x godot/godot_executable/
-        godot/godot_executable/godot --verbose --no-window --version
         unzip -q godot/godot_templates.tpz -d godot
         mv godot/templates godot/tmp
         mv godot/tmp godot/tmp/3.2.3.stable
