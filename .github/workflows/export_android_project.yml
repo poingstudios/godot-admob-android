@@ -31,7 +31,7 @@ jobs:
       run: |
         cd godot/godot_executable/godot
         ls
-        mv Godot_v3.2.3-stable_linux_headless.64 godot
+        mv Godot_v3.2.3-stable_linux_headless.64 godot.64
         ls
         godot --version
 
