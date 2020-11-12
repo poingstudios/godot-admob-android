@@ -63,7 +63,7 @@ jobs:
 
     - uses: sersoft-gmbh/xcodebuild-action@v1
       with:
-        project: path/to/your/project.xcodeproj
+        project: AdMob/AdMob.xcodeproj
         configuration: Debug
         action: build
         sdk: iphonesimulator14.0
