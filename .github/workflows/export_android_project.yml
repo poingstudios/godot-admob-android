@@ -28,7 +28,7 @@ jobs:
     - name: Get version
       run: |
         pwd
-        chmod +x godot/godot_executable/godot/Godot_v3.2.3-stable_linux_headless.64
+        chmod +x godot/godot_executable/
         /home/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/godot/godot_executable/godot--version
 
     - name: Prepare templates
