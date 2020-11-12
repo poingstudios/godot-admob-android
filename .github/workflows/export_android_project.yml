@@ -16,5 +16,15 @@ jobs:
     - name: Downloading templates 
       run: |
         wget -nv https://downloads.tuxfamily.org/godotengine/3.2.3/Godot_v3.2.3-stable_export_templates.tpz -O godot/godot_templates.tpz
+
+    - name: Downloading executable 
+      run: |
+        wget -nv https://downloads.tuxfamily.org/godotengine/3.2.3/Godot_v3.2.3-stable_linux_headless.64.zip -O godot/godot.zip
+    - name: Prepare executable
+      run: |
+        7z x godot/godot.zip -o godot/godot_executable -y
         cd godot
+        ls
+        file godot_executable
+        cd godot_executable
         ls
