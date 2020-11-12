@@ -61,19 +61,12 @@ jobs:
         cd AdMob
         ls
 
-    - name: Test on XCode
-      run: |
-        cd AdMob
-        unzip googlemobileadssdkios.zip
-        rm googlemobileadssdkios.zip
-        pwd
-        xcodebuild -help
-        
-        xcodebuild -target AdMob \
-        -configuration Debug build \
-        -allowProvisioningUpdates \
-        -sdk iphonesimulator14.0 \
-        OTHER_LDFLAGS="-ObjC" \
-        FRAMEWORK_SEARCH_PATHS = "/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/AdMob/GoogleMobileAdsSdkiOS-7.68.0/GoogleMobileAds.xcframework/ios-i386_x86_64-simulator" \
-        OTHER_LIBTOOLFLAGS="/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/AdMob/GoogleMobileAdsSdkiOS-7.68.0/GoogleMobileAds.xcframework/ios-i386_x86_64-simulator" \
-        -arch x86_64
+    - uses: sersoft-gmbh/xcodebuild-action@v1
+      with:
+        project: path/to/your/project.xcodeproj
+        configuration: Debug
+        action: build
+        sdk: iphonesimulator14.0
+        build-settings: -target AdMob -arch x86_64 -allowProvisioningUpdates OTHER_LDFLAGS="-ObjC" FRAMEWORK_SEARCH_PATHS="/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/AdMob/GoogleMobileAdsSdkiOS-7.68.0/GoogleMobileAds.xcframework/ios-i386_x86_64-simulator"
+            OTHER_LIBTOOLFLAGS="/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/AdMob/GoogleMobileAdsSdkiOS-7.68.0/GoogleMobileAds.xcframework/ios-i386_x86_64-simulator"
+
