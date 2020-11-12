@@ -37,10 +37,33 @@ jobs:
 
     - name: Write Editor Settings
       run: |
-        echo "[gd_resource type="EditorSettings" format=2] \n \
-        \n \
-        [resource] \n \
-        export/android/adb = "/usr/bin/adb" \n \
-        export/android/jarsigner = "/usr/bin/jarsigner" \n \
-        export/android/custom_build_sdk_path = "/usr/local/lib/android/sdk"" >> editor_settings-3.tres
-        cat editor_settings-3.tres
+        echo "[gd_resource type="EditorSettings" format=2] \
+        \
+        [resource] \
+        export/android/adb = "/usr/bin/adb" \
+        export/android/jarsigner = "/usr/bin/jarsigner" \
+        export/android/custom_build_sdk_path = "/usr/local/lib/android/sdk"" >> /home/runner/.config/godot/editor_settings-3.tres
+        cat /home/runner/.config/godot/editor_settings-3.tres
+        cd /usr/bin/
+        ls
+        cd jarsigner
+        ls
+        
+
+    - name: Install Android Build Template
+      run: |
+        wget -nv https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/Android_v3.2.2%2B/android-template-v3.2.3.zip
+        mkdir example/android
+        mkdir example/android/plugins
+        mkdir example/android/build
+        echo "3.2.3.stable" >> example/android/.build_version
+        unzip android-template-v3.2.3.zip -d example/android/plugins
+        unzip godot/templates/3.2.3.stable/android_source.zip example/android/build
+        
+        
+        cd example/android/plugins
+        ls
+        cd ../
+        cd build
+        ls
+        
