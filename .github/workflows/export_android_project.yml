@@ -30,9 +30,6 @@ jobs:
         pwd
         chmod +x godot/godot_executable/
         godot/godot_executable/godot --verbose --version
-
-    - name: Prepare templates
-      run: |
         unzip -q godot/godot_templates.tpz -d godot
         mv godot/templates godot/tmp
         mv godot/tmp godot/tmp/3.2.3.stable
