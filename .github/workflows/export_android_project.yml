@@ -35,6 +35,7 @@ jobs:
         
         
         cd example/android
+        cat .build_version
         ls
         echo "ON EXAMPLE/ANDROID"
         cd plugins
@@ -42,4 +43,23 @@ jobs:
         cd ../
         cd build
         ls
-        
+
+    - uses: croconut/godot-multi-builder@v1
+      id: builds
+      with:
+      #comma separated export presets
+        names: "Android"
+        # if path is in the top level of your directory, skip
+        path-to-game: "example"
+        # defaults to true, Android currently only exports to debug
+        debug-mode: "true"
+
+    # because we set the id, we can access the output with:
+    # ${{ steps.build_package.outputs.builds }}
+    # but we'll just upload the .zip file directly as our artifact
+    - uses: actions/upload-artifact@v1
+      with:
+        name: my-builds
+        path: tester/builds/builds.zip
+    # now another job would be able to access the my-builds artifact
+    # and do something with it
