@@ -1,9 +1,9 @@
 name: Export for Android and iOS
 on:
-  #workflow_run:
-  #  workflows: [ "Build iOS" ]
-  #  types: 
-  #    - completed
+  workflow_run:
+    workflows: [ "Build iOS", "Build Android" ]
+    types: 
+      - completed
   push:
     paths: 
       - '.github/workflows/export_android_ios_project.yml'
