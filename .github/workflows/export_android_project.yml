@@ -30,7 +30,7 @@ jobs:
     - name: Get version
       run: |
         pwd
-        godot/godot_executable/godot --version
+        /home/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/godot/godot_executable/godot --version
 
     - name: Prepare templates
       run: |
