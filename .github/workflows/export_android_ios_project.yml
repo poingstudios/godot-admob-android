@@ -1,4 +1,4 @@
-name: (NOT WORKING) Export and Test on XCode
+name: Export for Android and iOS
 on:
   #workflow_run:
   #  workflows: [ "Build iOS" ]
@@ -17,7 +17,23 @@ jobs:
         GODOT_VERSIONS: [3.2.3]
     steps:
     - uses: actions/checkout@v2
-      
+
+    - name: Downloading templates 
+      run: |
+        wget -nv https://downloads.tuxfamily.org/godotengine/${{matrix.GODOT_VERSIONS}}/Godot_v${{matrix.GODOT_VERSIONS}}-stable_export_templates.tpz -O godot/godot_templates.tpz
+
+    - name: Install Android Build Template
+      run: |
+        unzip godot/godot_templates.tpz
+        wget -nv https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/Android_v${{matrix.GODOT_VERSIONS}}%2B/android-template-v${{matrix.GODOT_VERSIONS}}.zip
+        mkdir example/android
+        mkdir example/android/plugins
+        mkdir example/android/build
+        echo "${{matrix.GODOT_VERSIONS}}.stable" >> example/android/.build_version
+        unzip android-template-v${{matrix.GODOT_VERSIONS}}.zip -d example/android/plugins
+        unzip templates/android_source.zip -d example/android/build
+        
+
     - name: Export AdMob example to iOS
       # Use latest version (see releases for all versions)
       uses: firebelley/godot-export@v2.6.0
@@ -40,11 +56,19 @@ jobs:
         mv libgodot.iphone.release.fat.a AdMob.a 
         ls
 
+
+
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-        name: AdMob
+        name: AdMobiOS
         path: /home/runner/work/Godot-AdMob-Android-iOS/builds/ios/iOS/
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: AdMobAndroid
+        path: /home/runner/work/Godot-AdMob-Android-iOS/builds/android/Android/
 
   test:
     needs: [export]
