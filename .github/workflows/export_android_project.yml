@@ -45,7 +45,7 @@ jobs:
 
     - name: Verify .apk
       run: |
-        cd examples
+        cd example
         ls
         cd builds
         ls
@@ -55,6 +55,6 @@ jobs:
     - uses: actions/upload-artifact@v1
       with:
         name: APK
-        path: examples/builds/builds.zip
+        path: example/builds/builds.zip
     # now another job would be able to access the my-builds artifact
     # and do something with it
