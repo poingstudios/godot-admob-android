@@ -29,11 +29,8 @@ jobs:
         chmod +x godot/godot_executable/godot
     - name: Get version
       run: |
-        cd godot/godot_executable/godot
-        ls
-        mv Godot_v3.2.3-stable_linux_headless.64 godot.64
-        ls
-        ./godot.64 --version
+        pwd
+        godot/godot_executable/godot --version
 
     - name: Prepare templates
       run: |
