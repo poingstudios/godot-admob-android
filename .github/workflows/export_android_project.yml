@@ -42,5 +42,5 @@ jobs:
         [resource] \n \
         export/android/adb = "/usr/bin/adb" \n \
         export/android/jarsigner = "/usr/bin/jarsigner" \n \
-        export/android/custom_build_sdk_path = "/usr/local/lib/android/sdk" >> editor_settings-3.tres
+        export/android/custom_build_sdk_path = "/usr/local/lib/android/sdk"" >> editor_settings-3.tres
         cat editor_settings-3.tres
