@@ -34,9 +34,10 @@ jobs:
         mkdir godot/templates
         mkdir godot/templates/3.2.3.stable
         mv godot/tmp godot/templates/3.2.3.stable
-
+ 
     - name: Write Editor Settings
       run: |
+        mkdir /home/runner/.config/godot
         echo "[gd_resource type="EditorSettings" format=2] \
         \
         [resource] \
