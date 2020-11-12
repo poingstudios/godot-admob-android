@@ -34,22 +34,7 @@ jobs:
         mkdir godot/templates
         mkdir godot/templates/3.2.3.stable
         mv godot/tmp godot/templates/3.2.3.stable
- 
-    - name: Write Editor Settings
-      run: |
-        mkdir /home/runner/.config/godot
-        echo "[gd_resource type="EditorSettings" format=2] \
-        \
-        [resource] \
-        export/android/adb = "/usr/bin/adb" \
-        export/android/jarsigner = "/usr/bin/jarsigner" \
-        export/android/custom_build_sdk_path = "/usr/local/lib/android/sdk"" >> /home/runner/.config/godot/editor_settings-3.tres
-        cat /home/runner/.config/godot/editor_settings-3.tres
-        cd /usr/bin/
-        ls
-        cd jarsigner
-        ls
-        
+
 
     - name: Install Android Build Template
       run: |
