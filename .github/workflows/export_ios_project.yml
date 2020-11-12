@@ -59,7 +59,8 @@ jobs:
     - name: Unzip project
       run: |
         cd AdMob
-        ls
+        unzip googlemobileadssdkios.zip
+        rm googlemobileadssdkios.zip
 
     - uses: sersoft-gmbh/xcodebuild-action@v1
       with:
