@@ -44,13 +44,20 @@ jobs:
 
 
     - name: Verify .apk
-      run: cd builds/android && ls
+      run: |
+        ls
+        cd ../
+        ls
+        cd builds
+        ls
+        cd android
+        ls
     # because we set the id, we can access the output with:
     # ${{ steps.build_package.outputs.builds }}
     # but we'll just upload the .zip file directly as our artifact
     - uses: actions/upload-artifact@v1
       with:
         name: APK
-        path: builds/android/AdMob.apk
+        path: ../builds/android/AdMob.apk
     # now another job would be able to access the my-builds artifact
     # and do something with it
