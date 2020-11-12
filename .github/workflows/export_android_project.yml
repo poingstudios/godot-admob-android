@@ -29,8 +29,8 @@ jobs:
         chmod +x godot/godot_executable/godot
     - name: Get version
       run: |
-        cd godot/godot_executable
-        godot --version
+        cd godot/godot_executable/godot
+        --version
 
     - name: Prepare templates
       run: |
