@@ -34,7 +34,7 @@ jobs:
         mkdir godot/templates
         mkdir godot/templates/3.2.3.stable
         mv godot/tmp godot/templates/3.2.3.stable
-        cd godot/templates/3.2.3.stable
+        cd godot/templates/3.2.3.stable/tmp
         ls
 
     - name: Install Android Build Template
@@ -45,7 +45,7 @@ jobs:
         mkdir example/android/build
         echo "3.2.3.stable" >> example/android/.build_version
         unzip android-template-v3.2.3.zip -d example/android/plugins
-        unzip godot/templates/3.2.3.stable/android_source.zip example/android/build
+        unzip godot/templates/3.2.3.stable/tmp/android_source.zip example/android/build
         
         
         cd example/android/plugins
