@@ -10,25 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: croconut/godot-multi-builder@v1
-      with:
-      #comma separated export presets
-        names: "Android"
-        # if path is in the top level of your directory, skip
-        path-to-game: "example"
-        # defaults to true, Android currently only exports to debug
-        debug-mode: "true"
-        # outputs to path-to-game/builds/builds.zip
-        # if run multiple times, you can use the step's output variable
-        # to retrieve the separate builds.zip files
-        # if any zip files are too big for your purposes, unzipping is
-        # likely your best bet
-    # because we set the id, we can access the output with:
-    # ${{ steps.build_package.outputs.builds }}
-    # but we'll just upload the .zip file directly as our artifact
-    - uses: actions/upload-artifact@v1
-      with:
-        name: my-builds
-        path: example/builds/builds.zip
-    # now another job would be able to access the my-builds artifact
-    # and do something with it
+    - name: Setup Godot working directory
+      run: |
+        mkdir godot
+    - name: Downloading templates 
+      run: |
+        wget -nv https://downloads.tuxfamily.org/godotengine/3.2.3/Godot_v3.2.3-stable_export_templates.tpz -O godot/godot_templates.tpz
+        cd godot
+        ls
