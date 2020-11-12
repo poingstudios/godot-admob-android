@@ -6,7 +6,7 @@ on:
   #    - completed
   push:
     paths: 
-      - '.github/workflows/export_ios_project.yml'
+      - '.github/workflows/export_android_ios_project.yml'
     branches: [ master ]
 jobs:
   export:
