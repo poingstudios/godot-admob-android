@@ -36,16 +36,18 @@ jobs:
         unzip android-template-v${{matrix.GODOT_VERSIONS}}.zip -d example/android/plugins
         unzip templates/android_source.zip -d example/android/build
 
+ 
+    - name: XMLStarlet
+      uses: Mudlet/xmlstarlet-action@master
+      with:
+        args: xmlstarlet ed --subnode "/manifest/application" --type elem -n meta-data -v "" example/android/build/AndroidManifest.xml | \ xmlstarlet ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:name -v com.google.android.gms.ads.APPLICATION_ID | \ xmlstarlet ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:value -v ca-app-pub-3940256099942544~3347511713 > example/android/build/output.xml
+
     - name: Change AndroidManifest.xml
       run: |
         cd example/android/build
-        apt-get update -y
-        DEBIAN_FRONTEND="noninteractive" 
-        yes 1 | apt-get -y install tzdata
-        yes 1 | apt-get -y install xmlstarlet 
-        xmlstarlet ed --subnode "/manifest/application" --type elem -n meta-data -v "" AndroidManifest.xml | \
-        xmlstarlet ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:name -v com.google.android.gms.ads.APPLICATION_ID | \
-        xmlstarlet ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:value -v ca-app-pub-3940256099942544~3347511713 > output.xml
+        #xmlstarlet ed --subnode "/manifest/application" --type elem -n meta-data -v "" AndroidManifest.xml | \
+        #xmlstarlet ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:name -v com.google.android.gms.ads.APPLICATION_ID | \
+        #xmlstarlet ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:value -v ca-app-pub-3940256099942544~3347511713 > output.xml
         mv output.xml AndroidManifest.xml
         cat AndroidManifest.xml
         ls
