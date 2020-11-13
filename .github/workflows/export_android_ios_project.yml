@@ -37,7 +37,7 @@ jobs:
         unzip templates/android_source.zip -d example/android/build
         cd example/android/build
         cat AndroidManifest.xml
-
+        echo "" > output.xml
  
     - name: XMLStarlet
       uses: Mudlet/xmlstarlet-action@master
