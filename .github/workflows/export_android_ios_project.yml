@@ -55,6 +55,7 @@ jobs:
         relative_project_path: ./example/
         use_preset_export_path: true
         create_release: false
+        export_debug: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
