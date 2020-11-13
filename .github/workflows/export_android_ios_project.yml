@@ -43,7 +43,7 @@ jobs:
       uses: Mudlet/xmlstarlet-action@master
       with:
         args: 
-          ed --subnode "/manifest/application" --type elem -n meta-data -v "" /__w/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/example/android/build/AndroidManifest.xml > /__w/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/example/android/build/output.xml
+          ed --subnode "/manifest/application" --type elem -n meta-data -v "" example/android/build/AndroidManifest.xml 
     - name: XMLStarlet Add android:name
       uses: Mudlet/xmlstarlet-action@master
       with:
