@@ -35,11 +35,10 @@ jobs:
         echo "${{matrix.GODOT_VERSIONS}}.stable" >> example/android/.build_version
         unzip android-template-v${{matrix.GODOT_VERSIONS}}.zip -d example/android/plugins
         unzip templates/android_source.zip -d example/android/build
-        pwd
-        cd /home/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/example/android/build
-        cat AndroidManifest.xml
-        echo "" > output.xml
  
+    - name: Show current folder
+      run: pwd 
+
     - name: XMLStarlet
       uses: Mudlet/xmlstarlet-action@master
       with:
