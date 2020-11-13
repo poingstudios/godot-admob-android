@@ -39,6 +39,7 @@ jobs:
     - name: Change AndroidManifest.xml
       run: |
         apt-get update -y
+        DEBIAN_FRONTEND=noninteractive
         apt-get install -y tzdata
         apt-get install -y xmlstarlet
         cd example/android/build
