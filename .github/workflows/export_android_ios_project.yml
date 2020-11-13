@@ -39,12 +39,12 @@ jobs:
         sudo apt-get install -y xmlstarlet
         cd example/android/build
         xmlstarlet ed --subnode "/manifest/application" --type elem -n meta-data -v "" AndroidManifest.xml | \
-        xmlstarlet ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:name -v com.google.android.gms.ads.APPLICATION_ID > output.xml
-        rm AndroidManifest.xml
+        xmlstarlet ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:name -v com.google.android.gms.ads.APPLICATION_ID | \
+        xmlstarlet ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:value -v ca-app-pub-3940256099942544~3347511713 > output.xml
+        cat output.xml
         ls
         mv output.txt AndroidManifest.xml
-        cat AndroidManifest.xml
-
+        ls
     - name: Export AdMob example to iOS
       # Use latest version (see releases for all versions)
       uses: firebelley/godot-export@master
