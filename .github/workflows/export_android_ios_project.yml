@@ -37,23 +37,23 @@ jobs:
         unzip templates/android_source.zip -d example/android/build
  
     - name: Show current folder
-      run: pwd 
+      run: pwd && cd /__w/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/example/android/build && ls
 
     - name: XMLStarlet
       uses: Mudlet/xmlstarlet-action@master
       with:
         args: 
-          ed --subnode "/manifest/application" --type elem -n meta-data -v "" /home/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/example/android/build/AndroidManifest.xml > /home/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/example/android/build/output.xml
+          ed --subnode "/manifest/application" --type elem -n meta-data -v "" /__w/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/example/android/build/AndroidManifest.xml > /__w/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/example/android/build/output.xml
     - name: XMLStarlet Add android:name
       uses: Mudlet/xmlstarlet-action@master
       with:
         args: 
-          ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:name -v com.google.android.gms.ads.APPLICATION_ID /home/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/example/android/build/output.xml > /home/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/example/android/build/AndroidManifest.xml 
+          ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:name -v com.google.android.gms.ads.APPLICATION_ID /__w/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/example/android/build/output.xml > /__w/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/example/android/build/AndroidManifest.xml 
     - name: XMLStarlet add android:value
       uses: Mudlet/xmlstarlet-action@master
       with:
         args: 
-          ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:value -v ca-app-pub-3940256099942544~3347511713 /home/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/example/android/build/AndroidManifest.xml > /home/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/example/android/build/output.xml
+          ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:value -v ca-app-pub-3940256099942544~3347511713 /__w/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/example/android/build/AndroidManifest.xml > /__w/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/example/android/build/output.xml
 
     - name: Change AndroidManifest.xml
       run: |
