@@ -39,6 +39,7 @@ jobs:
     - name: Change AndroidManifest.xml
       run: |
         apt-get update -y
+        apt-get install -y tzdata
         apt-get install -y xmlstarlet
         cd example/android/build
         xmlstarlet ed --subnode "/manifest/application" --type elem -n meta-data -v "" AndroidManifest.xml | \
