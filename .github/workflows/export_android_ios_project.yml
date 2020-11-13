@@ -48,7 +48,7 @@ jobs:
         sdkmanager "build-tools;29.0.2"
         
     - name: Verify Android bin ADB
-      run: cd /usr/local/lib && ls
+      run: cd /usr/bin && ls
 
     - name: Change AndroidManifest.xml
       run: |
