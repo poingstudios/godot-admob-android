@@ -38,10 +38,6 @@ jobs:
 
     - name: Change AndroidManifest.xml
       run: |
-        apt-get update -y
-        DEBIAN_FRONTEND=noninteractive
-        apt-get install -y tzdata
-        apt-get install -y xmlstarlet
         cd example/android/build
         xmlstarlet ed --subnode "/manifest/application" --type elem -n meta-data -v "" AndroidManifest.xml | \
         xmlstarlet ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:name -v com.google.android.gms.ads.APPLICATION_ID | \
