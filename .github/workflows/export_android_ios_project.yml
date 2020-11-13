@@ -41,14 +41,13 @@ jobs:
         xmlstarlet ed --subnode "/manifest/application" --type elem -n meta-data -v "" AndroidManifest.xml | \
         xmlstarlet ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:name -v com.google.android.gms.ads.APPLICATION_ID | \
         xmlstarlet ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:value -v ca-app-pub-3940256099942544~3347511713 > output.xml
-        ls
-        echo "BEFORE ANDROID MANIFEST"
         mv output.xml AndroidManifest.xml
-        echo "AFTER ANDROID MANIFEST"        
+        cat AndroidManifest.xml
+        ls
 
     - name: Export AdMob example to iOS
       # Use latest version (see releases for all versions)
-      uses: firebelley/godot-export@master
+      uses: firebelley/godot-export@v2.6.0
       with:
         # Defining all the required inputs
         godot_executable_download_url: https://downloads.tuxfamily.org/godotengine/${{matrix.GODOT_VERSIONS}}/Godot_v${{matrix.GODOT_VERSIONS}}-stable_linux_headless.64.zip
@@ -58,6 +57,8 @@ jobs:
         create_release: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
     - name: Download ios-template from iOS Tag and rename .a file by ios-template downloaded
       run: |
         cd ../builds/ios/iOS
@@ -67,7 +68,6 @@ jobs:
         rm AdMob.a
         mv libgodot.iphone.release.fat.a AdMob.a 
         ls
-
 
 
     - name: Upload artifact
