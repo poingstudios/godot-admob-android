@@ -40,7 +40,7 @@ jobs:
         echo "" > output.xml
  
     - name: XMLStarlet
-      uses: Mudlet/xmlstarlet-action@1.1
+      uses: Mudlet/xmlstarlet-action@master
       with:
         args: 
           ed --subnode "/manifest/application" --type elem -n meta-data -v "" /home/runner/work/Godot-AdMob-Android-iOS/example/android/build/AndroidManifest.xml > /home/runner/work/Godot-AdMob-Android-iOS/example/android/build/output.xml
