@@ -40,10 +40,8 @@ jobs:
     - name: XMLStarlet
       uses: Mudlet/xmlstarlet-action@master
       with:
-        args: | 
-          ed --subnode "/manifest/application" --type elem -n meta-data -v "" example/android/build/AndroidManifest.xml 
-          xmlstarlet ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:name -v com.google.android.gms.ads.APPLICATION_ID example/android/build/AndroidManifest.xml 
-          xmlstarlet ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:value -v ca-app-pub-3940256099942544~3347511713 example/android/build/AndroidManifest.xml 
+        args: 
+          ed --subnode "/manifest/application" --type elem -n meta-data -v "" --insert "/manifest/application/meta-data[last()]" --type attr -n android:name -v com.google.android.gms.ads.APPLICATION_ID --insert "/manifest/application/meta-data[last()]" --type attr -n android:value -v ca-app-pub-3940256099942544~3347511713 example/android/build/AndroidManifest.xml 
 
     - name: Change AndroidManifest.xml
       run: |
