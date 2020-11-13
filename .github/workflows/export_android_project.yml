@@ -2,6 +2,8 @@ name: Android Build tester
 
 on:
   push:
+    paths: 
+      - '.github/workflows/export_android_project.yml'
     branches:
     - master
 
