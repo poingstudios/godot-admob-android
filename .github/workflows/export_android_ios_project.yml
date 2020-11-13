@@ -33,10 +33,19 @@ jobs:
         unzip android-template-v${{matrix.GODOT_VERSIONS}}.zip -d example/android/plugins
         unzip templates/android_source.zip -d example/android/build
         
+    - name: Change AndroidManifest.xml
+      run: |
+        sudo apt-get update -y
+        sudo apt-get install -y xmlstarlet
+        cd example/android/build
+        xmlstarlet ed --subnode /manifest/application --type elem -n meta-data -v "" AndroidManifest.xml | xmlstarlet ed --insert /manifest/application/meta-data[last()] --type attr -n android:name -v com.google.android.gms.ads.APPLICATION_ID | xmlstarlet ed --insert /manifest/application/meta-data[last()] --type attr -n android:value -v ca-app-pub-3940256099942544~3347511713 > output.xml
+        rm AndroidManifest.xml
+        mv output.txt AndroidManifest.xml
+        cat AndroidManifest.xml
 
     - name: Export AdMob example to iOS
       # Use latest version (see releases for all versions)
-      uses: firebelley/godot-export@v2.6.0
+      uses: firebelley/godot-export@master
       with:
         # Defining all the required inputs
         godot_executable_download_url: https://downloads.tuxfamily.org/godotengine/${{matrix.GODOT_VERSIONS}}/Godot_v${{matrix.GODOT_VERSIONS}}-stable_linux_headless.64.zip
