@@ -40,9 +40,12 @@ jobs:
         cd example/android/build
         xmlstarlet ed --subnode "/manifest/application" --type elem -n meta-data -v "" AndroidManifest.xml | \
         xmlstarlet ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:name -v com.google.android.gms.ads.APPLICATION_ID | \
-        xmlstarlet ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:value -v ca-app-pub-3940256099942544~3347511713 > AndroidManifest.xml
-        cat AndroidManifest.xml
+        xmlstarlet ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:value -v ca-app-pub-3940256099942544~3347511713 > output.xml
         ls
+        rm AndroidManifest.xml
+        ECHO "BEFORE ANDROID MANIFEST"
+        mv output.xml AndroidManifest.xml
+        ECHO "AFTER ANDROID MANIFEST"        
 
     - name: Export AdMob example to iOS
       # Use latest version (see releases for all versions)
