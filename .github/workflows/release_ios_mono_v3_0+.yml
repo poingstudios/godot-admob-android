@@ -87,10 +87,14 @@ jobs:
         curl -LO https://curl.haxx.se/ca/cacert.pem
         cert-sync --user cacert.pem
 
+    - name: Clone latest mono version
+      run: |
+        git clone https://github.com/mono/mono.git
+
     - name: Building mono for iOS
       run: |
         git clone https://github.com/godotengine/godot-mono-builds.git
-        export MONO_SOURCE_ROOT=/Library/Frameworks/Mono.framework/Versions/Current
+        export MONO_SOURCE_ROOT=/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/mono
         cd godot-mono-builds
         # Build the runtime for the iPhone simulator.
         ./ios.py configure --target=x86_64
