@@ -96,9 +96,6 @@ jobs:
         git clone https://github.com/godotengine/godot-mono-builds.git
         export MONO_SOURCE_ROOT=/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/mono
         cd godot-mono-builds
-        # Build the runtime for the iPhone simulator.
-        ./ios.py configure --target=x86_64
-        ./ios.py make --target=x86_64
 
         # Build the runtime for the iPhone device.
         ./ios.py configure --target=arm64
