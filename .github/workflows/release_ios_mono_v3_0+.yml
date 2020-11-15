@@ -82,6 +82,11 @@ jobs:
       run: |
         mv ios/admob godot-${{env.CURRENT_GODOT_VERSION}}-stable/modules/
 
+    - name: Import necessary certificates for NuGet
+      run: |
+        curl -LO https://curl.haxx.se/ca/cacert.pem
+        cert-sync --user cacert.pem
+
     - name: Compiles the Source Code
       env:
         SCONS_CACHE: ${{github.workspace}}/godot-${{env.CURRENT_GODOT_VERSION}}-stable/.scons_cache/
