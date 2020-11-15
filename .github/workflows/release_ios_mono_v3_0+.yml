@@ -93,17 +93,12 @@ jobs:
         brew install autoconf automake libtool
     - name: Building mono for iOS
       run: |
-        git clone https://github.com/godotengine/godot-mono-builds.git
+        git clone --branch mono-6.12.0.93 https://github.com/godotengine/godot-mono-builds.git
         export MONO_SOURCE_ROOT=/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/mono
         cd godot-mono-builds
 
-        # Build the runtime for the iPhone device.
-        ./ios.py configure --target=arm64
-        ./ios.py make --target=arm64
-
-        # Build the AOT cross-compiler targeting the iPhone device.
-        ./ios.py configure --target=cross-arm64
-        ./ios.py make --target=cross-arm64
+        python3 ./ios.py configure --target=arm64
+        python3 ./ios.py make --target=arm64
 
     - name: Compiles the Source Code
       env:
