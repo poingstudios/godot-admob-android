@@ -1,0 +1,137 @@
+name: Build iOS Mono Version
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  push:
+    paths: 
+      - '.github/workflows/release_ios_mono_v3_0+*.yml'
+      - 'ios/**'
+    branches: [ master ]
+  pull_request:
+    paths: 
+      - 'ios/**'
+    branches: [ master ]
+
+env:
+  TAG_NAME: iOS_mono_v3.0+
+  RELEASE_NAME: iOS Mono Compiled files for v3.0+
+
+jobs:
+  ios-template:
+    name: Compiling for iOS Mono
+    runs-on: "macos-latest"
+    strategy:
+      matrix:
+        GODOT_VERSIONS: [3.1.2, 3.2, 3.2.1, 3.2.2, 3.2.3]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    # Github Actions Matrix doesnt support x.0 values, it's replaced by ''
+    - name: Verify current matrix's GODOT_VERSIONS
+      run: |
+        CURRENT_GODOT_VERSION=${{matrix.GODOT_VERSIONS}}
+        if [ ${#CURRENT_GODOT_VERSION} -eq 1 ]; then CURRENT_GODOT_VERSION="${CURRENT_GODOT_VERSION}.0"; fi
+        echo "CURRENT_GODOT_VERSION=${CURRENT_GODOT_VERSION}" >> $GITHUB_ENV
+
+    # Upload cache on completion and check it out now
+    - name: Load .scons_cache directory
+      id: ios-template-cache
+      uses: actions/cache@v2
+      with:
+        path: ${{github.workspace}}/godot-${{env.CURRENT_GODOT_VERSION}}-stable/.scons_cache/
+        key: ${{github.job}}-master-${{github.ref}}-${{github.sha}}
+        restore-keys: |
+          ${{github.job}}-master-${{github.ref}}-${{github.sha}}
+          ${{github.job}}-master-${{github.ref}}
+          ${{github.job}}-master
+
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v2
+      with:
+        # Semantic version range syntax or exact version of a Python version
+        python-version: '3.x'
+        # Optional - x64 or x86 architecture, defaults to x64
+        architecture: 'x64'
+
+    - name: Configuring Python packages
+      run: |
+        python -c "import sys; print(sys.version)"
+        python -m pip install scons
+        python --version
+        scons --version
+
+    - name: Download and unzip stable Godot version source code
+      run: |
+        FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE="https://github.com/godotengine/godot/archive/${{env.CURRENT_GODOT_VERSION}}-stable.zip"
+        curl -LO $FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE
+        unzip ${{env.CURRENT_GODOT_VERSION}}-stable.zip
+
+    - name: Download, copy and unzip the lastest Google Mobile Ads SDK on release binaries and iOS module folder
+      run: |
+        curl -LO https://dl.google.com/googleadmobadssdk/googlemobileadssdkios.zip
+        mkdir -p godot-${{env.CURRENT_GODOT_VERSION}}-stable/bin/release/
+        cp -R googlemobileadssdkios.zip godot-${{env.CURRENT_GODOT_VERSION}}-stable/bin/release/
+        unzip googlemobileadssdkios.zip -d ios/admob/lib/
+        cd ios/admob/lib
+        cd */
+        mv * ../
+
+    - name: Move the iOS module to Godot's /modules folder
+      run: |
+        mv ios/admob godot-${{env.CURRENT_GODOT_VERSION}}-stable/modules/
+
+    - name: Compiles the Source Code
+      env:
+        SCONS_CACHE: ${{github.workspace}}/godot-${{env.CURRENT_GODOT_VERSION}}-stable/.scons_cache/
+      run: |
+        cd godot-${{env.CURRENT_GODOT_VERSION}}-stable
+        scons p=iphone tools=no target=release arch=arm module_mono_enabled=true mono_glue=yes mono_prefix="$HOME/mono-installs/ios-arm64-release"
+        scons p=iphone tools=no target=release arch=arm64 module_mono_enabled=true mono_glue=yes mono_prefix="$HOME/mono-installs/ios-arm64-release"
+
+        lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a -output bin/release/libgodot.iphone.release.fat.a
+        
+    - name: Compress the binaries
+      run: |
+        zip -j ios-mono-template-v${{env.CURRENT_GODOT_VERSION}}.zip godot-${{env.CURRENT_GODOT_VERSION}}-stable/bin/release/*
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: ios-mono-template-v${{env.CURRENT_GODOT_VERSION}}.zip
+        path: ios-mono-template-v${{env.CURRENT_GODOT_VERSION}}.zip
+
+  upload-assets-release:
+    needs: [ios-template]
+    name: Upload assets to release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      
+    - name: Delete previous tag
+      uses: dev-drprasad/delete-tag-and-release@v0.1.2
+      with:
+        delete_release: true 
+        tag_name: ${{env.TAG_NAME}}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create Release and tag
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{env.TAG_NAME}}
+        release_name: ${{env.RELEASE_NAME}}
+    
+    - name: Upload artifacts to release
+      uses: AButler/upload-release-assets@v2.0
+      with:
+        files: 'ios-mono-template-*.zip/*'
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        release-tag: ${{env.TAG_NAME}}
