@@ -90,7 +90,7 @@ jobs:
     - name: Clone latest mono version
       run: |
         git clone https://github.com/mono/mono.git
-
+        brew install autoconf automake libtool
     - name: Building mono for iOS
       run: |
         git clone https://github.com/godotengine/godot-mono-builds.git
