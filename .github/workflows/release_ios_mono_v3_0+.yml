@@ -87,6 +87,23 @@ jobs:
         curl -LO https://curl.haxx.se/ca/cacert.pem
         cert-sync --user cacert.pem
 
+    - name: Building mono for iOS
+      run: |
+        git clone https://github.com/godotengine/godot-mono-builds.git
+        export MONO_SOURCE_ROOT=/Library/Frameworks/Mono.framework/Versions/Current
+        cd godot-mono-builds
+        # Build the runtime for the iPhone simulator.
+        ./ios.py configure --target=x86_64
+        ./ios.py make --target=x86_64
+
+        # Build the runtime for the iPhone device.
+        ./ios.py configure --target=arm64
+        ./ios.py make --target=arm64
+
+        # Build the AOT cross-compiler targeting the iPhone device.
+        ./ios.py configure --target=cross-arm64
+        ./ios.py make --target=cross-arm64
+
     - name: Compiles the Source Code
       env:
         SCONS_CACHE: ${{github.workspace}}/godot-${{env.CURRENT_GODOT_VERSION}}-stable/.scons_cache/
