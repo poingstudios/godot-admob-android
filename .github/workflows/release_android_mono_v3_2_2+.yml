@@ -3,7 +3,7 @@ name: Build Android Mono
 on:
   push:
     paths: 
-      - '.github/workflows/release_android_mono_v_3.2.2+.yml'
+      - '.github/workflows/release_android_mono_v3_2_2*.yml'
       - 'android/**'
     branches: [ master ]
   pull_request:
