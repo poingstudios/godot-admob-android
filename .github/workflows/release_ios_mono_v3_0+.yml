@@ -97,8 +97,8 @@ jobs:
         SCONS_CACHE: ${{github.workspace}}/godot-${{env.CURRENT_GODOT_VERSION}}-stable/.scons_cache/
       run: |
         cd godot-${{env.CURRENT_GODOT_VERSION}}-stable
-        scons p=iphone tools=no target=release arch=arm module_mono_enabled=true mono_glue=yes mono_prefix="$HOME/mono-installs/ios-arm64-release"
-        scons p=iphone tools=no target=release arch=arm64 module_mono_enabled=true mono_glue=yes mono_prefix="$HOME/mono-installs/ios-arm64-release"
+        scons p=iphone tools=no target=release arch=arm module_mono_enabled=true mono_glue=no mono_prefix="$HOME/mono-installs/ios-arm64-release"
+        scons p=iphone tools=no target=release arch=arm64 module_mono_enabled=true mono_glue=no mono_prefix="$HOME/mono-installs/ios-arm64-release"
 
         lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a -output bin/release/libgodot.iphone.release.fat.a
         
