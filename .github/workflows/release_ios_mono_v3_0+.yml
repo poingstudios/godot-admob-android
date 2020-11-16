@@ -98,6 +98,7 @@ jobs:
       run: |
         git clone https://github.com/godotengine/godot-mono-builds.git
         export MONO_SOURCE_ROOT=/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/mono
+        export DISABLE_NO_WEAK_IMPORTS=1
         cd godot-mono-builds
         python3 ./patch_mono.py
         python3 ./ios.py configure --target=arm64
