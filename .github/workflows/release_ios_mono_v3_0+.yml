@@ -88,20 +88,20 @@ jobs:
         cert-sync --user cacert.pem
         brew install autoconf automake libtool
 
-    - name: Check mono installs
-      run: |
-        cd /Users/runner
-        ls
-        echo "RUNNER"
-        cd mono-installs
-        ls
-        echo "MONO INSTALLS"
-        cd ios-arm64-release
-        ls
-        echo "ARM64"
-        cd lib
-        ls
 
+    - name: Clone latest mono version
+      run: |
+        git clone --branch mono-6.12.0.93 https://github.com/mono/mono.git
+        brew install autoconf automake libtool
+
+    - name: Building mono for iOS
+      run: |
+        git clone https://github.com/godotengine/godot-mono-builds.git
+        export MONO_SOURCE_ROOT=/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/mono
+        cd godot-mono-builds
+        python3 ./patch_mono.py
+        python3 ./ios.py configure --target=arm64
+        python3 ./ios.py make --target=arm64
     - name: Compiles the Source Code
       env:
         SCONS_CACHE: ${{github.workspace}}/godot-${{env.CURRENT_GODOT_VERSION}}-stable/.scons_cache/
