@@ -91,13 +91,16 @@ jobs:
 
     - name: Clone latest mono version
       run: |
-        git clone --branch mono-6.12.0.93 https://github.com/mono/mono.git
         brew install autoconf automake libtool
+        cd /Library/Frameworks/Mono.framework/Versions/Current
+        ls
+        cd bin
+        ls
 
     - name: Building mono for iOS
       run: |
         git clone https://github.com/godotengine/godot-mono-builds.git
-        export MONO_SOURCE_ROOT=/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/mono
+        export MONO_SOURCE_ROOT=/Library/Frameworks/Mono.framework/Versions/Current/mono/bin
         export DISABLE_NO_WEAK_IMPORTS=1
         cd godot-mono-builds
         python3 ./patch_mono.py
