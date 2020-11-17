@@ -23,18 +23,6 @@ jobs:
     runs-on: "macos-latest"
     
     steps:
-    # Upload cache on completion and check it out now
-    - name: Load .mono_cache directory
-      id: mono-cache
-      uses: actions/cache@v2
-      with:
-        path: $HOME/mono-installs/cache/.mono_cache/
-        key: ${{github.job}}-master-${{github.ref}}-${{github.sha}}
-        restore-keys: |
-          ${{github.job}}-master-${{github.ref}}-${{github.sha}}
-          ${{github.job}}-master-${{github.ref}}
-          ${{github.job}}-master
-
     - name: Clone mono version 6.12.0.111
       run: |
         git clone --branch mono-6.12.0.111 https://github.com/mono/mono.git
@@ -62,9 +50,6 @@ jobs:
         cd godot-mono-builds
         ./patch_mono.py
         
-        # Build the runtime for the iPhone simulator.
-        ./ios.py configure --target=x86_64
-        ./ios.py make --target=x86_64
         # Build the runtime for the iPhone device.
         ./ios.py configure --target=arm64
         ./ios.py make --target=arm64
@@ -158,15 +143,15 @@ jobs:
         SCONS_CACHE: ${{github.workspace}}/godot-${{env.CURRENT_GODOT_VERSION}}-stable/.scons_cache/
       run: |
         cd godot-${{env.CURRENT_GODOT_VERSION}}-stable
-        scons p=iphone tools=no target=release arch=arm module_mono_enabled=true mono_glue=no mono_prefix="$HOME/mono-installs/ios-arm64-release"
-        scons p=iphone tools=no target=release arch=arm64 module_mono_enabled=true mono_glue=no mono_prefix="$HOME/mono-installs/ios-arm64-release"
-        #ignore the 3.1 and 3.1.1 version for simulator due: https://github.com/godotengine/godot/issues/32301
-        if [ ${{env.CURRENT_GODOT_VERSION}} != 3.1 ] && [ ${{env.CURRENT_GODOT_VERSION}} != 3.1.1 ]; then
-          scons p=iphone tools=no target=release arch=x86_64 module_mono_enabled=true mono_glue=no mono_prefix="$HOME/mono-installs/ios-x86_64-release"
-          lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a bin/libgodot.iphone.opt.x86_64.a -output bin/release/libgodot.iphone.release.fat.a
-        else
-          lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a -output bin/release/libgodot.iphone.release.fat.a
-        fi
+        scons p=iphone tools=yes target=release arch=arm module_mono_enabled=true mono_glue=no mono_prefix="$HOME/mono-installs/ios-arm64-release"
+        scons p=iphone tools=yes target=release arch=arm64 module_mono_enabled=true mono_glue=no mono_prefix="$HOME/mono-installs/ios-arm64-release"
+        cd bin
+        ls
+        godot.iphone.tools.64.mono --generate-mono-glue modules/mono/glue
+        cd ../
+        scons p=iphone tools=no module_mono_enabled=yes mono_glue=yes
+        ls
+        lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a -output bin/release/libgodot.iphone.release.fat.a
         
     - name: Compress the binaries
       run: |
