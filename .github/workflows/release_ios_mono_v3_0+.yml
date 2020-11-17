@@ -73,7 +73,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: mono-installs
-        path: $HOME/mono-installs/
+        path: /Users/runner/mono-installs/
 
 
   ios-template:
