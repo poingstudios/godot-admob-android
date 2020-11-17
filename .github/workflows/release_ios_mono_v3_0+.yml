@@ -92,7 +92,10 @@ jobs:
     - name: Clone latest mono version
       run: |
         brew install autoconf automake libtool
-        cd /Library/Frameworks/Mono.framework/Versions/Current/mono
+        cd /Library/Frameworks/Mono.framework/Versions/
+        ls
+        echo "GOING CURRENT"
+        cd Current
         ls
 
     - name: Building mono for iOS
