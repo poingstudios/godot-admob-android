@@ -143,8 +143,8 @@ jobs:
         SCONS_CACHE: ${{github.workspace}}/godot-${{env.CURRENT_GODOT_VERSION}}-stable/.scons_cache/
       run: |
         cd godot-${{env.CURRENT_GODOT_VERSION}}-stable
-        scons p=iphone tools=yes target=release arch=arm module_mono_enabled=true mono_glue=no mono_prefix="$HOME/mono-installs/ios-arm64-release"
-        scons p=iphone tools=yes target=release arch=arm64 module_mono_enabled=true mono_glue=no mono_prefix="$HOME/mono-installs/ios-arm64-release"
+        scons p=iphone tools=yes target=release_debug arch=arm module_mono_enabled=true mono_glue=no mono_prefix="$HOME/mono-installs/ios-arm64-release"
+        scons p=iphone tools=yes target=release_debug arch=arm64 module_mono_enabled=true mono_glue=no mono_prefix="$HOME/mono-installs/ios-arm64-release"
         cd bin
         ls
         godot.iphone.tools.64.mono --generate-mono-glue modules/mono/glue
