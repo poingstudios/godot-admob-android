@@ -105,12 +105,7 @@ jobs:
       run: |
         git clone --branch mono-6.12.0.111 https://github.com/mono/mono.git
         export MONO_SOURCE_ROOT=/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/mono
-
-    - name: Clone latest mono version
-      run: |
-        git clone --branch mono-6.12.0.111 https://github.com/mono/mono.git
-
-
+        
     - name: Building master godot-mono-builds
       env:
         MONO_CACHE: ${{github.workspace}}/godot-mono-builds/.mono_cache/
