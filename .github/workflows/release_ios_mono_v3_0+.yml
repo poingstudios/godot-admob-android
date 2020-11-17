@@ -18,7 +18,63 @@ env:
   RELEASE_NAME: iOS Mono Compiled files for v3.0+
 
 jobs:
+  build-mono:
+    name: Build godot-mono-build
+    runs-on: "macos-latest"
+    
+    steps:
+    # Upload cache on completion and check it out now
+    - name: Load .mono_cache directory
+      id: mono-cache
+      uses: actions/cache@v2
+      with:
+        path: $HOME/mono-installs/cache/.mono_cache/
+        key: ${{github.job}}-master-${{github.ref}}-${{github.sha}}
+        restore-keys: |
+          ${{github.job}}-master-${{github.ref}}-${{github.sha}}
+          ${{github.job}}-master-${{github.ref}}
+          ${{github.job}}-master
+
+    - name: Clone mono version 6.12.0.111
+      run: |
+        git clone --branch mono-6.12.0.111 https://github.com/mono/mono.git
+
+    - name: Cloning master godot-mono-builds
+      run: |
+        git clone https://github.com/godotengine/godot-mono-builds.git
+
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v2
+      with:
+        # Semantic version range syntax or exact version of a Python version
+        python-version: '3.x'
+        # Optional - x64 or x86 architecture, defaults to x64
+        architecture: 'x64'
+
+    - name: Building mono for iOS
+      env:
+        MONO_CACHE: $HOME/mono-installs/cache/.mono_cache/
+      run: |
+        export MONO_SOURCE_ROOT=/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/mono
+        cd godot-mono-builds
+        ./patch_mono.py
+        
+        # Build the runtime for the iPhone simulator.
+        ./ios.py configure --target=x86_64
+        ./ios.py make --target=x86_64
+        # Build the runtime for the iPhone device.
+        ./ios.py configure --target=arm64
+        ./ios.py make --target=arm64
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: mono-installs
+        path: $HOME/mono-installs/
+
+
   ios-template:
+    needs: [build-mono]
     name: Compiling for iOS Mono
     runs-on: "macos-latest"
     strategy:
@@ -27,6 +83,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
+
+    - name: Download mono-installs artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: mono-installs
+
+    - name: Display structure of downloaded files
+      run: ls -R
+
+    - name: Move mono-installs to HOME
+      run: mv mono-installs $HOME
 
     # Github Actions Matrix doesnt support x.0 values, it's replaced by ''
     - name: Verify current matrix's GODOT_VERSIONS
@@ -41,18 +109,6 @@ jobs:
       uses: actions/cache@v2
       with:
         path: ${{github.workspace}}/godot-${{env.CURRENT_GODOT_VERSION}}-stable/.scons_cache/
-        key: ${{github.job}}-master-${{github.ref}}-${{github.sha}}
-        restore-keys: |
-          ${{github.job}}-master-${{github.ref}}-${{github.sha}}
-          ${{github.job}}-master-${{github.ref}}
-          ${{github.job}}-master
-
-    # Upload cache on completion and check it out now
-    - name: Load .mono_cache directory
-      id: mono-cache
-      uses: actions/cache@v2
-      with:
-        path: ${{github.workspace}}/godot-mono-builds/.mono_cache/
         key: ${{github.job}}-master-${{github.ref}}-${{github.sha}}
         restore-keys: |
           ${{github.job}}-master-${{github.ref}}-${{github.sha}}
@@ -90,40 +146,16 @@ jobs:
         cd */
         mv * ../
 
-    - name: Move the iOS module to Godot's /modules folder
-      run: |
-        mv ios/admob godot-${{env.CURRENT_GODOT_VERSION}}-stable/modules/
-
     - name: Import necessary certificates for NuGet
       run: |
         curl -LO https://curl.haxx.se/ca/cacert.pem
         cert-sync --user cacert.pem
         brew install autoconf automake libtool
 
-
-    - name: Clone mono version 6.12.0.111
+    - name: Move the iOS module to Godot's /modules folder
       run: |
-        git clone --branch mono-6.12.0.111 https://github.com/mono/mono.git
+        mv ios/admob godot-${{env.CURRENT_GODOT_VERSION}}-stable/modules/
 
-    - name: Cloning master godot-mono-builds
-      run: |
-        git clone https://github.com/godotengine/godot-mono-builds.git
-
-    - name: Building mono for iOS
-      env:
-        MONO_CACHE: ${{github.workspace}}/godot-mono-builds/.mono_cache/
-      run: |
-        export MONO_SOURCE_ROOT=/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/mono
-        cd godot-mono-builds
-        ./patch_mono.py
-        
-        # Build the runtime for the iPhone simulator.
-        ./ios.py configure --target=x86_64
-        ./ios.py make --target=x86_64
-        # Build the runtime for the iPhone device.
-        ./ios.py configure --target=arm64
-        ./ios.py make --target=arm64
-        
     - name: Compiles the Source Code
       env:
         SCONS_CACHE: ${{github.workspace}}/godot-${{env.CURRENT_GODOT_VERSION}}-stable/.scons_cache/
@@ -179,6 +211,6 @@ jobs:
     - name: Upload artifacts to release
       uses: AButler/upload-release-assets@v2.0
       with:
-        files: 'ios-mono-template-*'
+        files: 'ios-mono-template-*/*'
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         release-tag: ${{env.TAG_NAME}}
