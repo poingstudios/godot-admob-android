@@ -105,8 +105,12 @@ jobs:
       run: |
         git clone --branch mono-6.12.0.111 https://github.com/mono/mono.git
         export MONO_SOURCE_ROOT=/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/mono
-        
-    - name: Building master godot-mono-builds
+
+    - name: Cloning master godot-mono-builds
+      run: |
+        git clone https://github.com/godotengine/godot-mono-builds.git
+
+    - name: Building mono for iOS
       env:
         MONO_CACHE: ${{github.workspace}}/godot-mono-builds/.mono_cache/
       run: |
@@ -114,6 +118,7 @@ jobs:
         python3 ./patch_mono.py
         python3 ./ios.py configure --target=arm64
         python3 ./ios.py make --target=arm64
+
     - name: Compiles the Source Code
       env:
         SCONS_CACHE: ${{github.workspace}}/godot-${{env.CURRENT_GODOT_VERSION}}-stable/.scons_cache/
