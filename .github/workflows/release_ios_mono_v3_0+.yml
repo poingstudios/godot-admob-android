@@ -47,6 +47,18 @@ jobs:
           ${{github.job}}-master-${{github.ref}}
           ${{github.job}}-master
 
+    # Upload cache on completion and check it out now
+    - name: Load .mono_cache directory
+      id: mono-cache
+      uses: actions/cache@v2
+      with:
+        path: ${{github.workspace}}/godot-mono-builds/.mono_cache/
+        key: ${{github.job}}-master-${{github.ref}}-${{github.sha}}
+        restore-keys: |
+          ${{github.job}}-master-${{github.ref}}-${{github.sha}}
+          ${{github.job}}-master-${{github.ref}}
+          ${{github.job}}-master
+
     - name: Set up Python 3.x
       uses: actions/setup-python@v2
       with:
@@ -89,14 +101,20 @@ jobs:
         brew install autoconf automake libtool
 
 
+    - name: Clone mono version 6.12.0.111
+      run: |
+        git clone --branch mono-6.12.0.111 https://github.com/mono/mono.git
+        export MONO_SOURCE_ROOT=/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/mono
+
     - name: Clone latest mono version
       run: |
         git clone --branch mono-6.12.0.111 https://github.com/mono/mono.git
 
-    - name: Building mono for iOS
+
+    - name: Building master godot-mono-builds
+      env:
+        MONO_CACHE: ${{github.workspace}}/godot-mono-builds/.mono_cache/
       run: |
-        git clone https://github.com/godotengine/godot-mono-builds.git
-        export MONO_SOURCE_ROOT=/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/mono
         cd godot-mono-builds
         python3 ./patch_mono.py
         python3 ./ios.py configure --target=arm64
@@ -118,7 +136,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-        name: ios-mono-template-v${{env.CURRENT_GODOT_VERSION}}.zip
+        name: ios-mono-template-v${{env.CURRENT_GODOT_VERSION}}
         path: ios-mono-template-v${{env.CURRENT_GODOT_VERSION}}.zip
 
   upload-assets-release:
