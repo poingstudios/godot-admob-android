@@ -92,12 +92,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: mono-installs
-
-    - name: Display structure of downloaded files
-      run: ls -R
-
-    - name: Move mono-installs to HOME
-      run: mv mono-installs $HOME
+        path: /Users/runner/mono-installs/
 
     # Github Actions Matrix doesnt support x.0 values, it's replaced by ''
     - name: Verify current matrix's GODOT_VERSIONS
