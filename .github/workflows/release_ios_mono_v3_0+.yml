@@ -115,10 +115,15 @@ jobs:
       run: |
         export MONO_SOURCE_ROOT=/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/mono
         cd godot-mono-builds
-        python3 ./patch_mono.py
-        python3 ./ios.py configure --target=arm64
-        python3 ./ios.py make --target=arm64
-
+        ./patch_mono.py
+        
+        # Build the runtime for the iPhone simulator.
+        ./ios.py configure --target=x86_64
+        ./ios.py make --target=x86_64
+        # Build the runtime for the iPhone device.
+        ./ios.py configure --target=arm64
+        ./ios.py make --target=arm64
+        
     - name: Compiles the Source Code
       env:
         SCONS_CACHE: ${{github.workspace}}/godot-${{env.CURRENT_GODOT_VERSION}}-stable/.scons_cache/
@@ -126,8 +131,13 @@ jobs:
         cd godot-${{env.CURRENT_GODOT_VERSION}}-stable
         scons p=iphone tools=no target=release arch=arm module_mono_enabled=true mono_glue=no mono_prefix="$HOME/mono-installs/ios-arm64-release"
         scons p=iphone tools=no target=release arch=arm64 module_mono_enabled=true mono_glue=no mono_prefix="$HOME/mono-installs/ios-arm64-release"
-
-        lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a -output bin/release/libgodot.iphone.release.fat.a
+        #ignore the 3.1 and 3.1.1 version for simulator due: https://github.com/godotengine/godot/issues/32301
+        if [ ${{env.CURRENT_GODOT_VERSION}} != 3.1 ] && [ ${{env.CURRENT_GODOT_VERSION}} != 3.1.1 ]; then
+          scons p=iphone tools=no target=release arch=x86_64 module_mono_enabled=true mono_glue=no mono_prefix="$HOME/mono-installs/ios-x86_64-release
+          lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a bin/libgodot.iphone.opt.x86_64.a -output bin/release/libgodot.iphone.release.fat.a
+        else
+          lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a -output bin/release/libgodot.iphone.release.fat.a
+        fi
         
     - name: Compress the binaries
       run: |
@@ -169,6 +179,6 @@ jobs:
     - name: Upload artifacts to release
       uses: AButler/upload-release-assets@v2.0
       with:
-        files: 'ios-mono-template-*.zip/*'
+        files: 'ios-mono-template-*'
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         release-tag: ${{env.TAG_NAME}}
