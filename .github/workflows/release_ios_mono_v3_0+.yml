@@ -143,12 +143,15 @@ jobs:
         SCONS_CACHE: ${{github.workspace}}/godot-${{env.CURRENT_GODOT_VERSION}}-stable/.scons_cache/
       run: |
         cd godot-${{env.CURRENT_GODOT_VERSION}}-stable
-        scons p=osx tools=yes module_mono_enabled=yes mono_glue=no mono_prefix="$HOME/mono-installs/ios-arm64-release"
+        scons p=osx tools=yes module_mono_enabled=yes mono_glue=no mono_prefix="/Library/Frameworks/Mono.framework/Versions/Current"
         cd bin
         ls
         godot.osx.tools.64.mono --generate-mono-glue modules/mono/glue
         cd ../
-        scons p=iphone tools=no module_mono_enabled=yes mono_glue=yes
+        scons p=iphone arch=arm tools=no module_mono_enabled=yes mono_glue=yes
+        scons p=iphone arch=arm64 tools=no module_mono_enabled=yes mono_glue=yes
+        lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a -output bin/libgodot.iphone.release.fat.a
+        cd bin
         ls
         
     - name: Compress the binaries
