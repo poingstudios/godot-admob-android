@@ -146,7 +146,7 @@ jobs:
         scons p=osx tools=yes module_mono_enabled=yes mono_glue=no mono_prefix="$HOME/mono-installs/ios-arm64-release"
         cd bin
         ls
-        godot.iphone.tools.64.mono --generate-mono-glue modules/mono/glue
+        godot.osx.tools.64.mono --generate-mono-glue modules/mono/glue
         cd ../
         scons p=iphone tools=no module_mono_enabled=yes mono_glue=yes
         ls
