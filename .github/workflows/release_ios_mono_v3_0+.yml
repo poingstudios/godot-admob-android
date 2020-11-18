@@ -150,9 +150,20 @@ jobs:
         scons p=iphone tools=no target=release arch=arm module_mono_enabled=yes mono_glue=yes mono_prefix="$HOME/mono-installs/ios-arm64-release"
         scons p=iphone tools=no target=release arch=arm64 module_mono_enabled=yes mono_glue=yes mono_prefix="$HOME/mono-installs/ios-arm64-release"
         lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a -output bin/libgodot.iphone.release.fat.a
-        cd bin
-        ls
-        
+
+        mkdir -p bin/ios
+        mkdir -p bin/ios/iphone-mono-libs
+
+        lipo -create bin/libmonosgen-2.0.iphone.arm64.a bin/libmonosgen-2.0.iphone.x86_64.a -output bin/ios/iphone-mono-libs/libmonosgen-2.0.iphone.fat.a
+        lipo -create bin/libmono-native.iphone.arm64.a bin/libmono-native.iphone.x86_64.a -output bin/ios/iphone-mono-libs/libmono-native.iphone.fat.a
+        lipo -create bin/libmono-profiler-log.iphone.arm64.a bin/libmono-profiler-log.iphone.x86_64.a -output bin/ios/iphone-mono-libs/libmono-profiler-log.iphone.fat.a
+
+        # The Mono libraries for the interpreter are not available for simulator builds
+        lipo -create bin/libmono-ee-interp.iphone.arm64.a -output bin/ios/iphone-mono-libs/libmono-ee-interp.iphone.fat.a
+        lipo -create bin/libmono-icall-table.iphone.arm64.a -output bin/ios/iphone-mono-libs/libmono-icall-table.iphone.fat.a
+        lipo -create bin/libmono-ilgen.iphone.arm64.a -output bin/ios/iphone-mono-libs/libmono-ilgen.iphone.fat.a
+
+
     - name: Compress the binaries
       run: |
         zip -j ios-mono-template-v${{env.CURRENT_GODOT_VERSION}}.zip godot-${{env.CURRENT_GODOT_VERSION}}-stable/bin/*
