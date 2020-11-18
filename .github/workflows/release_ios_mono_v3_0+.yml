@@ -144,8 +144,9 @@ jobs:
       run: |
         cd godot-${{env.CURRENT_GODOT_VERSION}}-stable
         scons p=osx tools=yes module_mono_enabled=yes mono_glue=no mono_prefix="/Library/Frameworks/Mono.framework/Versions/Current"
-        godot.osx.tools.64.mono --generate-mono-glue modules/mono/glue
-
+        
+        ./bin/godot.osx.tools.64.mono --generate-mono-glue modules/mono/glue
+        
         scons p=iphone tools=no target=release arch=arm module_mono_enabled=yes mono_glue=yes mono_prefix="$HOME/mono-installs/ios-arm64-release"
         scons p=iphone tools=no target=release arch=arm64 module_mono_enabled=yes mono_glue=yes mono_prefix="$HOME/mono-installs/ios-arm64-release"
         lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a -output bin/libgodot.iphone.release.fat.a
