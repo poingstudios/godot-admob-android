@@ -15,8 +15,6 @@ jobs:
     strategy:
       matrix:
         GODOT_VERSIONS: [3.2.3]
-    container:
-      image: barichello/godot-ci:3.2.3
     steps:
     - uses: actions/checkout@v2
 
