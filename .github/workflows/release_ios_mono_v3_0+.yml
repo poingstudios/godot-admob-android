@@ -147,9 +147,7 @@ jobs:
         
         ./bin/godot.osx.tools.64.mono --generate-mono-glue modules/mono/glue
         
-        scons p=iphone tools=no target=release arch=arm module_mono_enabled=yes mono_glue=yes mono_prefix="$HOME/mono-installs/ios-arm64-release"
-        scons p=iphone tools=no target=release arch=arm64 module_mono_enabled=yes mono_glue=yes mono_prefix="$HOME/mono-installs/ios-arm64-release"
-        lipo -create bin/libgodot.iphone.opt.arm.a bin/libgodot.iphone.opt.arm64.a -output bin/libgodot.iphone.release.fat.a
+        scons p=iphone tools=no mono_static=yes target=release arch=arm64 module_mono_enabled=yes mono_glue=yes mono_prefix="$HOME/mono-installs/ios-arm64-release"
 
         mkdir -p bin/ios
         mkdir -p bin/ios/iphone-mono-libs
@@ -162,7 +160,7 @@ jobs:
 
     - name: Compress the binaries
       run: |
-        zip -j ios-mono-template-v${{env.CURRENT_GODOT_VERSION}}.zip godot-${{env.CURRENT_GODOT_VERSION}}-stable/bin/*
+        zip -r ios-mono-template-v${{env.CURRENT_GODOT_VERSION}}.zip godot-${{env.CURRENT_GODOT_VERSION}}-stable/bin/
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
