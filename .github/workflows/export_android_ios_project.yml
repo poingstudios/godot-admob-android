@@ -21,6 +21,7 @@ jobs:
     - name: Downloading templates 
       run: |
         cd /usr/local/lib/android/sdk/platform-tools
+        keytool -keyalg RSA -genkeypair -alias androiddebugkey -keypass android -keystore debug.keystore -storepass android -dname "CN=Android Debug,O=Android,C=US" -validity 9999 -deststoretype pkcs12
         ls
         wget -nv https://downloads.tuxfamily.org/godotengine/${{matrix.GODOT_VERSIONS}}/Godot_v${{matrix.GODOT_VERSIONS}}-stable_export_templates.tpz 
 
