@@ -18,11 +18,15 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Create debug.keystore and move with adb to /usr/bin
+      run: |
+        keytool -keyalg RSA -genkeypair -alias androiddebugkey -keypass android -keystore debug.keystore -storepass android -dname "CN=Android Debug,O=Android,C=US" -validity 9999 -deststoretype pkcs12
+        mv debug.keystore /usr/bin
+        mv /usr/local/lib/android/sdk/platform-tools/adb /usr/bin
+        cd /usr/bin
+        ls
     - name: Downloading templates 
       run: |
-        cd /usr/local/lib/android/sdk/platform-tools
-        keytool -keyalg RSA -genkeypair -alias androiddebugkey -keypass android -keystore debug.keystore -storepass android -dname "CN=Android Debug,O=Android,C=US" -validity 9999 -deststoretype pkcs12
-        ls
         wget -nv https://downloads.tuxfamily.org/godotengine/${{matrix.GODOT_VERSIONS}}/Godot_v${{matrix.GODOT_VERSIONS}}-stable_export_templates.tpz 
 
     - name: Install Android Build Template
