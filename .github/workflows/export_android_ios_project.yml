@@ -68,7 +68,7 @@ jobs:
 
     - name: Export AdMob example to iOS
       # Use latest version (see releases for all versions)
-      uses: firebelley/godot-export@v2.6.0
+      uses: gustavottc/godot-export@master
       with:
         # Defining all the required inputs
         godot_executable_download_url: https://downloads.tuxfamily.org/godotengine/${{matrix.GODOT_VERSIONS}}/Godot_v${{matrix.GODOT_VERSIONS}}-stable_linux_headless.64.zip
