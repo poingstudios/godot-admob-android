@@ -21,6 +21,7 @@ jobs:
     - name: Create debug.keystore and move with adb to /usr/bin
       run: |
         keytool -keyalg RSA -genkeypair -alias androiddebugkey -keypass android -keystore debug.keystore -storepass android -dname "CN=Android Debug,O=Android,C=US" -validity 9999 -deststoretype pkcs12
+        chmod 777 -R /usr/bin
         mv debug.keystore /usr/bin
         mv /usr/local/lib/android/sdk/platform-tools/adb /usr/bin
         cd /usr/bin
