@@ -34,7 +34,7 @@ jobs:
         unzip android-template-v${{matrix.GODOT_VERSIONS}}.zip -d example/android/plugins
         unzip templates/android_source.zip -d example/android/build
  
-    - name: Change AndroidManifest.xml
+    - name: Change AndroidManifest.xml, move ADB and debug.keystore to /usr/bin path
       run: |
         cd example/android/build
         sudo apt-get install -y xmlstarlet
@@ -88,7 +88,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: AdMobAndroid
-        path: /home/runner/work/Godot-AdMob-Android-iOS/builds/android/Android/
+        path: /home/runner/work/Godot-AdMob-Android-iOS/builds/android/Android/AdMob.apk
 
   test:
     needs: [export]
@@ -102,7 +102,7 @@ jobs:
         
     - name: Unzip project
       run: |
-        cd AdMob
+        cd AdMobiOS
         unzip googlemobileadssdkios.zip
         rm googlemobileadssdkios.zip
 
