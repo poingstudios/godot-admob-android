@@ -18,14 +18,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Create debug.keystore and move with adb to /usr/bin
-      run: |
-        keytool -keyalg RSA -genkeypair -alias androiddebugkey -keypass android -keystore debug.keystore -storepass android -dname "CN=Android Debug,O=Android,C=US" -validity 9999 -deststoretype pkcs12
-        sudo chmod 777 -R /usr/bin
-        mv debug.keystore /usr/bin
-        mv /usr/local/lib/android/sdk/platform-tools/adb /usr/bin
-        cd /usr/bin
-        ls
     - name: Downloading templates 
       run: |
         wget -nv https://downloads.tuxfamily.org/godotengine/${{matrix.GODOT_VERSIONS}}/Godot_v${{matrix.GODOT_VERSIONS}}-stable_export_templates.tpz 
@@ -45,13 +37,20 @@ jobs:
     - name: Change AndroidManifest.xml
       run: |
         cd example/android/build
-        apt-get install -y xmlstarlet
+        sudo apt-get install -y xmlstarlet
         xmlstarlet ed --subnode "/manifest/application" --type elem -n meta-data -v "" AndroidManifest.xml | \
         xmlstarlet ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:name -v com.google.android.gms.ads.APPLICATION_ID | \
         xmlstarlet ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:value -v ca-app-pub-3940256099942544~3347511713 > output.xml
         mv output.xml AndroidManifest.xml
         cat AndroidManifest.xml
+
+        keytool -keyalg RSA -genkeypair -alias androiddebugkey -keypass android -keystore debug.keystore -storepass android -dname "CN=Android Debug,O=Android,C=US" -validity 9999 -deststoretype pkcs12
+        sudo chmod 777 -R /usr/bin
+        mv debug.keystore /usr/bin
+        mv /usr/local/lib/android/sdk/platform-tools/adb /usr/bin
+        cd /usr/bin
         ls
+
 
     - name: Export AdMob example to iOS
       # Use latest version (see releases for all versions)
