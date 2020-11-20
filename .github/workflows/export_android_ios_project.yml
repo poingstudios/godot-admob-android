@@ -20,7 +20,8 @@ jobs:
 
     - name: Downloading templates 
       run: |
-        locate adb | grep bin
+        cd /usr/local/lib/android/sdk/platform-tools
+        ls
         wget -nv https://downloads.tuxfamily.org/godotengine/${{matrix.GODOT_VERSIONS}}/Godot_v${{matrix.GODOT_VERSIONS}}-stable_export_templates.tpz 
 
     - name: Install Android Build Template
