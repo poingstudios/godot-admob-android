@@ -45,11 +45,19 @@ jobs:
         cat AndroidManifest.xml
         ls
 
-    - name: Export to Android
-      run: |
-        mkdir -v -p build/android
-        cd example
-        godot -v --export-debug "Android" ../build/android/Android-debug.apk
+    - name: Export AdMob example to iOS
+      # Use latest version (see releases for all versions)
+      uses: firebelley/godot-export@v2.6.0
+      with:
+        # Defining all the required inputs
+        godot_executable_download_url: https://downloads.tuxfamily.org/godotengine/${{matrix.GODOT_VERSIONS}}/Godot_v${{matrix.GODOT_VERSIONS}}-stable_linux_headless.64.zip
+        godot_export_templates_download_url: https://downloads.tuxfamily.org/godotengine/${{matrix.GODOT_VERSIONS}}/Godot_v${{matrix.GODOT_VERSIONS}}-stable_export_templates.tpz
+        relative_project_path: ./example/
+        use_preset_export_path: true
+        create_release: false
+        export_debug: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Export AdMob example to iOS
       # Use latest version (see releases for all versions)
