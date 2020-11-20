@@ -78,17 +78,17 @@ jobs:
         ls
 
 
-    - name: Upload artifact
+    - name: Upload iOS artifact
       uses: actions/upload-artifact@v2
       with:
         name: AdMobiOS
         path: /home/runner/work/Godot-AdMob-Android-iOS/builds/ios/iOS/
 
-    - name: Upload artifact
+    - name: Upload Android artifact
       uses: actions/upload-artifact@v2
       with:
         name: AdMobAndroid
-        path: /home/runner/work/Godot-AdMob-Android-iOS/builds/android/Android/AdMob.apk
+        path: /home/runner/work/Godot-AdMob-Android-iOS/builds/android/Android/
 
   test:
     needs: [export]
@@ -108,7 +108,7 @@ jobs:
 
     - uses: sersoft-gmbh/xcodebuild-action@v1
       with:
-        project: AdMob/AdMob.xcodeproj
+        project: AdMobiOS/AdMob.xcodeproj
         configuration: Debug
         action: build
         sdk: iphonesimulator14.0
