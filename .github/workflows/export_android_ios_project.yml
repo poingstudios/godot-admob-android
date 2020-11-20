@@ -45,7 +45,7 @@ jobs:
     - name: Change AndroidManifest.xml
       run: |
         cd example/android/build
-        sudo apt-get install -y xmlstarlet
+        apt-get install -y xmlstarlet
         xmlstarlet ed --subnode "/manifest/application" --type elem -n meta-data -v "" AndroidManifest.xml | \
         xmlstarlet ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:name -v com.google.android.gms.ads.APPLICATION_ID | \
         xmlstarlet ed --insert "/manifest/application/meta-data[last()]" --type attr -n android:value -v ca-app-pub-3940256099942544~3347511713 > output.xml
