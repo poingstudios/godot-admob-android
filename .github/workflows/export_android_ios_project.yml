@@ -110,6 +110,7 @@ jobs:
       with:
         project: AdMobiOS/AdMob.xcodeproj
         configuration: Debug
+        action: build
         arch: x86_64
         target: AdMob
         allow-provisioning-updates: true
