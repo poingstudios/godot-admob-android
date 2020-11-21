@@ -110,8 +110,7 @@ jobs:
       with:
         project: AdMobiOS/AdMob.xcodeproj
         configuration: Debug
-        action: build
-        sdk: iphonesimulator14.0
-        build-settings: -target AdMob -arch x86_64 -allowProvisioningUpdates OTHER_LDFLAGS="-ObjC" FRAMEWORK_SEARCH_PATHS="/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/AdMobiOS/GoogleMobileAdsSdkiOS-7.68.0/GoogleMobileAds.xcframework/ios-i386_x86_64-simulator"
-            OTHER_LIBTOOLFLAGS="/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/AdMobiOS/GoogleMobileAdsSdkiOS-7.68.0/GoogleMobileAds.xcframework/ios-i386_x86_64-simulator"
-
+        arch: x86_64
+        target: AdMob
+        allow-provisioning-updates: true
+        build-settings: OTHER_LDFLAGS="-ObjC" FRAMEWORK_SEARCH_PATHS="/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/AdMob/GoogleMobileAdsSdkiOS-7.68.0/GoogleMobileAds.xcframework/ios-i386_x86_64-simulator" OTHER_LIBTOOLFLAGS="/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/AdMob/GoogleMobileAdsSdkiOS-7.68.0/GoogleMobileAds.xcframework/ios-i386_x86_64-simulator"
