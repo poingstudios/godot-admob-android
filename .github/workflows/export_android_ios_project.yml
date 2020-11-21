@@ -89,29 +89,4 @@ jobs:
         name: AdMobAndroid
         path: /home/runner/work/Godot-AdMob-Android-iOS/builds/android/Android/
 
-  test:
-    needs: [export]
-    name: Test on Xcode
-    runs-on: macos-latest
-    
-    steps:
-
-    - name: Download artifacts
-      uses: actions/download-artifact@v2
-        
-    - name: Unzip project
-      run: |
-        cd AdMobiOS
-        unzip googlemobileadssdkios.zip
-        rm googlemobileadssdkios.zip
-
-    - uses: sersoft-gmbh/xcodebuild-action@master
-      with:
-        project: AdMobiOS/AdMob.xcodeproj
-        configuration: Debug
-        action: build
-        sdk: iphonesimulator14.0
-        arch: x86_64
-        target: AdMob
-        allow-provisioning-updates: true
-        build-settings: OTHER_LDFLAGS="-ObjC" FRAMEWORK_SEARCH_PATHS="/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/AdMob/GoogleMobileAdsSdkiOS-7.68.0/GoogleMobileAds.xcframework/ios-i386_x86_64-simulator" OTHER_LIBTOOLFLAGS="/Users/runner/work/Godot-AdMob-Android-iOS/Godot-AdMob-Android-iOS/AdMob/GoogleMobileAdsSdkiOS-7.68.0/GoogleMobileAds.xcframework/ios-i386_x86_64-simulator"
+  
