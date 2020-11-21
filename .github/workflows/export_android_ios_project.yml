@@ -106,7 +106,7 @@ jobs:
         unzip googlemobileadssdkios.zip
         rm googlemobileadssdkios.zip
 
-    - uses: sersoft-gmbh/xcodebuild-action@v1
+    - uses: sersoft-gmbh/xcodebuild-action@master
       with:
         project: AdMobiOS/AdMob.xcodeproj
         configuration: Debug
