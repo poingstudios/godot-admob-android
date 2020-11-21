@@ -111,6 +111,7 @@ jobs:
         project: AdMobiOS/AdMob.xcodeproj
         configuration: Debug
         action: build
+        sdk: iphonesimulator14.0
         arch: x86_64
         target: AdMob
         allow-provisioning-updates: true
