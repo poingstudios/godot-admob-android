@@ -33,7 +33,6 @@ signal unified_native_opened
 signal unified_native_closed
 
 #private attributes
-var OS_name = OS.get_name()
 var _is_initialized : bool = false
 var _admob_singleton : Object
 enum _gravity_options {TOP, BOTTOM, CENTER, NO_GRAVITY}
@@ -101,15 +100,16 @@ func _initialize():
 
 func load_banner():
 	if _admob_singleton:
-		_admob_singleton.load_banner(unit_ids.banner[OS_name], _banner_gravity[OS_name][banner_gravity_option], banner_size)
+		_admob_singleton.load_banner(unit_ids.banner[OS.get_name()], _banner_gravity[OS.get_name()][banner_gravity_option], banner_size)
 
 func load_interstitial():
 	if _admob_singleton:
-		_admob_singleton.load_interstitial(unit_ids.interstitial[OS_name])
+		_admob_singleton.load_interstitial(unit_ids.interstitial[OS.get_name()])
+		emit_signal(\"interstitial_loaded\")
 
 func load_rewarded():
 	if _admob_singleton:
-		_admob_singleton.load_rewarded(unit_ids.rewarded[OS_name])
+		_admob_singleton.load_rewarded(unit_ids.rewarded[OS.get_name()])
 
 func load_unified_native(control_node_to_be_replaced : Control):
 	if _admob_singleton:
@@ -123,7 +123,7 @@ func load_unified_native(control_node_to_be_replaced : Control):
 				\"y\" : control_node_to_be_replaced.rect_position.y * _unified_native_scale.y
 			}
 		}
-		_admob_singleton.load_unified_native(unit_ids.unified_native[OS_name], [params.size.w, params.size.h], [params.position.x, params.position.y])
+		_admob_singleton.load_unified_native(unit_ids.unified_native[OS.get_name()], [params.size.w, params.size.h], [params.position.x, params.position.y])
 
 func destroy_banner():
 	if _admob_singleton:
