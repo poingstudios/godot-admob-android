@@ -2,7 +2,7 @@ name: Build iOS Mono
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "0 0 1 * *"
   push:
     paths: 
       - '.github/workflows/release_ios_mono_v3_0*.yml'
