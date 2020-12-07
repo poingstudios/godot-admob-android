@@ -146,80 +146,80 @@ func _on_get_tree_resized():
 
 
 #SIGNALS
-func _on_admob_singleton_banner_loaded():
+func _on_AdMob_banner_loaded():
 	emit_signal("banner_loaded")
 	
-func _on_admob_singleton_banner_destroyed():
+func _on_AdMob_banner_destroyed():
 	emit_signal("banner_destroyed")
 
-func _on_admob_singleton_banner_failed_to_load(error_code : int):
+func _on_AdMob_banner_failed_to_load(error_code : int):
 	emit_signal("banner_failed_to_load", error_code)
 	
-func _on_admob_singleton_banner_opened():
+func _on_AdMob_banner_opened():
 	emit_signal("banner_opened")
 	
-func _on_admob_singleton_banner_clicked():
+func _on_AdMob_banner_clicked():
 	emit_signal("banner_clicked")
 	
-func _on_admob_singleton_banner_left_application():
+func _on_AdMob_banner_left_application():
 	emit_signal("banner_left_application")
 	
-func _on_admob_singleton_banner_closed():
+func _on_AdMob_banner_closed():
 	emit_signal("banner_closed")
 	
-func _on_admob_singleton_interstitial_loaded():
+func _on_AdMob_interstitial_loaded():
 	emit_signal("interstitial_loaded")
 
-func _on_admob_singleton_interstitial_failed_to_load(error_code : int):
+func _on_AdMob_interstitial_failed_to_load(error_code : int):
 	emit_signal("interstitial_failed_to_load", error_code)
 	
-func _on_admob_singleton_interstitial_clicked():
+func _on_AdMob_interstitial_clicked():
 	emit_signal("interstitial_clicked")
 	
-func _on_admob_singleton_interstitial_left_application():
+func _on_AdMob_interstitial_left_application():
 	emit_signal("interstitial_left_application")
 
-func _on_admob_singleton_interstitial_opened():
+func _on_AdMob_interstitial_opened():
 	emit_signal("interstitial_opened")
 	get_tree().paused = true
 
-func _on_admob_singleton_interstitial_closed():
+func _on_AdMob_interstitial_closed():
 	load_interstitial()
 	emit_signal("interstitial_closed")
 	get_tree().paused = false
 
-func _on_admob_singleton_rewarded_ad_opened():
+func _on_AdMob_rewarded_ad_opened():
 	emit_signal("rewarded_ad_opened")
 	get_tree().paused = true
 
-func _on_admob_singleton_rewarded_ad_closed():
+func _on_AdMob_rewarded_ad_closed():
 	load_rewarded()
 	emit_signal("rewarded_ad_closed")
 	get_tree().paused = false
 
-func _on_admob_singleton_rewarded_ad_loaded():
+func _on_AdMob_rewarded_ad_loaded():
 	emit_signal("rewarded_ad_loaded")
 
-func _on_admob_singleton_rewarded_ad_failed_to_load():
+func _on_AdMob_rewarded_ad_failed_to_load():
 	emit_signal("rewarded_ad_failed_to_load")
 	
-func _on_admob_singleton_user_earned_rewarded(currency : String, amount : int):
+func _on_AdMob_user_earned_rewarded(currency : String, amount : int):
 	emit_signal("rewarded_user_earned_rewarded", currency, amount)
 
-func _on_admob_singleton_rewarded_ad_failed_to_show(error_code : int):
+func _on_AdMob_rewarded_ad_failed_to_show(error_code : int):
 	emit_signal("rewarded_ad_failed_to_show", error_code)
 
-func _on_admob_singleton_unified_native_loaded():
+func _on_AdMob_unified_native_loaded():
 	emit_signal("unified_native_loaded")
 
-func _on_admob_singleton_unified_native_destroyed():
+func _on_AdMob_unified_native_destroyed():
 	emit_signal("unified_native_destroyed")
 
-func _on_admob_singleton_unified_native_failed_to_load(error_code : int):
+func _on_AdMob_unified_native_failed_to_load(error_code : int):
 	emit_signal("unified_native_failed_to_load", error_code)
 
-func _on_admob_singleton_unified_native_opened():
+func _on_AdMob_unified_native_opened():
 	emit_signal("unified_native_opened")
 	
-func _on_admob_singleton_unified_native_closed():
+func _on_AdMob_unified_native_closed():
 	emit_signal("unified_native_closed")
