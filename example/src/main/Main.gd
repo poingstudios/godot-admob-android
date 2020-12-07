@@ -26,7 +26,7 @@ func _ready():
 		# warning-ignore:return_value_discarded
 		AdMob.connect("rewarded_user_earned_rewarded", self, "_on_AdMob_rewarded_user_earned_rewarded")
 		# warning-ignore:return_value_discarded
-		AdMob.connect("initialized", self, "_on_AdMob_initialized")
+		_is_AdMob_initialized()
 		if OS.get_name() == "Android":
 			# warning-ignore:return_value_discarded
 			AdMob.connect("unified_native_destroyed", self, "_on_AdMob_unified_native_destroyed")
@@ -36,15 +36,16 @@ func _ready():
 	else:
 		_add_text_Advice_Node("Module only works on Android or iOS devices!")
 
-func _on_AdMob_initialized():
-	_add_text_Advice_Node("AdMob initialized! With parameters:")
-	_add_text_Advice_Node("is_for_child_directed_treatment: " + str(AdMob.is_for_child_directed_treatment))
-	_add_text_Advice_Node("is_personalized: " + str(AdMob.is_personalized))
-	_add_text_Advice_Node("max_ad_content_rating: " + str(AdMob.is_real))
-	_add_text_Advice_Node("instance_id: " + str(get_instance_id()))
-	_add_text_Advice_Node("---------------------------------------------------")
-	EnableBanner.disabled = false
-	EnableNative.disabled = false
+func _is_AdMob_initialized():
+	if AdMob._is_initialized:
+		_add_text_Advice_Node("AdMob initialized! With parameters:")
+		_add_text_Advice_Node("is_for_child_directed_treatment: " + str(AdMob.is_for_child_directed_treatment))
+		_add_text_Advice_Node("is_personalized: " + str(AdMob.is_personalized))
+		_add_text_Advice_Node("max_ad_content_rating: " + str(AdMob.is_real))
+		_add_text_Advice_Node("instance_id: " + str(get_instance_id()))
+		_add_text_Advice_Node("---------------------------------------------------")
+		EnableBanner.disabled = false
+		EnableNative.disabled = false
 
 func _on_AdMob_interstitial_loaded():
 	Interstitial.disabled = false
