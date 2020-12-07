@@ -1,12 +1,13 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
 [ext_resource path="res://src/main/Main.gd" type="Script" id=2]
 [ext_resource path="res://Themes/Default.theme" type="Theme" id=3]
 [ext_resource path="res://assets/music/kalimba.ogg" type="AudioStream" id=4]
+[ext_resource path="res://Themes/Buttons.theme" type="Theme" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0, 0, 0, 1 )
+bg_color = Color( 0.36377, 0.23226, 0.0795746, 1 )
 
 [node name="Main" type="Control"]
 anchor_right = 1.0
@@ -41,79 +42,85 @@ custom_styles/normal = SubResource( 1 )
 bbcode_enabled = true
 bbcode_text = "[wave]"
 scroll_following = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -342.5
-margin_top = -108.0
-margin_right = 342.5
-margin_bottom = 108.0
+margin_left = -385.0
+margin_top = -114.0
+margin_right = 385.0
+margin_bottom = 114.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-margin_top = 22.0
-margin_right = 685.0
-margin_bottom = 194.0
+margin_top = 18.0
+margin_right = 770.0
+margin_bottom = 210.0
 alignment = 1
 
 [node name="Banner" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
-margin_right = 685.0
-margin_bottom = 40.0
+margin_right = 770.0
+margin_bottom = 45.0
 alignment = 1
 
 [node name="EnableBanner" type="Button" parent="CenterContainer/VBoxContainer/Banner"]
-margin_right = 334.0
-margin_bottom = 40.0
-theme = ExtResource( 3 )
+margin_right = 376.0
+margin_bottom = 45.0
+theme = ExtResource( 5 )
 disabled = true
-text = "enable banner"
+text = "ENABLE BANNER"
 
 [node name="DisableBanner" type="Button" parent="CenterContainer/VBoxContainer/Banner"]
-margin_left = 338.0
-margin_right = 685.0
-margin_bottom = 40.0
-theme = ExtResource( 3 )
+margin_left = 380.0
+margin_right = 770.0
+margin_bottom = 45.0
+theme = ExtResource( 5 )
 disabled = true
-text = "banner disable"
+text = "DISABLE BANNER"
 
 [node name="Interstitial" type="Button" parent="CenterContainer/VBoxContainer"]
-margin_top = 44.0
-margin_right = 685.0
-margin_bottom = 84.0
-theme = ExtResource( 3 )
+margin_top = 49.0
+margin_right = 770.0
+margin_bottom = 94.0
+theme = ExtResource( 5 )
 disabled = true
 text = "INTERSTITIAL"
 
 [node name="Rewarded" type="Button" parent="CenterContainer/VBoxContainer"]
-margin_top = 88.0
-margin_right = 685.0
-margin_bottom = 128.0
-theme = ExtResource( 3 )
+margin_top = 98.0
+margin_right = 770.0
+margin_bottom = 143.0
+theme = ExtResource( 5 )
 disabled = true
-text = "Rewarded"
+text = "REWARDED"
 
 [node name="UnifiedNative" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
-margin_top = 132.0
-margin_right = 685.0
-margin_bottom = 172.0
+margin_top = 147.0
+margin_right = 770.0
+margin_bottom = 192.0
 alignment = 1
 
 [node name="EnableUnifiedNative" type="Button" parent="CenterContainer/VBoxContainer/UnifiedNative"]
-margin_right = 325.0
-margin_bottom = 40.0
-theme = ExtResource( 3 )
+margin_right = 366.0
+margin_bottom = 45.0
+theme = ExtResource( 5 )
 disabled = true
 text = "ENABLE UNFIED"
 
 [node name="DisableUnifiedNative" type="Button" parent="CenterContainer/VBoxContainer/UnifiedNative"]
-margin_left = 329.0
-margin_right = 685.0
-margin_bottom = 40.0
-theme = ExtResource( 3 )
+margin_left = 370.0
+margin_right = 770.0
+margin_bottom = 45.0
+theme = ExtResource( 5 )
 disabled = true
-text = "UNIFIED disable"
+text = "DISABLE UNIFIED"
 
 [node name="UnifiedNative" type="Panel" parent="."]
 anchor_left = 0.281944

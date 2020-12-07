@@ -1,5 +1,7 @@
 extends Control
 
+signal initialized
+
 signal banner_loaded
 signal banner_destroyed
 signal banner_failed_to_load(error_code)
@@ -90,9 +92,10 @@ func _ready():
 func _initialize():
 	if _admob_singleton and !_is_initialized:
 		_admob_singleton.initialize(is_for_child_directed_treatment, is_personalized, max_ad_content_rating, is_real, get_instance_id())
-		_is_initialized = !_is_initialized
+		_is_initialized = false
 		load_interstitial()
 		load_rewarded()
+		emit_signal("initialized")
 
 func load_banner():
 	if _admob_singleton:
