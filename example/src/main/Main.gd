@@ -18,16 +18,16 @@ func _ready():
 		EnableBanner.disabled = false
 		EnableNative.disabled = false
 		# warning-ignore:return_value_discarded
-		AdMob.connect("banner_destroyed", self, "_on_AdMob_banner_destroyed")
+		AdMob.connect("banner_destroyed", self, "_on_AdMobSingleton_banner_destroyed")
 		# warning-ignore:return_value_discarded
-		AdMob.connect("interstitial_loaded", self, "_on_AdMob_interstitial_loaded")
+		Advice.bbcode_text += str(AdMob.connect("interstitial_loaded", self, "_on_AdMobSingleton_interstitial_loaded"), "\n")
 		# warning-ignore:return_value_discarded
-		AdMob.connect("rewarded_ad_loaded", self, "_on_AdMob_rewarded_ad_loaded")
+		AdMob.connect("rewarded_ad_loaded", self, "_on_AdMobSingleton_rewarded_ad_loaded")
 		# warning-ignore:return_value_discarded
-		AdMob.connect("rewarded_user_earned_rewarded", self, "_on_AdMob_rewarded_user_earned_rewarded")
+		AdMob.connect("rewarded_user_earned_rewarded", self, "_on_AdMobSingleton_rewarded_user_earned_rewarded")
 		if OS.get_name() == "Android":
 			# warning-ignore:return_value_discarded
-			AdMob.connect("unified_native_destroyed", self, "_on_AdMob_unified_native_destroyed")
+			AdMob.connect("unified_native_destroyed", self, "_on_AdMobSingleton_unified_native_destroyed")
 		else:
 			UnifiedNativePanel.hide()
 			UnifiedNativeHBox.hide()
@@ -35,7 +35,7 @@ func _ready():
 		Advice.bbcode_text += "Module only works on Android or iOS devices!\n"
 	
 	
-func _on_AdMob_interstitial_loaded():
+func _on_AdMobSingleton_interstitial_loaded():
 	Interstitial.disabled = false
 
 func _on_Interstitial_pressed():
@@ -49,9 +49,9 @@ func reset_banner_and_unified_buttons():
 	EnableBanner.disabled = false
 	EnableNative.disabled = false
 
-func _on_AdMob_banner_destroyed():
+func _on_AdMobSingleton_banner_destroyed():
 	reset_banner_and_unified_buttons()
-func _on_AdMob_unified_native_destroyed():
+func _on_AdMobSingleton_unified_native_destroyed():
 	reset_banner_and_unified_buttons()
 
 func _on_EnableBanner_pressed():
@@ -71,10 +71,10 @@ func _on_Rewarded_pressed():
 	AdMob.show_rewarded()
 	Rewarded.disabled = true
 	
-func _on_AdMob_rewarded_ad_loaded():
+func _on_AdMobSingleton_rewarded_ad_loaded():
 	Rewarded.disabled = false
 	
-func _on_AdMob_rewarded_user_earned_rewarded(currency : String, amount : int):
+func _on_AdMobSingleton_rewarded_user_earned_rewarded(currency : String, amount : int):
 	Advice.bbcode_text += "EARNED " + currency + " with amount: " + str(amount) + "\n"
 
 

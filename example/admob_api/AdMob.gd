@@ -101,7 +101,6 @@ func load_banner():
 func load_interstitial():
 	if _admob_singleton:
 		_admob_singleton.load_interstitial(unit_ids.interstitial[OS.get_name()])
-		emit_signal("interstitial_loaded")
 
 func load_rewarded():
 	if _admob_singleton:
