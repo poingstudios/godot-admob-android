@@ -1,7 +1,5 @@
 extends Control
 
-signal initialized
-
 signal banner_loaded
 signal banner_destroyed
 signal banner_failed_to_load(error_code)
@@ -31,7 +29,7 @@ signal unified_native_opened
 signal unified_native_closed
 
 #private attributes
-var _is_initialized : bool = false
+var _is_initialized : bool = false 
 var _admob_singleton : Object
 enum _gravity_options {TOP, BOTTOM, CENTER, NO_GRAVITY}
 var _banner_gravity : Dictionary = {
@@ -95,7 +93,6 @@ func _initialize():
 		_is_initialized = true
 		load_interstitial()
 		load_rewarded()
-		emit_signal("initialized")
 
 func load_banner():
 	if _admob_singleton:
