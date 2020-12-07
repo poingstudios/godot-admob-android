@@ -17,8 +17,6 @@ func _add_text_Advice_Node(text_value : String):
 func _ready():
 	OS.center_window()
 	if OS.get_name() == "Android" or OS.get_name() == "iOS":
-		EnableBanner.disabled = false
-		EnableNative.disabled = false
 		# warning-ignore:return_value_discarded
 		AdMob.connect("banner_destroyed", self, "_on_AdMob_banner_destroyed")
 		# warning-ignore:return_value_discarded
@@ -45,6 +43,8 @@ func _on_AdMob_initialized():
 	_add_text_Advice_Node("max_ad_content_rating: " + str(AdMob.is_real))
 	_add_text_Advice_Node("instance_id: " + str(get_instance_id()))
 	_add_text_Advice_Node("---------------------------------------------------")
+	EnableBanner.disabled = false
+	EnableNative.disabled = false
 
 func _on_AdMob_interstitial_loaded():
 	Interstitial.disabled = false

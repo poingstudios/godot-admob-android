@@ -92,7 +92,7 @@ func _ready():
 func _initialize():
 	if _admob_singleton and !_is_initialized:
 		_admob_singleton.initialize(is_for_child_directed_treatment, is_personalized, max_ad_content_rating, is_real, get_instance_id())
-		_is_initialized = false
+		_is_initialized = true
 		load_interstitial()
 		load_rewarded()
 		emit_signal("initialized")
