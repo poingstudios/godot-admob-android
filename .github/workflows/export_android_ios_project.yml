@@ -7,7 +7,7 @@ on:
   push:
     paths: 
       - '.github/workflows/export_android_ios_project.yml'
-      - 'example/*'
+      - 'example/**'
     branches: [ master ]
 jobs:
   export:
