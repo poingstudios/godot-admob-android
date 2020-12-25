@@ -58,7 +58,6 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
     public AdMob(Godot godot)
     {
         super(godot);
-        aActivity = godot;
     }
 
     @NonNull
@@ -81,7 +80,8 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
     @Override
     public View onMainCreate(Activity pActivity)
     {
-        aGodotLayout= new FrameLayout(pActivity);
+        aActivity = pActivity;
+        aGodotLayout = new FrameLayout(pActivity);
         return aGodotLayout;
     }
 
@@ -177,7 +177,6 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
                         aAdView.setAdSize(AdSize.SMART_BANNER);
                         break;
                 }//ADAPTATIVE DOESNT WORK, NEED TO UPDATE THE PROJECT TO 18.3.0 MINIMUM ON FUTURE
-                GodotLib.calldeferred(aInstanceId, "testeee", new Object[]{ pAdUnitId, pGravity, pSize });
 
                 aAdView.setAdListener(new AdListener()
                 {
