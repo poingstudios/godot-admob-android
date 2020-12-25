@@ -43,12 +43,12 @@ jobs:
         cd android/admob/godot-lib 
         #variables
         GODOT_AAR_LIB="godot-lib.aar"
-        echo temporary generates the 3.2.4.beta4 version: https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/issues/30
+        #temporary generates the 3.2.4.beta4 version: https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/issues/30
         if [ ${CURRENT_GODOT_VERSION} = 3.2.4 ]; 
         then 
           GODOT_AAR_FILENAME="godot-lib.${{env.CURRENT_GODOT_VERSION}}.beta4.release.aar"
           FULL_PATHNAME_DOWNLOAD_GODOT_AAR="https://downloads.tuxfamily.org/godotengine/${{env.CURRENT_GODOT_VERSION}}/beta4/${GODOT_AAR_FILENAME}"
-          ${CURRENT_GODOT_VERSION} = 3.2.4.beta4
+          CURRENT_GODOT_VERSION=3.2.4.beta4
         else 
           GODOT_AAR_FILENAME="godot-lib.${{env.CURRENT_GODOT_VERSION}}.stable.release.aar"
           FULL_PATHNAME_DOWNLOAD_GODOT_AAR="https://downloads.tuxfamily.org/godotengine/${{env.CURRENT_GODOT_VERSION}}/${GODOT_AAR_FILENAME}"
