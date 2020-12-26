@@ -37,11 +37,11 @@ Download example project to see how the Plugin works!
 						- [x] ```Use Custom Build```
 					1. Plugins 
 						- [x] ```Ad Mob```
-- Add your AdMob App ID to your app's ```res://android/build/AndroidManifest.xml``` file by adding a ```<meta-data>``` tag with name ```com.google.android.gms.ads.APPLICATION_ID```, as shown below.
+- Add your [AdMob App ID](https://support.google.com/admob/answer/7356431) to your app's ```res://android/build/AndroidManifest.xml``` file by adding a ```<meta-data>``` tag with name ```com.google.android.gms.ads.APPLICATION_ID```, as shown below.
 
 ```
-<!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
 <meta-data
+	tools:replace="android:value"
 	android:name="com.google.android.gms.ads.APPLICATION_ID"
 	android:value="ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy"/>
 ```
