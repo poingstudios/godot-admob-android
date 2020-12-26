@@ -58,15 +58,6 @@ Download example project to see how the Plugin works!
 		- nanopb.xcframework (from GoogleMobileAdsSdkiOS)
 	- These frameworks are already in your computer
 		- AppTrackingTransparency | ```Status: (Optional) ```
-		- AdSupport 
-		- StoreKit
-		- GameKit
-		- CoreVideo
-		- MessageUI
-		- CoreTelephony
-		- CFNetwork
-		- MobileCoreServices
-		- SQLite (libsqlite3.0.tbd)
 		- JavaScriptCore
 - Add the -ObjC linker flag to Other Linker Flags in your project's build settings:
 ![-ObjC](https://developers.google.com/admob/images/ios/objc_linker_flag.png)
