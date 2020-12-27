@@ -6,9 +6,9 @@ def configure(env):
 	if env['platform'] == 'iphone':
 		xcframework_directory = ''
 		if env['arch'] == 'x86_64':
-			xcframework_directory = 'ios-i386_x86_64-simulator'
+			xcframework_directory = 'ios-arm64_i386_x86_64-simulator'
 		else:
-			xcframework_directory = 'ios-armv7_arm64'
+			xcframework_directory = 'ios-arm64_armv7'
 
 		env.Append(FRAMEWORKPATH=['#modules/admob/lib/GoogleMobileAds.xcframework/' + xcframework_directory])
 		env.Append(CPPPATH=['#core'])
