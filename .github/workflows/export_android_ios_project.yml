@@ -1,7 +1,7 @@
 name: Export for Android and iOS
 on:
   workflow_run:
-    workflows: [ "Build iOS", "Build Android" ]
+    workflows: [ "Build Android" ]
     types: 
       - completed
   push:
