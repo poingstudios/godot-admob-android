@@ -33,22 +33,38 @@ void AdMob::initialize(bool is_for_child_directed_treatment, bool is_personalize
     if (instance != this || initialized) {
         return;
     }
-    
+    [GADMobileAds.sharedInstance.requestConfiguration tagForChildDirectedTreatment:is_for_child_directed_treatment];
+    if ([max_ad_content_rating isEqualToString:@"G"]) {
+        [GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = GADMaxAdContentRatingGeneral];
+        NSLog(@"maxAdContentRating = GADMaxAdContentRatingGeneral");
+    }
+    else if ([max_ad_content_rating isEqualToString:@"PG"]) {
+        [GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = GADMaxAdContentRatingParentalGuidance];
+        NSLog(@"maxAdContentRating = GADMaxAdContentRatingParentalGuidance");
+    }
+    else if ([max_ad_content_rating isEqualToString:@"T"]) {
+        [GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = GADMaxAdContentRatingTeen];
+        NSLog(@"maxAdContentRating = GADMaxAdContentRatingTeen");
+    }
+    else if ([max_ad_content_rating isEqualToString:@"MA"]) {
+        [GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = GADMaxAdContentRatingMatureAudience];
+        NSLog(@"maxAdContentRating = GADMaxAdContentRatingMatureAudience");
+    }
+
     if (@available(iOS 14, *)) {
         [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
             [[GADMobileAds sharedInstance] startWithCompletionHandler:nil];
+            NSLog(@"AdMob initialized with Request App Tracking Transparency");
         }];
     }
     else{
         [[GADMobileAds sharedInstance] startWithCompletionHandler:nil];
+        NSLog(@"AdMob initialized without Request App Tracking Transparency");
     }
-    
+
     initialized = true;
-    
     banner = [[AdMobBanner alloc] initialize :instance_id: is_personalized];
-    
     interstitial = [[AdMobInterstitial alloc] initialize :instance_id : is_personalized];
-    
     rewarded = [[AdMobRewarded alloc] initialize :instance_id : is_personalized];
 }
 
