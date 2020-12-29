@@ -34,19 +34,19 @@ void AdMob::initialize(bool is_for_child_directed_treatment, bool is_personalize
         return;
     }
     [GADMobileAds.sharedInstance.requestConfiguration tagForChildDirectedTreatment:is_for_child_directed_treatment];
-    if ([max_ad_content_rating == "G"]) {
+    if (max_ad_content_rating == "G") {
         GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = GADMaxAdContentRatingGeneral;
         NSLog(@"maxAdContentRating = GADMaxAdContentRatingGeneral");
     }
-    else if ([max_ad_content_rating == "PG"]) {
+    else if (max_ad_content_rating == "PG") {
         GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = GADMaxAdContentRatingParentalGuidance;
         NSLog(@"maxAdContentRating = GADMaxAdContentRatingParentalGuidance");
     }
-    else if ([max_ad_content_rating == "T"]) {
+    else if (max_ad_content_rating == "T") {
         GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = GADMaxAdContentRatingTeen;
         NSLog(@"maxAdContentRating = GADMaxAdContentRatingTeen");
     }
-    else if ([max_ad_content_rating == "MA"]) {
+    else if (max_ad_content_rating == "MA") {
         GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = GADMaxAdContentRatingMatureAudience;
         NSLog(@"maxAdContentRating = GADMaxAdContentRatingMatureAudience");
     }
