@@ -96,11 +96,11 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
         aInstanceId = pInstanceId;
         aIsPersonalized = pIsPersonalized;
 
-        setRequestConfiguration(pIsForChildDirectedTreatment, pIsPersonalized, pMaxAdContentRating, pIsReal); //First call MobileAds.setRequestConfigurationhttps://groups.google.com/g/google-admob-ads-sdk/c/17oVu0sABjs
+        setRequestConfiguration(pIsForChildDirectedTreatment, pMaxAdContentRating, pIsReal); //First call MobileAds.setRequestConfigurationhttps://groups.google.com/g/google-admob-ads-sdk/c/17oVu0sABjs
         MobileAds.initialize(aActivity); //initializes the admob
     }
 
-    private void setRequestConfiguration(boolean pIsForChildDirectedTreatment, boolean pIsPersonalized, String pMaxAdContentRating, boolean pIsReal)
+    private void setRequestConfiguration(boolean pIsForChildDirectedTreatment, String pMaxAdContentRating, boolean pIsReal)
     {
         RequestConfiguration requestConfiguration;
         RequestConfiguration.Builder requestConfigurationBuilder = new RequestConfiguration.Builder();
