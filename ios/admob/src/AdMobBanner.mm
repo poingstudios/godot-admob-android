@@ -9,7 +9,7 @@
     [super dealloc];
 }
 
-- (instancetype)initialize: (int)instance_id : (bool) is_personalized{
+- (instancetype)initialize: (int)instance_id : (bool) is_personalized {
     self = [super init];
     if (self) {
         initialized = true;
