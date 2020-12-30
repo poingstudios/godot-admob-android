@@ -18,6 +18,15 @@ env:
   RELEASE_NAME: iOS Compiled files for v3.0+
 
 jobs:
+  download-google-mobile-ads-sdk:
+    name: Download Google Mobile Ads SDK
+    runs-on: "macos-latest"
+    
+    steps:
+      - name: Download, copy and unzip the lastest Google Mobile Ads SDK on release binaries and iOS module folder
+      run: |
+        curl -LO https://dl.google.com/googleadmobadssdk/googlemobileadssdkios.zip
+        
   ios-template:
     name: Compiling for iOS
     runs-on: "macos-latest"
