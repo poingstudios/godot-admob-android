@@ -9,4 +9,5 @@ data_*/
 *.pyc
 
 example/android
+ios/admob/lib
 .DS_Store
