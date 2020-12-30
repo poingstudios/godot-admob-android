@@ -20,13 +20,19 @@ env:
 jobs:
   download-google-mobile-ads-sdk:
     name: Download Google Mobile Ads SDK
-    runs-on: "macos-latest"
+    runs-on: "ubuntu-latest"
     
     steps:
-      - name: Download, copy and unzip the lastest Google Mobile Ads SDK on release binaries and iOS module folder
+    - name: Download, copy and unzip the lastest Google Mobile Ads SDK on release binaries and iOS module folder
       run: |
         curl -LO https://dl.google.com/googleadmobadssdk/googlemobileadssdkios.zip
-        
+
+    - name: Upload Google Mobile Ads SDK as Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: googlemobileadssdkios.zip
+        path: googlemobileadssdkios.zip
+
   ios-template:
     name: Compiling for iOS
     runs-on: "macos-latest"
@@ -77,11 +83,15 @@ jobs:
         curl -LO $FULL_PATHNAME_DOWNLOAD_GODOT_SOURCE_CODE
         unzip ${{env.CURRENT_GODOT_VERSION}}-stable.zip
 
-    - name: Download, copy and unzip the lastest Google Mobile Ads SDK on release binaries and iOS module folder
+
+    - name: Download Google Mobile Ads SDK Artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: googlemobileadssdkios.zip
+
+    - name: Copy and unzip the Google Mobile Ads SDK on release binaries and iOS module folder
       run: |
-        curl -LO https://dl.google.com/googleadmobadssdk/googlemobileadssdkios.zip
         mkdir -p godot-${{env.CURRENT_GODOT_VERSION}}-stable/bin/release/
-        cp -R googlemobileadssdkios.zip godot-${{env.CURRENT_GODOT_VERSION}}-stable/bin/release/
         unzip googlemobileadssdkios.zip -d ios/admob/lib/
         cd ios/admob/lib
         cd */
