@@ -31,21 +31,8 @@ signal unified_native_closed
 #private attributes
 var _is_initialized : bool = false 
 var _admob_singleton : Object
-enum _gravity_options {TOP, BOTTOM, CENTER, NO_GRAVITY}
-var _banner_gravity : Dictionary = {
-	"iOS": {
-		_gravity_options.TOP : 0,
-		_gravity_options.BOTTOM : 0,
-		_gravity_options.CENTER : 0,
-		_gravity_options.NO_GRAVITY : 0
-	},
-	"Android": {
-		_gravity_options.TOP : 48,
-		_gravity_options.BOTTOM : 80,
-		_gravity_options.CENTER : 17,
-		_gravity_options.NO_GRAVITY : 0
-	}
-}
+enum _position_options {BOTTOM, TOP}
+
 onready var _unified_native_scale : Dictionary = {
 	"x" : OS.get_screen_size().x / get_viewport_rect().size.x,
 	"y" : OS.get_screen_size().y / get_viewport_rect().size.y,
@@ -56,7 +43,7 @@ onready var _unified_native_scale : Dictionary = {
 export var admob_enabled := true
 export var is_real := false
 export(String, "BANNER", "MEDIUM_RECTANGLE", "FULL_BANNER", "LEADERBOARD", "SMART_BANNER") var banner_size : String = "BANNER"
-export(_gravity_options) var banner_gravity_option = _gravity_options.BOTTOM
+export(_position_options) var banner_position = _position_options.BOTTOM
 export var is_for_child_directed_treatment := true
 export(String, "G", "PG", "T", "MA") var max_ad_content_rating = "G"
 export var is_personalized := false
@@ -96,7 +83,7 @@ func _initialize():
 
 func load_banner():
 	if _admob_singleton:
-		_admob_singleton.load_banner(unit_ids.banner[OS.get_name()], _banner_gravity[OS.get_name()][banner_gravity_option], banner_size)
+		_admob_singleton.load_banner(unit_ids.banner[OS.get_name()], banner_position, banner_size)
 
 func load_interstitial():
 	if _admob_singleton:
