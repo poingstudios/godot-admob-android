@@ -1,7 +1,9 @@
 #include "AdMob.h"
+#include <CommonCrypto/CommonDigest.h>
 #import "app_delegate.h"
 #import <AppTrackingTransparency/AppTrackingTransparency.h>
 #import <AdSupport/AdSupport.h>
+#import <AdSupport/ASIdentifierManager.h>
 #import <GoogleMobileAds/GoogleMobileAds.h>
 
 AdMob *AdMob::instance = NULL; 
@@ -29,9 +31,26 @@ AdMob::~AdMob() {
     }
 }
 
-void AdMob::initialize(bool is_for_child_directed_treatment, bool is_personalized, const String &max_ad_content_rating, const String &test_device_id, int instance_id) {
+void AdMob::initialize(bool is_for_child_directed_treatment, bool is_personalized, const String &max_ad_content_rating, bool is_real, int instance_id) {
     if (instance != this || initialized) {
         return;
+    }
+    
+    if (is_real){
+        NSUUID* adid = [[ASIdentifierManager sharedManager] advertisingIdentifier];
+        const char *cStr = [adid.UUIDString UTF8String];
+        unsigned char digest[16];
+        CC_MD5( cStr, strlen(cStr), digest );
+
+        NSMutableString *output = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
+
+        for(int i = 0; i < CC_MD5_DIGEST_LENGTH; i++)
+        {
+            [output appendFormat:@"%02x", digest[i]];
+        }
+        GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = @[output];
+        NSLog(@"testDeviceIdentifiers: ", output);
+
     }
     [GADMobileAds.sharedInstance.requestConfiguration tagForChildDirectedTreatment:is_for_child_directed_treatment];
     if (max_ad_content_rating == "G") {
