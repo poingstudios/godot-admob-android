@@ -28,6 +28,7 @@ import com.google.android.gms.ads.formats.MediaView; // to mapUnifiedNativeAdToL
 import com.google.ads.mediation.admob.AdMobAdapter;
 
 import android.app.Activity;
+import android.view.Gravity;
 import android.widget.FrameLayout; //get Godot Layout
 import android.view.View;
 import android.os.Bundle;
@@ -147,7 +148,7 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
     }
 
     //BANNER only one is allowed, please do not try to place more than one, as your ads on the app may have the chance to be banned!
-    public void load_banner(final String pAdUnitId, final int pGravity, final String pSize)
+    public void load_banner(final String pAdUnitId, final int pPosition, final String pSize)
     {
         aActivity.runOnUiThread(new Runnable()
         {
@@ -216,7 +217,14 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
                 });
 
                 aGodotLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-                aGodotLayoutParams.gravity = pGravity;
+                if (pPosition == 0)//BOTTOM
+                {
+                    aGodotLayoutParams.gravity = Gravity.BOTTOM;
+                }
+                else if (pPosition == 1)//TOP
+                {
+                    aGodotLayoutParams.gravity = Gravity.TOP;
+                }
                 aGodotLayout.addView(aAdView, aGodotLayoutParams);
 
                 aAdView.loadAd(getAdRequest());

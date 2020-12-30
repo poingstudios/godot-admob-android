@@ -92,7 +92,7 @@ void AdMob::initialize(bool is_for_child_directed_treatment, bool is_personalize
 }
 
 
-void AdMob::load_banner(const String &ad_unit_id, int gravity, const String &size) {
+void AdMob::load_banner(const String &ad_unit_id, int position, const String &size) {
     if (!initialized) {
         NSLog(@"AdMob Module not initialized");
         return;
@@ -100,7 +100,7 @@ void AdMob::load_banner(const String &ad_unit_id, int gravity, const String &siz
     
     NSString *ad_unit_id_NSString = [NSString stringWithCString:ad_unit_id.utf8().get_data() encoding: NSUTF8StringEncoding];
     NSString *size_NSString       = [NSString stringWithCString:size.utf8().get_data() encoding: NSUTF8StringEncoding];
-    [banner load_banner: ad_unit_id_NSString : gravity: size_NSString];
+    [banner load_banner: ad_unit_id_NSString : position: size_NSString];
     
 }
 

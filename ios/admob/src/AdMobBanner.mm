@@ -21,18 +21,18 @@
 }
 
 
-- (void) load_banner:(NSString*)ad_unit_id :(int)gravity :(NSString*)size {
+- (void) load_banner:(NSString*)ad_unit_id :(int)position :(NSString*)size {
     NSLog(@"Calling load_banner");
-    
-    isOnTop = false;
-    
+        
     if (!initialized || (!ad_unit_id.length)) {
         return;
     }
     else{
-        NSLog(@"banner will load with the banner id");
-        NSLog(@"%@", ad_unit_id);
+        NSLog(@"banner will load with the banner id %@", ad_unit_id);
     }
+    
+    positionBanner = position;
+    NSLog(@"banner position = %i", positionBanner);
     
     
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
@@ -82,22 +82,39 @@
 - (void)addBannerViewToView:(UIView *)bannerView {
     bannerView.translatesAutoresizingMaskIntoConstraints = NO;
     [rootController.view addSubview:bannerView];
-    [rootController.view addConstraints:@[
-        [NSLayoutConstraint constraintWithItem:bannerView
-                                     attribute:NSLayoutAttributeBottom
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:rootController.bottomLayoutGuide
-                                     attribute:NSLayoutAttributeTop
-                                    multiplier:1
-                                      constant:0],
+
+    //CENTER ON MIDDLE
+    [rootController.view addConstraint:
         [NSLayoutConstraint constraintWithItem:bannerView
                                      attribute:NSLayoutAttributeCenterX
                                      relatedBy:NSLayoutRelationEqual
                                         toItem:rootController.view
                                      attribute:NSLayoutAttributeCenterX
                                     multiplier:1
-                                      constant:0]
-    ]];
+                                      constant:0]];
+
+    if (positionBanner == 0)//BOTTOM
+    {
+        [rootController.view addConstraint:
+            [NSLayoutConstraint constraintWithItem:bannerView
+                                        attribute:NSLayoutAttributeBottom
+                                        relatedBy:NSLayoutRelationEqual
+                                            toItem:rootController.bottomLayoutGuide
+                                        attribute:NSLayoutAttributeTop
+                                        multiplier:1
+                                        constant:0]];
+    }
+    else if(positionBanner == 1)//TOP
+    {
+        [rootController.view addConstraint:
+            [NSLayoutConstraint constraintWithItem:bannerView
+                                        attribute:NSLayoutAttributeTop
+                                        relatedBy:NSLayoutRelationEqual
+                                            toItem:rootController.topLayoutGuide
+                                        attribute:NSLayoutAttributeBottom
+                                        multiplier:1
+                                        constant:0]];
+    }
 }
 
 
