@@ -29,6 +29,8 @@ signal unified_native_opened
 signal unified_native_closed
 
 #private attributes
+var _banner_enabled : bool = false
+var _unified_enabled : bool = false
 var _is_initialized : bool = false 
 var _admob_singleton : Object
 enum _position_options {BOTTOM, TOP}
@@ -129,14 +131,18 @@ func _on_get_tree_resized():
 			"x" : OS.get_screen_size().x / get_viewport_rect().size.x,
 			"y" : OS.get_screen_size().y / get_viewport_rect().size.y
 		}
+		load_interstitial()
+		load_rewarded()
 
 
 #SIGNALS
 func _on_AdMob_banner_loaded():
 	emit_signal("banner_loaded")
+	_banner_enabled = true
 	
 func _on_AdMob_banner_destroyed():
 	emit_signal("banner_destroyed")
+	_banner_enabled = false
 
 func _on_AdMob_banner_failed_to_load(error_code : int):
 	emit_signal("banner_failed_to_load", error_code)
@@ -197,9 +203,11 @@ func _on_AdMob_rewarded_ad_failed_to_show(error_code : int):
 
 func _on_AdMob_unified_native_loaded():
 	emit_signal("unified_native_loaded")
+	_unified_enabled = true
 
 func _on_AdMob_unified_native_destroyed():
 	emit_signal("unified_native_destroyed")
+	_unified_enabled = false
 
 func _on_AdMob_unified_native_failed_to_load(error_code : int):
 	emit_signal("unified_native_failed_to_load", error_code)
