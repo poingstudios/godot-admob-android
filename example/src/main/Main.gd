@@ -1,6 +1,5 @@
 extends Control
 
-
 onready var EnableBanner : Button = $CenterContainer/VBoxContainer/Banner/EnableBanner
 onready var DisableBanner : Button = $CenterContainer/VBoxContainer/Banner/DisableBanner
 onready var Interstitial : Button = $CenterContainer/VBoxContainer/Interstitial
@@ -17,6 +16,10 @@ func _add_text_Advice_Node(text_value : String):
 func _ready():
 	OS.center_window()
 	if OS.get_name() == "Android" or OS.get_name() == "iOS":
+		for i in ["BANNER", "MEDIUM_RECTANGLE", "FULL_BANNER", "LEADERBOARD", "SMART_BANNER"]:
+			$BannerSizes.add_item(i)
+		# warning-ignore:return_value_discarded
+		AdMob.connect("banner_loaded", self, "_on_AdMob_banner_loaded")
 		# warning-ignore:return_value_discarded
 		AdMob.connect("banner_destroyed", self, "_on_AdMob_banner_destroyed")
 		# warning-ignore:return_value_discarded
@@ -28,6 +31,8 @@ func _ready():
 		# warning-ignore:return_value_discarded
 		_is_AdMob_initialized()
 		if OS.get_name() == "Android":
+			# warning-ignore:return_value_discarded
+			AdMob.connect("unified_native_loaded", self, "_on_AdMob_unified_native_loaded")
 			# warning-ignore:return_value_discarded
 			AdMob.connect("unified_native_destroyed", self, "_on_AdMob_unified_native_destroyed")
 		else:
@@ -63,22 +68,29 @@ func reset_banner_and_unified_buttons():
 
 func _on_AdMob_banner_destroyed():
 	reset_banner_and_unified_buttons()
+	_add_text_Advice_Node("Banner destroyed")
+
 func _on_AdMob_unified_native_destroyed():
 	reset_banner_and_unified_buttons()
+	_add_text_Advice_Node("Unified Natived destroyed")
 
-func _on_EnableBanner_pressed():
+func _on_AdMob_banner_loaded():
+	DisableNative.disabled = true
 	DisableBanner.disabled = false
 	EnableBanner.disabled = true
 	EnableNative.disabled = true
-	AdMob.load_banner()
 	_add_text_Advice_Node("Banner loaded")
+
+func _on_EnableBanner_pressed():
+	EnableBanner.disabled = true
+	EnableNative.disabled = true
+	AdMob.load_banner()
 
 func _on_DisableBanner_pressed():
 	DisableBanner.disabled = true
 	EnableBanner.disabled = false
 	EnableNative.disabled = false
 	AdMob.destroy_banner()
-	_add_text_Advice_Node("Banner destroyed")
 
 func _on_Rewarded_pressed():
 	AdMob.show_rewarded()
@@ -92,16 +104,29 @@ func _on_AdMob_rewarded_user_earned_rewarded(currency : String, amount : int):
 	Advice.bbcode_text += "EARNED " + currency + " with amount: " + str(amount) + "\n"
 
 
-func _on_EnableUnifiedNative_pressed():
+func _on_AdMob_unified_native_loaded():
 	DisableNative.disabled = false
+	DisableBanner.disabled = true
+	EnableBanner.disabled = true
+	EnableNative.disabled = true
+	_add_text_Advice_Node("Unified Native loaded")
+
+func _on_EnableUnifiedNative_pressed():
 	EnableNative.disabled = true
 	EnableBanner.disabled = true
 	AdMob.load_unified_native($UnifiedNative)
-	_add_text_Advice_Node("Unified Native loaded")
 
 func _on_DisableUnifiedNative_pressed():
 	DisableNative.disabled = true
 	EnableNative.disabled = false
 	EnableBanner.disabled = false
 	AdMob.destroy_unified_native()
-	_add_text_Advice_Node("Unified Natived destroyed")
+
+
+func _on_BannerSizes_item_selected(index):
+	if AdMob._is_initialized:
+		var item_text : String = $BannerSizes.get_item_text(index)
+		AdMob.banner_size = item_text
+		_add_text_Advice_Node("Banner Size changed:" + item_text)
+		if AdMob._banner_enabled:
+			AdMob.load_banner()
