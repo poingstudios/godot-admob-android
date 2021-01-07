@@ -11,7 +11,7 @@ This repository uses [GitHub Actions](https://github.com/features/actions), this
 
 
 <p align="center">
-	<img align="center" src="https://i.imgur.com/u5y2GEx.png">
+	<img align="center" src="https://media4.giphy.com/media/TjG13sqkXzwGfvAm93/200.gif">
 </p>
 
 ### Ad Formats
@@ -27,7 +27,7 @@ Download example project to see how the Plugin works!
 # Android (v3.2.2+):
 - Download the ```android-template-v{{ your_godot_version }}.zip``` in the releases tab. [STABLE VERSION](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/Android_v3.2.2%2B) and [MONO VERSION](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/Android_mono_v3.2.2%2B)
 - Enable Android Build Template. [Check the tutorial here](https://docs.godotengine.org/en/stable/getting_started/workflow/export/android_custom_build.html)
-- Extract the content in android-template.zip into ```res://android/plugins``` directory on your Godot project
+- Extract the content in ```android-template-v{{ your_godot_version }}.zip``` into ```res://android/plugins``` directory on your Godot project
 - On your Game Project go to:
 	1. Project
 		1. Export
@@ -50,7 +50,7 @@ Download example project to see how the Plugin works!
 # iOS (v3.0.0+):
 - Download the ```ios-template-v{{ your_godot_version }}.zip``` in the releases tab. [STABLE VERSION](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/iOS_v3.0%2B) and [MONO VERSION](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/iOS_mono_v3.0%2B)
 - Export your game to iOS
-- Copy the library ```libgodot.iphone.release.fat.a``` you have downloaded from releases tab inside the exported Xcode project. **You must override the '.a' file with "your_project_name", should be like: 'your_project_name.a'.**
+- Copy the library ```libgodot.iphone.release.fat.a``` you have downloaded from releases tab inside the exported Xcode project. **You must delete the 'your_project_name.a' (example: AdMob.a) and rename the 'libgodot.iphone.release.fat.a' with "your_project_name.a", should be like: 'AdMob.a'.**
 - Add the following frameworks to the project linking it using the "Build Phases" -> "Link Binary with Libraries" option:
 	- Extract the following .framework from [```googlemobileadssdkios.zip```](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/iOS_v3.0%2B/googlemobileadssdkios.zip):
 		- GoogleAppMeasurement.framework 
@@ -60,7 +60,7 @@ Download example project to see how the Plugin works!
 		- PromisesObjC.xcframework
 		- UserMessagingPlatform.xcframework
 	- These frameworks are already in your computer
-		- AppTrackingTransparency | ```Status: (Optional) ```
+		- AppTrackingTransparency | ```Status: (Optional) ``` (if not appear: need to update XCode or SDK version to iOS 14.0)
 		- AdSupport | ```Status: (Optional) ```
 		- JavaScriptCore
 - Add the -ObjC linker flag to Other Linker Flags in your project's build settings:
