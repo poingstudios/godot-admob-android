@@ -11,7 +11,7 @@ This repository uses [GitHub Actions](https://github.com/features/actions), this
 
 
 <p align="center">
-	<img align="center" src="https://media4.giphy.com/media/TjG13sqkXzwGfvAm93/200.gif">
+	<img align="center" src="https://i.imgur.com/u5y2GEx.png">
 </p>
 
 ### Ad Formats
