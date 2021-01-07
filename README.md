@@ -50,7 +50,8 @@ Download example project to see how the Plugin works!
 # iOS (v3.0.0+):
 - Download the ```ios-template-v{{ your_godot_version }}.zip``` in the releases tab. [STABLE VERSION](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/iOS_v3.0%2B) and [MONO VERSION](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/iOS_mono_v3.0%2B)
 - Export your game to iOS
-- Copy the library ```libgodot.iphone.release.fat.a``` you have downloaded from releases tab inside the exported Xcode project. **You must delete the 'your_project_name.a' (example: AdMob.a) and rename the 'libgodot.iphone.release.fat.a' with "your_project_name.a", should be like: 'AdMob.a'.**
+- Copy the library ```libgodot.iphone.release.fat.a``` you have downloaded from releases tab inside the exported Xcode project. **You must delete the 'your_project_name.a' (example: AdMob.a) and rename the 'libgodot.iphone.release.fat.a' with "your_project_name.a", should be like: 'AdMob.a'.** 
+- ![](https://media2.giphy.com/media/miNlL020ZQYjK4r8e7/giphy.gif)
 - Add the following frameworks to the project linking it using the "Build Phases" -> "Link Binary with Libraries" option:
 	- Extract the following .framework from [```googlemobileadssdkios.zip```](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/iOS_v3.0%2B/googlemobileadssdkios.zip):
 		- GoogleAppMeasurement.framework 
