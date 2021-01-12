@@ -19,13 +19,7 @@ AdMob::AdMob() {
     instance = this;
 }
 
-AdMob::~AdMob() {
-    if (initialized) {
-        [banner release]; //free banner
-        [interstitial release]; //free interstitial
-        [rewarded release]; //free rewarded
-    }
-    
+AdMob::~AdMob() {    
     if (instance == this) {
         instance = NULL;
     }
@@ -86,9 +80,9 @@ void AdMob::initialize(bool is_for_child_directed_treatment, bool is_personalize
     }
 
     initialized = true;
-    banner = [[AdMobBanner alloc] initialize :instance_id: is_personalized];
-    interstitial = [[AdMobInterstitial alloc] initialize :instance_id : is_personalized];
-    rewarded = [[AdMobRewarded alloc] initialize :instance_id : is_personalized];
+    banner = [[AdMobBanner alloc] init :instance_id: is_personalized];
+    interstitial = [[AdMobInterstitial alloc] init :instance_id : is_personalized];
+    rewarded = [[AdMobRewarded alloc] init :instance_id : is_personalized];
 }
 
 
