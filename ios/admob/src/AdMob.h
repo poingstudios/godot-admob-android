@@ -3,8 +3,6 @@
 
 #include "object.h"
 
-
-
 #ifdef __OBJC__
 #include "AdMobBanner.h"
 #include "AdMobInterstitial.h"
