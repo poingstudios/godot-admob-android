@@ -1,6 +1,6 @@
-#import "AdMobInterstitial.h"
+#import "Interstitial.h"
 
-@implementation AdMobInterstitial
+@implementation Interstitial
 
 - (void)dealloc {
     interstitial.delegate = nil;
