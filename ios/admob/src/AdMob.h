@@ -1,10 +1,15 @@
 #ifndef ADMOB_H
 #define ADMOB_H
 
-#include "reference.h"
+#include "object.h"
+
 
 
 #ifdef __OBJC__
+#include "AdMobBanner.h"
+#include "AdMobInterstitial.h"
+#include "AdMobRewarded.h"
+
 @class AdMobBanner;
 typedef AdMobBanner *bannerPtr;
 @class AdMobInterstitial;
@@ -18,9 +23,9 @@ typedef void *rewardedPtr;
 #endif
 
 
-class AdMob : public Reference {
+class AdMob : public Object {
     
-    GDCLASS(AdMob, Reference);
+    GDCLASS(AdMob, Object);
     
     bool initialized;
     static AdMob *instance;

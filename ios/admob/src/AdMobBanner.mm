@@ -1,21 +1,20 @@
 #import "AdMobBanner.h"
-#include "reference.h"
 
 @implementation AdMobBanner
 
 - (void)dealloc {
     bannerView.delegate = nil;
-    [bannerView release];
-    [super dealloc];
 }
 
-- (instancetype)initialize: (int)instance_id : (bool) is_personalized {
-    self = [super init];
-    if (self) {
+- (instancetype)init: (int)instance_id : (bool) is_personalized {
+    NSLog(@"Initializing banner");
+    if ((self = [super init])) {
+        NSLog(@"Initializing banner2");
         initialized = true;
         instanceId = instance_id;
         isPersonalized = is_personalized;
-        rootController = [AppDelegate getViewController];
+        rootController = (ViewController *)((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.rootViewController;
+        NSLog(@"Initializing banner3");
     }
     return self;
 }
@@ -65,7 +64,7 @@
         }
         
         bannerView.adUnitID = ad_unit_id;
-        
+
         bannerView.delegate = self;
         bannerView.rootViewController = rootController;
         

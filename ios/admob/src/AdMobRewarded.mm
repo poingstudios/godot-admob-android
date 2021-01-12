@@ -1,20 +1,13 @@
 #import "AdMobRewarded.h"
-#include "reference.h"
 
 @implementation AdMobRewarded
 
-- (void)dealloc {
-    [rewarded release];
-    [super dealloc];
-}
-
-- (instancetype)initialize:(int) instance_id : (bool) is_personalized{
-    self = [super init];
-    if (self) {
+- (instancetype)init:(int) instance_id : (bool) is_personalized{
+    if ((self = [super init])) {
         initialized = true;
         instanceId = instance_id;
         isPersonalized = is_personalized;
-        rootController = [AppDelegate getViewController];
+        rootController = (ViewController *)((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.rootViewController;
     }
     return self;
 }

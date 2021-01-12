@@ -11,3 +11,6 @@ data_*/
 example/android
 ios/admob/lib
 .DS_Store
+
+*.o
+*.d
