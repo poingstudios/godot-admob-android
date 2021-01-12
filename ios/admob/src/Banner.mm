@@ -1,20 +1,17 @@
-#import "AdMobBanner.h"
+#import "Banner.h"
 
-@implementation AdMobBanner
+@implementation Banner
 
 - (void)dealloc {
     bannerView.delegate = nil;
 }
 
 - (instancetype)init: (int)instance_id : (bool) is_personalized {
-    NSLog(@"Initializing banner");
     if ((self = [super init])) {
-        NSLog(@"Initializing banner2");
         initialized = true;
         instanceId = instance_id;
         isPersonalized = is_personalized;
         rootController = (ViewController *)((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.rootViewController;
-        NSLog(@"Initializing banner3");
     }
     return self;
 }
@@ -78,7 +75,7 @@
     
 }
 
-- (void)addBannerViewToView:(UIView *)bannerView {
+- (void)addBannerViewToView {
     bannerView.translatesAutoresizingMaskIntoConstraints = NO;
     [rootController.view addSubview:bannerView];
 
@@ -135,7 +132,7 @@
 - (void)adViewDidReceiveAd:(GADBannerView *)adView {
     NSLog(@"adViewDidReceiveAd");
     [rootController.view endEditing:YES];
-    [self addBannerViewToView:bannerView];
+    [self addBannerViewToView];
     Object *obj = ObjectDB::get_instance(instanceId);
     obj->call_deferred("_on_AdMob_banner_loaded");
 }

@@ -1,6 +1,6 @@
-#import "AdMobRewarded.h"
+#import "Rewarded.h"
 
-@implementation AdMobRewarded
+@implementation Rewarded
 
 - (instancetype)init:(int) instance_id : (bool) is_personalized{
     if ((self = [super init])) {
@@ -72,14 +72,6 @@
     Object *obj = ObjectDB::get_instance(instanceId);
     obj->call_deferred("_on_AdMob_user_earned_rewarded", [reward.type UTF8String], reward.amount.doubleValue);
 }
-
-/// Tells the delegate that the rewarded ad was presented.
-- (void)rewardedAdDidPresent:(GADRewardedAd *)rewardedAd {
-    NSLog(@"rewardedAdDidPresent:");
-    Object *obj = ObjectDB::get_instance(instanceId);
-    obj->call_deferred("_on_AdMob_rewarded_ad_closed");
-}
-
 /// Tells the delegate that the rewarded ad failed to present.
 - (void)rewardedAd:(GADRewardedAd *)rewardedAd didFailToPresentWithError:(NSError *)error {
     NSLog(@"rewardedAd:didFailToPresentWithError");

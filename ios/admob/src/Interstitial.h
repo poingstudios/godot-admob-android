@@ -1,25 +1,26 @@
-#import <GoogleMobileAds/GADBannerView.h>
+#import <GoogleMobileAds/GADInterstitial.h>
 #import <GoogleMobileAds/GADExtras.h>
 #import "app_delegate.h"
 #import "view_controller.h"
 #import "godot_view.h"
 #include "object.h"
 
-@class AdMobBanner;
+@class Interstitial;
 
-@interface AdMobBanner: NSObject <GADBannerViewDelegate> {
-    GADBannerView *bannerView;
+@interface Interstitial: NSObject <GADInterstitialDelegate> {
+    GADInterstitial *interstitial;
     bool initialized;
     int instanceId;
     bool isPersonalized;
-    int positionBanner;
     NSString *adUnitId;
     ViewController *rootController;
 }
-@property (nonatomic, strong) AdMobBanner *adMobBanner;
+
+@property (nonatomic, strong) Interstitial *interstitial;
+
 
 - (instancetype)init: (int) instance_id : (bool) is_personalized;
-- (void)load_banner: (NSString*) ad_unit_id : (int) position : (NSString*) size;
-- (void)destroy_banner;
+- (void)load_interstitial: (NSString*)ad_unit_id;
+- (void)show_interstitial;
 
 @end

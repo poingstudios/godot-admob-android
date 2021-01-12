@@ -10,9 +10,9 @@ AdMob *AdMob::instance = NULL;
 
 AdMob::AdMob() {
     initialized = false;
-    banner = NULL;
-    interstitial = NULL;
-    rewarded = NULL;
+    bannerObj = NULL;
+    interstitialObj = NULL;
+    rewardedObj = NULL;
     
     ERR_FAIL_COND(instance != NULL);
     
@@ -80,9 +80,9 @@ void AdMob::initialize(bool is_for_child_directed_treatment, bool is_personalize
     }
 
     initialized = true;
-    banner = [[AdMobBanner alloc] init :instance_id: is_personalized];
-    interstitial = [[AdMobInterstitial alloc] init :instance_id : is_personalized];
-    rewarded = [[AdMobRewarded alloc] init :instance_id : is_personalized];
+    bannerObj = [[Banner alloc] init :instance_id: is_personalized];
+    interstitialObj = [[Interstitial alloc] init :instance_id : is_personalized];
+    rewardedObj = [[Rewarded alloc] init :instance_id : is_personalized];
 }
 
 
@@ -94,14 +94,14 @@ void AdMob::load_banner(const String &ad_unit_id, int position, const String &si
     
     NSString *ad_unit_id_NSString = [NSString stringWithCString:ad_unit_id.utf8().get_data() encoding: NSUTF8StringEncoding];
     NSString *size_NSString       = [NSString stringWithCString:size.utf8().get_data() encoding: NSUTF8StringEncoding];
-    [banner load_banner: ad_unit_id_NSString : position: size_NSString];
+    [bannerObj load_banner: ad_unit_id_NSString : position: size_NSString];
     
 }
 
 void AdMob::destroy_banner() {
     if (!initialized) return;
     
-    [banner destroy_banner];
+    [bannerObj destroy_banner];
 }
 
 void AdMob::load_interstitial(const String &ad_unit_id) {
@@ -111,14 +111,14 @@ void AdMob::load_interstitial(const String &ad_unit_id) {
     }
     
     NSString *ad_unit_id_NSString = [NSString stringWithCString:ad_unit_id.utf8().get_data() encoding: NSUTF8StringEncoding];
-    [interstitial load_interstitial: ad_unit_id_NSString];
+    [interstitialObj load_interstitial: ad_unit_id_NSString];
     
 }
 
 void AdMob::show_interstitial() {
     if (!initialized) return;
     
-    [interstitial show_interstitial];
+    [interstitialObj show_interstitial];
 }
 
 void AdMob::load_rewarded(const String &ad_unit_id) {
@@ -128,14 +128,14 @@ void AdMob::load_rewarded(const String &ad_unit_id) {
     }
     
     NSString *ad_unit_id_NSString = [NSString stringWithCString:ad_unit_id.utf8().get_data() encoding: NSUTF8StringEncoding];
-    [rewarded load_rewarded: ad_unit_id_NSString];
+    [rewardedObj load_rewarded: ad_unit_id_NSString];
     
 }
 
 void AdMob::show_rewarded() {
     if (!initialized) return;
     
-    [rewarded show_rewarded];
+    [rewardedObj show_rewarded];
 }
 
 void AdMob::_bind_methods() {
