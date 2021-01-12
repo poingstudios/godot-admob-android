@@ -16,7 +16,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
-AdMob="*res://admob_api/AdMob.tscn"
+GoogleAdMob="*res://admob_api/GoogleAdMob.tscn"
 
 [display]
 
