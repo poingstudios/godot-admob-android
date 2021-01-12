@@ -2,7 +2,6 @@
 #import <GoogleMobileAds/GADExtras.h>
 #import "app_delegate.h"
 #import "view_controller.h"
-#import "godot_view.h"
 #include "object.h"
 
 @class Banner;
