@@ -1,8 +1,9 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://admob_api/AdMob.gd" type="Script" id=1]
+[ext_resource path="res://admob_api/GoogleAdMob.gd" type="Script" id=1]
 
-[node name="AdMob" type="Control"]
+[node name="GoogleAdMob" type="Control"]
+pause_mode = 2
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
