@@ -3,7 +3,7 @@
 #import "app_delegate.h"
 #import "view_controller.h"
 #import "godot_view.h"
-#include "reference.h"
+#include "object.h"
 
 @class AdMobRewarded;
 
