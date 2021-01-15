@@ -11,3 +11,4 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 is_test_europe_user_consent = true
+is_for_child_directed_treatment = false

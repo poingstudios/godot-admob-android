@@ -19,8 +19,8 @@ func _ready():
 	if OS.get_name() == "Android" or OS.get_name() == "iOS":
 		for i in ["BANNER", "MEDIUM_RECTANGLE", "FULL_BANNER", "LEADERBOARD", "SMART_BANNER"]:
 			$BannerSizes.add_item(i)
-		MobileAds.load_interstitial()
-		MobileAds.load_rewarded()
+
+		# warning-ignore:return_value_discarded
 		MobileAds.connect("consent_info_update_failure", self, "_on_AdMob_consent_info_update_failure")
 		# warning-ignore:return_value_discarded
 		MobileAds.connect("banner_loaded", self, "_on_AdMob_banner_loaded")
@@ -37,7 +37,7 @@ func _ready():
 		# warning-ignore:return_value_discarded
 		MobileAds.connect("rewarded_user_earned_rewarded", self, "_on_AdMob_rewarded_user_earned_rewarded")
 		# warning-ignore:return_value_discarded
-		_is_AdMob_initialized()
+		MobileAds.connect("initialization_complete", self, "_on_AdMob_initialization_complete")
 		if OS.get_name() == "Android":
 			# warning-ignore:return_value_discarded
 			MobileAds.connect("unified_native_loaded", self, "_on_AdMob_unified_native_loaded")
@@ -47,18 +47,21 @@ func _ready():
 			UnifiedNativePanel.hide()
 			UnifiedNativeHBox.hide()
 	else:
-		_add_text_Advice_Node("Module only works on Android or iOS devices!")
+		_add_text_Advice_Node("AdMob only works on Android or iOS devices!")
 
-func _is_AdMob_initialized():
-	if MobileAds.is_initialized:
+func _on_AdMob_initialization_complete(status, _adapter_name):
+	if status == MobileAdsBase.INITIALIZATION_STATUS.READY:
+		MobileAds.load_interstitial()
+		MobileAds.load_rewarded()
 		_add_text_Advice_Node("AdMob initialized! With parameters:")
 		_add_text_Advice_Node("is_for_child_directed_treatment: " + str(MobileAds.is_for_child_directed_treatment))
 		_add_text_Advice_Node("max_ad_content_rating: " + str(MobileAds.is_real))
 		_add_text_Advice_Node("instance_id: " + str(get_instance_id()))
-		_add_text_Advice_Node("---------------------------------------------------")
 		EnableBanner.disabled = false
 		EnableNative.disabled = false
-
+	else:
+		_add_text_Advice_Node("AdMob not initialized, check your configuration")
+	_add_text_Advice_Node("---------------------------------------------------")
 func _on_AdMob_interstitial_loaded():
 	Interstitial.disabled = false
 	_add_text_Advice_Node("Interstitial loaded")

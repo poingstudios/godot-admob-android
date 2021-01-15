@@ -37,22 +37,21 @@ func _ready():
 func _initialize():
 	if _admob_singleton and !is_initialized:
 		_admob_singleton.initialize(is_for_child_directed_treatment, max_ad_content_rating, is_real, is_test_europe_user_consent, get_instance_id())
-		is_initialized = true
 
 func load_banner():
-	if _admob_singleton:
+	if _admob_singleton and is_initialized:
 		_admob_singleton.load_banner(unit_ids.banner[OS.get_name()], banner_position, banner_size)
 
 func load_interstitial():
-	if _admob_singleton:
+	if _admob_singleton and is_initialized:
 		_admob_singleton.load_interstitial(unit_ids.interstitial[OS.get_name()])
 
 func load_rewarded():
-	if _admob_singleton:
+	if _admob_singleton and is_initialized:
 		_admob_singleton.load_rewarded(unit_ids.rewarded[OS.get_name()])
 
 func load_unified_native(control_node_to_be_replaced : Control):
-	if _admob_singleton:
+	if _admob_singleton and is_initialized:
 		_control_node_to_be_replaced = control_node_to_be_replaced
 		var params := {
 			"size" : {
@@ -67,23 +66,23 @@ func load_unified_native(control_node_to_be_replaced : Control):
 		_admob_singleton.load_unified_native(unit_ids.unified_native[OS.get_name()], [params.size.w, params.size.h], [params.position.x, params.position.y])
 
 func destroy_banner():
-	if _admob_singleton:
+	if _admob_singleton and is_initialized:
 		_admob_singleton.destroy_banner()
 
 func destroy_unified_native():
-	if _admob_singleton:
+	if _admob_singleton and is_initialized:
 		_admob_singleton.destroy_unified_native()
 
 func show_interstitial():
-	if _admob_singleton:
+	if _admob_singleton and is_initialized:
 		_admob_singleton.show_interstitial()
 
 func show_rewarded():
-	if _admob_singleton:
+	if _admob_singleton and is_initialized:
 		_admob_singleton.show_rewarded()
 
 func _on_get_tree_resized():
-	if _admob_singleton:
+	if _admob_singleton and is_initialized:
 		unit_ids.unified_native.scale = {
 			"x" : OS.get_screen_size().x / get_viewport_rect().size.x,
 			"y" : OS.get_screen_size().y / get_viewport_rect().size.y

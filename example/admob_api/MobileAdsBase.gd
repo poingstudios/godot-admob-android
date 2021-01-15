@@ -1,7 +1,7 @@
 class_name MobileAdsBase
 
 extends Control
-
+enum INITIALIZATION_STATUS {NOT_READY, READY}
 signal banner_loaded()
 signal banner_destroyed()
 signal banner_failed_to_load(error_code)
@@ -33,8 +33,10 @@ signal unified_native_closed()
 signal consent_form_dismissed()
 signal consent_status_changed(consent_status_message)
 signal consent_form_load_failure(error_code, error_message)
-signal consent_info_update_success()
+signal consent_info_update_success(consent_status_message)
 signal consent_info_update_failure(error_code, error_message)
+
+signal initialization_complete(status, adapter_name)
 
 #public attributes
 var is_initialized : bool = false 
@@ -151,9 +153,17 @@ func _on_AdMob_consent_status_changed(consent_status_message : String):
 func _on_AdMob_consent_form_load_failure(error_code : int, error_message : String):
 	emit_signal("consent_form_load_failure", error_code, error_message)
 
-func _on_AdMob_consent_info_update_success():
-	emit_signal("consent_info_update_success")
+func _on_AdMob_consent_info_update_success(consent_status_message : String):
+	emit_signal("consent_info_update_success", consent_status_message)
 
 func _on_AdMob_consent_info_update_failure(error_code : int, error_message : String):
 	emit_signal("consent_info_update_failure", error_code, error_message)
 
+
+func _on_AdMob_initialization_complete(status : int, adapter_name : String):
+	if status == INITIALIZATION_STATUS.READY and adapter_name == "GADMobileAds": 
+		is_initialized = true
+	else: 
+		is_initialized = false
+
+	emit_signal("initialization_complete", status, adapter_name)
