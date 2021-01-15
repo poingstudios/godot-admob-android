@@ -91,6 +91,8 @@ Download example project to see how the Plugin works!
 # API References
 Signals:
 ```GDScript
+initialization_complete(status, adapter_name) #when AdMob initializes, can be enum NOT_READY(0) or READY(1)
+
 banner_loaded() #ad finishes loading
 banner_destroyed() #banner view is destroyed
 banner_failed_to_load(error_code : int) #ad request fails
@@ -123,7 +125,6 @@ consent_status_changed(consent_status_message) #get the ConsentStatus
 consent_form_load_failure(error_code, error_message) #get the code and message of error to see why form is not loading
 consent_info_update_success() #consent information state was updated
 consent_info_update_failure(error_code, error_message) #get the code and message of error to see why info update consent fail
-
 ```
 
 Methods
