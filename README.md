@@ -37,14 +37,22 @@ Download example project to see how the Plugin works!
 						- [x] ```Use Custom Build```
 					1. Plugins 
 						- [x] ```Ad Mob```
-- ```(Required ONLY when you are TESTING OR RELEASING your app with your AdMob App ID, otherwise you don't need to):```
-	- Add your [AdMob App ID](https://support.google.com/admob/answer/7356431) to your app's ```res://android/build/AndroidManifest.xml``` file by adding a ```<meta-data>``` tag with name ```com.google.android.gms.ads.APPLICATION_ID```, as shown below.
+- Add your [AdMob App ID](https://support.google.com/admob/answer/7356431) to your app's ```res://android/build/AndroidManifest.xml``` file by adding a ```<meta-data>``` tag with name ```com.google.android.gms.ads.APPLICATION_ID```, as shown below.
 
-```
+``` xml
+<!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
 <meta-data
 	tools:replace="android:value"
 	android:name="com.google.android.gms.ads.APPLICATION_ID"
 	android:value="ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy"/>
+```
+
+- (Optional) If you are using UMP, you can add too the [Delay app measurement](https://developers.google.com/admob/ump/android/quick-start#delay_app_measurement_optional) inside ```AndroidManifest.xml``` 
+
+``` xml
+<meta-data
+	android:name="com.google.android.gms.ads.DELAY_APP_MEASUREMENT_INIT"
+    android:value="true"/>
 ```
 
 # iOS (v3.0.0+):
@@ -74,35 +82,48 @@ Download example project to see how the Plugin works!
 ![RequestAuthorization](https://developers.google.com/admob/images/idfa/editor.png)
 
 
-### API References
----
+# User Messaging Platform (UMP):
+- If want to use UMP due of EUROPE ePrivacy Directive and the General Data Protection Regulation (GDPR), you first need to do configure your [Funding Choices](https://developers.google.com/admob/ump/android/quick-start).
+- If your app is "ForChildDirectedTreatment" then the UMP [won't appear and signals won't work for consent](https://stackoverflow.com/a/63232045), this is normal so don't worry.
+- If you want to show personalized or non-personalized ads, then you need to change inside your [AdMob Account](https://apps.admob.com/?utm_source=internal&utm_medium=et&utm_campaign=helpcentrecontextualopt&utm_term=http://goo.gl/6Xkfcf&subid=ww-ww-et-amhelpv4)
+![](https://i.stack.imgur.com/0v1eL.png)
+
+# API References
 Signals:
 ```GDScript
-banner_loaded #when an ad finishes loading
-banner_destroyed #when banner view is destroyed
-banner_failed_to_load(error_code : int) #when an ad request fails
-banner_opened #when an ad opens an overlay that
-banner_left_application #when the user has left the app
-banner_closed #when the user is about to return to the app after tapping on an ad
+banner_loaded() #ad finishes loading
+banner_destroyed() #banner view is destroyed
+banner_failed_to_load(error_code : int) #ad request fails
+banner_opened() #ad opens an overlay that
+banner_left_application() #user has left the app
+banner_closed() # user is about to return to the app after tapping on an ad
 
-interstitial_loaded #when an ad finishes loading
-interstitial_failed_to_load(error_code : int) #when an ad request fails
-interstitial_opened #when the ad is displayed
-interstitial_left_application #when the user has left the app
-interstitial_closed #when the interstitial ad is closed
+interstitial_loaded() #ad finishes loading
+interstitial_failed_to_load(error_code : int) #ad request fails
+interstitial_opened() #ad is displayed
+interstitial_left_application() #user has left the app
+interstitial_closed() #interstitial ad is closed
 
-rewarded_ad_loaded #when ad successfully loaded
-rewarded_ad_failed_to_load #when ad failed to load
-rewarded_ad_opened #when the ad is displayed
-rewarded_ad_closed #when the ad is closed
-rewarded_user_earned_rewarded(currency : String, amount : int) #when user earner rewarded
-rewarded_ad_failed_to_show(error_code) #when the ad request fails
+rewarded_ad_loaded() #ad successfully loaded
+rewarded_ad_failed_to_load() #ad failed to load
+rewarded_ad_opened() #ad is displayed
+rewarded_ad_closed() #ad is closed
+rewarded_user_earned_rewarded(currency : String, amount : int) #user earner rewarded
+rewarded_ad_failed_to_show(error_code) #ad request fails
 
-unified_native_loaded #when unified native loaded and shows the ad
-unified_native_destroyed #when unified native view destroyed
-unified_native_failed_to_load(error_code : int) #when an ad request fails
-unified_native_opened #when an ad opens an overlay that
-unified_native_closed #when the user is about to return to the app after tapping on an ad
+unified_native_loaded() #unified native loaded and shows the ad
+unified_native_destroyed() #unified native view destroyed
+unified_native_failed_to_load(error_code : int) #ad request fails
+
+unified_native_opened() #ad opens an overlay that
+unified_native_closed() #user is about to return to the app after tapping on an ad
+
+consent_form_dismissed() #then the consent is REQUIRED(user in EEA or UK) and user dismissed the form
+consent_status_changed(consent_status_message) #get the ConsentStatus
+consent_form_load_failure(error_code, error_message) #get the code and message of error to see why form is not loading
+consent_info_update_success() #consent information state was updated
+consent_info_update_failure(error_code, error_message) #get the code and message of error to see why info update consent fail
+
 ```
 
 Methods
@@ -110,6 +131,7 @@ Methods
 #Private
 #-----------------
 _initialize() #init the AdMob
+_on_AdMob_*() #just to emit signals
 
 #Public
 #-----------------
@@ -124,5 +146,4 @@ show_rewarded() #shows rewarded
 destroy_banner() #completely destroys the Banner View
 destroy_unified_native() #completely destroys the Unified Native View
 
-_on_AdMob_*() #just to emit signals
 ```
