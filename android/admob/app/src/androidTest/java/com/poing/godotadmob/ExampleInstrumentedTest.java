@@ -1,4 +1,4 @@
-package com.poing.godotadmob;
+package com.poing.admob;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.poing.godotadmob", appContext.getPackageName());
+        assertEquals("com.poing.admob", appContext.getPackageName());
     }
 }

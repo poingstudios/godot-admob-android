@@ -1,4 +1,4 @@
-package com.poing.godotadmob;
+package com.poing.admob;
 
 import org.junit.Test;
 

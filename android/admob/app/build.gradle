@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId "com.poing.godotadmob"
+        applicationId "com.poing.admob"
         minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
