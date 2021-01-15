@@ -33,6 +33,7 @@ void AdMob::loadConsentForm(bool is_for_child_directed_treatment, bool is_real, 
       loadWithCompletionHandler:^(UMPConsentForm *form, NSError *loadError) {
         if (loadError) {
             objectDB->call_deferred("_on_AdMob_consent_form_load_failure", (int) loadError.code, loadError.domain);
+            initializeAfterUMP(is_for_child_directed_treatment, is_real, instance_id);
         } else {
             String consentStatusMsg = "";
 
@@ -114,39 +115,51 @@ void AdMob::initialize(bool is_for_child_directed_treatment, const String &max_a
 
 void AdMob::initializeAfterUMP(bool is_for_child_directed_treatment, bool is_real, int instance_id)
 {
-    if (!is_real){
-        #if TARGET_IPHONE_SIMULATOR
-            GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = @[ kGADSimulatorID ];
-            NSLog(@"on Testing Simulator: %@", kGADSimulatorID);
-        #else
-            GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = @[NSString stringWithCString: getDeviceId()];
-            NSLog(@"on Testing Real Device: testDeviceIdentifiers: %@", [NSString stringWithCString: getDeviceId()]);
-        #endif
-    }
-    
-    [GADMobileAds.sharedInstance.requestConfiguration tagForChildDirectedTreatment:is_for_child_directed_treatment];    
+    if (!initialized){
+        if (!is_real){
+            #if TARGET_IPHONE_SIMULATOR
+                GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = @[ kGADSimulatorID ];
+                NSLog(@"on Testing Simulator: %@", kGADSimulatorID);
+            #else
+                GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = @[NSString stringWithCString: getDeviceId()];
+                NSLog(@"on Testing Real Device: testDeviceIdentifiers: %@", [NSString stringWithCString: getDeviceId()]);
+            #endif
+        }
+        
+        [GADMobileAds.sharedInstance.requestConfiguration tagForChildDirectedTreatment:is_for_child_directed_treatment];    
 
-    if (self_max_ad_content_rating == "G") {
-        GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = GADMaxAdContentRatingGeneral;
-        NSLog(@"maxAdContentRating = GADMaxAdContentRatingGeneral");
-    }
-    else if (self_max_ad_content_rating == "PG") {
-        GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = GADMaxAdContentRatingParentalGuidance;
-        NSLog(@"maxAdContentRating = GADMaxAdContentRatingParentalGuidance");
-    }
-    else if (self_max_ad_content_rating == "T") {
-        GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = GADMaxAdContentRatingTeen;
-        NSLog(@"maxAdContentRating = GADMaxAdContentRatingTeen");
-    }
-    else if (self_max_ad_content_rating == "MA") {
-        GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = GADMaxAdContentRatingMatureAudience;
-        NSLog(@"maxAdContentRating = GADMaxAdContentRatingMatureAudience");
-    }
+        if (self_max_ad_content_rating == "G") {
+            GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = GADMaxAdContentRatingGeneral;
+            NSLog(@"maxAdContentRating = GADMaxAdContentRatingGeneral");
+        }
+        else if (self_max_ad_content_rating == "PG") {
+            GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = GADMaxAdContentRatingParentalGuidance;
+            NSLog(@"maxAdContentRating = GADMaxAdContentRatingParentalGuidance");
+        }
+        else if (self_max_ad_content_rating == "T") {
+            GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = GADMaxAdContentRatingTeen;
+            NSLog(@"maxAdContentRating = GADMaxAdContentRatingTeen");
+        }
+        else if (self_max_ad_content_rating == "MA") {
+            GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = GADMaxAdContentRatingMatureAudience;
+            NSLog(@"maxAdContentRating = GADMaxAdContentRatingMatureAudience");
+        }
 
-    if (@available(iOS 14, *)) {
-        [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
-            [[GADMobileAds sharedInstance] startWithCompletionHandler:^(GADInitializationStatus *_Nonnull status) 
-            {
+        if (@available(iOS 14, *)) {
+            [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
+                [[GADMobileAds sharedInstance] startWithCompletionHandler:^(GADInitializationStatus *_Nonnull status) 
+                {
+                    NSDictionary<NSString *, GADAdapterStatus *>* states = [status adapterStatusesByClassName];
+
+                    GADAdapterStatus * adapterStatus = states[@"GADMobileAds"];
+                    NSLog(@"%s : %ld", "GADMobileAds", adapterStatus.state);
+                    
+                    objectDB->call_deferred("_on_AdMob_initialization_complete", (int) adapterStatus.state, "GADMobileAds");
+                }];
+            }];
+        }
+        else{
+            [[GADMobileAds sharedInstance] startWithCompletionHandler:^(GADInitializationStatus *_Nonnull status) {
                 NSDictionary<NSString *, GADAdapterStatus *>* states = [status adapterStatusesByClassName];
 
                 GADAdapterStatus * adapterStatus = states[@"GADMobileAds"];
@@ -154,23 +167,13 @@ void AdMob::initializeAfterUMP(bool is_for_child_directed_treatment, bool is_rea
                 
                 objectDB->call_deferred("_on_AdMob_initialization_complete", (int) adapterStatus.state, "GADMobileAds");
             }];
-        }];
-    }
-    else{
-        [[GADMobileAds sharedInstance] startWithCompletionHandler:^(GADInitializationStatus *_Nonnull status) {
-            NSDictionary<NSString *, GADAdapterStatus *>* states = [status adapterStatusesByClassName];
+        }
 
-            GADAdapterStatus * adapterStatus = states[@"GADMobileAds"];
-            NSLog(@"%s : %ld", "GADMobileAds", adapterStatus.state);
-            
-            objectDB->call_deferred("_on_AdMob_initialization_complete", (int) adapterStatus.state, "GADMobileAds");
-        }];
+        initialized = true;
+        bannerObj = [[Banner alloc] init :instance_id];
+        interstitialObj = [[Interstitial alloc] init :instance_id];
+        rewardedObj = [[Rewarded alloc] init :instance_id];           
     }
-
-    initialized = true;
-    bannerObj = [[Banner alloc] init :instance_id];
-    interstitialObj = [[Interstitial alloc] init :instance_id];
-    rewardedObj = [[Rewarded alloc] init :instance_id];
 }
 
 void AdMob::load_banner(const String &ad_unit_id, int position, const String &size) {

@@ -2,10 +2,10 @@ extends MobileAdsBase
 
 export var admob_enabled := true
 export var is_real := false
-export var is_test_europe_user_consent := false
+export var is_test_europe_user_consent := true
 export(String, "BANNER", "MEDIUM_RECTANGLE", "FULL_BANNER", "LEADERBOARD", "SMART_BANNER") var banner_size : String = "BANNER"
 export(_position_options) var banner_position = _position_options.BOTTOM
-export var is_for_child_directed_treatment := true
+export var is_for_child_directed_treatment := false
 export(String, "G", "PG", "T", "MA") var max_ad_content_rating = "G"
 export (Dictionary) var unit_ids : Dictionary = {
 	"banner": {
