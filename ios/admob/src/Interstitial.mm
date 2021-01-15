@@ -6,11 +6,10 @@
     interstitial.delegate = nil;
 }
 
-- (instancetype)init: (int)instance_id : (bool) is_personalized{
+- (instancetype)init: (int)instance_id{
     if ((self = [super init])) {
         initialized = true;
         instanceId = instance_id;
-        isPersonalized = is_personalized;
         rootController = (ViewController *)((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.rootViewController;
     }
     return self;
@@ -35,10 +34,6 @@
     interstitial.delegate = self;
     
     GADRequest *request = [GADRequest request];
-    GADExtras *extras = [[GADExtras alloc] init];
-    extras.additionalParameters = @{@"npa": (isPersonalized) ? @"0" : @"1"};
-    [request registerAdNetworkExtras:extras];
-    
     [interstitial loadRequest:request];
     
 }

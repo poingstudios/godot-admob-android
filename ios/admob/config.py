@@ -11,4 +11,5 @@ def configure(env):
 			xcframework_directory = 'ios-arm64_armv7'
 
 		env.Append(FRAMEWORKPATH=['#modules/admob/lib/GoogleMobileAds.xcframework/' + xcframework_directory])
+		env.Append(FRAMEWORKPATH=['#modules/admob/lib/UserMessagingPlatform.xcframework/' + xcframework_directory])
 		env.Append(CPPPATH=['#core'])

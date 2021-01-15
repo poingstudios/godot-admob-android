@@ -1,10 +1,11 @@
 #include "AdMob.h"
-#include <CommonCrypto/CommonDigest.h>
-#import "app_delegate.h"
+   
 #import <AppTrackingTransparency/AppTrackingTransparency.h>
 #import <AdSupport/AdSupport.h>
 #import <AdSupport/ASIdentifierManager.h>
 #import <GoogleMobileAds/GoogleMobileAds.h>
+#include <CommonCrypto/CommonDigest.h>
+#include <UserMessagingPlatform/UserMessagingPlatform.h>
 
 AdMob *AdMob::instance = NULL; 
 
@@ -13,7 +14,9 @@ AdMob::AdMob() {
     bannerObj = NULL;
     interstitialObj = NULL;
     rewardedObj = NULL;
-    
+    objectDB = NULL;
+    self_max_ad_content_rating = "";
+
     ERR_FAIL_COND(instance != NULL);
     
     instance = this;
@@ -25,66 +28,150 @@ AdMob::~AdMob() {
     }
 }
 
-void AdMob::initialize(bool is_for_child_directed_treatment, bool is_personalized, const String &max_ad_content_rating, bool is_real, int instance_id) {
+void AdMob::loadConsentForm(bool is_for_child_directed_treatment, bool is_real, int instance_id) {
+  [UMPConsentForm
+      loadWithCompletionHandler:^(UMPConsentForm *form, NSError *loadError) {
+        if (loadError) {
+            objectDB->call_deferred("_on_AdMob_consent_form_load_failure", (int) loadError.code, loadError.domain);
+        } else {
+            String consentStatusMsg = "";
+
+            if (UMPConsentInformation.sharedInstance.consentStatus == UMPConsentStatusRequired) {
+                    [form
+                        presentFromViewController:(ViewController *)((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.rootViewController
+                                completionHandler:^(NSError *_Nullable dismissError) {
+                                    objectDB->call_deferred("_on_AdMob_consent_form_dismissed");
+                                    if (UMPConsentInformation.sharedInstance.consentStatus == UMPConsentStatusObtained) {
+                                        objectDB->call_deferred("_on_AdMob_consent_status_changed", "User consent obtained. Personalization not defined.");
+                                    }
+                                    initializeAfterUMP(is_for_child_directed_treatment, is_real, instance_id);
+                                }];
+                consentStatusMsg = "User consent required but not yet obtained.";
+            }
+
+            if (UMPConsentInformation.sharedInstance.consentStatus == UMPConsentStatusUnknown){
+                consentStatusMsg = "Unknown consent status.";
+                initializeAfterUMP(is_for_child_directed_treatment, is_real, instance_id);
+            }
+            else if (UMPConsentInformation.sharedInstance.consentStatus == UMPConsentStatusNotRequired){
+                consentStatusMsg = "User consent not required. For example, the user is not in the EEA or the UK.";
+                initializeAfterUMP(is_for_child_directed_treatment, is_real, instance_id);
+            }
+            else if (UMPConsentInformation.sharedInstance.consentStatus == UMPConsentStatusObtained) {
+                consentStatusMsg = "User consent obtained. Personalization not defined.";
+                initializeAfterUMP(is_for_child_directed_treatment, is_real, instance_id);
+            }
+            
+
+            objectDB->call_deferred("_on_AdMob_consent_status_changed", consentStatusMsg);
+        }
+      }];
+}
+void AdMob::initialize(bool is_for_child_directed_treatment, const String &max_ad_content_rating, bool is_real, bool is_test_europe_user_consent, int instance_id) {
     if (instance != this || initialized) {
         return;
     }
+    objectDB = ObjectDB::get_instance(instance_id);
+    self_max_ad_content_rating = max_ad_content_rating;
+    UMPRequestParameters *parameters = [[UMPRequestParameters alloc] init];
+    parameters.tagForUnderAgeOfConsent = is_for_child_directed_treatment;
 
+    if (is_test_europe_user_consent)
+    {
+        [UMPConsentInformation.sharedInstance reset];
+        UMPDebugSettings *debugSettings = [[UMPDebugSettings alloc] init];
+        debugSettings.testDeviceIdentifiers = [NSString stringWithCString: getDeviceId()];
+        debugSettings.geography = UMPDebugGeographyEEA;
+        parameters.debugSettings = debugSettings;
+    }
+
+    // Request an update to the consent information.
+    [UMPConsentInformation.sharedInstance requestConsentInfoUpdateWithParameters: parameters
+        completionHandler:^(NSError *_Nullable error) 
+        {
+            if (error) 
+            {
+                objectDB->call_deferred("_on_AdMob_consent_info_update_failure", (int) error.code, error.domain);
+                initializeAfterUMP(is_for_child_directed_treatment, is_real, instance_id);
+            } 
+            else 
+            {
+                UMPFormStatus formStatus = UMPConsentInformation.sharedInstance.formStatus;
+                if (formStatus == UMPFormStatusAvailable) 
+                {
+                    objectDB->call_deferred("_on_AdMob_consent_info_update_success", "Consent Form Available");
+                    loadConsentForm(is_for_child_directed_treatment, is_real, instance_id);
+                }
+                else
+                {
+                    objectDB->call_deferred("_on_AdMob_consent_info_update_success", "Consent Form not Available");
+                    initializeAfterUMP(is_for_child_directed_treatment, is_real, instance_id);
+                }
+            }
+        }
+    ];
+}
+
+void AdMob::initializeAfterUMP(bool is_for_child_directed_treatment, bool is_real, int instance_id)
+{
     if (!is_real){
         #if TARGET_IPHONE_SIMULATOR
             GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = @[ kGADSimulatorID ];
             NSLog(@"on Testing Simulator: %@", kGADSimulatorID);
         #else
-            NSUUID* adid = [[ASIdentifierManager sharedManager] advertisingIdentifier];
-            const char *cStr = [adid.UUIDString UTF8String];
-            unsigned char digest[16];
-            CC_MD5( cStr, strlen(cStr), digest );
-
-            NSMutableString *output = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
-
-            for(int i = 0; i < CC_MD5_DIGEST_LENGTH; i++)
-            {
-                [output appendFormat:@"%02x", digest[i]];
-            }
-            GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = @[output];
-            NSLog(@"on Testing Real Device: testDeviceIdentifiers: %@", output);
+            GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = @[NSString stringWithCString: getDeviceId()];
+            NSLog(@"on Testing Real Device: testDeviceIdentifiers: %@", [NSString stringWithCString: getDeviceId()]);
         #endif
     }
-    [GADMobileAds.sharedInstance.requestConfiguration tagForChildDirectedTreatment:is_for_child_directed_treatment];
-    if (max_ad_content_rating == "G") {
+    
+    [GADMobileAds.sharedInstance.requestConfiguration tagForChildDirectedTreatment:is_for_child_directed_treatment];    
+
+    if (self_max_ad_content_rating == "G") {
         GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = GADMaxAdContentRatingGeneral;
         NSLog(@"maxAdContentRating = GADMaxAdContentRatingGeneral");
     }
-    else if (max_ad_content_rating == "PG") {
+    else if (self_max_ad_content_rating == "PG") {
         GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = GADMaxAdContentRatingParentalGuidance;
         NSLog(@"maxAdContentRating = GADMaxAdContentRatingParentalGuidance");
     }
-    else if (max_ad_content_rating == "T") {
+    else if (self_max_ad_content_rating == "T") {
         GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = GADMaxAdContentRatingTeen;
         NSLog(@"maxAdContentRating = GADMaxAdContentRatingTeen");
     }
-    else if (max_ad_content_rating == "MA") {
+    else if (self_max_ad_content_rating == "MA") {
         GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = GADMaxAdContentRatingMatureAudience;
         NSLog(@"maxAdContentRating = GADMaxAdContentRatingMatureAudience");
     }
 
     if (@available(iOS 14, *)) {
         [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
-            [[GADMobileAds sharedInstance] startWithCompletionHandler:nil];
-            NSLog(@"AdMob initialized with Request App Tracking Transparency");
+            [[GADMobileAds sharedInstance] startWithCompletionHandler:^(GADInitializationStatus *_Nonnull status) 
+            {
+                NSDictionary<NSString *, GADAdapterStatus *>* states = [status adapterStatusesByClassName];
+
+                GADAdapterStatus * adapterStatus = states[@"GADMobileAds"];
+                NSLog(@"%s : %ld", "GADMobileAds", adapterStatus.state);
+                
+                objectDB->call_deferred("_on_AdMob_initialization_complete", (int) adapterStatus.state, "GADMobileAds");
+            }];
         }];
     }
     else{
-        [[GADMobileAds sharedInstance] startWithCompletionHandler:nil];
-        NSLog(@"AdMob initialized without Request App Tracking Transparency");
+        [[GADMobileAds sharedInstance] startWithCompletionHandler:^(GADInitializationStatus *_Nonnull status) {
+            NSDictionary<NSString *, GADAdapterStatus *>* states = [status adapterStatusesByClassName];
+
+            GADAdapterStatus * adapterStatus = states[@"GADMobileAds"];
+            NSLog(@"%s : %ld", "GADMobileAds", adapterStatus.state);
+            
+            objectDB->call_deferred("_on_AdMob_initialization_complete", (int) adapterStatus.state, "GADMobileAds");
+        }];
     }
 
     initialized = true;
-    bannerObj = [[Banner alloc] init :instance_id: is_personalized];
-    interstitialObj = [[Interstitial alloc] init :instance_id : is_personalized];
-    rewardedObj = [[Rewarded alloc] init :instance_id : is_personalized];
+    bannerObj = [[Banner alloc] init :instance_id];
+    interstitialObj = [[Interstitial alloc] init :instance_id];
+    rewardedObj = [[Rewarded alloc] init :instance_id];
 }
-
 
 void AdMob::load_banner(const String &ad_unit_id, int position, const String &size) {
     if (!initialized) {
@@ -146,4 +233,23 @@ void AdMob::_bind_methods() {
     ClassDB::bind_method("show_interstitial", &AdMob::show_interstitial);
     ClassDB::bind_method("load_rewarded", &AdMob::load_rewarded);
     ClassDB::bind_method("show_rewarded", &AdMob::show_rewarded);
+}
+
+
+
+const char * AdMob::getDeviceId()
+{
+    NSUUID* adid = [[ASIdentifierManager sharedManager] advertisingIdentifier];
+    const char *cStr = [adid.UUIDString UTF8String];
+    unsigned char digest[16];
+    CC_MD5( cStr, strlen(cStr), digest );
+
+    NSMutableString *output = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
+
+    for(int i = 0; i < CC_MD5_DIGEST_LENGTH; i++)
+    {
+        [output appendFormat:@"%02x", digest[i]];
+    }
+
+    return [output UTF8String];
 }
