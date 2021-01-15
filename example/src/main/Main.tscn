@@ -154,7 +154,6 @@ __meta__ = {
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 4 )
-
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Banner/EnableBanner" to="." method="_on_EnableBanner_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Banner/DisableBanner" to="." method="_on_DisableBanner_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/Interstitial" to="." method="_on_Interstitial_pressed"]

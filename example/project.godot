@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Control",
+"class": "MobileAdsBase",
+"language": "GDScript",
+"path": "res://admob_api/MobileAdsBase.gd"
+} ]
+_global_script_class_icons={
+"MobileAdsBase": ""
+}
+
 [application]
 
 config/name="GodotAdMob"
@@ -16,7 +26,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
-GoogleAdMob="*res://admob_api/GoogleAdMob.tscn"
+MobileAds="*res://admob_api/MobileAds.tscn"
 
 [display]
 

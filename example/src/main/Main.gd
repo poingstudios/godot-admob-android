@@ -19,23 +19,30 @@ func _ready():
 	if OS.get_name() == "Android" or OS.get_name() == "iOS":
 		for i in ["BANNER", "MEDIUM_RECTANGLE", "FULL_BANNER", "LEADERBOARD", "SMART_BANNER"]:
 			$BannerSizes.add_item(i)
+		MobileAds.load_interstitial()
+		MobileAds.load_rewarded()
+		MobileAds.connect("consent_info_update_failure", self, "_on_AdMob_consent_info_update_failure")
 		# warning-ignore:return_value_discarded
-		GoogleAdMob.connect("banner_loaded", self, "_on_AdMob_banner_loaded")
+		MobileAds.connect("banner_loaded", self, "_on_AdMob_banner_loaded")
 		# warning-ignore:return_value_discarded
-		GoogleAdMob.connect("banner_destroyed", self, "_on_AdMob_banner_destroyed")
+		MobileAds.connect("banner_destroyed", self, "_on_AdMob_banner_destroyed")
 		# warning-ignore:return_value_discarded
-		GoogleAdMob.connect("interstitial_loaded", self, "_on_AdMob_interstitial_loaded")
+		MobileAds.connect("interstitial_loaded", self, "_on_AdMob_interstitial_loaded")
 		# warning-ignore:return_value_discarded
-		GoogleAdMob.connect("rewarded_ad_loaded", self, "_on_AdMob_rewarded_ad_loaded")
+		MobileAds.connect("interstitial_closed", self, "_on_AdMob_interstitial_closed")
 		# warning-ignore:return_value_discarded
-		GoogleAdMob.connect("rewarded_user_earned_rewarded", self, "_on_AdMob_rewarded_user_earned_rewarded")
+		MobileAds.connect("rewarded_ad_loaded", self, "_on_AdMob_rewarded_ad_loaded")
+		# warning-ignore:return_value_discarded
+		MobileAds.connect("rewarded_ad_closed", self, "_on_AdMob_rewarded_ad_closed")
+		# warning-ignore:return_value_discarded
+		MobileAds.connect("rewarded_user_earned_rewarded", self, "_on_AdMob_rewarded_user_earned_rewarded")
 		# warning-ignore:return_value_discarded
 		_is_AdMob_initialized()
 		if OS.get_name() == "Android":
 			# warning-ignore:return_value_discarded
-			GoogleAdMob.connect("unified_native_loaded", self, "_on_AdMob_unified_native_loaded")
+			MobileAds.connect("unified_native_loaded", self, "_on_AdMob_unified_native_loaded")
 			# warning-ignore:return_value_discarded
-			GoogleAdMob.connect("unified_native_destroyed", self, "_on_AdMob_unified_native_destroyed")
+			MobileAds.connect("unified_native_destroyed", self, "_on_AdMob_unified_native_destroyed")
 		else:
 			UnifiedNativePanel.hide()
 			UnifiedNativeHBox.hide()
@@ -43,11 +50,10 @@ func _ready():
 		_add_text_Advice_Node("Module only works on Android or iOS devices!")
 
 func _is_AdMob_initialized():
-	if GoogleAdMob._is_initialized:
+	if MobileAds.is_initialized:
 		_add_text_Advice_Node("AdMob initialized! With parameters:")
-		_add_text_Advice_Node("is_for_child_directed_treatment: " + str(GoogleAdMob.is_for_child_directed_treatment))
-		_add_text_Advice_Node("is_personalized: " + str(GoogleAdMob.is_personalized))
-		_add_text_Advice_Node("max_ad_content_rating: " + str(GoogleAdMob.is_real))
+		_add_text_Advice_Node("is_for_child_directed_treatment: " + str(MobileAds.is_for_child_directed_treatment))
+		_add_text_Advice_Node("max_ad_content_rating: " + str(MobileAds.is_real))
 		_add_text_Advice_Node("instance_id: " + str(get_instance_id()))
 		_add_text_Advice_Node("---------------------------------------------------")
 		EnableBanner.disabled = false
@@ -57,8 +63,12 @@ func _on_AdMob_interstitial_loaded():
 	Interstitial.disabled = false
 	_add_text_Advice_Node("Interstitial loaded")
 
+func _on_AdMob_interstitial_closed():
+	MobileAds.load_interstitial()
+	_add_text_Advice_Node("Interstitial closed")
+
 func _on_Interstitial_pressed():
-	GoogleAdMob.show_interstitial()
+	MobileAds.show_interstitial()
 	Interstitial.disabled = true
 	
 func reset_banner_and_unified_buttons():
@@ -85,21 +95,25 @@ func _on_AdMob_banner_loaded():
 func _on_EnableBanner_pressed():
 	EnableBanner.disabled = true
 	EnableNative.disabled = true
-	GoogleAdMob.load_banner()
+	MobileAds.load_banner()
 
 func _on_DisableBanner_pressed():
 	DisableBanner.disabled = true
 	EnableBanner.disabled = false
 	EnableNative.disabled = false
-	GoogleAdMob.destroy_banner()
+	MobileAds.destroy_banner()
 
 func _on_Rewarded_pressed():
-	GoogleAdMob.show_rewarded()
+	MobileAds.show_rewarded()
 	Rewarded.disabled = true
 	
 func _on_AdMob_rewarded_ad_loaded():
 	Rewarded.disabled = false
 	_add_text_Advice_Node("Rewarded ad loaded")
+	
+func _on_AdMob_rewarded_ad_closed():
+	MobileAds.load_rewarded()
+	_add_text_Advice_Node("Rewarded ad closed")
 	
 func _on_AdMob_rewarded_user_earned_rewarded(currency : String, amount : int):
 	Advice.bbcode_text += "EARNED " + currency + " with amount: " + str(amount) + "\n"
@@ -115,19 +129,19 @@ func _on_AdMob_unified_native_loaded():
 func _on_EnableUnifiedNative_pressed():
 	EnableNative.disabled = true
 	EnableBanner.disabled = true
-	GoogleAdMob.load_unified_native($UnifiedNative)
+	MobileAds.load_unified_native($UnifiedNative)
 
 func _on_DisableUnifiedNative_pressed():
 	DisableNative.disabled = true
 	EnableNative.disabled = false
 	EnableBanner.disabled = false
-	GoogleAdMob.destroy_unified_native()
+	MobileAds.destroy_unified_native()
 
 
 func _on_BannerSizes_item_selected(index):
-	if GoogleAdMob._is_initialized:
+	if MobileAds.is_initialized:
 		var item_text : String = $BannerSizes.get_item_text(index)
-		GoogleAdMob.banner_size = item_text
+		MobileAds.banner_size = item_text
 		_add_text_Advice_Node("Banner Size changed:" + item_text)
-		if GoogleAdMob._banner_enabled:
-			GoogleAdMob.load_banner()
+		if MobileAds.banner_enabled:
+			MobileAds.load_banner()

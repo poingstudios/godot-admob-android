@@ -25,6 +25,13 @@ import com.google.android.gms.ads.formats.UnifiedNativeAd; //
 import com.google.android.gms.ads.formats.UnifiedNativeAdView; //view of native ads
 import com.google.android.gms.ads.formats.MediaView; // to mapUnifiedNativeAdToLayout
 
+import com.google.android.ump.ConsentDebugSettings;
+import com.google.android.ump.ConsentForm;
+import com.google.android.ump.ConsentInformation;
+import com.google.android.ump.ConsentRequestParameters;
+import com.google.android.ump.FormError;
+import com.google.android.ump.UserMessagingPlatform;
+
 import com.google.ads.mediation.admob.AdMobAdapter;
 
 import android.app.Activity;
@@ -34,6 +41,7 @@ import android.view.View;
 import android.os.Bundle;
 import android.provider.Settings;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -44,6 +52,8 @@ import java.util.Locale;
 
 public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
 {
+    private ConsentInformation aConsentInformation;
+
     private Activity aActivity;
     private int aInstanceId;
 
@@ -54,8 +64,6 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
     private InterstitialAd aInterstitialAd;
     private RewardedAd aRewardedAd;
     private UnifiedNativeAdView aUnifiedNativeAdView;
-
-    private boolean aIsPersonalized;
 
     public AdMob(Godot godot)
     {
@@ -93,16 +101,102 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
         return getClass().getSimpleName();
     }
 
-    public void initialize(boolean pIsForChildDirectedTreatment, boolean pIsPersonalized, String pMaxAdContentRating, boolean pIsReal, int pInstanceId)
+    public void loadConsentForm()
+    {
+        UserMessagingPlatform.loadConsentForm(
+            aActivity,
+            new UserMessagingPlatform.OnConsentFormLoadSuccessListener()
+            {
+                @Override
+                public void onConsentFormLoadSuccess(ConsentForm consentForm)
+                {
+                    String consentStatusMsg = "";
+                    if(aConsentInformation.getConsentStatus() == ConsentInformation.ConsentStatus.REQUIRED)
+                    {
+                        consentForm.show(
+                            aActivity,
+                            new ConsentForm.OnConsentFormDismissedListener() {
+                                @Override
+                                public void onConsentFormDismissed(@Nullable FormError formError) {
+                                    loadConsentForm();
+                                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_consent_form_dismissed", new Object[]{ });
+                                }
+                            }
+                        );
+                    }
+                    switch (aConsentInformation.getConsentStatus()){
+                        case ConsentInformation.ConsentStatus.UNKNOWN:
+                            consentStatusMsg = "Unknown consent status.";
+                            break;
+                        case ConsentInformation.ConsentStatus.REQUIRED:
+                            consentStatusMsg = "User consent required but not yet obtained.";
+                            break;
+                        case ConsentInformation.ConsentStatus.NOT_REQUIRED:
+                            consentStatusMsg = "User consent not required. For example, the user is not in the EEA or the UK.";
+                            break;
+                        case ConsentInformation.ConsentStatus.OBTAINED:
+                            consentStatusMsg = "User consent obtained. Personalization not defined.";
+                            break;
+                    }
+                    GodotLib.calldeferred(aInstanceId, "_on_AdMob_consent_status_changed", new Object[]{ consentStatusMsg });
+                }
+            },
+            new UserMessagingPlatform.OnConsentFormLoadFailureListener()
+            {
+                @Override
+                public void onConsentFormLoadFailure(FormError formError)
+                {
+                    GodotLib.calldeferred(aInstanceId, "_on_AdMob_consent_form_load_failure", new Object[]{ formError.getErrorCode(), formError.getMessage() });
+                }
+            }
+        );
+    }
+    public void initialize(boolean pIsForChildDirectedTreatment, String pMaxAdContentRating, boolean pIsReal, boolean pIsTestEuropeUserConsent, int pInstanceId)
     {
         aInstanceId = pInstanceId;
-        aIsPersonalized = pIsPersonalized;
+        aConsentInformation = UserMessagingPlatform.getConsentInformation(aActivity);
 
-        setRequestConfiguration(pIsForChildDirectedTreatment, pMaxAdContentRating, pIsReal); //First call MobileAds.setRequestConfigurationhttps://groups.google.com/g/google-admob-ads-sdk/c/17oVu0sABjs
+        ConsentRequestParameters.Builder paramsBuilder = new ConsentRequestParameters.Builder().setTagForUnderAgeOfConsent(pIsForChildDirectedTreatment);
+
+        ConsentRequestParameters params;
+        if (pIsTestEuropeUserConsent)
+        {
+            aConsentInformation.reset();
+            ConsentDebugSettings debugSettings = new ConsentDebugSettings.Builder(aActivity)
+                    .setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA)
+                    .addTestDeviceHashedId(getDeviceId())
+                    .build();
+            params = paramsBuilder.setConsentDebugSettings(debugSettings).build();
+        }
+        else
+        {
+            params = paramsBuilder.build();
+        }
+
+
+        aConsentInformation.requestConsentInfoUpdate(aActivity, params,
+            new ConsentInformation.OnConsentInfoUpdateSuccessListener() {
+                @Override
+                public void onConsentInfoUpdateSuccess() {
+                    if (aConsentInformation.isConsentFormAvailable()) {
+                        GodotLib.calldeferred(aInstanceId, "_on_AdMob_consent_info_update_success", new Object[]{});
+                        loadConsentForm();
+                    }
+                }
+            },
+            new ConsentInformation.OnConsentInfoUpdateFailureListener() {
+                @Override
+                public void onConsentInfoUpdateFailure(FormError formError) {
+                    GodotLib.calldeferred(aInstanceId, "_on_AdMob_consent_info_update_failure", new Object[]{ formError.getErrorCode(), formError.getMessage() });
+                }
+            }
+        );
+
+        setMobileAdsRequestConfiguration(pIsForChildDirectedTreatment, pMaxAdContentRating, pIsReal); //First call MobileAds.setRequestConfiguration https://groups.google.com/g/google-admob-ads-sdk/c/17oVu0sABjs
         MobileAds.initialize(aActivity); //initializes the admob
     }
 
-    private void setRequestConfiguration(boolean pIsForChildDirectedTreatment, String pMaxAdContentRating, boolean pIsReal)
+    private void setMobileAdsRequestConfiguration(boolean pIsForChildDirectedTreatment, String pMaxAdContentRating, boolean pIsReal)
     {
         RequestConfiguration requestConfiguration;
         RequestConfiguration.Builder requestConfigurationBuilder = new RequestConfiguration.Builder();
@@ -139,10 +233,6 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
     private AdRequest getAdRequest()
     {
         AdRequest.Builder adRequestBuilder = new AdRequest.Builder();
-
-        Bundle extras = new Bundle();
-        extras.putString("npa", String.valueOf(!aIsPersonalized));
-        adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter.class, extras);
 
         return adRequestBuilder.build();
     }

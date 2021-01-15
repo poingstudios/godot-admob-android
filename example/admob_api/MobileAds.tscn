@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://admob_api/GoogleAdMob.gd" type="Script" id=1]
+[ext_resource path="res://admob_api/MobileAds.gd" type="Script" id=1]
 
-[node name="GoogleAdMob" type="Control"]
+[node name="MobileAds" type="Control"]
 pause_mode = 2
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -10,3 +10,4 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+is_test_europe_user_consent = true
