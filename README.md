@@ -80,6 +80,8 @@ Download example project to see how the Plugin works!
 ![SKAdNetwork](https://developers.google.com/admob/images/idfa/skadnetwork.png)
 - [Request App Tracking Transparency authorization](https://developers.google.com/admob/ios/ios14#request)
 ![RequestAuthorization](https://developers.google.com/admob/images/idfa/editor.png)
+- (Optional) If you are using UMP, you can add too the [Delay app measurement](https://developers.google.com/admob/ump/ios/quick-start#delay_app_measurement_optional)
+![DelayAppMeasurement](https://developers.google.com/admob/images/delay_app_measurement_plist.png)
 
 
 # User Messaging Platform (UMP):
