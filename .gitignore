@@ -8,10 +8,7 @@ export.cfg
 data_*/
 *.pyc
 
-example/android/plugins/*
-!example/android/plugins/*.gdap
-example/android/build/*
-example/android/.build_version
+example/android
 
 ios/admob/lib
 .DS_Store
