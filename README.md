@@ -52,7 +52,7 @@ Download example project to see how the Plugin works!
 ``` xml
 <meta-data
 	android:name="com.google.android.gms.ads.DELAY_APP_MEASUREMENT_INIT"
-    android:value="true"/>
+	android:value="true"/>
 ```
 
 # iOS (v3.0.0+):
