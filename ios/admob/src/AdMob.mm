@@ -121,7 +121,7 @@ void AdMob::initializeAfterUMP(bool is_for_child_directed_treatment, bool is_rea
                 GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = @[ kGADSimulatorID ];
                 NSLog(@"on Testing Simulator: %@", kGADSimulatorID);
             #else
-                GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = @[NSString stringWithCString: getDeviceId()];
+                GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = [NSString stringWithCString: getDeviceId()];
                 NSLog(@"on Testing Real Device: testDeviceIdentifiers: %@", [NSString stringWithCString: getDeviceId()]);
             #endif
         }
