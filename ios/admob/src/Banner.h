@@ -10,14 +10,13 @@
     GADBannerView *bannerView;
     bool initialized;
     int instanceId;
-    bool isPersonalized;
     int positionBanner;
     NSString *adUnitId;
     ViewController *rootController;
 }
 @property (nonatomic, strong) Banner * banner;
 
-- (instancetype)init: (int) instance_id : (bool) is_personalized;
+- (instancetype)init: (int) instance_id;
 - (void)load_banner: (NSString*) ad_unit_id : (int) position : (NSString*) size;
 - (void)destroy_banner;
 

@@ -11,14 +11,13 @@
     GADRewardedAd *rewarded;
     bool initialized;
     int instanceId;
-    bool isPersonalized;
     NSString *adUnitId;
     ViewController *rootController;
 }
 @property (nonatomic, strong) Rewarded * rewarded;
 
 
-- (instancetype)init: (int) instance_id : (bool) is_personalized;
+- (instancetype)init: (int) instance_id;
 - (void)load_rewarded: (NSString*) ad_unit_id;
 - (void)show_rewarded;
 

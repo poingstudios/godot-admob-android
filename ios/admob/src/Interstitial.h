@@ -10,7 +10,6 @@
     GADInterstitial *interstitial;
     bool initialized;
     int instanceId;
-    bool isPersonalized;
     NSString *adUnitId;
     ViewController *rootController;
 }
@@ -18,7 +17,7 @@
 @property (nonatomic, strong) Interstitial *interstitial;
 
 
-- (instancetype)init: (int) instance_id : (bool) is_personalized;
+- (instancetype)init: (int) instance_id;
 - (void)load_interstitial: (NSString*)ad_unit_id;
 - (void)show_interstitial;
 
