@@ -96,7 +96,7 @@ void AdMob::initialize(bool is_for_child_directed_treatment, const String &max_a
     {
         [UMPConsentInformation.sharedInstance reset];
         UMPDebugSettings *debugSettings = [[UMPDebugSettings alloc] init];
-        debugSettings.testDeviceIdentifiers = [NSString stringWithCString: getDeviceId()];
+        debugSettings.testDeviceIdentifiers = @[ [NSString stringWithCString: getDeviceId()] ];
         debugSettings.geography = UMPDebugGeographyEEA;
         parameters.debugSettings = debugSettings;
     }
@@ -136,7 +136,7 @@ void AdMob::initializeAfterUMP(bool is_for_child_directed_treatment, bool is_rea
                 GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = @[ kGADSimulatorID ];
                 NSLog(@"on Testing Simulator: %@", kGADSimulatorID);
             #else
-                GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = [NSString stringWithCString: getDeviceId()];
+                GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = @ [ [NSString stringWithCString: getDeviceId()] ];
                 NSLog(@"on Testing Real Device: testDeviceIdentifiers: %@", [NSString stringWithCString: getDeviceId()]);
             #endif
         }
@@ -164,20 +164,26 @@ void AdMob::initializeAfterUMP(bool is_for_child_directed_treatment, bool is_rea
             [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
                 [[GADMobileAds sharedInstance] startWithCompletionHandler:^(GADInitializationStatus *_Nonnull status)
                 {
+                    NSLog(@"%s", "BEFORE adapterStatusesByClassName");
                     NSDictionary<NSString *, GADAdapterStatus *>* states = [status adapterStatusesByClassName];
-
+                    NSLog(@"%s", "AFTER adapterStatusesByClassName");
+                    NSLog(@"%s", "BEFORE states");
                     GADAdapterStatus * adapterStatus = states[@"GADMobileAds"];
+                    NSLog(@"%s", "AFTER states");
                     NSLog(@"%s : %ld", "GADMobileAds", adapterStatus.state);
-                    
+
                     objectDB->call_deferred("_on_AdMob_initialization_complete", (int) adapterStatus.state, "GADMobileAds");
                 }];
             }];
         }
         else{
             [[GADMobileAds sharedInstance] startWithCompletionHandler:^(GADInitializationStatus *_Nonnull status) {
+                NSLog(@"%s", "BEFORE adapterStatusesByClassName");
                 NSDictionary<NSString *, GADAdapterStatus *>* states = [status adapterStatusesByClassName];
-
+                NSLog(@"%s", "AFTER adapterStatusesByClassName");
+                NSLog(@"%s", "BEFORE states");
                 GADAdapterStatus * adapterStatus = states[@"GADMobileAds"];
+                NSLog(@"%s", "AFTER states");
                 NSLog(@"%s : %ld", "GADMobileAds", adapterStatus.state);
                 
                 objectDB->call_deferred("_on_AdMob_initialization_complete", (int) adapterStatus.state, "GADMobileAds");
