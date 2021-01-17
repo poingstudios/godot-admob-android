@@ -1,5 +1,12 @@
-#include "AdMob.h"
-   
+//
+//  admob_plugin_implementation.m
+//  admob_plugin
+//
+//  Created by Gustavo Maciel on 16/01/21.
+//
+
+
+#import <Foundation/Foundation.h>
 #import <AppTrackingTransparency/AppTrackingTransparency.h>
 #import <AdSupport/AdSupport.h>
 #import <AdSupport/ASIdentifierManager.h>
@@ -7,7 +14,13 @@
 #include <CommonCrypto/CommonDigest.h>
 #include <UserMessagingPlatform/UserMessagingPlatform.h>
 
-AdMob *AdMob::instance = NULL; 
+#include "core/project_settings.h"
+#include "core/class_db.h"
+
+
+#import "admob_plugin_implementation.h"
+   
+AdMob *AdMob::instance = NULL;
 
 AdMob::AdMob() {
     initialized = false;
@@ -20,12 +33,14 @@ AdMob::AdMob() {
     ERR_FAIL_COND(instance != NULL);
     
     instance = this;
+    NSLog(@"initialize admob");
 }
 
-AdMob::~AdMob() {    
+AdMob::~AdMob() {
     if (instance == this) {
         instance = NULL;
     }
+    NSLog(@"deinitialize admob");
 }
 
 void AdMob::loadConsentForm(bool is_for_child_directed_treatment, bool is_real, int instance_id) {
@@ -88,17 +103,17 @@ void AdMob::initialize(bool is_for_child_directed_treatment, const String &max_a
 
     // Request an update to the consent information.
     [UMPConsentInformation.sharedInstance requestConsentInfoUpdateWithParameters: parameters
-        completionHandler:^(NSError *_Nullable error) 
+        completionHandler:^(NSError *_Nullable error)
         {
-            if (error) 
+            if (error)
             {
                 objectDB->call_deferred("_on_AdMob_consent_info_update_failure", (int) error.code, error.domain);
                 initializeAfterUMP(is_for_child_directed_treatment, is_real, instance_id);
-            } 
-            else 
+            }
+            else
             {
                 UMPFormStatus formStatus = UMPConsentInformation.sharedInstance.formStatus;
-                if (formStatus == UMPFormStatusAvailable) 
+                if (formStatus == UMPFormStatusAvailable)
                 {
                     objectDB->call_deferred("_on_AdMob_consent_info_update_success", "Consent Form Available");
                     loadConsentForm(is_for_child_directed_treatment, is_real, instance_id);
@@ -126,7 +141,7 @@ void AdMob::initializeAfterUMP(bool is_for_child_directed_treatment, bool is_rea
             #endif
         }
         
-        [GADMobileAds.sharedInstance.requestConfiguration tagForChildDirectedTreatment:is_for_child_directed_treatment];    
+        [GADMobileAds.sharedInstance.requestConfiguration tagForChildDirectedTreatment:is_for_child_directed_treatment];
 
         if (self_max_ad_content_rating == "G") {
             GADMobileAds.sharedInstance.requestConfiguration.maxAdContentRating = GADMaxAdContentRatingGeneral;
@@ -147,7 +162,7 @@ void AdMob::initializeAfterUMP(bool is_for_child_directed_treatment, bool is_rea
 
         if (@available(iOS 14, *)) {
             [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
-                [[GADMobileAds sharedInstance] startWithCompletionHandler:^(GADInitializationStatus *_Nonnull status) 
+                [[GADMobileAds sharedInstance] startWithCompletionHandler:^(GADInitializationStatus *_Nonnull status)
                 {
                     NSDictionary<NSString *, GADAdapterStatus *>* states = [status adapterStatusesByClassName];
 
@@ -172,7 +187,7 @@ void AdMob::initializeAfterUMP(bool is_for_child_directed_treatment, bool is_rea
         initialized = true;
         bannerObj = [[Banner alloc] init :instance_id];
         interstitialObj = [[Interstitial alloc] init :instance_id];
-        rewardedObj = [[Rewarded alloc] init :instance_id];           
+        rewardedObj = [[Rewarded alloc] init :instance_id];
     }
 }
 

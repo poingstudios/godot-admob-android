@@ -1,8 +1,9 @@
+#include "core/object.h"
+
 #import <GoogleMobileAds/GADBannerView.h>
 #import <GoogleMobileAds/GADExtras.h>
 #import "app_delegate.h"
 #import "view_controller.h"
-#include "object.h"
 
 @class Banner;
 

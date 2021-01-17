@@ -1,7 +1,0 @@
-Import('env')
-
-sources = ['register_types.cpp', 'src/AdMob.mm', 'src/Banner.mm', 'src/Interstitial.mm', 'src/Rewarded.mm']
-
-if (env["platform"] == "iphone"):
-    env.add_source_files(env.modules_sources, sources)
-
