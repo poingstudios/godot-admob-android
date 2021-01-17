@@ -9,9 +9,14 @@ data_*/
 *.pyc
 
 example/android
+example/ios
 
 ios/admob/lib
+ios/godot
+ios/lib
+ios/bin
 .DS_Store
 
+*.a
 *.o
 *.d
