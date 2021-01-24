@@ -91,12 +91,15 @@ void AdMob::initialize(bool is_for_child_directed_treatment, const String &max_a
     self_max_ad_content_rating = max_ad_content_rating;
     UMPRequestParameters *parameters = [[UMPRequestParameters alloc] init];
     parameters.tagForUnderAgeOfConsent = is_for_child_directed_treatment;
-
+    
     if (is_test_europe_user_consent)
     {
+        NSLog(@"Testing the UMP");
+        NSLog(@"UUID: %@", [[[UIDevice currentDevice] identifierForVendor] UUIDString] );
+        NSLog(@"device ID: %@", [NSString stringWithCString: getDeviceId()] );
         [UMPConsentInformation.sharedInstance reset];
         UMPDebugSettings *debugSettings = [[UMPDebugSettings alloc] init];
-        debugSettings.testDeviceIdentifiers = @[ [NSString stringWithCString: getDeviceId()] ];
+        debugSettings.testDeviceIdentifiers = @[ [[[UIDevice currentDevice] identifierForVendor] UUIDString] ];
         debugSettings.geography = UMPDebugGeographyEEA;
         parameters.debugSettings = debugSettings;
     }
