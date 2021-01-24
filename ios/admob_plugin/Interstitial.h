@@ -1,3 +1,11 @@
+//
+//  Interstitial.h
+//  Interstitial
+//
+//  Created by Gustavo Maciel on 24/01/21.
+//
+
+
 #import <GoogleMobileAds/GADInterstitial.h>
 #import <GoogleMobileAds/GADExtras.h>
 #import "app_delegate.h"
@@ -13,8 +21,6 @@
     NSString *adUnitId;
     ViewController *rootController;
 }
-
-@property (nonatomic, strong) Interstitial *interstitial;
 
 
 - (instancetype)init: (int) instance_id;

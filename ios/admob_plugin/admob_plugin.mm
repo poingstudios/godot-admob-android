@@ -1,5 +1,5 @@
 //
-//  admob_plugin.m
+//  admob_plugin.mm
 //  admob_plugin
 //
 //  Created by Gustavo Maciel on 16/01/21.

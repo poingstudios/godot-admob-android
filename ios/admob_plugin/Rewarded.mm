@@ -1,3 +1,10 @@
+//
+//  Rewarded.mm
+//  Rewarded
+//
+//  Created by Gustavo Maciel on 24/01/21.
+//
+
 #import "Rewarded.h"
 
 @implementation Rewarded
@@ -32,11 +39,11 @@
     [rewarded loadRequest:request completionHandler:^(GADRequestError * _Nullable error) {
         if (error) {
             NSLog(@"error while creating reward");
-            Object *obj = ObjectDB::get_instance(instanceId);
+            Object *obj = ObjectDB::get_instance(self->instanceId);
             obj->call_deferred("_on_AdMob_rewarded_ad_failed_to_show", (int) error.code);
         } else {
             NSLog(@"reward successfully loaded");
-            Object *obj = ObjectDB::get_instance(instanceId);
+            Object *obj = ObjectDB::get_instance(self->instanceId);
             obj->call_deferred("_on_AdMob_rewarded_ad_loaded");
         }
     }];

@@ -43,8 +43,16 @@
         static void _bind_methods();
         
     public:
-        void initialize(bool is_for_child_directed_treatment, const String &max_ad_content_rating, bool is_real, bool is_test_europe_user_consent, int instance_id);
-        void load_banner(const String &ad_unit_id, int gravity, const String &size);
+        void initialize(bool is_for_child_directed_treatment,
+                        const String &max_ad_content_rating,
+                        bool is_real,
+                        bool is_test_europe_user_consent,
+                        int instance_id);
+        
+        void load_banner(const String &ad_unit_id,
+                         int gravity,
+                         const String &size);
+        
         void destroy_banner();
         void load_interstitial(const String &ad_unit_id);
         void show_interstitial();
@@ -55,8 +63,14 @@
         ~AdMob();
     private:
         const char* getDeviceId();
-        void initializeAfterUMP(bool is_for_child_directed_treatment, bool is_real, int instance_id);
-        void loadConsentForm(bool is_for_child_directed_treatment, bool is_real, int instance_id);
+        void GADInitialize();
+        void initializeAfterUMP(bool is_for_child_directed_treatment,
+                                bool is_real,
+                                int instance_id);
+        
+        void loadConsentForm(bool is_for_child_directed_treatment,
+                             bool is_real,
+                             int instance_id);
 
     };
 

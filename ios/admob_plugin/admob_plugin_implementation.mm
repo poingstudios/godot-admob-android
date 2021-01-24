@@ -43,48 +43,61 @@ AdMob::~AdMob() {
     NSLog(@"deinitialize admob");
 }
 
-void AdMob::loadConsentForm(bool is_for_child_directed_treatment, bool is_real, int instance_id) {
-  [UMPConsentForm
-      loadWithCompletionHandler:^(UMPConsentForm *form, NSError *loadError) {
-        if (loadError) {
-            objectDB->call_deferred("_on_AdMob_consent_form_load_failure", (int) loadError.code, loadError.domain);
-            initializeAfterUMP(is_for_child_directed_treatment, is_real, instance_id);
-        } else {
-            String consentStatusMsg = "";
+void AdMob::loadConsentForm(bool is_for_child_directed_treatment, bool is_real, int instance_id)
+{
+    [UMPConsentForm
+        loadWithCompletionHandler:^(UMPConsentForm *form, NSError *loadError)
+        {
+            if (loadError)
+            {
+                objectDB->call_deferred("_on_AdMob_consent_form_load_failure", (int) loadError.code, loadError.domain);
+                initializeAfterUMP(is_for_child_directed_treatment, is_real, instance_id);
+            }
+            else
+            {
+                String consentStatusMsg = "";
 
-            if (UMPConsentInformation.sharedInstance.consentStatus == UMPConsentStatusRequired) {
+                if (UMPConsentInformation.sharedInstance.consentStatus == UMPConsentStatusRequired)
+                {
                     [form
                         presentFromViewController:(ViewController *)((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.rootViewController
-                                completionHandler:^(NSError *_Nullable dismissError) {
-                                    objectDB->call_deferred("_on_AdMob_consent_form_dismissed");
-                                    if (UMPConsentInformation.sharedInstance.consentStatus == UMPConsentStatusObtained) {
-                                        objectDB->call_deferred("_on_AdMob_consent_status_changed", "User consent obtained. Personalization not defined.");
-                                    }
-                                    initializeAfterUMP(is_for_child_directed_treatment, is_real, instance_id);
-                                }];
-                consentStatusMsg = "User consent required but not yet obtained.";
-            }
+                        completionHandler:^(NSError *_Nullable dismissError)
+                        {
+                            objectDB->call_deferred("_on_AdMob_consent_form_dismissed");
+                            if (UMPConsentInformation.sharedInstance.consentStatus == UMPConsentStatusObtained)
+                            {
+                                objectDB->call_deferred("_on_AdMob_consent_status_changed", "User consent obtained. Personalization not defined.");
+                            }
+                            initializeAfterUMP(is_for_child_directed_treatment, is_real, instance_id);
+                        }
+                     ];
+                    consentStatusMsg = "User consent required but not yet obtained.";
+                }
 
-            if (UMPConsentInformation.sharedInstance.consentStatus == UMPConsentStatusUnknown){
-                consentStatusMsg = "Unknown consent status.";
-                initializeAfterUMP(is_for_child_directed_treatment, is_real, instance_id);
+                if (UMPConsentInformation.sharedInstance.consentStatus == UMPConsentStatusUnknown)
+                {
+                    consentStatusMsg = "Unknown consent status.";
+                    initializeAfterUMP(is_for_child_directed_treatment, is_real, instance_id);
+                }
+                else if (UMPConsentInformation.sharedInstance.consentStatus == UMPConsentStatusNotRequired)
+                {
+                    consentStatusMsg = "User consent not required. For example, the user is not in the EEA or the UK.";
+                    initializeAfterUMP(is_for_child_directed_treatment, is_real, instance_id);
+                }
+                else if (UMPConsentInformation.sharedInstance.consentStatus == UMPConsentStatusObtained)
+                {
+                    consentStatusMsg = "User consent obtained. Personalization not defined.";
+                    initializeAfterUMP(is_for_child_directed_treatment, is_real, instance_id);
+                }
+                objectDB->call_deferred("_on_AdMob_consent_status_changed", consentStatusMsg);
             }
-            else if (UMPConsentInformation.sharedInstance.consentStatus == UMPConsentStatusNotRequired){
-                consentStatusMsg = "User consent not required. For example, the user is not in the EEA or the UK.";
-                initializeAfterUMP(is_for_child_directed_treatment, is_real, instance_id);
-            }
-            else if (UMPConsentInformation.sharedInstance.consentStatus == UMPConsentStatusObtained) {
-                consentStatusMsg = "User consent obtained. Personalization not defined.";
-                initializeAfterUMP(is_for_child_directed_treatment, is_real, instance_id);
-            }
-            
-
-            objectDB->call_deferred("_on_AdMob_consent_status_changed", consentStatusMsg);
-        }
-      }];
+         }
+    ];
 }
-void AdMob::initialize(bool is_for_child_directed_treatment, const String &max_ad_content_rating, bool is_real, bool is_test_europe_user_consent, int instance_id) {
-    if (instance != this || initialized) {
+void AdMob::initialize(bool is_for_child_directed_treatment, const String &max_ad_content_rating, bool is_real, bool is_test_europe_user_consent, int instance_id)
+{
+    if (instance != this || initialized)
+    {
         return;
     }
     objectDB = ObjectDB::get_instance(instance_id);
@@ -96,7 +109,7 @@ void AdMob::initialize(bool is_for_child_directed_treatment, const String &max_a
     {
         NSLog(@"Testing the UMP");
         NSLog(@"UUID: %@", [[[UIDevice currentDevice] identifierForVendor] UUIDString] );
-        NSLog(@"device ID: %@", [NSString stringWithCString: getDeviceId()] );
+        NSLog(@"device ID: %@", [NSString stringWithCString: getDeviceId() encoding: NSUTF8StringEncoding] );
         [UMPConsentInformation.sharedInstance reset];
         UMPDebugSettings *debugSettings = [[UMPDebugSettings alloc] init];
         debugSettings.testDeviceIdentifiers = @[ [[[UIDevice currentDevice] identifierForVendor] UUIDString] ];
@@ -139,8 +152,8 @@ void AdMob::initializeAfterUMP(bool is_for_child_directed_treatment, bool is_rea
                 GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = @[ kGADSimulatorID ];
                 NSLog(@"on Testing Simulator: %@", kGADSimulatorID);
             #else
-                GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = @ [ [NSString stringWithCString: getDeviceId()] ];
-                NSLog(@"on Testing Real Device: testDeviceIdentifiers: %@", [NSString stringWithCString: getDeviceId()]);
+                GADMobileAds.sharedInstance.requestConfiguration.testDeviceIdentifiers = @ [ [NSString stringWithCString: getDeviceId() encoding: NSUTF8StringEncoding] ];
+                NSLog(@"on Testing Real Device: testDeviceIdentifiers: %@", [NSString stringWithCString: getDeviceId() encoding: NSUTF8StringEncoding]);
             #endif
         }
         
@@ -165,32 +178,11 @@ void AdMob::initializeAfterUMP(bool is_for_child_directed_treatment, bool is_rea
 
         if (@available(iOS 14, *)) {
             [ATTrackingManager requestTrackingAuthorizationWithCompletionHandler:^(ATTrackingManagerAuthorizationStatus status) {
-                [[GADMobileAds sharedInstance] startWithCompletionHandler:^(GADInitializationStatus *_Nonnull status)
-                {
-                    NSLog(@"%s", "BEFORE adapterStatusesByClassName");
-                    NSDictionary<NSString *, GADAdapterStatus *>* states = [status adapterStatusesByClassName];
-                    NSLog(@"%s", "AFTER adapterStatusesByClassName");
-                    NSLog(@"%s", "BEFORE states");
-                    GADAdapterStatus * adapterStatus = states[@"GADMobileAds"];
-                    NSLog(@"%s", "AFTER states");
-                    NSLog(@"%s : %ld", "GADMobileAds", adapterStatus.state);
-
-                    objectDB->call_deferred("_on_AdMob_initialization_complete", (int) adapterStatus.state, "GADMobileAds");
-                }];
+                GADInitialize();
             }];
         }
         else{
-            [[GADMobileAds sharedInstance] startWithCompletionHandler:^(GADInitializationStatus *_Nonnull status) {
-                NSLog(@"%s", "BEFORE adapterStatusesByClassName");
-                NSDictionary<NSString *, GADAdapterStatus *>* states = [status adapterStatusesByClassName];
-                NSLog(@"%s", "AFTER adapterStatusesByClassName");
-                NSLog(@"%s", "BEFORE states");
-                GADAdapterStatus * adapterStatus = states[@"GADMobileAds"];
-                NSLog(@"%s", "AFTER states");
-                NSLog(@"%s : %ld", "GADMobileAds", adapterStatus.state);
-                
-                objectDB->call_deferred("_on_AdMob_initialization_complete", (int) adapterStatus.state, "GADMobileAds");
-            }];
+            GADInitialize();
         }
 
         initialized = true;
@@ -198,6 +190,17 @@ void AdMob::initializeAfterUMP(bool is_for_child_directed_treatment, bool is_rea
         interstitialObj = [[Interstitial alloc] init :instance_id];
         rewardedObj = [[Rewarded alloc] init :instance_id];
     }
+}
+
+void AdMob::GADInitialize(){
+    [[GADMobileAds sharedInstance] startWithCompletionHandler:^(GADInitializationStatus *_Nonnull status)
+    {
+        NSDictionary<NSString *, GADAdapterStatus *>* states = [status adapterStatusesByClassName];
+        GADAdapterStatus * adapterStatus = states[@"GADMobileAds"];
+        NSLog(@"%s : %ld", "GADMobileAds", adapterStatus.state);
+        
+        objectDB->call_deferred("_on_AdMob_initialization_complete", (int) adapterStatus.state, "GADMobileAds");
+    }];
 }
 
 void AdMob::load_banner(const String &ad_unit_id, int position, const String &size) {

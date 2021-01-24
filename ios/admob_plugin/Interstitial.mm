@@ -1,3 +1,10 @@
+//
+//  Interstitial.mm
+//  Interstitial
+//
+//  Created by Gustavo Maciel on 24/01/21.
+//
+
 #import "Interstitial.h"
 
 @implementation Interstitial

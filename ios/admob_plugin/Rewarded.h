@@ -1,3 +1,10 @@
+//
+//  Rewarded.h
+//  Rewarded
+//
+//  Created by Gustavo Maciel on 24/01/21.
+//
+
 #import <GoogleMobileAds/GADRewardedAd.h>
 #import <GoogleMobileAds/GADExtras.h>
 #import "app_delegate.h"
@@ -14,8 +21,6 @@
     NSString *adUnitId;
     ViewController *rootController;
 }
-@property (nonatomic, strong) Rewarded * rewarded;
-
 
 - (instancetype)init: (int) instance_id;
 - (void)load_rewarded: (NSString*) ad_unit_id;

@@ -1,3 +1,11 @@
+//
+//  Banner.mm
+//  Banner
+//
+//  Created by Gustavo Maciel on 24/01/21.
+//
+
+
 #import "Banner.h"
 
 @implementation Banner
@@ -31,7 +39,7 @@
     
     
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
-    
+
     if (bannerView == nil) {
         if ([size isEqualToString:@"BANNER"]) {
             bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeBanner];
@@ -91,7 +99,7 @@
             [NSLayoutConstraint constraintWithItem:bannerView
                                         attribute:NSLayoutAttributeBottom
                                         relatedBy:NSLayoutRelationEqual
-                                            toItem:rootController.bottomLayoutGuide
+                                            toItem:rootController.view.safeAreaLayoutGuide.bottomAnchor
                                         attribute:NSLayoutAttributeTop
                                         multiplier:1
                                         constant:0]];
@@ -102,7 +110,7 @@
             [NSLayoutConstraint constraintWithItem:bannerView
                                         attribute:NSLayoutAttributeTop
                                         relatedBy:NSLayoutRelationEqual
-                                            toItem:rootController.topLayoutGuide
+                                            toItem:rootController.view.safeAreaLayoutGuide.topAnchor
                                         attribute:NSLayoutAttributeBottom
                                         multiplier:1
                                         constant:0]];
