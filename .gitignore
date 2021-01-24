@@ -12,6 +12,7 @@ example/android
 example/ios
 
 ios/admob/lib
+ios/extracted_headers
 ios/godot
 ios/lib
 ios/bin
