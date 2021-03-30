@@ -54,8 +54,9 @@ func _on_AdMob_initialization_complete(status, _adapter_name):
 		MobileAds.load_interstitial()
 		MobileAds.load_rewarded()
 		_add_text_Advice_Node("AdMob initialized! With parameters:")
+		_add_text_Advice_Node("is_real: " + str(MobileAds.is_real))
 		_add_text_Advice_Node("is_for_child_directed_treatment: " + str(MobileAds.is_for_child_directed_treatment))
-		_add_text_Advice_Node("max_ad_content_rating: " + str(MobileAds.is_real))
+		_add_text_Advice_Node("max_ad_content_rating: " + str(MobileAds.max_ad_content_rating))
 		_add_text_Advice_Node("instance_id: " + str(get_instance_id()))
 		EnableBanner.disabled = false
 		EnableNative.disabled = false
