@@ -21,3 +21,12 @@ ios/bin
 *.a
 *.o
 *.d
+*.hmap
+*.yaml
+*.dia
+*.xcbuild
+*.db
+*.LinkFileList
+*BuildDescriptionCacheIndex*
+*.xcuserstate
+*.dblite
