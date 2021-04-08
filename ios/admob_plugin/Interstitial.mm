@@ -10,7 +10,6 @@
 @implementation Interstitial
 
 - (void)dealloc {
-    interstitial.delegate = nil;
 }
 
 - (instancetype)init: (int)instance_id{
@@ -34,14 +33,29 @@
         NSLog(@"%@", ad_unit_id);
     }
     
-    interstitial = [[GADInterstitial alloc] initWithAdUnitID:ad_unit_id];
-    NSLog(@"interstitial created with the id");
-    NSLog(@"%@", ad_unit_id);
-    
-    interstitial.delegate = self;
     
     GADRequest *request = [GADRequest request];
-    [interstitial loadRequest:request];
+    
+    [GADInterstitialAd loadWithAdUnitID:ad_unit_id
+                                    request:request
+                          completionHandler:^(GADInterstitialAd *ad, NSError *error) {
+      if (error) {
+        NSLog(@"interstitial:didFailToReceiveAdWithError: %@", [error localizedDescription]);
+        Object *obj = ObjectDB::get_instance(self->instanceId);
+        obj->call_deferred("_on_AdMob_interstitial_failed_to_load", (int) error.code);
+
+        return;
+      }
+      else{
+          NSLog(@"interstitial created with the id");
+          NSLog(@"interstitialDidReceiveAd");
+          Object *obj = ObjectDB::get_instance(self->instanceId);
+          obj->call_deferred("_on_AdMob_interstitial_loaded");
+      }
+      self->interstitial = ad;
+      self->interstitial.fullScreenContentDelegate = self;
+
+    }];
     
 }
 
@@ -50,7 +64,7 @@
         return;
     }
     
-    if (interstitial.isReady) {
+    if (interstitial) {
         [interstitial presentFromRootViewController:rootController];
     } else {
         NSLog(@"Interstitial ad wasn't ready");
@@ -58,46 +72,28 @@
 }
 
 
-/// Tells the delegate an ad request succeeded.
-- (void)interstitialDidReceiveAd:(GADInterstitial *)ad {
-    NSLog(@"interstitialDidReceiveAd");
-    Object *obj = ObjectDB::get_instance(instanceId);
-    obj->call_deferred("_on_AdMob_interstitial_loaded");
+/// Tells the delegate that the ad failed to present full screen content.
+- (void)ad:(nonnull id<GADFullScreenPresentingAd>)ad didFailToPresentFullScreenContentWithError:(nonnull NSError *)error {
+    NSLog(@"Ad did fail to present full screen content.");
+    Object *obj = ObjectDB::get_instance(self->instanceId);
+    obj->call_deferred("_on_AdMob_interstitial_failed_to_load", (int) error.code);
+
 }
 
-/// Tells the delegate an ad request failed.
-- (void)interstitial:(GADInterstitial *)ad
-didFailToReceiveAdWithError:(GADRequestError *)error {
-    NSLog(@"interstitial:didFailToReceiveAdWithError: %@", [error localizedDescription]);
-    Object *obj = ObjectDB::get_instance(instanceId);
-    obj->call_deferred("_on_AdMob_interstitial_failed_to_load", (int) error.code);    
-}
-
-/// Tells the delegate that an interstitial will be presented.
-- (void)interstitialWillPresentScreen:(GADInterstitial *)ad {
+/// Tells the delegate that the ad presented full screen content.
+- (void)adDidPresentFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
     NSLog(@"interstitialWillPresentScreen");
     Object *obj = ObjectDB::get_instance(instanceId);
     obj->call_deferred("_on_AdMob_interstitial_opened");
 }
 
-/// Tells the delegate the interstitial is to be animated off the screen.
-- (void)interstitialWillDismissScreen:(GADInterstitial *)ad {
-    NSLog(@"interstitialWillDismissScreen");
+/// Tells the delegate that the ad dismissed full screen content.
+- (void)adDidDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+   NSLog(@"Ad did dismiss full screen content.");
+   Object *obj = ObjectDB::get_instance(instanceId);
+   obj->call_deferred("_on_AdMob_interstitial_closed");
+
 }
 
-/// Tells the delegate the interstitial had been animated off the screen.
-- (void)interstitialDidDismissScreen:(GADInterstitial *)ad {
-    NSLog(@"interstitialDidDismissScreen");
-    Object *obj = ObjectDB::get_instance(instanceId);
-    obj->call_deferred("_on_AdMob_interstitial_closed");
-}
-
-/// Tells the delegate that a user click will open another app
-/// (such as the App Store), backgrounding the current app.
-- (void)interstitialWillLeaveApplication:(GADInterstitial *)ad {
-    NSLog(@"interstitialWillLeaveApplication");
-    Object *obj = ObjectDB::get_instance(instanceId);
-    obj->call_deferred("_on_AdMob_interstitial_left_application");
-}
 
 @end

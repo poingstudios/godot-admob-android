@@ -143,7 +143,7 @@
 
 /// Tells the delegate an ad request failed.
 - (void)adView:(GADBannerView *)adView
-didFailToReceiveAdWithError:(GADRequestError *)error {
+didFailToReceiveAdWithError:(NSError *)error {
     NSLog(@"adView:didFailToReceiveAdWithError: %@", [error localizedDescription]);
     Object *obj = ObjectDB::get_instance(instanceId);
     obj->call_deferred("_on_AdMob_banner_failed_to_load", (int) error.code);  

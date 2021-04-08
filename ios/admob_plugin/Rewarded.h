@@ -14,7 +14,7 @@
 @class Rewarded;
 
 
-@interface Rewarded: NSObject <GADRewardedAdDelegate> {
+@interface Rewarded: NSObject <GADFullScreenContentDelegate> {
     GADRewardedAd *rewarded;
     bool initialized;
     int instanceId;

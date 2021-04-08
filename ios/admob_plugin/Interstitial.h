@@ -6,7 +6,7 @@
 //
 
 
-#import <GoogleMobileAds/GADInterstitial.h>
+#import <GoogleMobileAds/GADInterstitialAd.h>
 #import <GoogleMobileAds/GADExtras.h>
 #import "app_delegate.h"
 #import "view_controller.h"
@@ -14,8 +14,8 @@
 
 @class Interstitial;
 
-@interface Interstitial: NSObject <GADInterstitialDelegate> {
-    GADInterstitial *interstitial;
+@interface Interstitial: NSObject<GADFullScreenContentDelegate> {
+    GADInterstitialAd * interstitial;
     bool initialized;
     int instanceId;
     NSString *adUnitId;

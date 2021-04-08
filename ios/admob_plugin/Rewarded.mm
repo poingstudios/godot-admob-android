@@ -29,24 +29,30 @@
         NSLog(@"rewarded will load with the id");
         NSLog(@"%@", ad_unit_id);
     }
-    
-    rewarded = [[GADRewardedAd alloc] initWithAdUnitID:ad_unit_id];
-    NSLog(@"rewarded created with the id");
-    NSLog(@"%@", ad_unit_id);
-    
+        
     GADRequest *request = [GADRequest request];
-    
-    [rewarded loadRequest:request completionHandler:^(GADRequestError * _Nullable error) {
-        if (error) {
+    [GADRewardedAd
+         loadWithAdUnitID:ad_unit_id
+                  request:request
+        completionHandler:^(GADRewardedAd *ad, NSError *error) {
+          if (error) {
+            NSLog(@"Rewarded ad failed to load with error: %@", [error localizedDescription]);
             NSLog(@"error while creating reward");
             Object *obj = ObjectDB::get_instance(self->instanceId);
             obj->call_deferred("_on_AdMob_rewarded_ad_failed_to_show", (int) error.code);
-        } else {
-            NSLog(@"reward successfully loaded");
-            Object *obj = ObjectDB::get_instance(self->instanceId);
-            obj->call_deferred("_on_AdMob_rewarded_ad_loaded");
+
+            return;
+          }
+          else{
+              NSLog(@"reward successfully loaded");
+              Object *obj = ObjectDB::get_instance(self->instanceId);
+              obj->call_deferred("_on_AdMob_rewarded_ad_loaded");
+
+          }
+        self->rewarded = ad;
+        self->rewarded.fullScreenContentDelegate = self;
         }
-    }];
+     ];
     
 }
 
@@ -55,8 +61,18 @@
         return;
     }
     
-    if (rewarded.isReady) {
-        [rewarded presentFromRootViewController:rootController delegate:self];
+    if (rewarded) {
+        [rewarded presentFromRootViewController:rootController userDidEarnRewardHandler:^{
+            GADAdReward *rewardAd = self->rewarded.adReward;
+            NSLog(@"rewardedAd:userDidEarnReward:");
+            NSString *rewardMessage = [NSString stringWithFormat:@"Reward received with currency %@ , amount %lf",
+                                       rewardAd.type, [rewardAd.amount doubleValue]];
+            NSLog(@"%@", rewardMessage);
+            Object *obj = ObjectDB::get_instance(self->instanceId);
+            obj->call_deferred("_on_AdMob_user_earned_rewarded", [rewardAd.type UTF8String], rewardAd.amount.doubleValue);
+
+          }];
+
         Object *obj = ObjectDB::get_instance(instanceId);
         obj->call_deferred("_on_AdMob_rewarded_ad_opened");
     } else {
@@ -65,29 +81,22 @@
 }
 
 
-/// Tells the delegate that the user earned a reward.
-- (void)rewardedAd:(GADRewardedAd *)rewardedAd userDidEarnReward:(GADAdReward *)reward {
-    // TODO: Reward the user.
-    NSLog(@"rewardedAd:userDidEarnReward:");
-    NSString *rewardMessage = [NSString stringWithFormat:@"Reward received with currency %@ , amount %lf",
-                               reward.type, [reward.amount doubleValue]];
-    NSLog(@"%@", rewardMessage);
-    Object *obj = ObjectDB::get_instance(instanceId);
-    obj->call_deferred("_on_AdMob_user_earned_rewarded", [reward.type UTF8String], reward.amount.doubleValue);
-}
-/// Tells the delegate that the rewarded ad failed to present.
-- (void)rewardedAd:(GADRewardedAd *)rewardedAd didFailToPresentWithError:(NSError *)error {
+/// Tells the delegate that the ad failed to present full screen content.
+- (void)ad:(nonnull id<GADFullScreenPresentingAd>)ad didFailToPresentFullScreenContentWithError:(nonnull NSError *)error {
     NSLog(@"rewardedAd:didFailToPresentWithError");
     Object *obj = ObjectDB::get_instance(instanceId);
     obj->call_deferred("_on_AdMob_rewarded_ad_failed_to_show", (int) error.code);
+
 }
 
-/// Tells the delegate that the rewarded ad was dismissed.
-- (void)rewardedAdDidDismiss:(GADRewardedAd *)rewardedAd {
-    NSLog(@"rewardedAdDidDismiss:");
-    Object *obj = ObjectDB::get_instance(instanceId);
-    obj->call_deferred("_on_AdMob_rewarded_ad_closed");
+
+/// Tells the delegate that the ad dismissed full screen content.
+- (void)adDidDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
+   NSLog(@"Ad did dismiss full screen content.");
+   Object *obj = ObjectDB::get_instance(instanceId);
+   obj->call_deferred("_on_AdMob_rewarded_ad_closed");
 }
+
 
 
 @end
