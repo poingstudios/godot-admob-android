@@ -7,39 +7,42 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5E0E8C5225B39AF500730649 /* admob_plugin_implementation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E0E8C5125B39AF500730649 /* admob_plugin_implementation.mm */; };
+		5E0E8C5225B39AF500730649 /* admob_implementation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E0E8C5125B39AF500730649 /* admob_implementation.mm */; };
 		5E49FAC725B3AF030001A226 /* Banner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E49FAC125B3AF030001A226 /* Banner.mm */; };
 		5E49FAC825B3AF030001A226 /* Interstitial.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E49FAC525B3AF030001A226 /* Interstitial.mm */; };
 		5E49FAC925B3AF030001A226 /* Rewarded.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E49FAC625B3AF030001A226 /* Rewarded.mm */; };
-		5EDA216E25B398A50076123B /* admob_plugin.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5EDA216D25B398A50076123B /* admob_plugin.mm */; };
-		5EDA216F25B398A50076123B /* admob_plugin.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5EDA216C25B398A50076123B /* admob_plugin.h */; };
+		5EDA216E25B398A50076123B /* admob.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5EDA216D25B398A50076123B /* admob.mm */; };
+		5EDA216F25B398A50076123B /* admob.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 5EDA216C25B398A50076123B /* admob.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		5EDA216725B398A50076123B /* CopyFiles */ = {
+		5EDA216725B398A50076123B /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				5EDA216F25B398A50076123B /* admob_plugin.h in CopyFiles */,
+				5EDA216F25B398A50076123B /* admob.h in Copy Files */,
 			);
+			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5E0E8C5025B39A6400730649 /* admob_plugin_implementation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = admob_plugin_implementation.h; sourceTree = "<group>"; };
-		5E0E8C5125B39AF500730649 /* admob_plugin_implementation.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = admob_plugin_implementation.mm; sourceTree = "<group>"; };
+		5E0E8C5025B39A6400730649 /* admob_implementation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = admob_implementation.h; sourceTree = "<group>"; };
+		5E0E8C5125B39AF500730649 /* admob_implementation.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = admob_implementation.mm; sourceTree = "<group>"; };
 		5E49FAC125B3AF030001A226 /* Banner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Banner.mm; sourceTree = "<group>"; };
 		5E49FAC225B3AF030001A226 /* Interstitial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Interstitial.h; sourceTree = "<group>"; };
 		5E49FAC325B3AF030001A226 /* Banner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Banner.h; sourceTree = "<group>"; };
 		5E49FAC425B3AF030001A226 /* Rewarded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rewarded.h; sourceTree = "<group>"; };
 		5E49FAC525B3AF030001A226 /* Interstitial.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Interstitial.mm; sourceTree = "<group>"; };
 		5E49FAC625B3AF030001A226 /* Rewarded.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Rewarded.mm; sourceTree = "<group>"; };
-		5EDA216925B398A50076123B /* libadmob_plugin.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libadmob_plugin.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		5EDA216C25B398A50076123B /* admob_plugin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = admob_plugin.h; sourceTree = "<group>"; };
-		5EDA216D25B398A50076123B /* admob_plugin.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = admob_plugin.mm; sourceTree = "<group>"; };
+		5E9BF14626252D81003F06A0 /* admob.gdip */ = {isa = PBXFileReference; lastKnownFileType = text; path = admob.gdip; sourceTree = "<group>"; };
+		5E9BF14A26253118003F06A0 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; name = lib; path = admob/lib; sourceTree = "<group>"; };
+		5EDA216925B398A50076123B /* libadmob.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libadmob.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5EDA216C25B398A50076123B /* admob.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = admob.h; sourceTree = "<group>"; };
+		5EDA216D25B398A50076123B /* admob.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = admob.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,7 +66,8 @@
 		5EDA216025B398A50076123B = {
 			isa = PBXGroup;
 			children = (
-				5EDA216B25B398A50076123B /* admob_plugin */,
+				5E9BF14A26253118003F06A0 /* lib */,
+				5EDA216B25B398A50076123B /* admob */,
 				5EDA216A25B398A50076123B /* Products */,
 				5E49FACF25B3B17C0001A226 /* Frameworks */,
 			);
@@ -72,46 +76,47 @@
 		5EDA216A25B398A50076123B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5EDA216925B398A50076123B /* libadmob_plugin.a */,
+				5EDA216925B398A50076123B /* libadmob.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		5EDA216B25B398A50076123B /* admob_plugin */ = {
+		5EDA216B25B398A50076123B /* admob */ = {
 			isa = PBXGroup;
 			children = (
-				5EDA216C25B398A50076123B /* admob_plugin.h */,
-				5E0E8C5025B39A6400730649 /* admob_plugin_implementation.h */,
-				5EDA216D25B398A50076123B /* admob_plugin.mm */,
+				5E9BF14626252D81003F06A0 /* admob.gdip */,
+				5EDA216C25B398A50076123B /* admob.h */,
+				5E0E8C5025B39A6400730649 /* admob_implementation.h */,
+				5EDA216D25B398A50076123B /* admob.mm */,
 				5E49FAC325B3AF030001A226 /* Banner.h */,
 				5E49FAC125B3AF030001A226 /* Banner.mm */,
 				5E49FAC225B3AF030001A226 /* Interstitial.h */,
 				5E49FAC525B3AF030001A226 /* Interstitial.mm */,
 				5E49FAC425B3AF030001A226 /* Rewarded.h */,
 				5E49FAC625B3AF030001A226 /* Rewarded.mm */,
-				5E0E8C5125B39AF500730649 /* admob_plugin_implementation.mm */,
+				5E0E8C5125B39AF500730649 /* admob_implementation.mm */,
 			);
-			path = admob_plugin;
+			path = admob;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5EDA216825B398A50076123B /* admob_plugin */ = {
+		5EDA216825B398A50076123B /* admob */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5EDA217225B398A50076123B /* Build configuration list for PBXNativeTarget "admob_plugin" */;
+			buildConfigurationList = 5EDA217225B398A50076123B /* Build configuration list for PBXNativeTarget "admob" */;
 			buildPhases = (
 				5EDA216525B398A50076123B /* Sources */,
 				5EDA216625B398A50076123B /* Frameworks */,
-				5EDA216725B398A50076123B /* CopyFiles */,
+				5EDA216725B398A50076123B /* Copy Files */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = admob_plugin;
+			name = admob;
 			productName = admob_plugin;
-			productReference = 5EDA216925B398A50076123B /* libadmob_plugin.a */;
+			productReference = 5EDA216925B398A50076123B /* libadmob.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -127,7 +132,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 5EDA216425B398A50076123B /* Build configuration list for PBXProject "admob_plugin" */;
+			buildConfigurationList = 5EDA216425B398A50076123B /* Build configuration list for PBXProject "admob" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -140,7 +145,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5EDA216825B398A50076123B /* admob_plugin */,
+				5EDA216825B398A50076123B /* admob */,
 			);
 		};
 /* End PBXProject section */
@@ -150,9 +155,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5E0E8C5225B39AF500730649 /* admob_plugin_implementation.mm in Sources */,
+				5E0E8C5225B39AF500730649 /* admob_implementation.mm in Sources */,
 				5E49FAC725B3AF030001A226 /* Banner.mm in Sources */,
-				5EDA216E25B398A50076123B /* admob_plugin.mm in Sources */,
+				5EDA216E25B398A50076123B /* admob.mm in Sources */,
 				5E49FAC825B3AF030001A226 /* Interstitial.mm in Sources */,
 				5E49FAC925B3AF030001A226 /* Rewarded.mm in Sources */,
 			);
@@ -280,25 +285,25 @@
 				CODE_SIGN_STYLE = Automatic;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/lib/GoogleMobileAds.xcframework\"/**",
-					"\"$(SRCROOT)/lib/GoogleUtilities.xcframework\"/**",
-					"\"$(SRCROOT)/lib/GoogleAppMeasurement.xcframework\"/**",
-					"\"$(SRCROOT)/lib/nanopb.xcframework\"/**",
-					"\"$(SRCROOT)/lib/PromisesObjC.xcframework\"/**",
-					"\"$(SRCROOT)/lib/UserMessagingPlatform.xcframework\"/**",
+					"\"$(SRCROOT)/admob/lib/GoogleMobileAds.xcframework\"/**",
+					"\"$(SRCROOT)/admob/lib/GoogleUtilities.xcframework\"/**",
+					"\"$(SRCROOT)/admob/lib/GoogleAppMeasurement.xcframework\"/**",
+					"\"$(SRCROOT)/admob/lib/nanopb.xcframework\"/**",
+					"\"$(SRCROOT)/admob/lib/PromisesObjC.xcframework\"/**",
+					"\"$(SRCROOT)/admob/lib/UserMessagingPlatform.xcframework\"/**",
 				);
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/godot",
-					"$(SRCROOT)/godot/main",
-					"$(SRCROOT)/godot/core",
-					"$(SRCROOT)/godot/core/os",
-					"$(SRCROOT)/godot/servers",
-					"$(SRCROOT)/godot/platform",
-					"$(SRCROOT)/godot/platform/iphone",
-					"$(SRCROOT)/godot/modules",
-					"$(SRCROOT)/godot/scene",
-					"$(SRCROOT)/godot/drivers",
-					"$(SRCROOT)/godot/trirdparty",
+					"$(SRCROOT)/../godot",
+					"$(SRCROOT)/../godot/main",
+					"$(SRCROOT)/../godot/core",
+					"$(SRCROOT)/../godot/core/os",
+					"$(SRCROOT)/../godot/servers",
+					"$(SRCROOT)/../godot/platform",
+					"$(SRCROOT)/../godot/platform/iphone",
+					"$(SRCROOT)/../godot/modules",
+					"$(SRCROOT)/../godot/scene",
+					"$(SRCROOT)/../godot/drivers",
+					"$(SRCROOT)/../godot/trirdparty",
 				);
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = (
@@ -326,25 +331,25 @@
 				CODE_SIGN_STYLE = Automatic;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/lib/GoogleMobileAds.xcframework\"/**",
-					"\"$(SRCROOT)/lib/GoogleUtilities.xcframework\"/**",
-					"\"$(SRCROOT)/lib/GoogleAppMeasurement.xcframework\"/**",
-					"\"$(SRCROOT)/lib/nanopb.xcframework\"/**",
-					"\"$(SRCROOT)/lib/PromisesObjC.xcframework\"/**",
-					"\"$(SRCROOT)/lib/UserMessagingPlatform.xcframework\"/**",
+					"\"$(SRCROOT)/admob/lib/GoogleMobileAds.xcframework\"/**",
+					"\"$(SRCROOT)/admob/lib/GoogleUtilities.xcframework\"/**",
+					"\"$(SRCROOT)/admob/lib/GoogleAppMeasurement.xcframework\"/**",
+					"\"$(SRCROOT)/admob/lib/nanopb.xcframework\"/**",
+					"\"$(SRCROOT)/admob/lib/PromisesObjC.xcframework\"/**",
+					"\"$(SRCROOT)/admob/lib/UserMessagingPlatform.xcframework\"/**",
 				);
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/godot",
-					"$(SRCROOT)/godot/main",
-					"$(SRCROOT)/godot/core",
-					"$(SRCROOT)/godot/core/os",
-					"$(SRCROOT)/godot/servers",
-					"$(SRCROOT)/godot/platform",
-					"$(SRCROOT)/godot/platform/iphone",
-					"$(SRCROOT)/godot/modules",
-					"$(SRCROOT)/godot/scene",
-					"$(SRCROOT)/godot/drivers",
-					"$(SRCROOT)/godot/trirdparty",
+					"$(SRCROOT)/../godot",
+					"$(SRCROOT)/../godot/main",
+					"$(SRCROOT)/../godot/core",
+					"$(SRCROOT)/../godot/core/os",
+					"$(SRCROOT)/../godot/servers",
+					"$(SRCROOT)/../godot/platform",
+					"$(SRCROOT)/../godot/platform/iphone",
+					"$(SRCROOT)/../godot/modules",
+					"$(SRCROOT)/../godot/scene",
+					"$(SRCROOT)/../godot/drivers",
+					"$(SRCROOT)/../godot/trirdparty",
 				);
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = (
@@ -362,7 +367,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5EDA216425B398A50076123B /* Build configuration list for PBXProject "admob_plugin" */ = {
+		5EDA216425B398A50076123B /* Build configuration list for PBXProject "admob" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5EDA217025B398A50076123B /* Debug */,
@@ -371,7 +376,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5EDA217225B398A50076123B /* Build configuration list for PBXNativeTarget "admob_plugin" */ = {
+		5EDA217225B398A50076123B /* Build configuration list for PBXNativeTarget "admob" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5EDA217325B398A50076123B /* Debug */,

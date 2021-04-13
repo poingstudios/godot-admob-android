@@ -7,21 +7,21 @@
 
 #import <Foundation/Foundation.h>
 
-#import "admob_plugin.h"
-#import "admob_plugin_implementation.h"
+#import "admob.h"
+#import "admob_implementation.h"
 
 #import "core/engine.h"
 
 AdMob * admob;
 
-void admob_plugin_init() {
+void register_admob_types() {
     NSLog(@"init admob plugin");
 
     admob = memnew(AdMob);
     Engine::get_singleton()->add_singleton(Engine::Singleton("AdMob", admob));
 }
 
-void admob_plugin_deinit() {
+void unregister_admob_types() {
     NSLog(@"deinit admob plugin");
     
     if (admob) {

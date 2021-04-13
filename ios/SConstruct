@@ -24,7 +24,7 @@ opts.Add(EnumVariable('arch', "Compilation Architecture", '', ['', 'arm64', 'arm
 opts.Add(BoolVariable('simulator', "Compilation platform", 'no'))
 opts.Add(BoolVariable('use_llvm', "Use the LLVM / Clang compiler", 'no'))
 opts.Add(PathVariable('target_path', 'The path where the lib is installed.', 'bin/'))
-opts.Add(EnumVariable('plugin', 'Plugin to build', '', ['', 'admob_plugin']))
+opts.Add(EnumVariable('plugin', 'Plugin to build', '', ['', 'admob']))
 opts.Add(EnumVariable('version', 'Godot version to target', '', ['', '3.3', '4.0']))
 
 # Updates the environment with the option variables.
@@ -70,8 +70,8 @@ else:
     env.Append(CCFLAGS=['-miphoneos-version-min=10.0'])
     env.Append(LINKFLAGS=["-miphoneos-version-min=10.0"])
 
-env.Append(FRAMEWORKPATH=['#lib/GoogleMobileAds.xcframework/' + xcframework_directory])
-env.Append(FRAMEWORKPATH=['#lib/UserMessagingPlatform.xcframework/' + xcframework_directory])
+env.Append(FRAMEWORKPATH=['#plugin/' + env['plugin'] + '/lib/GoogleMobileAds.xcframework/' + xcframework_directory])
+env.Append(FRAMEWORKPATH=['#plugin/' + env['plugin'] + '/lib/UserMessagingPlatform.xcframework/' + xcframework_directory])
 
 try:
     sdk_path = decode_utf8(subprocess.check_output(['xcrun', '--sdk', sdk_name, '--show-sdk-path']).strip())
@@ -174,9 +174,9 @@ env.Append(CPPPATH=[
 ])
 
 # tweak this if you want to use different folders, or more folders, to store your source code in.
-sources = Glob('admob_plugin/*.cpp')
-sources.append(Glob("admob_plugin/*.mm"))
-sources.append(Glob("admob_plugin/*.m"))
+sources = Glob('plugin/' + env['plugin'] + '/*.cpp')
+sources.append(Glob('plugin/' + env['plugin'] + '/*.mm'))
+sources.append(Glob('plugin/' + env['plugin'] + '/*.m'))
 
 # lib<plugin>.<arch>-<simulator|iphone>.<release|debug|release_debug>.a
 library_platform = env["arch"] + "-" + ("simulator" if env["simulator"] else "iphone")

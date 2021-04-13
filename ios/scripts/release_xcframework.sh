@@ -18,5 +18,5 @@ mkdir ./bin/release
 for lib in $GODOT_PLUGINS; do
     mkdir ./bin/release/${lib}
     mv ./bin/${lib}.{release,debug}.xcframework ./bin/release/${lib}
-    cp ./plugins/${lib}/${lib}.gdip ./bin/release/${lib}
+    cp ./plugin/${lib}/${lib}.gdip ./bin/release/${lib}
 done

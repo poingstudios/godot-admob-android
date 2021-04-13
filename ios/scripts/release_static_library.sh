@@ -18,4 +18,5 @@ mkdir ./bin/release
 for lib in $GODOT_PLUGINS; do
     mkdir ./bin/release/${lib}
     mv ./bin/${lib}.{release,debug}.a ./bin/release/${lib}
+    cp ./plugin/${lib}/${lib}.gdip ./bin/release/${lib}
 done

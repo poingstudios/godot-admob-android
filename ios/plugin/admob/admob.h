@@ -5,5 +5,5 @@
 //  Created by Gustavo Maciel on 16/01/21.
 //
 
-void admob_plugin_init();
-void admob_plugin_deinit();
+void register_admob_types();
+void unregister_admob_types();

@@ -18,7 +18,7 @@
 #include "core/class_db.h"
 
 
-#import "admob_plugin_implementation.h"
+#import "admob_implementation.h"
    
 AdMob *AdMob::instance = NULL;
 

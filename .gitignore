@@ -11,11 +11,12 @@ data_*/
 example/android
 example/ios
 
-ios/admob/lib
 ios/extracted_headers
 ios/godot
-ios/lib
 ios/bin
+ios/plugin/admob/lib
+
+
 .DS_Store
 
 *.a
@@ -30,3 +31,4 @@ ios/bin
 *BuildDescriptionCacheIndex*
 *.xcuserstate
 *.dblite
+ios/.sconsign.dblite
