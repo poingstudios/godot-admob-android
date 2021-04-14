@@ -6,6 +6,14 @@
 	objectVersion = 50;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		5E4FE6E5262765580066D8AF /* admob_module.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E4FE6E3262765580066D8AF /* admob_module.mm */; };
+		5E4FE6E9262765660066D8AF /* admob.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E4FE6E7262765660066D8AF /* admob.mm */; };
+		5E4FE6F1262765730066D8AF /* Banner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E4FE6EB262765730066D8AF /* Banner.mm */; };
+		5E4FE6F2262765730066D8AF /* Interstitial.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E4FE6EC262765730066D8AF /* Interstitial.mm */; };
+		5E4FE6F3262765730066D8AF /* Rewarded.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E4FE6ED262765730066D8AF /* Rewarded.mm */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		5EDA216725B398A50076123B /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -20,9 +28,22 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5E5ADF1D26265FB1001E2093 /* config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = config; sourceTree = "<group>"; };
-		5E5ADF1E26265FC0001E2093 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lib; sourceTree = "<group>"; };
-		5E794B0826269E9900CA93D4 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; path = src; sourceTree = "<group>"; };
+		5E4FE6C8262764750066D8AF /* GoogleAppMeasurement.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleAppMeasurement.xcframework; path = admob/lib/GoogleAppMeasurement.xcframework; sourceTree = "<group>"; };
+		5E4FE6CA262764750066D8AF /* GoogleMobileAds.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleMobileAds.xcframework; path = admob/lib/GoogleMobileAds.xcframework; sourceTree = "<group>"; };
+		5E4FE6CC262764750066D8AF /* GoogleUtilities.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleUtilities.xcframework; path = admob/lib/GoogleUtilities.xcframework; sourceTree = "<group>"; };
+		5E4FE6CE262764750066D8AF /* nanopb.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = nanopb.xcframework; path = admob/lib/nanopb.xcframework; sourceTree = "<group>"; };
+		5E4FE6D0262764750066D8AF /* PromisesObjC.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = PromisesObjC.xcframework; path = admob/lib/PromisesObjC.xcframework; sourceTree = "<group>"; };
+		5E4FE6D2262764750066D8AF /* UserMessagingPlatform.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = UserMessagingPlatform.xcframework; path = admob/lib/UserMessagingPlatform.xcframework; sourceTree = "<group>"; };
+		5E4FE6E3262765580066D8AF /* admob_module.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = admob_module.mm; path = admob/src/module/admob_module.mm; sourceTree = "<group>"; };
+		5E4FE6E4262765580066D8AF /* admob_module.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = admob_module.h; path = admob/src/module/admob_module.h; sourceTree = "<group>"; };
+		5E4FE6E7262765660066D8AF /* admob.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = admob.mm; path = admob/src/main/admob.mm; sourceTree = "<group>"; };
+		5E4FE6E8262765660066D8AF /* admob.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = admob.h; path = admob/src/main/admob.h; sourceTree = "<group>"; };
+		5E4FE6EB262765730066D8AF /* Banner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Banner.mm; path = admob/src/formats/Banner.mm; sourceTree = "<group>"; };
+		5E4FE6EC262765730066D8AF /* Interstitial.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Interstitial.mm; path = admob/src/formats/Interstitial.mm; sourceTree = "<group>"; };
+		5E4FE6ED262765730066D8AF /* Rewarded.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = Rewarded.mm; path = admob/src/formats/Rewarded.mm; sourceTree = "<group>"; };
+		5E4FE6EE262765730066D8AF /* Interstitial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Interstitial.h; path = admob/src/formats/Interstitial.h; sourceTree = "<group>"; };
+		5E4FE6EF262765730066D8AF /* Rewarded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Rewarded.h; path = admob/src/formats/Rewarded.h; sourceTree = "<group>"; };
+		5E4FE6F0262765730066D8AF /* Banner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Banner.h; path = admob/src/formats/Banner.h; sourceTree = "<group>"; };
 		5EDA216925B398A50076123B /* libadmob.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libadmob.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -40,6 +61,12 @@
 		5E49FACF25B3B17C0001A226 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5E4FE6C8262764750066D8AF /* GoogleAppMeasurement.xcframework */,
+				5E4FE6CA262764750066D8AF /* GoogleMobileAds.xcframework */,
+				5E4FE6CC262764750066D8AF /* GoogleUtilities.xcframework */,
+				5E4FE6CE262764750066D8AF /* nanopb.xcframework */,
+				5E4FE6D0262764750066D8AF /* PromisesObjC.xcframework */,
+				5E4FE6D2262764750066D8AF /* UserMessagingPlatform.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -47,7 +74,16 @@
 		5EDA216025B398A50076123B = {
 			isa = PBXGroup;
 			children = (
-				5EDA216B25B398A50076123B /* admob */,
+				5E4FE6F0262765730066D8AF /* Banner.h */,
+				5E4FE6EB262765730066D8AF /* Banner.mm */,
+				5E4FE6EE262765730066D8AF /* Interstitial.h */,
+				5E4FE6EC262765730066D8AF /* Interstitial.mm */,
+				5E4FE6EF262765730066D8AF /* Rewarded.h */,
+				5E4FE6ED262765730066D8AF /* Rewarded.mm */,
+				5E4FE6E8262765660066D8AF /* admob.h */,
+				5E4FE6E7262765660066D8AF /* admob.mm */,
+				5E4FE6E4262765580066D8AF /* admob_module.h */,
+				5E4FE6E3262765580066D8AF /* admob_module.mm */,
 				5EDA216A25B398A50076123B /* Products */,
 				5E49FACF25B3B17C0001A226 /* Frameworks */,
 			);
@@ -59,16 +95,6 @@
 				5EDA216925B398A50076123B /* libadmob.a */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		5EDA216B25B398A50076123B /* admob */ = {
-			isa = PBXGroup;
-			children = (
-				5E794B0826269E9900CA93D4 /* src */,
-				5E5ADF1E26265FC0001E2093 /* lib */,
-				5E5ADF1D26265FB1001E2093 /* config */,
-			);
-			path = admob;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,6 +153,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E4FE6E5262765580066D8AF /* admob_module.mm in Sources */,
+				5E4FE6F1262765730066D8AF /* Banner.mm in Sources */,
+				5E4FE6E9262765660066D8AF /* admob.mm in Sources */,
+				5E4FE6F2262765730066D8AF /* Interstitial.mm in Sources */,
+				5E4FE6F3262765730066D8AF /* Rewarded.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,11 +297,11 @@
 					"$(SRCROOT)/../godot/core/os",
 					"$(SRCROOT)/../godot/servers",
 					"$(SRCROOT)/../godot/platform",
-					"$(SRCROOT)/../godot/platform/iphone",
 					"$(SRCROOT)/../godot/modules",
 					"$(SRCROOT)/../godot/scene",
 					"$(SRCROOT)/../godot/drivers",
 					"$(SRCROOT)/../godot/trirdparty",
+					"$(SRCROOT)/../godot/platform/iphone",
 				);
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = (
@@ -312,11 +343,11 @@
 					"$(SRCROOT)/../godot/core/os",
 					"$(SRCROOT)/../godot/servers",
 					"$(SRCROOT)/../godot/platform",
-					"$(SRCROOT)/../godot/platform/iphone",
 					"$(SRCROOT)/../godot/modules",
 					"$(SRCROOT)/../godot/scene",
 					"$(SRCROOT)/../godot/drivers",
 					"$(SRCROOT)/../godot/trirdparty",
+					"$(SRCROOT)/../godot/platform/iphone",
 				);
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CFLAGS = (
