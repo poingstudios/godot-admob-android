@@ -75,6 +75,7 @@
 
         Object *obj = ObjectDB::get_instance(instanceId);
         obj->call_deferred("_on_AdMob_rewarded_ad_opened");
+        OSIPhone::get_singleton()->on_focus_out();
     } else {
         NSLog(@"reward ad wasn't ready");
     }
@@ -86,7 +87,7 @@
     NSLog(@"rewardedAd:didFailToPresentWithError");
     Object *obj = ObjectDB::get_instance(instanceId);
     obj->call_deferred("_on_AdMob_rewarded_ad_failed_to_show", (int) error.code);
-
+    OSIPhone::get_singleton()->on_focus_out();
 }
 
 
@@ -95,6 +96,7 @@
    NSLog(@"Ad did dismiss full screen content.");
    Object *obj = ObjectDB::get_instance(instanceId);
    obj->call_deferred("_on_AdMob_rewarded_ad_closed");
+   OSIPhone::get_singleton()->on_focus_in();
 }
 
 

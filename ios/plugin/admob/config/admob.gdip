@@ -1,17 +1,18 @@
 [config]
 name="AdMob"
-binary="admob.a"
+binary="admob/admob.a"
 
 initialization="register_admob_types"
 deinitialization="unregister_admob_types"
 
 [dependencies]
-linked=["nanopb.xcframework", 
-    "GoogleAppMeasurement.xcframework", 
-    "GoogleMobileAds.xcframework",
-    "GoogleUtilities.xcframework",
-    "UserMessagingPlatform.xcframework",
-    "PromisesObjC.xcframework"]
+linked=[
+    "admob/lib/nanopb.xcframework", 
+    "admob/lib/GoogleAppMeasurement.xcframework", 
+    "admob/lib/GoogleMobileAds.xcframework",
+    "admob/lib/GoogleUtilities.xcframework",
+    "admob/lib/UserMessagingPlatform.xcframework",
+    "admob/lib/PromisesObjC.xcframework"]
     
 embedded=[]
 system=["JavaScriptCore.framework"]

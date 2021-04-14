@@ -1,16 +1,11 @@
 //
-//  admob_plugin.mm
-//  admob_plugin
+//  admob_module.mm
+//  admob_module
 //
 //  Created by Gustavo Maciel on 16/01/21.
 //
 
-#import <Foundation/Foundation.h>
-
-#import "admob.h"
-#import "admob_implementation.h"
-
-#import "core/engine.h"
+#import "admob_module.h"
 
 AdMob * admob;
 

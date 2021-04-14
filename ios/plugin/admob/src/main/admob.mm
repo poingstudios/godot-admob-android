@@ -1,6 +1,6 @@
 //
-//  admob_plugin_implementation.m
-//  admob_plugin
+//  admob.m
+//  admob
 //
 //  Created by Gustavo Maciel on 16/01/21.
 //
@@ -18,7 +18,7 @@
 #include "core/class_db.h"
 
 
-#import "admob_implementation.h"
+#import "admob.h"
    
 AdMob *AdMob::instance = NULL;
 

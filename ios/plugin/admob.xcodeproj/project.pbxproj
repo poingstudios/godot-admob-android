@@ -6,15 +6,6 @@
 	objectVersion = 50;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		5E0E8C5225B39AF500730649 /* admob_implementation.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E0E8C5125B39AF500730649 /* admob_implementation.mm */; };
-		5E49FAC725B3AF030001A226 /* Banner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E49FAC125B3AF030001A226 /* Banner.mm */; };
-		5E49FAC825B3AF030001A226 /* Interstitial.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E49FAC525B3AF030001A226 /* Interstitial.mm */; };
-		5E49FAC925B3AF030001A226 /* Rewarded.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E49FAC625B3AF030001A226 /* Rewarded.mm */; };
-		5EDA216E25B398A50076123B /* admob.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5EDA216D25B398A50076123B /* admob.mm */; };
-		5EDA216F25B398A50076123B /* admob.h in Copy Files */ = {isa = PBXBuildFile; fileRef = 5EDA216C25B398A50076123B /* admob.h */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXCopyFilesBuildPhase section */
 		5EDA216725B398A50076123B /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -22,7 +13,6 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				5EDA216F25B398A50076123B /* admob.h in Copy Files */,
 			);
 			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -30,19 +20,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5E0E8C5025B39A6400730649 /* admob_implementation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = admob_implementation.h; sourceTree = "<group>"; };
-		5E0E8C5125B39AF500730649 /* admob_implementation.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = admob_implementation.mm; sourceTree = "<group>"; };
-		5E49FAC125B3AF030001A226 /* Banner.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Banner.mm; sourceTree = "<group>"; };
-		5E49FAC225B3AF030001A226 /* Interstitial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Interstitial.h; sourceTree = "<group>"; };
-		5E49FAC325B3AF030001A226 /* Banner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Banner.h; sourceTree = "<group>"; };
-		5E49FAC425B3AF030001A226 /* Rewarded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rewarded.h; sourceTree = "<group>"; };
-		5E49FAC525B3AF030001A226 /* Interstitial.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Interstitial.mm; sourceTree = "<group>"; };
-		5E49FAC625B3AF030001A226 /* Rewarded.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Rewarded.mm; sourceTree = "<group>"; };
-		5E9BF14626252D81003F06A0 /* admob.gdip */ = {isa = PBXFileReference; lastKnownFileType = text; path = admob.gdip; sourceTree = "<group>"; };
-		5E9BF14A26253118003F06A0 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; name = lib; path = admob/lib; sourceTree = "<group>"; };
+		5E5ADF1D26265FB1001E2093 /* config */ = {isa = PBXFileReference; lastKnownFileType = folder; path = config; sourceTree = "<group>"; };
+		5E5ADF1E26265FC0001E2093 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lib; sourceTree = "<group>"; };
+		5E794B0826269E9900CA93D4 /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; path = src; sourceTree = "<group>"; };
 		5EDA216925B398A50076123B /* libadmob.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libadmob.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		5EDA216C25B398A50076123B /* admob.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = admob.h; sourceTree = "<group>"; };
-		5EDA216D25B398A50076123B /* admob.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = admob.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,7 +47,6 @@
 		5EDA216025B398A50076123B = {
 			isa = PBXGroup;
 			children = (
-				5E9BF14A26253118003F06A0 /* lib */,
 				5EDA216B25B398A50076123B /* admob */,
 				5EDA216A25B398A50076123B /* Products */,
 				5E49FACF25B3B17C0001A226 /* Frameworks */,
@@ -84,17 +64,9 @@
 		5EDA216B25B398A50076123B /* admob */ = {
 			isa = PBXGroup;
 			children = (
-				5E9BF14626252D81003F06A0 /* admob.gdip */,
-				5EDA216C25B398A50076123B /* admob.h */,
-				5E0E8C5025B39A6400730649 /* admob_implementation.h */,
-				5EDA216D25B398A50076123B /* admob.mm */,
-				5E49FAC325B3AF030001A226 /* Banner.h */,
-				5E49FAC125B3AF030001A226 /* Banner.mm */,
-				5E49FAC225B3AF030001A226 /* Interstitial.h */,
-				5E49FAC525B3AF030001A226 /* Interstitial.mm */,
-				5E49FAC425B3AF030001A226 /* Rewarded.h */,
-				5E49FAC625B3AF030001A226 /* Rewarded.mm */,
-				5E0E8C5125B39AF500730649 /* admob_implementation.mm */,
+				5E794B0826269E9900CA93D4 /* src */,
+				5E5ADF1E26265FC0001E2093 /* lib */,
+				5E5ADF1D26265FB1001E2093 /* config */,
 			);
 			path = admob;
 			sourceTree = "<group>";
@@ -155,11 +127,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5E0E8C5225B39AF500730649 /* admob_implementation.mm in Sources */,
-				5E49FAC725B3AF030001A226 /* Banner.mm in Sources */,
-				5EDA216E25B398A50076123B /* admob.mm in Sources */,
-				5E49FAC825B3AF030001A226 /* Interstitial.mm in Sources */,
-				5E49FAC925B3AF030001A226 /* Rewarded.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

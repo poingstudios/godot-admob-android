@@ -85,14 +85,15 @@
     NSLog(@"interstitialWillPresentScreen");
     Object *obj = ObjectDB::get_instance(instanceId);
     obj->call_deferred("_on_AdMob_interstitial_opened");
+    OSIPhone::get_singleton()->on_focus_out();
 }
 
 /// Tells the delegate that the ad dismissed full screen content.
 - (void)adDidDismissFullScreenContent:(nonnull id<GADFullScreenPresentingAd>)ad {
-   NSLog(@"Ad did dismiss full screen content.");
-   Object *obj = ObjectDB::get_instance(instanceId);
-   obj->call_deferred("_on_AdMob_interstitial_closed");
-
+    NSLog(@"Ad did dismiss full screen content.");
+    Object *obj = ObjectDB::get_instance(instanceId);
+    obj->call_deferred("_on_AdMob_interstitial_closed");
+    OSIPhone::get_singleton()->on_focus_in();
 }
 
 

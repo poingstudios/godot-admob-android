@@ -1,6 +1,6 @@
 //
-//  admob_plugin_implementation.h
-//  admob_plugin
+//  admob.h
+//  admob
 //
 //  Created by Gustavo Maciel on 16/01/21.
 //
@@ -10,9 +10,9 @@
     #include "core/object.h"
 
     #ifdef __OBJC__
-        #include "Banner.h"
-        #include "Interstitial.h"
-        #include "Rewarded.h"
+        #include "../formats/Banner.h"
+        #include "../formats/Interstitial.h"
+        #include "../formats/Rewarded.h"
 
         @class Banner;
         @class Interstitial;

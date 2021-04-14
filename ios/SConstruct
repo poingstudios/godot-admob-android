@@ -174,9 +174,9 @@ env.Append(CPPPATH=[
 ])
 
 # tweak this if you want to use different folders, or more folders, to store your source code in.
-sources = Glob('plugin/' + env['plugin'] + '/*.cpp')
-sources.append(Glob('plugin/' + env['plugin'] + '/*.mm'))
-sources.append(Glob('plugin/' + env['plugin'] + '/*.m'))
+sources = Glob('plugin/' + env['plugin'] + '/src/main/*.mm')
+sources.append(Glob('plugin/' + env['plugin'] + '/src/formats/*.mm'))
+sources.append(Glob('plugin/' + env['plugin'] + '/src/module/*.mm'))
 
 # lib<plugin>.<arch>-<simulator|iphone>.<release|debug|release_debug>.a
 library_platform = env["arch"] + "-" + ("simulator" if env["simulator"] else "iphone")
