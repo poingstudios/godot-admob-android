@@ -87,7 +87,6 @@
     NSLog(@"rewardedAd:didFailToPresentWithError");
     Object *obj = ObjectDB::get_instance(instanceId);
     obj->call_deferred("_on_AdMob_rewarded_ad_failed_to_show", (int) error.code);
-    OSIPhone::get_singleton()->on_focus_out();
 }
 
 
