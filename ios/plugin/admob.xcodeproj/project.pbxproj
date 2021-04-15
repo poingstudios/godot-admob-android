@@ -313,6 +313,9 @@
 					"-DDISABLE_FORCED_INLINE",
 					"-DTYPED_METHOD_BIND",
 					"-fmodules",
+					"-DIPHONE_ENABLED",
+					"-DUNIX_ENABLED",
+					"-DCOREAUDIO_ENABLED",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";

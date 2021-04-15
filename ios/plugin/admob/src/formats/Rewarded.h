@@ -9,7 +9,7 @@
 #import <GoogleMobileAds/GADExtras.h>
 #import "app_delegate.h"
 #import "view_controller.h"
-#import "os_iphone.h"
+#include "os_iphone.h"
 #include "object.h"
 
 @class Rewarded;
