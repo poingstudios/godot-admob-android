@@ -27,7 +27,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     compileOnly project(':godot-lib')
-    implementation 'com.google.android.gms:play-services-ads:19.4.0'
+    implementation 'com.google.android.gms:play-services-ads:20.0.0'
     implementation 'com.google.android.ump:user-messaging-platform:1.0.0'
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
