@@ -7,7 +7,7 @@
 
 
 # Godot AdMob for Android and iOS
-This repository uses [GitHub Actions](https://github.com/features/actions), this means that whenever a new update is sent to the repository, the action will automatically test the code of the module, compile, compress the binary files and export to the ["Releases tab"](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases) of the repository for the respective operational system and versions supported by the module, like v3.2.3.
+This repository uses [GitHub Actions](https://github.com/features/actions), this means that whenever a new update is sent to the repository, the action will automatically test the code of the module, compile, compress the binary files and export to the ["Releases tab"](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases) of the repository for the respective operational system and versions supported by the module, like v3.3.
 
 
 <p align="center">
@@ -18,7 +18,8 @@ This repository uses [GitHub Actions](https://github.com/features/actions), this
 - Banner 
 - Interstitial
 - Rewarded
-- Unified Native (Native Ads) (ONLY Android at moment)
+- Rewarded Interstitial (BETA) (soon on [Android](https://developers.google.com/admob/android/rewarded-interstitial) and [iOS](https://developers.google.com/admob/ios/rewarded-interstitial))
+- Native (Only on Android, soon on [iOS](https://developers.google.com/admob/ios/native/start))
 
 Is high recommended that when you use AdMob, please include it as AutoLoad and Singleton
 
@@ -29,13 +30,13 @@ Download example project to see how the Plugin works!
 - Enable Android Build Template. [Check the tutorial here](https://docs.godotengine.org/en/stable/getting_started/workflow/export/android_custom_build.html)
 - Extract the content in ```android-template-v{{ your_godot_version }}.zip``` into ```res://android/plugins``` directory on your Godot project
 - On your Game Project go to:
-	1. Project
-		1. Export
-			1. Android
-				1. Options
-					1. Custom Package 
+	- Project
+		- Export
+			- Android
+				- Options
+					- Custom Package 
 						- [x] ```Use Custom Build```
-					1. Plugins 
+					- Plugins 
 						- [x] ```Ad Mob```
 - Add your [AdMob App ID](https://support.google.com/admob/answer/7356431) to your app's ```res://android/build/AndroidManifest.xml``` file by adding a ```<meta-data>``` tag with name ```com.google.android.gms.ads.APPLICATION_ID```, as shown below.
 
@@ -55,26 +56,19 @@ Download example project to see how the Plugin works!
 	android:value="true"/>
 ```
 
-# iOS (v3.0.0+):
+# iOS (v3.3+):
 - Download the ```ios-template-v{{ your_godot_version }}.zip``` in the releases tab. [STABLE VERSION](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/iOS_v3.0%2B) and [MONO VERSION](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/iOS_mono_v3.0%2B)
+- Extract the content in ```ios-template-v{{ your_godot_version }}.zip``` into ```res://ios/plugins``` directory on your Godot project
+- On your Game Project go to and enable:
+	- Project
+		- Export
+			- iOS
+				- Options
+					- Plugins 
+						- [x] ```Ad Mob```
+
 - Export your game to iOS
-- Copy the library ```libgodot.iphone.release.fat.a``` you have downloaded from releases tab inside the exported Xcode project. **You must delete the 'your_project_name.a' (example: AdMob.a) and rename the 'libgodot.iphone.release.fat.a' with "your_project_name.a", should be like: 'AdMob.a'.** 
-- ![](https://media2.giphy.com/media/miNlL020ZQYjK4r8e7/giphy.gif)
-- Add the following frameworks to the project linking it using the "Build Phases" -> "Link Binary with Libraries" option:
-	- Extract the following .framework from [```googlemobileadssdkios.zip```](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/iOS_v3.0%2B/googlemobileadssdkios.zip):
-		- GoogleAppMeasurement.framework 
-		- GoogleMobileAds.framework
-		- GoogleUtilities.xcframework
-		- nanopb.xcframework
-		- PromisesObjC.xcframework
-		- UserMessagingPlatform.xcframework
-	- These frameworks are already in your computer
-		- AppTrackingTransparency | ```Status: (Optional) ``` (if not appear: need to update XCode or SDK version to iOS 14.0)
-		- AdSupport | ```Status: (Optional) ```
-		- JavaScriptCore
-- Add the -ObjC linker flag to Other Linker Flags in your project's build settings:
-![-ObjC](https://developers.google.com/admob/images/ios/objc_linker_flag.png)
-- [Update your GAMENAME-Info.plist file](https://developers.google.com/admob/ios/quick-start#update_your_infoplist), add a GADApplicationIdentifier key with a string value of your [AdMob app ID](https://support.google.com/admob/answer/7356431):
+- Into your Xcode Project: [Update your GAMENAME-Info.plist file](https://developers.google.com/admob/ios/quick-start#update_your_infoplist), on GADApplicationIdentifier key with a string value of your [AdMob app ID](https://support.google.com/admob/answer/7356431):
 ![plist](https://i.imgur.com/1tcKXx5.png)
 - [Enable SKAdNetwork to track conversions](https://developers.google.com/admob/ios/ios14#skadnetwork):
 ![SKAdNetwork](https://developers.google.com/admob/images/idfa/skadnetwork.png)
@@ -99,8 +93,10 @@ banner_loaded() #ad finishes loading
 banner_destroyed() #banner view is destroyed
 banner_failed_to_load(error_code : int) #ad request fails
 banner_opened() #ad opens an overlay that
-banner_left_application() #user has left the app
+banner_clicked() #when user clicks on ad
 banner_closed() # user is about to return to the app after tapping on an ad
+banner_recorded_impression() #an impression has been recorded for an ad
+
 
 interstitial_loaded() #ad finishes loading
 interstitial_failed_to_load(error_code : int) #ad request fails
@@ -115,12 +111,13 @@ rewarded_ad_closed() #ad is closed
 rewarded_user_earned_rewarded(currency : String, amount : int) #user earner rewarded
 rewarded_ad_failed_to_show(error_code) #ad request fails
 
-unified_native_loaded() #unified native loaded and shows the ad
-unified_native_destroyed() #unified native view destroyed
-unified_native_failed_to_load(error_code : int) #ad request fails
-
-unified_native_opened() #ad opens an overlay that
-unified_native_closed() #user is about to return to the app after tapping on an ad
+native_loaded() #native loaded and shows the ad
+native_destroyed() #native view destroyed
+native_failed_to_load(error_code : int) #ad request fails
+native_opened() #ad opens an overlay that
+native_clicked() #when user clicks on ad
+native_closed() #user is about to return to the app after tapping on an ad
+native_recorded_impression() #an impression has been recorded for an ad
 
 consent_form_dismissed() #then the consent is REQUIRED(user in EEA or UK) and user dismissed the form
 consent_status_changed(consent_status_message) #get the ConsentStatus
@@ -141,12 +138,12 @@ _on_AdMob_*() #just to emit signals
 load_banner() #load the banner will make him appear instantly
 load_interstitial() #loads the interstitial and make ready for show
 load_rewarded() #loads the rewarded and make ready for show
-load_unified_native(control_node_to_be_replaced : Control = Control.new()) #load the unified native will make him appear instantly (unified native and banner are View in Android and iOS, it is recommended to only use one of them at a time, if you try to use both, the module will not allow it, it will remove the older view
+load_native(control_node_to_be_replaced : Control = Control.new()) #load the native will make him appear instantly (native and banner are View in Android and iOS, it is recommended to only use one of them at a time, if you try to use both, the module will not allow it, it will remove the older view
 
 show_interstitial() #shows interstitial
 show_rewarded() #shows rewarded
 
 destroy_banner() #completely destroys the Banner View
-destroy_unified_native() #completely destroys the Unified Native View
+destroy_native() #completely destroys the Native View
 
 ```
