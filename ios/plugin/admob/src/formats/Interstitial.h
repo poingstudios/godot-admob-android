@@ -1,20 +1,27 @@
-#import <GoogleMobileAds/GADInterstitial.h>
+//
+//  Interstitial.h
+//  Interstitial
+//
+//  Created by Gustavo Maciel on 24/01/21.
+//
+
+
+#import <GoogleMobileAds/GADInterstitialAd.h>
 #import <GoogleMobileAds/GADExtras.h>
 #import "app_delegate.h"
 #import "view_controller.h"
+#include "os_iphone.h"
 #include "object.h"
 
 @class Interstitial;
 
-@interface Interstitial: NSObject <GADInterstitialDelegate> {
-    GADInterstitial *interstitial;
+@interface Interstitial: NSObject<GADFullScreenContentDelegate> {
+    GADInterstitialAd * interstitial;
     bool initialized;
     int instanceId;
     NSString *adUnitId;
     ViewController *rootController;
 }
-
-@property (nonatomic, strong) Interstitial *interstitial;
 
 
 - (instancetype)init: (int) instance_id;

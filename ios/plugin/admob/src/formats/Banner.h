@@ -1,8 +1,17 @@
+//
+//  Banner.h
+//  Banner
+//
+//  Created by Gustavo Maciel on 24/01/21.
+//
+
+
+#include "core/object.h"
+
 #import <GoogleMobileAds/GADBannerView.h>
 #import <GoogleMobileAds/GADExtras.h>
 #import "app_delegate.h"
 #import "view_controller.h"
-#include "object.h"
 
 @class Banner;
 
@@ -14,7 +23,6 @@
     NSString *adUnitId;
     ViewController *rootController;
 }
-@property (nonatomic, strong) Banner * banner;
 
 - (instancetype)init: (int) instance_id;
 - (void)load_banner: (NSString*) ad_unit_id : (int) position : (NSString*) size;
