@@ -320,10 +320,23 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
                         }
 
                         @Override
+                        public void onAdClicked() {
+                            // Code to be executed when the native ad is closed.
+                            GodotLib.calldeferred(aInstanceId, "_on_AdMob_banner_clicked", new Object[]{});
+                        }
+
+                        @Override
                         public void onAdClosed() {
                             // Code to be executed when the user is about to return
                             // to the app after tapping on an ad.
                             GodotLib.calldeferred(aInstanceId, "_on_AdMob_banner_closed", new Object[]{});
+                        }
+
+                        @Override
+                        public void onAdImpression() {
+                            // Code to be executed when the user is about to return
+                            // to the app after tapping on an ad.
+                            GodotLib.calldeferred(aInstanceId, "_on_AdMob_banner_recorded_impression", new Object[]{});
                         }
                     });
 
@@ -378,8 +391,6 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
                                 @Override
                                 public void onAdDismissedFullScreenContent() {
                                     // Called when fullscreen content is dismissed.
-                                    // Make sure to set your reference to null so you don't
-                                    // show it a second time.
                                     aInterstitialAd = null;
                                     GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_closed", new Object[]{});
                                 }
@@ -387,8 +398,6 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
                                 @Override
                                 public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
                                     // Called when fullscreen content failed to show.
-                                    // Make sure to set your reference to null so you don't
-                                    // show it a second time.
                                     aInterstitialAd = null;
                                     GodotLib.calldeferred(aInstanceId, "_on_AdMob_interstitial_failed_to_show", new Object[]{adError.getCode()});
                                 }
@@ -551,9 +560,22 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin
                                 }
 
                                 @Override
+                                public void onAdClicked() {
+                                    // Code to be executed when the native ad is closed.
+                                    GodotLib.calldeferred(aInstanceId, "_on_AdMob_native_clicked", new Object[]{});
+                                }
+
+                                @Override
                                 public void onAdClosed() {
                                     // Code to be executed when the native ad is closed.
                                     GodotLib.calldeferred(aInstanceId, "_on_AdMob_native_closed", new Object[]{});
+                                }
+
+                                @Override
+                                public void onAdImpression() {
+                                    // Code to be executed when the user is about to return
+                                    // to the app after tapping on an ad.
+                                    GodotLib.calldeferred(aInstanceId, "_on_AdMob_native_recorded_impression", new Object[]{});
                                 }
 
                             })
