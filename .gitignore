@@ -9,9 +9,26 @@ data_*/
 *.pyc
 
 example/android
+example/ios
 
-ios/admob/lib
+ios/extracted_headers
+ios/godot
+ios/bin
+ios/plugin/admob/lib
+
+
 .DS_Store
 
+*.a
 *.o
 *.d
+*.hmap
+*.yaml
+*.dia
+*.xcbuild
+*.db
+*.LinkFileList
+*BuildDescriptionCacheIndex*
+*.xcuserstate
+*.dblite
+ios/.sconsign.dblite
