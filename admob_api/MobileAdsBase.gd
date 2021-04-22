@@ -7,8 +7,8 @@ signal banner_destroyed()
 signal banner_failed_to_load(error_code)
 signal banner_opened()
 signal banner_clicked()
-signal banner_left_application()
 signal banner_closed()
+signal banner_recorded_impression()
 
 signal interstitial_loaded()
 signal interstitial_failed_to_load(error_code)
@@ -24,11 +24,13 @@ signal rewarded_ad_closed()
 signal rewarded_user_earned_rewarded(currency, amount)
 signal rewarded_ad_failed_to_show(error_code)
 
-signal unified_native_loaded()
-signal unified_native_destroyed()
-signal unified_native_failed_to_load(error_code)
-signal unified_native_opened()
-signal unified_native_closed()
+signal native_loaded()
+signal native_destroyed()
+signal native_failed_to_load(error_code)
+signal native_opened()
+signal native_clicked()
+signal native_closed()
+signal native_recorded_impression()
 
 signal consent_form_dismissed()
 signal consent_status_changed(consent_status_message)
@@ -41,7 +43,7 @@ signal initialization_complete(status, adapter_name)
 #public attributes
 var is_initialized : bool = false 
 var banner_enabled : bool = false
-var unified_native_enabled : bool = false
+var native_enabled : bool = false
 var interstitial_loaded : bool = false
 var rewarded_loaded : bool = false
 
@@ -50,7 +52,7 @@ var _admob_singleton : Object
 var _control_node_to_be_replaced : Control
 enum _position_options {BOTTOM, TOP}
 
-onready var _unified_native_scale : Dictionary = {
+onready var _native_scale : Dictionary = {
 	"x" : OS.get_screen_size().x / get_viewport_rect().size.x,
 	"y" : OS.get_screen_size().y / get_viewport_rect().size.y,
 }
@@ -73,12 +75,12 @@ func _on_AdMob_banner_opened():
 func _on_AdMob_banner_clicked():
 	emit_signal("banner_clicked")
 	
-func _on_AdMob_banner_left_application():
-	emit_signal("banner_left_application")
-	
 func _on_AdMob_banner_closed():
 	emit_signal("banner_closed")
-	
+
+func _on_AdMob_banner_recorded_impression():
+	emit_signal("banner_recorded_impression")
+
 
 func _on_AdMob_interstitial_loaded():
 	interstitial_loaded = true
@@ -95,12 +97,10 @@ func _on_AdMob_interstitial_left_application():
 
 func _on_AdMob_interstitial_opened():
 	emit_signal("interstitial_opened")
-	get_tree().paused = true
 
 func _on_AdMob_interstitial_closed():
 	interstitial_loaded = false	
 	emit_signal("interstitial_closed")
-	get_tree().paused = false
 
 
 func _on_AdMob_rewarded_ad_loaded():
@@ -109,12 +109,10 @@ func _on_AdMob_rewarded_ad_loaded():
 
 func _on_AdMob_rewarded_ad_opened():
 	emit_signal("rewarded_ad_opened")
-	get_tree().paused = true
 
 func _on_AdMob_rewarded_ad_closed():
 	rewarded_loaded = false
 	emit_signal("rewarded_ad_closed")
-	get_tree().paused = false
 
 func _on_AdMob_rewarded_ad_failed_to_load():
 	emit_signal("rewarded_ad_failed_to_load")
@@ -126,22 +124,28 @@ func _on_AdMob_rewarded_ad_failed_to_show(error_code : int):
 	emit_signal("rewarded_ad_failed_to_show", error_code)
 
 
-func _on_AdMob_unified_native_loaded():
-	unified_native_enabled = true
-	emit_signal("unified_native_loaded")
+func _on_AdMob_native_loaded():
+	native_enabled = true
+	emit_signal("native_loaded")
 
-func _on_AdMob_unified_native_destroyed():
-	emit_signal("unified_native_destroyed")
+func _on_AdMob_native_destroyed():
+	native_enabled = false
+	emit_signal("native_destroyed")
 
-func _on_AdMob_unified_native_failed_to_load(error_code : int):
-	emit_signal("unified_native_failed_to_load", error_code)
+func _on_AdMob_native_failed_to_load(error_code : int):
+	emit_signal("native_failed_to_load", error_code)
 
-func _on_AdMob_unified_native_opened():
-	emit_signal("unified_native_opened")
+func _on_AdMob_native_opened():
+	emit_signal("native_opened")
 	
-func _on_AdMob_unified_native_closed():
-	unified_native_enabled = false
-	emit_signal("unified_native_closed")
+func _on_AdMob_native_clicked():
+	emit_signal("native_clicked")
+	
+func _on_AdMob_native_closed():
+	emit_signal("native_closed")
+		
+func _on_AdMob_native_recorded_impression():
+	emit_signal("native_recorded_impression")
 
 
 func _on_AdMob_consent_form_dismissed():
