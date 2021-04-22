@@ -20,7 +20,7 @@ export (Dictionary) var unit_ids : Dictionary = {
 		"iOS" : "ca-app-pub-3940256099942544/1712485313",
 		"Android" : "ca-app-pub-3940256099942544/5224354917",
 	},
-	"unified_native" : {
+	"native" : {
 		"iOS" : "",
 		"Android" : "ca-app-pub-3940256099942544/2247696110",
 	}
@@ -50,28 +50,28 @@ func load_rewarded():
 	if _admob_singleton and is_initialized:
 		_admob_singleton.load_rewarded(unit_ids.rewarded[OS.get_name()])
 
-func load_unified_native(control_node_to_be_replaced : Control):
+func load_native(control_node_to_be_replaced : Control):
 	if _admob_singleton and is_initialized:
 		_control_node_to_be_replaced = control_node_to_be_replaced
 		var params := {
 			"size" : {
-				"w" : control_node_to_be_replaced.rect_size.x * _unified_native_scale.x,
-				"h" : control_node_to_be_replaced.rect_size.y * _unified_native_scale.y
+				"w" : control_node_to_be_replaced.rect_size.x * _native_scale.x,
+				"h" : control_node_to_be_replaced.rect_size.y * _native_scale.y
 			},
 			"position" : {
-				"x" : control_node_to_be_replaced.rect_position.x * _unified_native_scale.x,
-				"y" : control_node_to_be_replaced.rect_position.y * _unified_native_scale.y
+				"x" : control_node_to_be_replaced.rect_position.x * _native_scale.x,
+				"y" : control_node_to_be_replaced.rect_position.y * _native_scale.y
 			}
 		}
-		_admob_singleton.load_unified_native(unit_ids.unified_native[OS.get_name()], [params.size.w, params.size.h], [params.position.x, params.position.y])
+		_admob_singleton.load_native(unit_ids.native[OS.get_name()], [params.size.w, params.size.h], [params.position.x, params.position.y])
 
 func destroy_banner():
 	if _admob_singleton and is_initialized:
 		_admob_singleton.destroy_banner()
 
-func destroy_unified_native():
+func destroy_native():
 	if _admob_singleton and is_initialized:
-		_admob_singleton.destroy_unified_native()
+		_admob_singleton.destroy_native()
 
 func show_interstitial():
 	if _admob_singleton and is_initialized:
@@ -83,12 +83,12 @@ func show_rewarded():
 
 func _on_get_tree_resized():
 	if _admob_singleton and is_initialized:
-		unit_ids.unified_native.scale = {
+		unit_ids.native.scale = {
 			"x" : OS.get_screen_size().x / get_viewport_rect().size.x,
 			"y" : OS.get_screen_size().y / get_viewport_rect().size.y
 		}
-		if unified_native_enabled:
-			load_unified_native(_control_node_to_be_replaced)
+		if native_enabled:
+			load_native(_control_node_to_be_replaced)
 		if banner_enabled and banner_size == "SMART_BANNER":
 			load_banner()
 		if interstitial_loaded: #verify if interstitial and rewarded is loaded because the only reason to load again now is to resize
