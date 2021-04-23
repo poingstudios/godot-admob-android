@@ -21,6 +21,7 @@ jobs:
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
+        RELEASE_VERSIONS: ["standard", "mono"]
         GODOT_VERSIONS: [3.2.2, 3.2.3, 3.3]
 
     steps:
@@ -37,8 +38,14 @@ jobs:
       run: | 
         cd android/admob/godot-lib 
         GODOT_AAR_LIB="godot-lib.aar"
-        GODOT_AAR_FILENAME="godot-lib.${{env.CURRENT_GODOT_VERSION}}.stable.release.aar"
-        FULL_PATHNAME_DOWNLOAD_GODOT_AAR="https://downloads.tuxfamily.org/godotengine/${{env.CURRENT_GODOT_VERSION}}/${GODOT_AAR_FILENAME}"
+        if [ ${{matrix.RELEASE_VERSIONS}} -eq "standard" ]; then 
+          GODOT_AAR_FILENAME="godot-lib.${{env.CURRENT_GODOT_VERSION}}.stable.release.aar"
+          FULL_PATHNAME_DOWNLOAD_GODOT_AAR="https://downloads.tuxfamily.org/godotengine/${{env.CURRENT_GODOT_VERSION}}/${GODOT_AAR_FILENAME}"
+        elif [ ${{matrix.RELEASE_VERSIONS}} -eq "mono" ]; then 
+          GODOT_AAR_FILENAME="godot-lib.${{env.CURRENT_GODOT_VERSION}}.stable.mono.release.aar"
+          FULL_PATHNAME_DOWNLOAD_GODOT_AAR="https://downloads.tuxfamily.org/godotengine/${{env.CURRENT_GODOT_VERSION}}/mono/${GODOT_AAR_FILENAME}"
+        fi
+
         #get file on Godot's server and rename
         wget $FULL_PATHNAME_DOWNLOAD_GODOT_AAR
         mv $GODOT_AAR_FILENAME $GODOT_AAR_LIB
@@ -55,13 +62,13 @@ jobs:
 
     - name: Compress the binaries
       run: |
-        zip -j android-template-v${{env.CURRENT_GODOT_VERSION}}.zip android/admob/admob/build/outputs/aar/*
+        zip -j android-${{matrix.RELEASE_VERSIONS}}-template-v${{env.CURRENT_GODOT_VERSION}}.zip android/admob/admob/build/outputs/aar/*
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
-        name: android-template-v${{env.CURRENT_GODOT_VERSION}}.zip
-        path: android-template-v${{env.CURRENT_GODOT_VERSION}}.zip
+        name: android-${{matrix.RELEASE_VERSIONS}}-template-v${{env.CURRENT_GODOT_VERSION}}.zip
+        path: android-${{matrix.RELEASE_VERSIONS}}-template-v${{env.CURRENT_GODOT_VERSION}}.zip
 
   upload-assets-release:
     needs: [android-template]
