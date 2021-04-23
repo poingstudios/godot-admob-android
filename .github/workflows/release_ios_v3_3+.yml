@@ -1,0 +1,156 @@
+name: Build iOS
+
+on:
+  schedule:
+    - cron: "0 0 1 * *"
+  push:
+    paths: 
+      - '.github/workflows/release_ios_v3_3*.yml'
+      - 'ios/**'
+    branches: [ master ]
+  pull_request:
+    paths: 
+      - 'ios/**'
+    branches: [ master ]
+
+env:
+  TAG_NAME: iOS_v3.3+
+  RELEASE_NAME: iOS Compiled files for v3.3+
+
+jobs:
+  download-google-mobile-ads-sdk:
+    name: Download Google Mobile Ads SDK
+    runs-on: "ubuntu-latest"
+    
+    steps:
+    - name: Download, copy and unzip the lastest Google Mobile Ads SDK on release binaries and iOS module folder
+      run: |
+        curl -LO https://dl.google.com/googleadmobadssdk/googlemobileadssdkios.zip
+
+    - name: Upload Google Mobile Ads SDK as Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: googlemobileadssdkios.zip
+        path: googlemobileadssdkios.zip
+
+  ios-template:
+    needs: [download-google-mobile-ads-sdk]
+    name: Compiling for iOS
+    runs-on: "macos-latest"
+    strategy:
+      matrix:
+        GODOT_VERSIONS: [3.3]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    # Github Actions Matrix doesnt support x.0 values, it's replaced by ''
+    - name: Verify current matrix's GODOT_VERSIONS
+      run: |
+        CURRENT_GODOT_VERSION=${{matrix.GODOT_VERSIONS}}
+        if [ ${#CURRENT_GODOT_VERSION} -eq 1 ]; then CURRENT_GODOT_VERSION="${CURRENT_GODOT_VERSION}.0"; fi
+        echo "CURRENT_GODOT_VERSION=${CURRENT_GODOT_VERSION}" >> $GITHUB_ENV
+
+    # Upload cache on completion and check it out now
+    - name: Load .scons_cache directory
+      id: ios-template-cache
+      uses: actions/cache@v2
+      with:
+        path: ${{github.workspace}}/godot-${{env.CURRENT_GODOT_VERSION}}-stable/.scons_cache/
+        key: ${{github.job}}-master-${{github.ref}}-${{github.sha}}
+        restore-keys: |
+          ${{github.job}}-master-${{github.ref}}-${{github.sha}}
+          ${{github.job}}-master-${{github.ref}}
+          ${{github.job}}-master
+
+    - name: Set up Python 3.x
+      uses: actions/setup-python@v2
+      with:
+        # Semantic version range syntax or exact version of a Python version
+        python-version: '3.x'
+        # Optional - x64 or x86 architecture, defaults to x64
+        architecture: 'x64'
+
+    - name: Configuring Python packages
+      run: |
+        python -c "import sys; print(sys.version)"
+        python -m pip install scons
+        python --version
+        scons --version
+
+    - name: Prepare 'bin/, lib/, godot' folders
+      run: |
+        cd ios/
+        rm -rf ./bin/ && mkdir ./bin/
+        rm -rf ./plugin/admob/lib/ && mkdir ./plugin/admob/lib/
+
+    - name: Download and unzip Stable Godot extracted headers
+      run: |
+        cd ios/
+        FULL_PATHNAME_DOWNLOAD_GODOT_EXTRACTED_HEADERS="https://github.com/godotengine/godot-ios-plugins/releases/download/${{env.CURRENT_GODOT_VERSION}}-stable/extracted_headers.zip"
+        curl -LO $FULL_PATHNAME_DOWNLOAD_GODOT_EXTRACTED_HEADERS
+        unzip extracted_headers.zip
+        mv extracted_headers/godot ./
+
+
+    - name: Download Google Mobile Ads SDK Artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: googlemobileadssdkios.zip
+
+    - name: Copy and unzip the Google Mobile Ads SDK on release binaries and iOS module folder
+      run: |
+        mkdir -p godot-${{env.CURRENT_GODOT_VERSION}}-stable/bin/release/
+        unzip googlemobileadssdkios.zip -d ios/plugin/admob/lib/
+        cd ios/plugin/admob/lib/
+        cd */
+        mv * ../
+
+    - name: Compiles the Source Code
+      env:
+        SCONS_CACHE: ${{github.workspace}}/godot-${{env.CURRENT_GODOT_VERSION}}-stable/.scons_cache/
+      run: |
+        cd ios
+        ./scripts/release_static_library.sh ${CURRENT_GODOT_VERSIONS:0:3}
+
+    - name: Compress the binaries
+      run: |
+        zip -j ios-template-v${CURRENT_GODOT_VERSIONS}.zip ios/bin/release/admob/*
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: ios-template-v${{env.CURRENT_GODOT_VERSION}}.zip
+        path: ios-template-v${{env.CURRENT_GODOT_VERSION}}.zip
+
+  upload-assets-release:
+    needs: [ios-template]
+    name: Upload assets to release
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      
+    - name: Delete previous tag
+      uses: dev-drprasad/delete-tag-and-release@v0.1.2
+      with:
+        delete_release: true 
+        tag_name: ${{env.TAG_NAME}}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create Release and tag
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{env.TAG_NAME}}
+        release_name: ${{env.RELEASE_NAME}}
+    
+    - name: Upload artifacts to release
+      uses: AButler/upload-release-assets@v2.0
+      with:
+        files: 'ios-template-*.zip/*;googlemobileadssdkios.zip/*'
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        release-tag: ${{env.TAG_NAME}}
