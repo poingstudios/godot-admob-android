@@ -31,4 +31,7 @@ ios/plugin/admob/lib
 *BuildDescriptionCacheIndex*
 *.xcuserstate
 *.dblite
+*ios*.zip
+*android*.zip
+
 ios/.sconsign.dblite

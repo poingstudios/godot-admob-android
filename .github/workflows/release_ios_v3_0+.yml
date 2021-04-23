@@ -1,4 +1,4 @@
-name: Build iOS
+name: Build iOS 3.0 -> 3.2.3
 
 on:
   schedule:

@@ -21,7 +21,7 @@ jobs:
     runs-on: "macos-latest"
     strategy:
       matrix:
-        GODOT_VERSIONS: [3.2.2, 3.2.3]
+        GODOT_VERSIONS: [3.2.2, 3.2.3, 3.3]
 
     steps:
     - uses: actions/checkout@v2
