@@ -112,7 +112,7 @@ jobs:
         SCONS_CACHE: ${{github.workspace}}/godot-${{env.CURRENT_GODOT_VERSION}}-stable/.scons_cache/
       run: |
         cd ios
-        ./scripts/release_static_library.sh ${{env.CURRENT_GODOT_VERSION}:0:3}
+        ./scripts/release_static_library.sh ${CURRENT_GODOT_VERSION:0:3}
 
     - name: Compress the binaries
       run: |
