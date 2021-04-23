@@ -38,10 +38,10 @@ jobs:
       run: | 
         cd android/admob/godot-lib 
         GODOT_AAR_LIB="godot-lib.aar"
-        if [ ${{matrix.RELEASE_VERSIONS}} -eq standard ]; then 
+        if [ ${{matrix.RELEASE_VERSIONS}} = standard ]; then 
           GODOT_AAR_FILENAME="godot-lib.${{env.CURRENT_GODOT_VERSION}}.stable.release.aar"
           FULL_PATHNAME_DOWNLOAD_GODOT_AAR="https://downloads.tuxfamily.org/godotengine/${{env.CURRENT_GODOT_VERSION}}/${GODOT_AAR_FILENAME}"
-        elif [ ${{matrix.RELEASE_VERSIONS}} -eq mono ]; then 
+        elif [ ${{matrix.RELEASE_VERSIONS}} = mono ]; then 
           GODOT_AAR_FILENAME="godot-lib.${{env.CURRENT_GODOT_VERSION}}.stable.mono.release.aar"
           FULL_PATHNAME_DOWNLOAD_GODOT_AAR="https://downloads.tuxfamily.org/godotengine/${{env.CURRENT_GODOT_VERSION}}/mono/${GODOT_AAR_FILENAME}"
         fi
