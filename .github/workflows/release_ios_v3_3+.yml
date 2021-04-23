@@ -1,4 +1,4 @@
-name: Build iOS
+name: Build iOS 3.3+
 
 on:
   schedule:
@@ -115,7 +115,8 @@ jobs:
 
     - name: Compress the binaries
       run: |
-        zip -j ios-template-v${CURRENT_GODOT_VERSIONS}.zip ios/bin/release/admob/*
+        zip -j ios-template-v${{env.CURRENT_GODOT_VERSION}}.zip ios/bin/release/admob/*
+
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
