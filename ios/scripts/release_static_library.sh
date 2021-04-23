@@ -1,22 +1,22 @@
 #!/bin/bash
 
-GODOT_PLUGINS="admob"
+PLUGIN="admob"
 
 # Compile Plugin
-for lib in $GODOT_PLUGINS; do
-    ./scripts/generate_static_library.sh $lib release $1
-    ./scripts/generate_static_library.sh $lib release_debug $1
-    mv ./bin/${lib}.release_debug.a ./bin/${lib}.debug.a
-done
+./scripts/generate_static_library.sh $PLUGIN release $1
+./scripts/generate_static_library.sh $PLUGIN release_debug $1
+mv ./bin/${PLUGIN}.release_debug.a ./bin/${PLUGIN}.debug.a
 
 # Move to release folder
-
 rm -rf ./bin/release
 mkdir ./bin/release
+rm -rf ./bin/release/${PLUGIN}/admob/bin
+mkdir -p ./bin/release/${PLUGIN}/admob/bin
+rm -rf ./bin/release/${PLUGIN}/admob/lib
+mkdir -p ./bin/release/${PLUGIN}/admob/lib
 
 # Move Plugin
-for lib in $GODOT_PLUGINS; do
-    mkdir ./bin/release/${lib}
-    mv ./bin/${lib}.{release,debug}.a ./bin/release/${lib}
-    cp ./plugin/${lib}/config/${lib}.gdip ./bin/release/${lib}
-done
+mv ./bin/${PLUGIN}.{release,debug}.a ./bin/release/${PLUGIN}/admob/bin
+cp ./plugin/${PLUGIN}/config/${PLUGIN}.gdip ./bin/release/${PLUGIN}
+
+touch ./bin/release/${PLUGIN}/admob/lib/PUT_HERE_ADMOB_SDK
