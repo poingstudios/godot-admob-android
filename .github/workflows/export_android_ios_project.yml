@@ -32,7 +32,7 @@ jobs:
         mkdir example/android/plugins
         mkdir example/android/build
         echo "${{matrix.GODOT_VERSIONS}}.stable" >> example/android/.build_version
-        unzip android-template-v${{matrix.GODOT_VERSIONS}}.zip -d example/android/plugins
+        unzip android-standard-template-v${{matrix.GODOT_VERSIONS}}.zip -d example/android/plugins
         unzip templates/android_source.zip -d example/android/build
  
     - name: Change AndroidManifest.xml, move ADB and debug.keystore to /usr/bin path
