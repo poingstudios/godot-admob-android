@@ -7,11 +7,11 @@ on:
     paths: 
       - '.github/workflows/release_ios_v3_0*.yml'
       - 'ios/**'
-    branches: [ master ]
+    branches: [ iOS_3.0_3.2.3 ]
   pull_request:
     paths: 
       - 'ios/**'
-    branches: [ master ]
+    branches: [ iOS_3.0_3.2.3 ]
 
 env:
   TAG_NAME: iOS_v3.0+
