@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        GODOT_VERSIONS: [3.2.3]
+        GODOT_VERSIONS: [3.3]
     steps:
     - uses: actions/checkout@v2
 
@@ -27,7 +27,7 @@ jobs:
       run: |
         mkdir -v -p build/android
         unzip Godot_v${{matrix.GODOT_VERSIONS}}-stable_export_templates.tpz
-        wget -nv https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/Android_v3.2.2%2B/android-template-v${{matrix.GODOT_VERSIONS}}.zip
+        wget -nv https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/Android_v3.2.2%2B/android-standard-template-v${{matrix.GODOT_VERSIONS}}.zip
         mkdir example/android
         mkdir example/android/plugins
         mkdir example/android/build
@@ -71,7 +71,7 @@ jobs:
     - name: Download ios-template from iOS Tag and rename .a file by ios-template downloaded
       run: |
         cd ../builds/ios/iOS
-        wget "https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/iOS_v3.0%2B/ios-template-v${{matrix.GODOT_VERSIONS}}.zip"
+        wget "https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/iOS_v3.3%2B/ios-template-v${{matrix.GODOT_VERSIONS}}.zip"
         unzip ios-template-v${{matrix.GODOT_VERSIONS}}.zip
         rm ios-template-v${{matrix.GODOT_VERSIONS}}.zip
         mv libgodot.iphone.release.fat.a AdMob.a 
