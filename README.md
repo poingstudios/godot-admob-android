@@ -1,9 +1,11 @@
-[![Build%20iOS](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/Build%20iOS/badge.svg)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions)
+[![Build%20iOS%203.3+](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/Build%20iOS%203.3+/badge.svg)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions/workflows/release_ios_v3_3+.yml)
+[![GAD-iOS](https://img.shields.io/cocoapods/v/Google-Mobile-Ads-SDK?label=GAD%20SDK%20iOS)](https://cocoapods.org/pods/Google-Mobile-Ads-SDK)
 [![Build%20Android](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/Build%20Android/badge.svg)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions)
-[![Build%20Android%20Mono](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/Build%20Android%20Mono/badge.svg)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions)
+[![GAD-Android](https://img.shields.io/badge/GAD%20SDK%20Android-v20.0.0-informational)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/blob/master/android/admob/admob/build.gradle#L30)
 [![Copy%20admob_api%2F](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/Copy%20admob_api%2F/badge.svg)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions)
 [![Export%20for%20Android%20and%20iOS](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/Export%20for%20Android%20and%20iOS/badge.svg)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions)
 
+> *For iOS v3.0 -> v3.2.3+ check [here](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/tree/iOS_3.0_3.2.3) the `iOS_3.0_3.2.3` branch*
 
 # Godot AdMob for Android and iOS
 This repository uses [GitHub Actions](https://github.com/features/actions), this means that whenever a new update is sent to the repository, the action will automatically test the code of the module, compile, compress the binary files and export to the ["Releases tab"](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases) of the repository for the respective operational system and versions supported by the module, like v3.3.
@@ -20,14 +22,14 @@ This repository uses [GitHub Actions](https://github.com/features/actions), this
 - Rewarded Interstitial (BETA) (soon on [Android](https://developers.google.com/admob/android/rewarded-interstitial) and [iOS](https://developers.google.com/admob/ios/rewarded-interstitial))
 - Native (Only on Android, soon on [iOS](https://developers.google.com/admob/ios/native/start))
 
-Is high recommended that when you use AdMob, please include it as AutoLoad and Singleton
+Is high recommended that when you use AdMob, please include it as [AutoLoad and Singleton](https://docs.godotengine.org/en/stable/getting_started/step_by_step/singletons_autoload.html)
 
-Download example project to see how the Plugin works!
+Download [example project](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/tree/master/example) to see how the Plugin works!
 
 # Android (v3.2.2+):
-- Download the ```android-template-v{{ your_godot_version }}.zip``` in the releases tab. [STABLE VERSION](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/Android_v3.2.2%2B) and [MONO VERSION](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/Android_mono_v3.2.2%2B)
+- Download the ```android-?-template-v{{ your_godot_version }}.zip``` in the [releases tab](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/Android_v3.2.2%2B).
 - Enable Android Build Template. [Check the tutorial here](https://docs.godotengine.org/en/stable/getting_started/workflow/export/android_custom_build.html)
-- Extract the content in ```android-template-v{{ your_godot_version }}.zip``` into ```res://android/plugins``` directory on your Godot project
+- Extract the content in ```android-?-template-v{{ your_godot_version }}.zip``` into ```res://android/plugins``` directory on your Godot project
 - On your Game Project go to:
 	- Project
 		- Export
@@ -56,17 +58,13 @@ Download example project to see how the Plugin works!
 ```
 
 # iOS (v3.3+):
-- Download the ```ios-template-v{{ your_godot_version }}.zip``` in the releases tab. [STABLE VERSION](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/iOS_v3.0%2B) and [MONO VERSION](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/iOS_mono_v3.0%2B)
+- Download the ```ios-template-v{{ your_godot_version }}.zip``` in the [releases tab](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/iOS_v3.3%2B).
+- Download the [googlemobileadssdkios.zip](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/iOS_v3.3%2B/googlemobileadssdkios.zip) used to build the plugin.
 - Extract the content in ```ios-template-v{{ your_godot_version }}.zip``` into ```res://ios/plugins``` directory on your Godot project
-- On your Game Project go to and enable:
-	- Project
-		- Export
-			- iOS
-				- Options
-					- Plugins 
-						- [x] ```Ad Mob```
-
-- Export your game to iOS
+- Extract the content in ```googlemobileadssdkios.zip``` into ```res://ios/plugins/admob/lib```, will be like this:
+- ![Folder Structure](https://i.imgur.com/Xdj8yqV.png)
+- Export the project enabling the AdMob Plugin:
+- ![Export Project](https://i.imgur.com/4Zm3sjp.png)
 - Into your Xcode Project: [Update your GAMENAME-Info.plist file](https://developers.google.com/admob/ios/quick-start#update_your_infoplist), on GADApplicationIdentifier key with a string value of your [AdMob app ID](https://support.google.com/admob/answer/7356431):
 ![plist](https://i.imgur.com/1tcKXx5.png)
 - [Enable SKAdNetwork to track conversions](https://developers.google.com/admob/ios/ios14#skadnetwork):
@@ -146,3 +144,7 @@ destroy_banner() #completely destroys the Banner View
 destroy_native() #completely destroys the Native View
 
 ```
+
+[![Downloads](https://img.shields.io/github/downloads/Poing-Studios/Godot-AdMob-Android-iOS/total?style=social)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases)
+![Stars](https://img.shields.io/github/stars/Poing-Studios/Godot-AdMob-Android-iOS?style=social)
+![License](https://img.shields.io/github/license/Poing-Studios/Godot-AdMob-Android-iOS?style=plastic)
