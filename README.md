@@ -1,7 +1,7 @@
 
 <h1 align="center">
   <br>
-  <img src="https://i.imgur.com/ATUnOhu.png" alt="GodotAdMob">
+  <img src="https://i.imgur.com/ATUnOhu.png" alt="GodotAdMob" width=500>
   <br>
   Godot AdMob
   <br>
