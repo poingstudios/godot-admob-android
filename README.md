@@ -1,13 +1,40 @@
-[![Build%20iOS%203.3+](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/Build%20iOS%203.3+/badge.svg)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions/workflows/release_ios_v3_3+.yml)
-[![GAD-iOS](https://img.shields.io/cocoapods/v/Google-Mobile-Ads-SDK?label=GAD%20SDK%20iOS)](https://cocoapods.org/pods/Google-Mobile-Ads-SDK)
-[![Build%20Android](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/Build%20Android/badge.svg)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions)
-[![GAD-Android](https://img.shields.io/badge/GAD%20SDK%20Android-v20.0.0-informational)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/blob/master/android/admob/admob/build.gradle#L30)
-[![Copy%20admob_api%2F](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/Copy%20admob_api%2F/badge.svg)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions)
-[![Export%20for%20Android%20and%20iOS](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/Export%20for%20Android%20and%20iOS/badge.svg)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions)
 
-> *For iOS v3.0 -> v3.2.3+ check [here](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/tree/iOS_3.0_3.2.3) the `iOS_3.0_3.2.3` branch*
+<h1 align="center">
+  <br>
+  <img src="https://i.imgur.com/T3Beai0.png" alt="GodotAdMob" width="300">
+  <br>
+  Godot AdMob
+  <br>
+</h1>
 
-# Godot AdMob for Android and iOS
+<h4 align="center">A Godot's plugin for Android and iOS of <a href="https://admob.google.com" target="_blank">AdMob</a>.</h4>
+
+<p align="center">
+  <a href="https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions/workflows/release_ios_v3_3+.yml">
+    <img src="https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/Build%20iOS%203.3+/badge.svg">
+  </a>
+  <a href="https://cocoapods.org/pods/Google-Mobile-Ads-SDK">
+    <img src="https://img.shields.io/cocoapods/v/Google-Mobile-Ads-SDK?label=GAD%20SDK%20iOS">
+  </a>
+  <a href="https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions">
+    <img src="https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/Build%20Android/badge.svg">
+  </a>
+  <a href="https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/blob/master/android/admob/admob/build.gradle#L30">
+    <img src="https://img.shields.io/badge/GAD%20SDK%20Android-v20.0.0-informational">
+  </a>
+  <a href="https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions">
+    <img src="https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/Copy%20admob_api%2F/badge.svg">
+  </a>
+  <a href="https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/actions">
+    <img src="https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/workflows/Export%20for%20Android%20and%20iOS/badge.svg">
+  </a>
+  <a href="https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases">
+    <img src="https://img.shields.io/github/downloads/Poing-Studios/Godot-AdMob-Android-iOS/total?style=social">
+  </a>
+  <img src="https://img.shields.io/github/stars/Poing-Studios/Godot-AdMob-Android-iOS?style=social">
+  <img src="https://img.shields.io/github/license/Poing-Studios/Godot-AdMob-Android-iOS?style=plastic">
+</p>
+
 This repository uses [GitHub Actions](https://github.com/features/actions), this means that whenever a new update is sent to the repository, the action will automatically test the code of the module, compile, compress the binary files and export to the ["Releases tab"](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases) of the repository for the respective operational system and versions supported by the module, like v3.3.
 
 
@@ -145,6 +172,3 @@ destroy_native() #completely destroys the Native View
 
 ```
 
-[![Downloads](https://img.shields.io/github/downloads/Poing-Studios/Godot-AdMob-Android-iOS/total?style=social)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases)
-![Stars](https://img.shields.io/github/stars/Poing-Studios/Godot-AdMob-Android-iOS?style=social)
-![License](https://img.shields.io/github/license/Poing-Studios/Godot-AdMob-Android-iOS?style=plastic)
