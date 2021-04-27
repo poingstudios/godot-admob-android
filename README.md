@@ -35,12 +35,31 @@
   <img src="https://img.shields.io/github/license/Poing-Studios/Godot-AdMob-Android-iOS?style=plastic">
 </p>
 
-This repository uses [GitHub Actions](https://github.com/features/actions), this means that whenever a new update is sent to the repository, the action will automatically test the code of the module, compile, compress the binary files and export to the ["Releases tab"](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases) of the repository for the respective operational system and versions supported by the module, like v3.3.
-
-
 <p align="center">
-	<img align="center" src="https://i.imgur.com/u5y2GEx.png">
+  <a href="#about">About</a> •
+  <a href="#installation">Installation</a> •
+  <a href="https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/wiki">Wiki</a> •
+  <a href="https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases">Downloads</a> 
 </p>
+
+## About
+
+<table>
+<tr>
+<td>
+
+This repository is for a _Godot Engine Plugin_ that allows showing the ads offered by **AdMob** in an **easy** way, without worrying about the building or version, **just download and use**.
+
+The **purpose** of this plugin is to always keep **up to date with Godot**, supporting **ALMOST ALL** versions from 3.x to 4.x (when it is released), and also make the code **compatible** on **Android and iOS**, so each advertisement will work **identically on both systems**.
+
+![Preview](https://i.imgur.com/u5y2GEx.png)
+<p align="right">
+<sub>(Preview)</sub>
+</p>
+
+</td>
+</tr>
+</table>
 
 ### Ad Formats
 - Banner 
@@ -53,19 +72,19 @@ Is high recommended that when you use AdMob, please include it as [AutoLoad and 
 
 Download [example project](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/tree/master/example) to see how the Plugin works!
 
+## Installation 
+- Download or clone the [repository](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/archive/refs/heads/master.zip)
+- Go on `res://admob_api/` folder and copy to your project
+- Add as Singleton and AutoLoad the `res://admob_api/MobileAds.tscn` on your Project Settings just like this:
+- ![AutoLoad](https://i.imgur.com/TCak3Zi.png)
+- Open `res://admob_api/MobileAds.tscn` and change the `Script Variables` or the code itself if you want to.
+
 # Android (v3.2.2+):
 - Download the ```android-?-template-v{{ your_godot_version }}.zip``` in the [releases tab](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/Android_v3.2.2%2B).
 - Enable Android Build Template. [Check the tutorial here](https://docs.godotengine.org/en/stable/getting_started/workflow/export/android_custom_build.html)
 - Extract the content in ```android-?-template-v{{ your_godot_version }}.zip``` into ```res://android/plugins``` directory on your Godot project
-- On your Game Project go to:
-	- Project
-		- Export
-			- Android
-				- Options
-					- Custom Package 
-						- [x] ```Use Custom Build```
-					- Plugins 
-						- [x] ```Ad Mob```
+- Export the project enabling the `Use Custom Build` and `AdMob Plugin`:
+- ![Export Project](https://i.imgur.com/MPbnmoD.png)
 - Add your [AdMob App ID](https://support.google.com/admob/answer/7356431) to your app's ```res://android/build/AndroidManifest.xml``` file by adding a ```<meta-data>``` tag with name ```com.google.android.gms.ads.APPLICATION_ID```, as shown below.
 
 ``` xml
@@ -90,7 +109,7 @@ Download [example project](https://github.com/Poing-Studios/Godot-AdMob-Android-
 - Extract the content in ```ios-template-v{{ your_godot_version }}.zip``` into ```res://ios/plugins``` directory on your Godot project
 - Extract the content in ```googlemobileadssdkios.zip``` into ```res://ios/plugins/admob/lib```, will be like this:
 - ![Folder Structure](https://i.imgur.com/Xdj8yqV.png)
-- Export the project enabling the AdMob Plugin:
+- Export the project enabling the `AdMob Plugin`:
 - ![Export Project](https://i.imgur.com/4Zm3sjp.png)
 - Into your Xcode Project: [Update your GAMENAME-Info.plist file](https://developers.google.com/admob/ios/quick-start#update_your_infoplist), on GADApplicationIdentifier key with a string value of your [AdMob app ID](https://support.google.com/admob/answer/7356431):
 ![plist](https://i.imgur.com/1tcKXx5.png)
