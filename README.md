@@ -61,14 +61,22 @@ The **purpose** of this plugin is to always keep **up to date with Godot**, supp
 </tr>
 </table>
 
-### Ad Formats
-- Banner 
-- Interstitial
-- Rewarded
-- Rewarded Interstitial (BETA) (soon on [Android](https://developers.google.com/admob/android/rewarded-interstitial) and [iOS](https://developers.google.com/admob/ios/rewarded-interstitial))
-- Native (Only on Android, soon on [iOS](https://developers.google.com/admob/ios/native/start))
+## Features
+  
+|                                Ad Formats                                | Android 🤖 | iOS  |
+| :----------------------------------------------------------------------: | :-------: | :---: |
+|                                  Banner                                  |     ✔️     |   ✔️   |
+|                               Interstitial                               |     ✔️     |   ✔️   |
+|                                 Rewarded                                 |     ✔️     |   ✔️   |
+| [Rewarded Interstitial](https://support.google.com/admob/answer/9884467) |     ❌     |   ❌   |
+|                                  Native                                  |     ✔️     |   ❌   |
 
-Is high recommended that when you use AdMob, please include it as [AutoLoad and Singleton](https://docs.godotengine.org/en/stable/getting_started/step_by_step/singletons_autoload.html)
+|   Others   | Android 🤖 | iOS  |
+| :--------: | :-------: | :---: |
+| EU consent |     ✔️     |   ✔️   |
+| Targeting  |     ✔️     |   ✔️   |
+| Mediation  |     ❌     |   ❌   |
+|   CI/CD    |     ✔️     |   ✔️   |
 
 Download [example project](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/tree/master/example) to see how the Plugin works!
 
