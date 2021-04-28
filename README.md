@@ -38,7 +38,7 @@
 <p align="center">
   <a href="#about">About</a> •
   <a href="#installation">Installation</a> •
-  <a href="https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/wiki">Wiki</a> •
+  <a href="#documentation">Docs</a> •
   <a href="https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases">Downloads</a> 
 </p>
 
@@ -79,15 +79,23 @@ The **purpose** of this plugin is to always keep **up to date with Godot**, supp
 |   CI/CD    |     ✔️     |   ✔️   |
 
 Download [example project](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/tree/master/example) to see how the Plugin works!
-
+# How to use:
 ## Installation 
+<details>
+<summary><b>Show instructions</b></summary>
+
 - Download or clone the [repository](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/archive/refs/heads/master.zip)
 - Go on `res://admob_api/` folder and copy to your project
 - Add as Singleton and AutoLoad the `res://admob_api/MobileAds.tscn` on your Project Settings just like this:
 - ![AutoLoad](https://i.imgur.com/TCak3Zi.png)
 - Open `res://admob_api/MobileAds.tscn` and change the `Script Variables` or the code itself if you want to.
 
-# Android (v3.2.2+):
+</details>
+
+## Android (v3.2.2+):
+<details>
+<summary><b>Show instructions</b></summary>
+
 - Download the ```android-?-template-v{{ your_godot_version }}.zip``` in the [releases tab](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/Android_v3.2.2%2B).
 - Enable Android Build Template. [Check the tutorial here](https://docs.godotengine.org/en/stable/getting_started/workflow/export/android_custom_build.html)
 - Extract the content in ```android-?-template-v{{ your_godot_version }}.zip``` into ```res://android/plugins``` directory on your Godot project
@@ -111,7 +119,12 @@ Download [example project](https://github.com/Poing-Studios/Godot-AdMob-Android-
 	android:value="true"/>
 ```
 
-# iOS (v3.3+):
+</details>
+
+## iOS (v3.3+):
+<details>
+<summary><b>Show instructions</b></summary>
+
 - Download the ```ios-template-v{{ your_godot_version }}.zip``` in the [releases tab](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/iOS_v3.3%2B).
 - Download the [googlemobileadssdkios.zip](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/iOS_v3.3%2B/googlemobileadssdkios.zip) used to build the plugin.
 - Extract the content in ```ios-template-v{{ your_godot_version }}.zip``` into ```res://ios/plugins``` directory on your Godot project
@@ -128,74 +141,18 @@ Download [example project](https://github.com/Poing-Studios/Godot-AdMob-Android-
 - (Optional) If you are using UMP, you can add too the [Delay app measurement](https://developers.google.com/admob/ump/ios/quick-start#delay_app_measurement_optional)
 ![DelayAppMeasurement](https://developers.google.com/admob/images/delay_app_measurement_plist.png)
 
+</details>
 
-# User Messaging Platform (UMP):
+## User Messaging Platform (UMP):
 - To use UMP due of EUROPE ePrivacy Directive and the General Data Protection Regulation (GDPR), you first need to do configure your [Funding Choices](https://support.google.com/fundingchoices/answer/9180084).
 - If your app is "ForChildDirectedTreatment" then the UMP [won't appear and signals won't work for consent](https://stackoverflow.com/a/63232045), this is normal so don't worry.
 - To show personalized or non-personalized ads, then you need to change inside your [AdMob Account](https://apps.admob.com/?utm_source=internal&utm_medium=et&utm_campaign=helpcentrecontextualopt&utm_term=http://goo.gl/6Xkfcf&subid=ww-ww-et-amhelpv4)
 ![npa-image](https://i.stack.imgur.com/0v1eL.png)
 
-# API References
-Signals:
-```GDScript
-initialization_complete(status, adapter_name) #when AdMob initializes, can be enum NOT_READY(0) or READY(1)
+## Documentation
+For a complete documentation of this Plugin, [check our wiki](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/wiki).
 
-banner_loaded() #ad finishes loading
-banner_destroyed() #banner view is destroyed
-banner_failed_to_load(error_code : int) #ad request fails
-banner_opened() #ad opens an overlay that
-banner_clicked() #when user clicks on ad
-banner_closed() # user is about to return to the app after tapping on an ad
-banner_recorded_impression() #an impression has been recorded for an ad
+Alternatively, you can check the docs of AdMob itself of [Android](https://developers.google.com/admob/android/quick-start) and [iOS](https://developers.google.com/admob/ios/quick-start).
 
-
-interstitial_loaded() #ad finishes loading
-interstitial_failed_to_load(error_code : int) #ad request fails
-interstitial_opened() #ad is displayed
-interstitial_left_application() #user has left the app
-interstitial_closed() #interstitial ad is closed
-
-rewarded_ad_loaded() #ad successfully loaded
-rewarded_ad_failed_to_load() #ad failed to load
-rewarded_ad_opened() #ad is displayed
-rewarded_ad_closed() #ad is closed
-rewarded_user_earned_rewarded(currency : String, amount : int) #user earner rewarded
-rewarded_ad_failed_to_show(error_code) #ad request fails
-
-native_loaded() #native loaded and shows the ad
-native_destroyed() #native view destroyed
-native_failed_to_load(error_code : int) #ad request fails
-native_opened() #ad opens an overlay that
-native_clicked() #when user clicks on ad
-native_closed() #user is about to return to the app after tapping on an ad
-native_recorded_impression() #an impression has been recorded for an ad
-
-consent_form_dismissed() #then the consent is REQUIRED(user in EEA or UK) and user dismissed the form
-consent_status_changed(consent_status_message) #get the ConsentStatus
-consent_form_load_failure(error_code, error_message) #get the code and message of error to see why form is not loading
-consent_info_update_success() #consent information state was updated
-consent_info_update_failure(error_code, error_message) #get the code and message of error to see why info update consent fail
-```
-
-Methods
-```GDScript
-#Private
-#-----------------
-_initialize() #init the AdMob
-_on_AdMob_*() #just to emit signals
-
-#Public
-#-----------------
-load_banner() #load the banner will make him appear instantly
-load_interstitial() #loads the interstitial and make ready for show
-load_rewarded() #loads the rewarded and make ready for show
-load_native(control_node_to_be_replaced : Control = Control.new()) #load the native will make him appear instantly (native and banner are View in Android and iOS, it is recommended to only use one of them at a time, if you try to use both, the module will not allow it, it will remove the older view
-
-show_interstitial() #shows interstitial
-show_rewarded() #shows rewarded
-
-destroy_banner() #completely destroys the Banner View
-destroy_native() #completely destroys the Native View
-
-```
-
+## Getting help
+[![DISCUSSIONS](https://img.shields.io/badge/Poing%20AdMob-%F0%9F%86%98%20Discussions%C2%A0%F0%9F%86%98-green?style=for-the-badge)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/discussions)
