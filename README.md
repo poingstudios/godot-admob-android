@@ -45,20 +45,21 @@
 ## About
 
 <table>
-<tr>
-<td>
+  <tr>
+  <td>
 
-This repository is for a _Godot Engine Plugin_ that allows showing the ads offered by **AdMob** in an **easy** way, without worrying about the building or version, **just download and use**.
+  This repository is for a _Godot Engine Plugin_ that allows showing the ads offered by **AdMob** in an **easy** way, without worrying about the building or version, **just download and use**.
 
-The **purpose** of this plugin is to always keep **up to date with Godot**, supporting **ALMOST ALL** versions from 3.x to 4.x (when it is released), and also make the code **compatible** on **Android and iOS**, so each advertisement will work **identically on both systems**.
+  The **purpose** of this plugin is to always keep **up to date with Godot**, supporting **ALMOST ALL** versions from 3.x to 4.x (when it is released), and also make the code **compatible** on **Android and iOS**, so each advertisement will work **identically on both systems**.
 
-![Preview](https://i.imgur.com/u5y2GEx.png)
-<p align="right">
-<sub>(Preview)</sub>
-</p>
+  ![Preview](https://i.imgur.com/u5y2GEx.png)
 
-</td>
-</tr>
+  <p align="right">
+    <sub>(Preview)</sub>
+  </p>
+
+  </td>
+  </tr>
 </table>
 
 ## Features
@@ -79,28 +80,18 @@ The **purpose** of this plugin is to always keep **up to date with Godot**, supp
 |   CI/CD    |     ✔️     |   ✔️   |
 
 Download [example project](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/tree/master/example) to see how the Plugin works!
-# How to use:
 ## Installation 
-<details>
-<summary><b>Show instructions</b></summary>
-
 - Download or clone the [repository](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/archive/refs/heads/master.zip)
 - Go on `res://admob_api/` folder and copy to your project
 - Add as Singleton and AutoLoad the `res://admob_api/MobileAds.tscn` on your Project Settings just like this:
 - ![AutoLoad](https://i.imgur.com/TCak3Zi.png)
 - Open `res://admob_api/MobileAds.tscn` and change the `Script Variables` or the code itself if you want to.
 
-</details>
 
 ## Android (v3.2.2+):
-<details>
-<summary><b>Show instructions</b></summary>
-
 - Download the ```android-?-template-v{{ your_godot_version }}.zip``` in the [releases tab](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/Android_v3.2.2%2B).
 - Enable Android Build Template. [Check the tutorial here](https://docs.godotengine.org/en/stable/getting_started/workflow/export/android_custom_build.html)
 - Extract the content in ```android-?-template-v{{ your_godot_version }}.zip``` into ```res://android/plugins``` directory on your Godot project
-- Export the project enabling the `Use Custom Build` and `AdMob Plugin`:
-- ![Export Project](https://i.imgur.com/MPbnmoD.png)
 - Add your [AdMob App ID](https://support.google.com/admob/answer/7356431) to your app's ```res://android/build/AndroidManifest.xml``` file by adding a ```<meta-data>``` tag with name ```com.google.android.gms.ads.APPLICATION_ID```, as shown below.
 
 ``` xml
@@ -110,7 +101,6 @@ Download [example project](https://github.com/Poing-Studios/Godot-AdMob-Android-
 	android:name="com.google.android.gms.ads.APPLICATION_ID"
 	android:value="ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy"/>
 ```
-
 - (Optional) If you are using UMP, you can add too the [Delay app measurement](https://developers.google.com/admob/ump/android/quick-start#delay_app_measurement_optional) inside ```AndroidManifest.xml``` 
 
 ``` xml
@@ -119,12 +109,10 @@ Download [example project](https://github.com/Poing-Studios/Godot-AdMob-Android-
 	android:value="true"/>
 ```
 
-</details>
+- Export the project enabling the `Use Custom Build` and `AdMob Plugin`:
+- ![Export Project](https://i.imgur.com/MPbnmoD.png)
 
 ## iOS (v3.3+):
-<details>
-<summary><b>Show instructions</b></summary>
-
 - Download the ```ios-template-v{{ your_godot_version }}.zip``` in the [releases tab](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/iOS_v3.3%2B).
 - Download the [googlemobileadssdkios.zip](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/iOS_v3.3%2B/googlemobileadssdkios.zip) used to build the plugin.
 - Extract the content in ```ios-template-v{{ your_godot_version }}.zip``` into ```res://ios/plugins``` directory on your Godot project
@@ -140,8 +128,6 @@ Download [example project](https://github.com/Poing-Studios/Godot-AdMob-Android-
 ![RequestAuthorization](https://developers.google.com/admob/images/idfa/editor.png)
 - (Optional) If you are using UMP, you can add too the [Delay app measurement](https://developers.google.com/admob/ump/ios/quick-start#delay_app_measurement_optional)
 ![DelayAppMeasurement](https://developers.google.com/admob/images/delay_app_measurement_plist.png)
-
-</details>
 
 ## User Messaging Platform (UMP):
 - To use UMP due of EUROPE ePrivacy Directive and the General Data Protection Regulation (GDPR), you first need to do configure your [Funding Choices](https://support.google.com/fundingchoices/answer/9180084).
