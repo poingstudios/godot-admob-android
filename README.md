@@ -142,6 +142,8 @@ Alternatively, you can check the docs of AdMob itself of [Android](https://devel
 
 ## Contribute
 We are a dedicated area to how contribute for Android and iOS on our wiki.
+- Android: https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/wiki/Android-Plugin#developing
+- iOS: https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/wiki/iOS-Plugin#developing
 
 ## Getting help
 [![DISCUSSIONS](https://img.shields.io/badge/Poing%20AdMob-%F0%9F%86%98%20Discussions%C2%A0%F0%9F%86%98-green?style=for-the-badge)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/discussions)
