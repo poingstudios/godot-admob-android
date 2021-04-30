@@ -140,5 +140,8 @@ For a complete documentation of this Plugin, [check our wiki](https://github.com
 
 Alternatively, you can check the docs of AdMob itself of [Android](https://developers.google.com/admob/android/quick-start) and [iOS](https://developers.google.com/admob/ios/quick-start).
 
+## Contribute
+We are a dedicated area to how contribute for Android and iOS on our wiki.
+
 ## Getting help
 [![DISCUSSIONS](https://img.shields.io/badge/Poing%20AdMob-%F0%9F%86%98%20Discussions%C2%A0%F0%9F%86%98-green?style=for-the-badge)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/discussions)
