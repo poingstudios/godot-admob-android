@@ -114,9 +114,10 @@ func _on_AdMob_rewarded_ad_closed():
 	rewarded_loaded = false
 	emit_signal("rewarded_ad_closed")
 
-func _on_AdMob_rewarded_ad_failed_to_load():
+func _on_AdMob_rewarded_ad_failed_to_load(error_code : int):
 	emit_signal("rewarded_ad_failed_to_load")
 	
+
 func _on_AdMob_user_earned_rewarded(currency : String, amount : int):
 	emit_signal("rewarded_user_earned_rewarded", currency, amount)
 
