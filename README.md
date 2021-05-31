@@ -89,6 +89,7 @@ Download [example project](https://github.com/Poing-Studios/Godot-AdMob-Android-
 
 
 ## Android (v3.2.2+):
+- Tutorial: https://www.youtube.com/watch?v=5J_RP2sCf7Y
 - Download the ```android-?-template-v{{ your_godot_version }}.zip``` in the [releases tab](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/Android_v3.2.2%2B).
 - Enable Android Build Template. [Check the tutorial here](https://docs.godotengine.org/en/stable/getting_started/workflow/export/android_custom_build.html)
 - Extract the content in ```android-?-template-v{{ your_godot_version }}.zip``` into ```res://android/plugins``` directory on your Godot project
