@@ -1,15 +1,12 @@
 # Godot-specific ignores
 .import/
 export.cfg
-# export_presets.cfg # not marked due automatic export to Android and iOS
+export_presets.cfg
 
 # Mono-specific ignores
 .mono/
 data_*/
 *.pyc
-
-example/android
-example/ios
 
 ios/extracted_headers
 ios/godot
@@ -18,6 +15,12 @@ ios/plugin/admob/lib
 
 
 .DS_Store
+
+*.idea
+*.gradle
+build/
+local.properties
+*.aar
 
 *.a
 *.o
