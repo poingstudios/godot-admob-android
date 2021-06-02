@@ -36,7 +36,7 @@ jobs:
 
     - name: Download and prepare the Stable Godot .AAR LIB
       run: | 
-        cd android/admob/godot-lib 
+        cd android/godot-lib 
         GODOT_AAR_LIB="godot-lib.aar"
         if [ ${{matrix.RELEASE_VERSIONS}} = standard ]; then 
           GODOT_AAR_FILENAME="godot-lib.${{env.CURRENT_GODOT_VERSION}}.stable.release.aar"
@@ -52,17 +52,17 @@ jobs:
     
     - name: Grant execute permission for gradlew
       run: |
-        cd android/admob
+        cd android
         chmod +x gradlew
         
     - name: Build with Gradle
       run: | 
-        cd android/admob
+        cd android
         ./gradlew build
 
     - name: Compress the binaries
       run: |
-        zip -j android-${{matrix.RELEASE_VERSIONS}}-template-v${{env.CURRENT_GODOT_VERSION}}.zip android/admob/admob/build/outputs/aar/*
+        zip -j android-${{matrix.RELEASE_VERSIONS}}-template-v${{env.CURRENT_GODOT_VERSION}}.zip android/build/outputs/aar/*
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
