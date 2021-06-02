@@ -73,14 +73,8 @@
 | Mediation  |     ❌     |   ❌   |
 |   CI/CD    |     ✔️     |   ✔️   |
 
-Download [example project](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/tree/master/example) to see how the Plugin works!
 ## Installation 
-- Download or clone the [repository](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/archive/refs/heads/master.zip)
-- Go on `res://admob_api/` folder and copy to your project
-- Add as Singleton and AutoLoad the `res://admob_api/MobileAds.tscn` on your Project Settings just like this:
-- ![AutoLoad](https://i.imgur.com/TCak3Zi.png)
-- Open `res://admob_api/MobileAds.tscn` and change the `Script Variables` or the code itself if you want to.
-
+- First of all you need to install the [AdMob Editor Plugin](https://github.com/Poing-Studios/Godot-AdMob-Editor-Plugin), you can download direcly from [Godot Assets](https://godotengine.org/asset-library/asset/933).
 
 ## Android (v3.2.2+):
 - Tutorial: https://www.youtube.com/watch?v=5J_RP2sCf7Y
