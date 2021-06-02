@@ -114,7 +114,7 @@ Download [example project](https://github.com/Poing-Studios/Godot-AdMob-Android-
 - ![Export Project](https://i.imgur.com/MPbnmoD.png)
 
 ## iOS (v3.3+):
-- Tutorial: https://www.youtube.com/watch?v=U-eejx6-XT8
+- Tutorial: https://www.youtube.com/watch?v=pkTUVArtG7Y
 - Download the ```ios-template-v{{ your_godot_version }}.zip``` in the [releases tab](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/tag/iOS_v3.3%2B).
 - Download the [googlemobileadssdkios.zip](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/releases/download/iOS_v3.3%2B/googlemobileadssdkios.zip) used to build the plugin.
 - Extract the content in ```ios-template-v{{ your_godot_version }}.zip``` into ```res://ios/plugins``` directory on your Godot project
