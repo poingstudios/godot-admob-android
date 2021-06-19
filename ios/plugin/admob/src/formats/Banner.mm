@@ -23,6 +23,38 @@
     return self;
 }
 
+- (float) get_banner_width{
+    if (bannerView != Nil){
+        NSLog(@"bannerView.bounds.size.width = %f", bannerView.bounds.size.width);
+        return bannerView.bounds.size.width;
+    }
+    NSLog(@"width not found");
+
+    return 0;
+}
+- (float) get_banner_height{
+    if (bannerView != Nil){
+        NSLog(@"bannerView.bounds.size.height = %f", bannerView.bounds.size.height);
+        return bannerView.bounds.size.height;
+    }
+    return 0;
+}
+
+- (float) get_banner_width_in_pixels{
+    if (bannerView != Nil){
+        NSLog(@"bannerView.bounds.size.width_pixels = %f", bannerView.bounds.size.width * [UIScreen mainScreen].scale);
+        return bannerView.bounds.size.width * [UIScreen mainScreen].scale;
+    }
+    return 0;
+}
+- (float) get_banner_height_in_pixels{
+    if (bannerView != Nil){
+        NSLog(@"bannerView.bounds.size.height_pixels = %f", bannerView.bounds.size.height * [UIScreen mainScreen].scale);
+        return bannerView.bounds.size.height * [UIScreen mainScreen].scale;
+    }
+    return 0;
+}
+
 
 - (void) load_banner:(NSString*)ad_unit_id :(int)position :(NSString*)size {
     NSLog(@"Calling load_banner");

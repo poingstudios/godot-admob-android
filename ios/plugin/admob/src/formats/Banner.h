@@ -27,5 +27,9 @@
 - (instancetype)init: (int) instance_id;
 - (void)load_banner: (NSString*) ad_unit_id : (int) position : (NSString*) size;
 - (void)destroy_banner;
+- (float) get_banner_width;
+- (float) get_banner_height;
+- (float) get_banner_width_in_pixels;
+- (float) get_banner_height_in_pixels;
 
 @end

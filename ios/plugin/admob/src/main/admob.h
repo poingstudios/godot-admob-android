@@ -31,6 +31,8 @@
         GDCLASS(AdMob, Object);
         
         bool initialized;
+        bool is_for_child_directed_treatment;
+        bool is_test_europe_user_consent;
         String self_max_ad_content_rating;
         static AdMob *instance;
         Object *objectDB;
@@ -54,20 +56,26 @@
                          const String &size);
         
         void destroy_banner();
+        
+        float get_banner_width();
+        float get_banner_height();
+        float get_banner_width_in_pixels();
+        float get_banner_height_in_pixels();
+
         void load_interstitial(const String &ad_unit_id);
         void show_interstitial();
         void load_rewarded(const String &ad_unit_id);
         void show_rewarded();
+        
+        void request_user_consent();
+        void reset_consent_state();
 
         AdMob();
         ~AdMob();
     private:
         const char* getDeviceId();
         void GADInitialize();
-        void initializeAfterUMP(bool is_for_child_directed_treatment,
-                                bool is_real,
-                                int instance_id);
-        
+       
         void loadConsentForm(bool is_for_child_directed_treatment,
                              bool is_real,
                              int instance_id);
