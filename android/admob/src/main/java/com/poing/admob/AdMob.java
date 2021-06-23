@@ -37,6 +37,8 @@ import com.google.android.ump.FormError;
 import com.google.android.ump.UserMessagingPlatform;
 
 import android.app.Activity;
+import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.Gravity;
 import android.widget.FrameLayout; //get Godot Layout
 import android.view.View;
@@ -281,6 +283,9 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
                         case "LEADERBOARD":
                             aAdView.setAdSize(AdSize.LEADERBOARD);
                             break;
+                        case "ADAPTIVE":
+                            aAdView.setAdSize(getAdSizeAdaptive());
+                            break;
                         default:
                             aAdView.setAdSize(AdSize.SMART_BANNER);
                             break;
@@ -343,6 +348,24 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
                 }
             }
         });
+    }
+    private AdSize getAdSizeAdaptive() {
+        // Determine the screen width (less decorations) to use for the ad width.
+        Display display = aActivity.getWindowManager().getDefaultDisplay();
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        display.getMetrics(outMetrics);
+
+        float density = outMetrics.density;
+
+        float adWidthPixels = aGodotLayout.getWidth();
+
+        // If the ad hasn't been laid out, default to the full screen width.
+        if (adWidthPixels == 0) {
+            adWidthPixels = outMetrics.widthPixels;
+        }
+
+        int adWidth = (int) (adWidthPixels / density);
+        return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(aActivity, adWidth);
     }
 
     public void destroy_banner()//IF THIS METHOD IS CALLED ON GODOT, THE BANNER WILL ONLY APPEAR AGAIN IF THE BANNER IS LOADED AGAIN

@@ -92,7 +92,18 @@
     } else if ([size isEqualToString:@"LEADERBOARD"]) {
         bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeLeaderboard];
         NSLog(@"Leaderboard banner created");
-    } else { //smart banner
+    } else if ([size isEqualToString:@"LEADERBOARD"]) {
+        CGRect frame = rootController.view.frame;
+        // Here safe area is taken into account, hence the view frame is used after
+        // the view has been laid out.
+        if (@available(iOS 11.0, *)) {
+              frame = UIEdgeInsetsInsetRect(rootController.view.frame, rootController.view.safeAreaInsets);
+        }
+        CGFloat viewWidth = frame.size.width;
+        bannerView.adSize = GADCurrentOrientationAnchoredAdaptiveBannerAdSizeWithWidth(viewWidth);
+        NSLog(@"Adaptive banner created");
+    }
+    else { //smart banner
         if (orientation == 0 || orientation == UIInterfaceOrientationPortrait) { //portrait
             bannerView = [[GADBannerView alloc] initWithAdSize:kGADAdSizeSmartBannerPortrait];
             NSLog(@"Smart portait banner created");
@@ -102,7 +113,6 @@
             NSLog(@"Smart landscape banner created");
         }
     }
-    
     bannerView.adUnitID = ad_unit_id;
 
     bannerView.delegate = self;
