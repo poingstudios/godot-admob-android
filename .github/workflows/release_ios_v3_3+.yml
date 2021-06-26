@@ -26,7 +26,6 @@ jobs:
     - name: Download, copy and unzip the lastest Google Mobile Ads SDK on release binaries and iOS module folder
       run: |
         curl -LO https://dl.google.com/googleadmobadssdk/googlemobileadssdkios.zip
-        zip -d googlemobileadssdkios.zip "*/PromisesObjC.xcframework/macos-arm64_x86_64/PromisesObjC.framework/Headers/Headers"
 
     - name: Upload Google Mobile Ads SDK as Artifact
       uses: actions/upload-artifact@v2
