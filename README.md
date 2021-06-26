@@ -58,13 +58,13 @@
 
 ## Features
   
-|                                Ad Formats                                | Android 🤖 | iOS  |
-| :----------------------------------------------------------------------: | :-------: | :---: |
-|                                  Banner                                  |     ✔️     |   ✔️   |
-|                               Interstitial                               |     ✔️     |   ✔️   |
-|                                 Rewarded                                 |     ✔️     |   ✔️   |
-| [Rewarded Interstitial](https://support.google.com/admob/answer/9884467) |     ❌     |   ❌   |
-|                                  Native                                  |     ✔️     |   ❌   |
+|                                       Ad Formats                                        | Android 🤖 | iOS  |
+| :-------------------------------------------------------------------------------------: | :-------: | :---: |
+|                                         Banner                                          |     ✔️     |   ✔️   |
+|                                      Interstitial                                       |     ✔️     |   ✔️   |
+|                                        Rewarded                                         |     ✔️     |   ✔️   |
+|        [Rewarded Interstitial](https://support.google.com/admob/answer/9884467)         |     ✔️     |   ✔️   |
+| Native is [REMOVED](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/issues/75) |     ❗     |   ❗   |
 
 |   Others   | Android 🤖 | iOS  |
 | :--------: | :-------: | :---: |
