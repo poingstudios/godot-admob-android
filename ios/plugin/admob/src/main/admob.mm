@@ -27,6 +27,7 @@ AdMob::AdMob() {
     bannerObj = NULL;
     interstitialObj = NULL;
     rewardedObj = NULL;
+    rewardedInterstitialObj = NULL;
     objectDB = NULL;
     self_max_ad_content_rating = "";
     is_for_child_directed_treatment = false;
@@ -188,7 +189,8 @@ void AdMob::initialize(bool is_for_child_directed_treatment, const String &max_a
     bannerObj = [[Banner alloc] init :instance_id];
     interstitialObj = [[Interstitial alloc] init :instance_id];
     rewardedObj = [[Rewarded alloc] init :instance_id];
-    
+    rewardedInterstitialObj = [[RewardedInterstitial alloc] init :instance_id];
+
 }
 
 void AdMob::GADInitialize(){
@@ -288,6 +290,25 @@ void AdMob::show_rewarded() {
     [rewardedObj show_rewarded];
 }
 
+
+void AdMob::load_rewarded_interstitial(const String &ad_unit_id) {
+    if (!initialized) {
+        NSLog(@"AdMob Module not initialized");
+        return;
+    }
+    
+    NSString *ad_unit_id_NSString = [NSString stringWithCString:ad_unit_id.utf8().get_data() encoding: NSUTF8StringEncoding];
+    [rewardedInterstitialObj load_rewarded_interstitial: ad_unit_id_NSString];
+    
+}
+
+void AdMob::show_rewarded_interstitial() {
+    if (!initialized) return;
+    
+    [rewardedInterstitialObj show_rewarded_interstitial];
+}
+
+
 void AdMob::_bind_methods() {
     ClassDB::bind_method("initialize", &AdMob::initialize);
     ClassDB::bind_method("reset_consent_state", &AdMob::reset_consent_state);
@@ -302,6 +323,8 @@ void AdMob::_bind_methods() {
     ClassDB::bind_method("show_interstitial", &AdMob::show_interstitial);
     ClassDB::bind_method("load_rewarded", &AdMob::load_rewarded);
     ClassDB::bind_method("show_rewarded", &AdMob::show_rewarded);
+    ClassDB::bind_method("load_rewarded_interstitial", &AdMob::load_rewarded_interstitial);
+    ClassDB::bind_method("show_rewarded_interstitial", &AdMob::show_rewarded_interstitial);
 }
 
 

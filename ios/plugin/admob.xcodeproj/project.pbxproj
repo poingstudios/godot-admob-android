@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5E2763192686B39C003BBE7D /* RewardedInterstitial.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E2763172686B39C003BBE7D /* RewardedInterstitial.mm */; };
 		5E4FE6E5262765580066D8AF /* admob_module.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E4FE6E3262765580066D8AF /* admob_module.mm */; };
 		5E4FE6E9262765660066D8AF /* admob.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E4FE6E7262765660066D8AF /* admob.mm */; };
 		5E4FE6F1262765730066D8AF /* Banner.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5E4FE6EB262765730066D8AF /* Banner.mm */; };
@@ -28,6 +29,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5E2763172686B39C003BBE7D /* RewardedInterstitial.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = RewardedInterstitial.mm; path = admob/src/formats/RewardedInterstitial.mm; sourceTree = "<group>"; };
+		5E2763182686B39C003BBE7D /* RewardedInterstitial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RewardedInterstitial.h; path = admob/src/formats/RewardedInterstitial.h; sourceTree = "<group>"; };
 		5E4FE6C8262764750066D8AF /* GoogleAppMeasurement.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleAppMeasurement.xcframework; path = admob/lib/GoogleAppMeasurement.xcframework; sourceTree = "<group>"; };
 		5E4FE6CA262764750066D8AF /* GoogleMobileAds.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleMobileAds.xcframework; path = admob/lib/GoogleMobileAds.xcframework; sourceTree = "<group>"; };
 		5E4FE6CC262764750066D8AF /* GoogleUtilities.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = GoogleUtilities.xcframework; path = admob/lib/GoogleUtilities.xcframework; sourceTree = "<group>"; };
@@ -79,6 +82,8 @@
 				5E4FE6EE262765730066D8AF /* Interstitial.h */,
 				5E4FE6EC262765730066D8AF /* Interstitial.mm */,
 				5E4FE6EF262765730066D8AF /* Rewarded.h */,
+				5E2763182686B39C003BBE7D /* RewardedInterstitial.h */,
+				5E2763172686B39C003BBE7D /* RewardedInterstitial.mm */,
 				5E4FE6ED262765730066D8AF /* Rewarded.mm */,
 				5E4FE6E8262765660066D8AF /* admob.h */,
 				5E4FE6E7262765660066D8AF /* admob.mm */,
@@ -154,6 +159,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E4FE6E5262765580066D8AF /* admob_module.mm in Sources */,
+				5E2763192686B39C003BBE7D /* RewardedInterstitial.mm in Sources */,
 				5E4FE6F1262765730066D8AF /* Banner.mm in Sources */,
 				5E4FE6E9262765660066D8AF /* admob.mm in Sources */,
 				5E4FE6F2262765730066D8AF /* Interstitial.mm in Sources */,

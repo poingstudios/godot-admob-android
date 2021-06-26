@@ -13,18 +13,22 @@
         #include "../formats/Banner.h"
         #include "../formats/Interstitial.h"
         #include "../formats/Rewarded.h"
+        #include "../formats/RewardedInterstitial.h"
 
         @class Banner;
         @class Interstitial;
         @class Rewarded;
-        
+        @class RewardedInterstitial;
+
         typedef Banner *banner;
         typedef Interstitial *interstitial;
         typedef Rewarded *rewarded;
+        typedef RewardedInterstitial *rewardedInterstitial;
     #else
         typedef void *banner;
         typedef void *interstitial;
         typedef void *rewarded;
+        typedef void *rewardedInterstitial;
     #endif
 
     class AdMob : public Object {
@@ -40,6 +44,7 @@
         banner bannerObj;
         interstitial interstitialObj;
         rewarded rewardedObj;
+        rewardedInterstitial rewardedInterstitialObj;
 
     protected:
         static void _bind_methods();
@@ -64,9 +69,13 @@
 
         void load_interstitial(const String &ad_unit_id);
         void show_interstitial();
+        
         void load_rewarded(const String &ad_unit_id);
         void show_rewarded();
-        
+
+        void load_rewarded_interstitial(const String &ad_unit_id);
+        void show_rewarded_interstitial();
+
         void request_user_consent();
         void reset_consent_state();
 

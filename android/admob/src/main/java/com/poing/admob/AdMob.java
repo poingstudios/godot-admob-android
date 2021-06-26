@@ -29,6 +29,8 @@ import com.google.android.gms.ads.nativead.NativeAd; //
 import com.google.android.gms.ads.nativead.NativeAdView; //view of native ads
 import com.google.android.gms.ads.nativead.MediaView;
 
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
 import com.google.android.ump.ConsentDebugSettings;
 import com.google.android.ump.ConsentForm;
 import com.google.android.ump.ConsentInformation;
@@ -54,6 +56,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
+    final private String TAG = "GodotAdMobAndroid";
+
     private boolean aIsInitialized = false;
     private int aInstanceId;
     private Activity aActivity;
@@ -72,6 +76,7 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
     private AdSize aAdSize; //adSize of banner
     private InterstitialAd aInterstitialAd;
     private RewardedAd aRewardedAd;
+    private RewardedInterstitialAd aRewardedInterstitialAd;
 
     private NativeAd aNativeAd;
     private NativeAdView aNativeAdView;
@@ -91,6 +96,8 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
                 "show_interstitial",
                 "load_rewarded",
                 "show_rewarded",
+                "load_rewarded_interstitial",
+                "show_rewarded_interstitial",
                 "request_user_consent",
                 "reset_consent_state",
                 "get_banner_width",
@@ -501,6 +508,7 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
             }
         });
     }
+
     public void show_rewarded()
     {
         aActivity.runOnUiThread(new Runnable()
@@ -544,6 +552,76 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
         });
     }
     //
+
+    public void load_rewarded_interstitial(final String pAdUnitId)
+    {
+        aActivity.runOnUiThread(new Runnable()
+        {
+            @Override public void run() {
+                if (aIsInitialized) {
+                    RewardedInterstitialAd.load(aActivity, pAdUnitId, getAdRequest(), new RewardedInterstitialAdLoadCallback(){
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            // Handle the error.
+                            aRewardedInterstitialAd = null;
+                            GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_interstitial_ad_failed_to_load", new Object[]{loadAdError.getCode()});
+                        }
+
+                        @Override
+                        public void onAdLoaded(@NonNull RewardedInterstitialAd rewardedInterstitialAd) {
+                            aRewardedInterstitialAd = rewardedInterstitialAd;
+                            GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_interstitial_ad_loaded", new Object[]{});
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+
+    public void show_rewarded_interstitial()
+    {
+        aActivity.runOnUiThread(new Runnable()
+        {
+            @Override public void run()
+            {
+                if (aIsInitialized) {
+                    if (aRewardedInterstitialAd != null) {
+                        aRewardedInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                // Called when ad is shown.
+                                GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_interstitial_ad_opened", new Object[]{});
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                // Called when ad fails to show.
+                                aRewardedInterstitialAd = null;
+                                GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_interstitial_ad_failed_to_show", new Object[]{adError.getCode()});
+                            }
+
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                // Called when ad is dismissed.
+                                aRewardedInterstitialAd = null;
+                                GodotLib.calldeferred(aInstanceId, "_on_AdMob_rewarded_interstitial_ad_closed", new Object[]{});
+                            }
+                        });
+
+                        aRewardedInterstitialAd.show(aActivity, new OnUserEarnedRewardListener() {
+                            @Override
+                            public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                                // Handle the reward.
+                                GodotLib.calldeferred(aInstanceId, "_on_AdMob_user_earned_rewarded", new Object[]{rewardItem.getType(), rewardItem.getAmount()});
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
+
 
     /*
     //NATIVE
