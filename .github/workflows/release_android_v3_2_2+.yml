@@ -54,7 +54,6 @@ jobs:
 
     - name: Compress the binaries
       run: |
-        ls -R
         mv admob/AdMob.gdap admob/build/outputs/aar/
         zip -j android-${{matrix.RELEASE_VERSIONS}}-template-v${{env.CURRENT_GODOT_VERSION}}.zip admob/build/outputs/aar/*
 
