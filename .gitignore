@@ -19,6 +19,7 @@ ios/plugin/admob/lib
 *.idea
 *.gradle
 !build.gradle
+!settings.gradle
 build/
 local.properties
 *.aar
