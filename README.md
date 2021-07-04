@@ -7,7 +7,7 @@
   <br>
 </h1>
 
-<h4 align="center">A Godot's plugin for Android and iOS of <a href="https://admob.google.com" target="_blank">AdMob</a>.</h4>
+<h4 align="center">A Godot's plugin for Android of <a href="https://admob.google.com" target="_blank">AdMob</a>.</h4>
 
 <p align="center">
   <a href="https://github.com/Poing-Studios/godot-admob-android/actions">

@@ -1,4 +1,0 @@
-rootProject.name='admob'
-include ':app'
-include ':godot-lib'
-include ':admob'
