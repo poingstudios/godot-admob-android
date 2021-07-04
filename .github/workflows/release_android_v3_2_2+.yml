@@ -2,14 +2,8 @@ name: Build Android
 
 on:
   push:
-    paths: 
-      - '.github/workflows/release_android_v3_2_2*.yml'
-      - 'android/**'
-    branches: [ master ]
-  pull_request:
-    paths: 
-      - 'android/**'
-    branches: [ master ]
+    tags:
+      - '*'
 
 env:
   TAG_NAME: Android_v3.2.2+
@@ -71,34 +65,10 @@ jobs:
         name: android-${{matrix.RELEASE_VERSIONS}}-template-v${{env.CURRENT_GODOT_VERSION}}.zip
         path: android-${{matrix.RELEASE_VERSIONS}}-template-v${{env.CURRENT_GODOT_VERSION}}.zip
 
-  upload-assets-release:
-    needs: [android-template]
-    name: Upload assets to release
-    runs-on: ubuntu-latest
-    steps:
-    - name: Download artifacts
-      uses: actions/download-artifact@v2
-      
-    - name: Delete previous tag
-      uses: dev-drprasad/delete-tag-and-release@v0.1.2
+    - name: Upload binaries to release
+      uses: svenstaro/upload-release-action@v2
       with:
-        delete_release: true 
-        tag_name: ${{env.TAG_NAME}}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: Create Release and tag
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-      with:
-        tag_name: ${{env.TAG_NAME}}
-        release_name: ${{env.RELEASE_NAME}}
-    
-    - name: Upload artifacts to release
-      uses: AButler/upload-release-assets@v2.0
-      with:
-        files: 'android*template-*.zip/*'
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        release-tag: ${{env.TAG_NAME}}
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: android-${{matrix.RELEASE_VERSIONS}}-template-v${{env.CURRENT_GODOT_VERSION}}.zip
+        tag: ${{ github.ref }}
+        overwrite: true
