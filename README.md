@@ -1,15 +1,18 @@
 
 <h1 align="center">
   <br>
-  <img src="https://i.imgur.com/ATUnOhu.png" alt="GodotAdMob" width=500>
+  <img src="https://i.imgur.com/fLsHNCO.png" alt="GodotAdMob" width=500>
   <br>
-  Godot AdMob
+  Godot AdMob Android
   <br>
 </h1>
 
 <h4 align="center">A Godot's plugin for Android of <a href="https://admob.google.com" target="_blank">AdMob</a>.</h4>
 
 <p align="center">
+  <a href="https://github.com/Poing-Studios/godot-admob-android/releases">
+    <img src="https://img.shields.io/github/v/tag/Poing-Studios/godot-admob-android?label=Version">
+  </a>
   <a href="https://github.com/Poing-Studios/godot-admob-android/actions">
     <img src="https://github.com/Poing-Studios/godot-admob-android/workflows/Build%20Android/badge.svg">
   </a>
@@ -38,7 +41,7 @@
 
   This repository is for a _Godot Engine Plugin_ that allows showing the ads offered by **AdMob** in an **easy** way, without worrying about the building or version, **just download and use**.
 
-  The **purpose** of this plugin is to always keep **up to date with Godot**, supporting **ALMOST ALL** versions from 3.x to 4.x (when it is released), and also make the code **compatible** on **Android and iOS**, so each advertisement will work **identically on both systems**.
+  The **purpose** of this plugin is to always keep **up to date with Godot**, supporting **ALMOST ALL** versions from 3.x to 4.x (when it is released), and also make the code **compatible** on **Android and [iOS](https://github.com/Poing-Studios/godot-admob-ios)**, so each advertisement will work **identically on both systems**.
 
   ![Preview](https://i.imgur.com/u5y2GEx.png)
 
@@ -52,20 +55,21 @@
 
 ## Features
   
-|                                       Ad Formats                                        | Android 🤖 |
-| :-------------------------------------------------------------------------------------: | :-------: |
-|                                         Banner                                          |     ✔️     |
-|                                      Interstitial                                       |     ✔️     |
-|                                        Rewarded                                         |     ✔️     |
-|        [Rewarded Interstitial](https://support.google.com/admob/answer/9884467)         |     ✔️     |
-| Native is [REMOVED](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/issues/75) |     ❗     |
+|                                       Ad Formats                                        | Available 🤖 |
+| :-------------------------------------------------------------------------------------: | :---------: |
+|                                         Banner                                          |      ✔️      |
+|                                      Interstitial                                       |      ✔️      |
+|                                        Rewarded                                         |      ✔️      |
+|        [Rewarded Interstitial](https://support.google.com/admob/answer/9884467)         |      ✔️      |
+| Native is [REMOVED](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/issues/75) |      ❗      |
 
-|   Others   | Android 🤖 |
-| :--------: | :-------: |
-| EU consent |     ✔️     |
-| Targeting  |     ✔️     |
-| Mediation  |     ❌     |
-|   CI/CD    |     ✔️     |
+|   Others   | Available 🤖 |
+| :--------: | :---------: |
+| EU consent |      ✔️      |
+| Targeting  |      ✔️      |
+| Mediation  |      ❌      |
+|   CI/CD    |      ✔️      |
+
 
 ## Installation 
 - First of all you need to install the [AdMob Editor Plugin](https://github.com/Poing-Studios/Godot-AdMob-Editor-Plugin), you can download direcly from [Godot Assets](https://godotengine.org/asset-library/asset/933).
