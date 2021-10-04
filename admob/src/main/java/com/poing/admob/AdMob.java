@@ -148,6 +148,7 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
         Set<SignalInfo> signals = new ArraySet<>();
 
         signals.add(new SignalInfo("initialization_complete", Integer.class, String.class));
+
         signals.add(new SignalInfo("consent_form_dismissed"));
         signals.add(new SignalInfo("consent_status_changed", String.class));
         signals.add(new SignalInfo("consent_form_load_failure", Integer.class, String.class));
@@ -162,25 +163,25 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
         signals.add(new SignalInfo("banner_recorded_impression"));
         signals.add(new SignalInfo("banner_destroyed"));
 
+        signals.add(new SignalInfo("interstitial_failed_to_load", Integer.class));
         signals.add(new SignalInfo("interstitial_loaded"));
-        signals.add(new SignalInfo("interstitial_closed"));
         signals.add(new SignalInfo("interstitial_failed_to_show", Integer.class));
         signals.add(new SignalInfo("interstitial_opened"));
-        signals.add(new SignalInfo("interstitial_failed_to_load", Integer.class));
+        signals.add(new SignalInfo("interstitial_closed"));
 
         signals.add(new SignalInfo("rewarded_ad_failed_to_load", Integer.class));
         signals.add(new SignalInfo("rewarded_ad_loaded"));
-        signals.add(new SignalInfo("rewarded_ad_opened"));
         signals.add(new SignalInfo("rewarded_ad_failed_to_show", Integer.class));
+        signals.add(new SignalInfo("rewarded_ad_opened"));
         signals.add(new SignalInfo("rewarded_ad_closed"));
-
-        signals.add(new SignalInfo("user_earned_rewarded", String.class, Integer.class));
 
         signals.add(new SignalInfo("rewarded_interstitial_ad_failed_to_load", Integer.class));
         signals.add(new SignalInfo("rewarded_interstitial_ad_loaded"));
-        signals.add(new SignalInfo("rewarded_interstitial_ad_opened"));
         signals.add(new SignalInfo("rewarded_interstitial_ad_failed_to_show", Integer.class));
-        signals.add(new SignalInfo("rewarded_interstitial_ad_closed", Integer.class));
+        signals.add(new SignalInfo("rewarded_interstitial_ad_opened"));
+        signals.add(new SignalInfo("rewarded_interstitial_ad_closed"));
+
+        signals.add(new SignalInfo("user_earned_rewarded", String.class, Integer.class));
 
         return signals;
     }
