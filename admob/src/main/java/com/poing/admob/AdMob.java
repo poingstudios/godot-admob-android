@@ -273,7 +273,7 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
         } else {
             params = paramsBuilder.build();
         }
-
+        aConsentInformation.getConsentType()
         aConsentInformation.requestConsentInfoUpdate(aActivity, params,
                 new ConsentInformation.OnConsentInfoUpdateSuccessListener() {
                     @Override
