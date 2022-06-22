@@ -1,7 +1,6 @@
 package com.poing.admob;
 
 import org.godotengine.godot.Godot;
-import org.godotengine.godot.GodotLib;
 import org.godotengine.godot.plugin.SignalInfo;
 
 import com.google.android.gms.ads.AdError;
@@ -19,8 +18,6 @@ import com.google.android.gms.ads.interstitial.InterstitialAd; //interstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 import com.google.android.gms.ads.RequestConfiguration;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.rewarded.RewardedAd; //rewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.android.gms.ads.rewarded.RewardItem;
@@ -51,10 +48,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 
 public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
-    final private String TAG = "GodotAdMobAndroid";
 
     private boolean aIsInitialized = false;
     private Activity aActivity;
@@ -63,8 +60,6 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
     private boolean aIsTestEuropeUserConsent;
 
     private boolean aIsForChildDirectedTreatment;
-    private String aMaxAdContentRating;
-    private boolean aIsReal;
 
     private boolean aIsBannerLoaded = false;
     private boolean aIsInterstitialLoaded = false;
@@ -190,26 +185,21 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
     public void initialize(boolean pIsForChildDirectedTreatment, String pMaxAdContentRating, boolean pIsReal, boolean pIsTestEuropeUserConsent) {
         if (!aIsInitialized){
             aIsForChildDirectedTreatment = pIsForChildDirectedTreatment;
-            aMaxAdContentRating = pMaxAdContentRating;
-            aIsReal = pIsReal;
             aConsentInformation = UserMessagingPlatform.getConsentInformation(aActivity);
             aIsTestEuropeUserConsent = pIsTestEuropeUserConsent;
 
-            setMobileAdsRequestConfiguration(aIsForChildDirectedTreatment, aMaxAdContentRating, aIsReal); //First call MobileAds.setRequestConfiguration https://groups.google.com/g/google-admob-ads-sdk/c/17oVu0sABjs
-            MobileAds.initialize(aActivity, new OnInitializationCompleteListener() {
-                @Override
-                public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
-                    int statusGADMobileAds = initializationStatus.getAdapterStatusMap().get("com.google.android.gms.ads.MobileAds").getInitializationState().ordinal();
+            setMobileAdsRequestConfiguration(aIsForChildDirectedTreatment, pMaxAdContentRating, pIsReal); //First call MobileAds.setRequestConfiguration https://groups.google.com/g/google-admob-ads-sdk/c/17oVu0sABjs
+            MobileAds.initialize(aActivity, initializationStatus -> {
+                int statusGADMobileAds = Objects.requireNonNull(initializationStatus.getAdapterStatusMap().get("com.google.android.gms.ads.MobileAds")).getInitializationState().ordinal();
 
-                    if (statusGADMobileAds == 0) {
-                        aIsInitialized = false;
-                    }
-                    else if (statusGADMobileAds == 1){
-                        aIsInitialized = true;
-                    }
-
-                    emitSignal("initialization_complete",statusGADMobileAds, "GADMobileAds");
+                if (statusGADMobileAds == 0) {
+                    aIsInitialized = false;
                 }
+                else if (statusGADMobileAds == 1){
+                    aIsInitialized = true;
+                }
+
+                emitSignal("initialization_complete",statusGADMobileAds, "GADMobileAds");
             }); //initializes the admob
         }
     }
@@ -336,101 +326,98 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
 
     //BANNER only one is allowed, please do not try to place more than one, as your ads on the app may have the chance to be banned!
     public void load_banner(final String pAdUnitId, final int pPosition, final String pSize, final boolean pShowInstantly) {
-        aActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (aIsInitialized) {
-                    if (aAdView != null) destroy_banner();
-                    aAdView = new AdView(aActivity);
+        aActivity.runOnUiThread(() -> {
+            if (aIsInitialized) {
+                if (aAdView != null) destroy_banner();
+                aAdView = new AdView(aActivity);
 
-                    aAdView.setAdUnitId(pAdUnitId);
-                    switch (pSize) {
-                        case "BANNER":
-                            aAdView.setAdSize(AdSize.BANNER);
-                            break;
-                        case "LARGE_BANNER":
-                            aAdView.setAdSize(AdSize.LARGE_BANNER);
-                            break;
-                        case "MEDIUM_RECTANGLE":
-                            aAdView.setAdSize(AdSize.MEDIUM_RECTANGLE);
-                            break;
-                        case "FULL_BANNER":
-                            aAdView.setAdSize(AdSize.FULL_BANNER);
-                            break;
-                        case "LEADERBOARD":
-                            aAdView.setAdSize(AdSize.LEADERBOARD);
-                            break;
-                        case "ADAPTIVE":
-                            aAdView.setAdSize(getAdSizeAdaptive());
-                            break;
-                        default:
-                            aAdView.setAdSize(AdSize.SMART_BANNER);
-                            break;
-                    }
-                    aAdSize = aAdView.getAdSize(); //store AdSize of banner due a bug (throws error when do aAdView.getAdSize(); called by Godot)
-
-                    aAdView.setAdListener(new AdListener() {
-                        @Override
-                        public void onAdLoaded() {
-                            // Code to be executed when an ad finishes loading.
-                            emitSignal("banner_loaded");
-
-                            if (pShowInstantly){
-                                show_banner();
-                            }
-                            else{
-                                hide_banner();
-                            }
-                            aIsBannerLoaded = true;
-                        }
-
-                        @Override
-                        public void onAdFailedToLoad(@NonNull LoadAdError adError) {
-                            // Code to be executed when an ad request fails.
-                            emitSignal("banner_failed_to_load", adError.getCode());
-                        }
-
-                        @Override
-                        public void onAdOpened() {
-                            // Code to be executed when an ad opens an overlay that
-                            // covers the screen.
-                            emitSignal("banner_opened");
-                        }
-
-                        @Override
-                        public void onAdClicked() {
-                            // Code to be executed when the native ad is closed.
-                            emitSignal("banner_clicked");
-                        }
-
-                        @Override
-                        public void onAdClosed() {
-                            // Code to be executed when the user is about to return
-                            // to the app after tapping on an ad.
-                            emitSignal("banner_closed");
-                        }
-
-                        @Override
-                        public void onAdImpression() {
-                            // Code to be executed when the user is about to return
-                            // to the app after tapping on an ad.
-                            emitSignal("banner_recorded_impression");
-                        }
-                    });
-
-                    aGodotLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-                    if (pPosition == 0)//BOTTOM
-                    {
-                        aGodotLayoutParams.gravity = Gravity.BOTTOM;
-                    } else if (pPosition == 1)//TOP
-                    {
-                        aGodotLayoutParams.gravity = Gravity.TOP;
-                    }
-                    aGodotLayout.addView(aAdView, aGodotLayoutParams);
-
-                    aAdView.loadAd(getAdRequest());
-
+                aAdView.setAdUnitId(pAdUnitId);
+                switch (pSize) {
+                    case "BANNER":
+                        aAdView.setAdSize(AdSize.BANNER);
+                        break;
+                    case "LARGE_BANNER":
+                        aAdView.setAdSize(AdSize.LARGE_BANNER);
+                        break;
+                    case "MEDIUM_RECTANGLE":
+                        aAdView.setAdSize(AdSize.MEDIUM_RECTANGLE);
+                        break;
+                    case "FULL_BANNER":
+                        aAdView.setAdSize(AdSize.FULL_BANNER);
+                        break;
+                    case "LEADERBOARD":
+                        aAdView.setAdSize(AdSize.LEADERBOARD);
+                        break;
+                    case "ADAPTIVE":
+                        aAdView.setAdSize(getAdSizeAdaptive());
+                        break;
+                    default:
+                        aAdView.setAdSize(AdSize.SMART_BANNER);
+                        break;
                 }
+                aAdSize = aAdView.getAdSize(); //store AdSize of banner due a bug (throws error when do aAdView.getAdSize(); called by Godot)
+
+                aAdView.setAdListener(new AdListener() {
+                    @Override
+                    public void onAdLoaded() {
+                        // Code to be executed when an ad finishes loading.
+                        emitSignal("banner_loaded");
+
+                        if (pShowInstantly){
+                            show_banner();
+                        }
+                        else{
+                            hide_banner();
+                        }
+                        aIsBannerLoaded = true;
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError adError) {
+                        // Code to be executed when an ad request fails.
+                        emitSignal("banner_failed_to_load", adError.getCode());
+                    }
+
+                    @Override
+                    public void onAdOpened() {
+                        // Code to be executed when an ad opens an overlay that
+                        // covers the screen.
+                        emitSignal("banner_opened");
+                    }
+
+                    @Override
+                    public void onAdClicked() {
+                        // Code to be executed when the native ad is closed.
+                        emitSignal("banner_clicked");
+                    }
+
+                    @Override
+                    public void onAdClosed() {
+                        // Code to be executed when the user is about to return
+                        // to the app after tapping on an ad.
+                        emitSignal("banner_closed");
+                    }
+
+                    @Override
+                    public void onAdImpression() {
+                        // Code to be executed when the user is about to return
+                        // to the app after tapping on an ad.
+                        emitSignal("banner_recorded_impression");
+                    }
+                });
+
+                aGodotLayoutParams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+                if (pPosition == 0)//BOTTOM
+                {
+                    aGodotLayoutParams.gravity = Gravity.BOTTOM;
+                } else if (pPosition == 1)//TOP
+                {
+                    aGodotLayoutParams.gravity = Gravity.TOP;
+                }
+                aGodotLayout.addView(aAdView, aGodotLayoutParams);
+
+                aAdView.loadAd(getAdRequest());
+
             }
         });
     }
@@ -455,44 +442,35 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
 
     public void destroy_banner()//IF THIS METHOD IS CALLED ON GODOT, THE BANNER WILL ONLY APPEAR AGAIN IF THE BANNER IS LOADED AGAIN
     {
-        aActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (aIsInitialized && aAdView != null) {
-                    aGodotLayout.removeView(aAdView);
-                    aAdView.destroy();
-                    aAdView = null;
+        aActivity.runOnUiThread(() -> {
+            if (aIsInitialized && aAdView != null) {
+                aGodotLayout.removeView(aAdView);
+                aAdView.destroy();
+                aAdView = null;
 
-                    emitSignal("banner_destroyed");
-                    aIsBannerLoaded = false;
-                }
+                emitSignal("banner_destroyed");
+                aIsBannerLoaded = false;
             }
         });
     }
     public void show_banner()
     {
-        aActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (aIsInitialized && aAdView != null) {
-                    if (aAdView.getVisibility() != View.VISIBLE){
-                        aAdView.setVisibility(View.VISIBLE);
-                        aAdView.resume();
-                    }
+        aActivity.runOnUiThread(() -> {
+            if (aIsInitialized && aAdView != null) {
+                if (aAdView.getVisibility() != View.VISIBLE){
+                    aAdView.setVisibility(View.VISIBLE);
+                    aAdView.resume();
                 }
             }
         });
     }
     public void hide_banner()
     {
-        aActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (aIsInitialized && aAdView != null) {
-                    if (aAdView.getVisibility() != View.GONE){
-                        aAdView.setVisibility(View.GONE);
-                        aAdView.pause();
-                    }
+        aActivity.runOnUiThread(() -> {
+            if (aIsInitialized && aAdView != null) {
+                if (aAdView.getVisibility() != View.GONE){
+                    aAdView.setVisibility(View.GONE);
+                    aAdView.pause();
                 }
             }
         });
@@ -531,66 +509,58 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
     //INTERSTITIAL
     public void load_interstitial(final String pAdUnitId)
     {
-        aActivity.runOnUiThread(new Runnable()
-        {
-            @Override public void run()
-            {
-                if (aIsInitialized) {
-                    InterstitialAd.load(aActivity, pAdUnitId, getAdRequest(), new InterstitialAdLoadCallback() {
-                        @Override
-                        public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                            // Code to be executed when an ad finishes loading.
-                            aInterstitialAd = interstitialAd;
+        aActivity.runOnUiThread(() -> {
+            if (aIsInitialized) {
+                InterstitialAd.load(aActivity, pAdUnitId, getAdRequest(), new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // Code to be executed when an ad finishes loading.
+                        aInterstitialAd = interstitialAd;
 
-                            emitSignal("interstitial_loaded");
-                            aIsInterstitialLoaded = true;
+                        emitSignal("interstitial_loaded");
+                        aIsInterstitialLoaded = true;
 
-                            interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                                @Override
-                                public void onAdDismissedFullScreenContent() {
-                                    // Called when fullscreen content is dismissed.
-                                    aInterstitialAd = null;
-                                    emitSignal("interstitial_closed");
-                                    aIsInterstitialLoaded = false;
-                                }
+                        interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                // Called when fullscreen content is dismissed.
+                                aInterstitialAd = null;
+                                emitSignal("interstitial_closed");
+                                aIsInterstitialLoaded = false;
+                            }
 
-                                @Override
-                                public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                                    // Called when fullscreen content failed to show.
-                                    aInterstitialAd = null;
-                                    emitSignal("interstitial_failed_to_show", adError.getCode());
-                                    aIsInterstitialLoaded = false;
-                                }
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                // Called when fullscreen content failed to show.
+                                aInterstitialAd = null;
+                                emitSignal("interstitial_failed_to_show", adError.getCode());
+                                aIsInterstitialLoaded = false;
+                            }
 
-                                @Override
-                                public void onAdShowedFullScreenContent() {
-                                    // Called when fullscreen content is shown.
-                                    emitSignal("interstitial_opened");
-                                }
-                            });
-                        }
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                // Called when fullscreen content is shown.
+                                emitSignal("interstitial_opened");
+                            }
+                        });
+                    }
 
-                        @Override
-                        public void onAdFailedToLoad(@NonNull LoadAdError adError) {
-                            // Code to be executed when an ad request fails.
-                            aInterstitialAd = null;
-                            emitSignal("interstitial_failed_to_load", adError.getCode());
-                        }
-                    });
-                }
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError adError) {
+                        // Code to be executed when an ad request fails.
+                        aInterstitialAd = null;
+                        emitSignal("interstitial_failed_to_load", adError.getCode());
+                    }
+                });
             }
         });
     }
     public void show_interstitial()
     {
-        aActivity.runOnUiThread(new Runnable()
-        {
-            @Override public void run()
-            {
-                if (aIsInitialized) {
-                    if (aInterstitialAd != null) {
-                        aInterstitialAd.show(aActivity);
-                    }
+        aActivity.runOnUiThread(() -> {
+            if (aIsInitialized) {
+                if (aInterstitialAd != null) {
+                    aInterstitialAd.show(aActivity);
                 }
             }
         });
@@ -599,72 +569,65 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
     //REWARDED
     public void load_rewarded(final String pAdUnitId)
     {
-        aActivity.runOnUiThread(new Runnable()
-        {
-            @Override public void run() {
-                if (aIsInitialized) {
-                    RewardedAd.load(aActivity, pAdUnitId, getAdRequest(), new RewardedAdLoadCallback(){
-                        @Override
-                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                            // Handle the error.
-                            aRewardedAd = null;
-                            emitSignal("rewarded_ad_failed_to_load", loadAdError.getCode());
+        aActivity.runOnUiThread(() -> {
+            if (aIsInitialized) {
+                RewardedAd.load(aActivity, pAdUnitId, getAdRequest(), new RewardedAdLoadCallback(){
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error.
+                        aRewardedAd = null;
+                        emitSignal("rewarded_ad_failed_to_load", loadAdError.getCode());
 
-                        }
+                    }
 
-                        @Override
-                        public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
-                            aRewardedAd = rewardedAd;
-                            emitSignal("rewarded_ad_loaded");
+                    @Override
+                    public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+                        aRewardedAd = rewardedAd;
+                        emitSignal("rewarded_ad_loaded");
 
-                            aIsRewardedLoaded = true;
-                        }
-                    });
-                }
+                        aIsRewardedLoaded = true;
+                    }
+                });
             }
         });
     }
 
     public void show_rewarded()
     {
-        aActivity.runOnUiThread(new Runnable()
-        {
-            @Override public void run()
-            {
-                if (aIsInitialized) {
-                    if (aRewardedAd != null) {
-                        aRewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                            @Override
-                            public void onAdShowedFullScreenContent() {
-                                // Called when ad is shown.
+        aActivity.runOnUiThread(() -> {
+            if (aIsInitialized) {
+                if (aRewardedAd != null) {
+                    aRewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                        @Override
+                        public void onAdShowedFullScreenContent() {
+                            // Called when ad is shown.
 
-                                emitSignal("rewarded_ad_opened");
-                            }
+                            emitSignal("rewarded_ad_opened");
+                        }
 
-                            @Override
-                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                                // Called when ad fails to show.
-                                aRewardedAd = null;
-                                emitSignal("rewarded_ad_failed_to_show", adError.getCode());
-                            }
+                        @Override
+                        public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                            // Called when ad fails to show.
+                            aRewardedAd = null;
+                            emitSignal("rewarded_ad_failed_to_show", adError.getCode());
+                        }
 
-                            @Override
-                            public void onAdDismissedFullScreenContent() {
-                                // Called when ad is dismissed.
-                                aRewardedAd = null;
-                                emitSignal("rewarded_ad_closed");
-                                aIsRewardedLoaded = false;
-                            }
-                        });
+                        @Override
+                        public void onAdDismissedFullScreenContent() {
+                            // Called when ad is dismissed.
+                            aRewardedAd = null;
+                            emitSignal("rewarded_ad_closed");
+                            aIsRewardedLoaded = false;
+                        }
+                    });
 
-                        aRewardedAd.show(aActivity, new OnUserEarnedRewardListener() {
-                            @Override
-                            public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
-                                // Handle the reward.
-                                emitSignal("user_earned_rewarded", rewardItem.getType(), rewardItem.getAmount());
-                            }
-                        });
-                    }
+                    aRewardedAd.show(aActivity, new OnUserEarnedRewardListener() {
+                        @Override
+                        public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                            // Handle the reward.
+                            emitSignal("user_earned_rewarded", rewardItem.getType(), rewardItem.getAmount());
+                        }
+                    });
                 }
             }
         });
@@ -673,26 +636,23 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
 
     public void load_rewarded_interstitial(final String pAdUnitId)
     {
-        aActivity.runOnUiThread(new Runnable()
-        {
-            @Override public void run() {
-                if (aIsInitialized) {
-                    RewardedInterstitialAd.load(aActivity, pAdUnitId, getAdRequest(), new RewardedInterstitialAdLoadCallback(){
-                        @Override
-                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                            // Handle the error.
-                            aRewardedInterstitialAd = null;
-                            emitSignal("rewarded_interstitial_ad_failed_to_load", loadAdError.getCode());
-                        }
+        aActivity.runOnUiThread(() -> {
+            if (aIsInitialized) {
+                RewardedInterstitialAd.load(aActivity, pAdUnitId, getAdRequest(), new RewardedInterstitialAdLoadCallback(){
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error.
+                        aRewardedInterstitialAd = null;
+                        emitSignal("rewarded_interstitial_ad_failed_to_load", loadAdError.getCode());
+                    }
 
-                        @Override
-                        public void onAdLoaded(@NonNull RewardedInterstitialAd rewardedInterstitialAd) {
-                            aRewardedInterstitialAd = rewardedInterstitialAd;
-                            emitSignal("rewarded_interstitial_ad_loaded");
-                            aIsRewardedInterstitialLoaded = true;
-                        }
-                    });
-                }
+                    @Override
+                    public void onAdLoaded(@NonNull RewardedInterstitialAd rewardedInterstitialAd) {
+                        aRewardedInterstitialAd = rewardedInterstitialAd;
+                        emitSignal("rewarded_interstitial_ad_loaded");
+                        aIsRewardedInterstitialLoaded = true;
+                    }
+                });
             }
         });
     }
@@ -700,44 +660,40 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
 
     public void show_rewarded_interstitial()
     {
-        aActivity.runOnUiThread(new Runnable()
-        {
-            @Override public void run()
-            {
-                if (aIsInitialized) {
-                    if (aRewardedInterstitialAd != null) {
-                        aRewardedInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                            @Override
-                            public void onAdShowedFullScreenContent() {
-                                // Called when ad is shown.
-                                emitSignal("rewarded_interstitial_ad_opened");
-                            }
+        aActivity.runOnUiThread(() -> {
+            if (aIsInitialized) {
+                if (aRewardedInterstitialAd != null) {
+                    aRewardedInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                        @Override
+                        public void onAdShowedFullScreenContent() {
+                            // Called when ad is shown.
+                            emitSignal("rewarded_interstitial_ad_opened");
+                        }
 
-                            @Override
-                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                                // Called when ad fails to show.
-                                aRewardedInterstitialAd = null;
-                                emitSignal("rewarded_interstitial_ad_failed_to_show", adError.getCode());
-                                aIsRewardedInterstitialLoaded = false;
-                            }
+                        @Override
+                        public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                            // Called when ad fails to show.
+                            aRewardedInterstitialAd = null;
+                            emitSignal("rewarded_interstitial_ad_failed_to_show", adError.getCode());
+                            aIsRewardedInterstitialLoaded = false;
+                        }
 
-                            @Override
-                            public void onAdDismissedFullScreenContent() {
-                                // Called when ad is dismissed.
-                                aRewardedInterstitialAd = null;
-                                emitSignal("rewarded_interstitial_ad_closed");
-                                aIsRewardedInterstitialLoaded = false;
-                            }
-                        });
+                        @Override
+                        public void onAdDismissedFullScreenContent() {
+                            // Called when ad is dismissed.
+                            aRewardedInterstitialAd = null;
+                            emitSignal("rewarded_interstitial_ad_closed");
+                            aIsRewardedInterstitialLoaded = false;
+                        }
+                    });
 
-                        aRewardedInterstitialAd.show(aActivity, new OnUserEarnedRewardListener() {
-                            @Override
-                            public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
-                                // Handle the reward.
-                                emitSignal("user_earned_rewarded", rewardItem.getType(), rewardItem.getAmount());
-                            }
-                        });
-                    }
+                    aRewardedInterstitialAd.show(aActivity, new OnUserEarnedRewardListener() {
+                        @Override
+                        public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                            // Handle the reward.
+                            emitSignal("user_earned_rewarded", rewardItem.getType(), rewardItem.getAmount());
+                        }
+                    });
                 }
             }
         });
