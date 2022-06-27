@@ -13,33 +13,32 @@ import com.google.android.gms.ads.AdView; //used to banner ads
 import com.google.android.gms.ads.AdSize; //used to set/get size banner ads
 import com.google.android.gms.ads.AdListener; //used to get events of ads (banner, interstitial)
 
-import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd; //interstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.rewarded.RewardedAd; //rewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
-import com.google.android.gms.ads.rewarded.RewardItem;
 
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
 import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
 import com.google.android.ump.ConsentDebugSettings;
-import com.google.android.ump.ConsentForm;
 import com.google.android.ump.ConsentInformation;
 import com.google.android.ump.ConsentRequestParameters;
-import com.google.android.ump.FormError;
 import com.google.android.ump.UserMessagingPlatform;
 
 import android.app.Activity;
+import android.graphics.Rect;
+import android.os.Build;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.DisplayCutout;
 import android.view.Gravity;
+import android.view.WindowInsets;
 import android.widget.FrameLayout; //get Godot Layout
 import android.view.View;
 import android.provider.Settings;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.collection.ArraySet;
 
 import java.security.MessageDigest;
@@ -207,43 +206,32 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
     private void loadConsentForm() {
         UserMessagingPlatform.loadConsentForm(
                 aActivity,
-                new UserMessagingPlatform.OnConsentFormLoadSuccessListener() {
-                    @Override
-                    public void onConsentFormLoadSuccess(ConsentForm consentForm) {
-                        String consentStatusMsg = "";
-                        if (aConsentInformation.getConsentStatus() == ConsentInformation.ConsentStatus.REQUIRED) {
-                            consentForm.show(
-                                    aActivity,
-                                    new ConsentForm.OnConsentFormDismissedListener() {
-                                        @Override
-                                        public void onConsentFormDismissed(@Nullable FormError formError) {
-                                            loadConsentForm();
-                                            emitSignal("consent_form_dismissed");
-                                        }
-                                    }
-                            );
-                            consentStatusMsg = "User consent required but not yet obtained.";
-                        }
-                        switch (aConsentInformation.getConsentStatus()) {
-                            case ConsentInformation.ConsentStatus.UNKNOWN:
-                                consentStatusMsg = "Unknown consent status.";
-                                break;
-                            case ConsentInformation.ConsentStatus.NOT_REQUIRED:
-                                consentStatusMsg = "User consent not required. For example, the user is not in the EEA or the UK.";
-                                break;
-                            case ConsentInformation.ConsentStatus.OBTAINED:
-                                consentStatusMsg = "User consent obtained. Personalization not defined.";
-                                break;
-                        }
-                        emitSignal("consent_status_changed", consentStatusMsg);
+                consentForm -> {
+                    String consentStatusMsg = "";
+                    if (aConsentInformation.getConsentStatus() == ConsentInformation.ConsentStatus.REQUIRED) {
+                        consentForm.show(
+                                aActivity,
+                                formError -> {
+                                    loadConsentForm();
+                                    emitSignal("consent_form_dismissed");
+                                }
+                        );
+                        consentStatusMsg = "User consent required but not yet obtained.";
                     }
+                    switch (aConsentInformation.getConsentStatus()) {
+                        case ConsentInformation.ConsentStatus.UNKNOWN:
+                            consentStatusMsg = "Unknown consent status.";
+                            break;
+                        case ConsentInformation.ConsentStatus.NOT_REQUIRED:
+                            consentStatusMsg = "User consent not required. For example, the user is not in the EEA or the UK.";
+                            break;
+                        case ConsentInformation.ConsentStatus.OBTAINED:
+                            consentStatusMsg = "User consent obtained. Personalization not defined.";
+                            break;
+                    }
+                    emitSignal("consent_status_changed", consentStatusMsg);
                 },
-                new UserMessagingPlatform.OnConsentFormLoadFailureListener() {
-                    @Override
-                    public void onConsentFormLoadFailure(FormError formError) {
-                        emitSignal("consent_form_load_failure", formError.getErrorCode(), formError.getMessage());
-                    }
-                }
+                formError -> emitSignal("consent_form_load_failure", formError.getErrorCode(), formError.getMessage())
         );
     }
 
@@ -265,23 +253,15 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
         }
 
         aConsentInformation.requestConsentInfoUpdate(aActivity, params,
-                new ConsentInformation.OnConsentInfoUpdateSuccessListener() {
-                    @Override
-                    public void onConsentInfoUpdateSuccess() {
-                        if (aConsentInformation.isConsentFormAvailable()) {
-                            emitSignal("consent_info_update_success", "Consent Form Available");
-                            loadConsentForm();
-                        } else {
-                            emitSignal("consent_info_update_success", "Consent Form not Available");
-                        }
+                () -> {
+                    if (aConsentInformation.isConsentFormAvailable()) {
+                        emitSignal("consent_info_update_success", "Consent Form Available");
+                        loadConsentForm();
+                    } else {
+                        emitSignal("consent_info_update_success", "Consent Form not Available");
                     }
                 },
-                new ConsentInformation.OnConsentInfoUpdateFailureListener() {
-                    @Override
-                    public void onConsentInfoUpdateFailure(FormError formError) {
-                        emitSignal("consent_info_update_failure", formError.getErrorCode(), formError.getMessage());
-                    }
-                }
+                formError -> emitSignal("consent_info_update_failure", formError.getErrorCode(), formError.getMessage())
         );
     }
 
@@ -324,8 +304,27 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
         return adRequestBuilder.build();
     }
 
+    private Rect getSafeArea() {
+        final Rect safeInsetRect = new Rect();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            return safeInsetRect;
+        }
+
+        final WindowInsets windowInsets = aActivity.getWindow().getDecorView().getRootWindowInsets();
+        if (windowInsets == null) {
+            return safeInsetRect;
+        }
+
+        final DisplayCutout displayCutout = windowInsets.getDisplayCutout();
+        if (displayCutout != null) {
+            safeInsetRect.set(displayCutout.getSafeInsetLeft(), displayCutout.getSafeInsetTop(), displayCutout.getSafeInsetRight(), displayCutout.getSafeInsetBottom());
+        }
+
+        return safeInsetRect;
+    }
+
     //BANNER only one is allowed, please do not try to place more than one, as your ads on the app may have the chance to be banned!
-    public void load_banner(final String pAdUnitId, final int pPosition, final String pSize, final boolean pShowInstantly) {
+    public void load_banner(final String pAdUnitId, final int pPosition, final String pSize, final boolean pShowInstantly, final boolean pRespectSafeArea) {
         aActivity.runOnUiThread(() -> {
             if (aIsInitialized) {
                 if (aAdView != null) destroy_banner();
@@ -356,7 +355,6 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
                         break;
                 }
                 aAdSize = aAdView.getAdSize(); //store AdSize of banner due a bug (throws error when do aAdView.getAdSize(); called by Godot)
-
                 aAdView.setAdListener(new AdListener() {
                     @Override
                     public void onAdLoaded() {
@@ -410,9 +408,13 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
                 if (pPosition == 0)//BOTTOM
                 {
                     aGodotLayoutParams.gravity = Gravity.BOTTOM;
+                    if (pRespectSafeArea)
+                        aAdView.setY(-getSafeArea().bottom); //Need to validate if this value will be positive or negative
                 } else if (pPosition == 1)//TOP
                 {
                     aGodotLayoutParams.gravity = Gravity.TOP;
+                    if (pRespectSafeArea)
+                        aAdView.setY(getSafeArea().top);
                 }
                 aGodotLayout.addView(aAdView, aGodotLayoutParams);
 
@@ -621,12 +623,9 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
                         }
                     });
 
-                    aRewardedAd.show(aActivity, new OnUserEarnedRewardListener() {
-                        @Override
-                        public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
-                            // Handle the reward.
-                            emitSignal("user_earned_rewarded", rewardItem.getType(), rewardItem.getAmount());
-                        }
+                    aRewardedAd.show(aActivity, rewardItem -> {
+                        // Handle the reward.
+                        emitSignal("user_earned_rewarded", rewardItem.getType(), rewardItem.getAmount());
                     });
                 }
             }
@@ -687,12 +686,9 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
                         }
                     });
 
-                    aRewardedInterstitialAd.show(aActivity, new OnUserEarnedRewardListener() {
-                        @Override
-                        public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
-                            // Handle the reward.
-                            emitSignal("user_earned_rewarded", rewardItem.getType(), rewardItem.getAmount());
-                        }
+                    aRewardedInterstitialAd.show(aActivity, rewardItem -> {
+                        // Handle the reward.
+                        emitSignal("user_earned_rewarded", rewardItem.getType(), rewardItem.getAmount());
                     });
                 }
             }
