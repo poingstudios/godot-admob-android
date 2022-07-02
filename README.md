@@ -75,7 +75,7 @@
 - First of all you need to install the [AdMob Editor Plugin](https://github.com/Poing-Studios/Godot-AdMob-Editor-Plugin), you can download direcly from [Godot Assets](https://godotengine.org/asset-library/asset/933).
 
 ## Android (v3.2.2+):
-- Tutorial: https://youtu.be/MW4hUR0d9lc
+- Tutorial: https://youtu.be/ZnlH3INcAGs
 - Download the ```android-?-template-v{{ your_godot_version }}.zip``` in the [releases tab](https://github.com/Poing-Studios/godot-admob-android/releases), we recommend you to use always the latest.
 - Enable Android Build Template. [Check the tutorial here](https://docs.godotengine.org/en/stable/getting_started/workflow/export/android_custom_build.html)
 - Extract the content in ```android-?-template-v{{ your_godot_version }}.zip``` into ```res://android/plugins``` directory on your Godot project
