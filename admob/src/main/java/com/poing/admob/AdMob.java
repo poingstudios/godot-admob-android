@@ -161,19 +161,25 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
         signals.add(new SignalInfo("interstitial_loaded"));
         signals.add(new SignalInfo("interstitial_failed_to_show", Integer.class));
         signals.add(new SignalInfo("interstitial_opened"));
+        signals.add(new SignalInfo("interstitial_clicked"));
         signals.add(new SignalInfo("interstitial_closed"));
+        signals.add(new SignalInfo("interstitial_recorded_impression"));
 
         signals.add(new SignalInfo("rewarded_ad_failed_to_load", Integer.class));
         signals.add(new SignalInfo("rewarded_ad_loaded"));
         signals.add(new SignalInfo("rewarded_ad_failed_to_show", Integer.class));
         signals.add(new SignalInfo("rewarded_ad_opened"));
+        signals.add(new SignalInfo("rewarded_ad_clicked"));
         signals.add(new SignalInfo("rewarded_ad_closed"));
+        signals.add(new SignalInfo("rewarded_ad_recorded_impression"));
 
         signals.add(new SignalInfo("rewarded_interstitial_ad_failed_to_load", Integer.class));
         signals.add(new SignalInfo("rewarded_interstitial_ad_loaded"));
         signals.add(new SignalInfo("rewarded_interstitial_ad_failed_to_show", Integer.class));
         signals.add(new SignalInfo("rewarded_interstitial_ad_opened"));
+        signals.add(new SignalInfo("rewarded_interstitial_ad_clicked"));
         signals.add(new SignalInfo("rewarded_interstitial_ad_closed"));
+        signals.add(new SignalInfo("rewarded_interstitial_ad_recorded_impression"));
 
         signals.add(new SignalInfo("user_earned_rewarded", String.class, Integer.class));
 
@@ -521,30 +527,6 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
 
                         emitSignal("interstitial_loaded");
                         aIsInterstitialLoaded = true;
-
-                        interstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                            @Override
-                            public void onAdDismissedFullScreenContent() {
-                                // Called when fullscreen content is dismissed.
-                                aInterstitialAd = null;
-                                emitSignal("interstitial_closed");
-                                aIsInterstitialLoaded = false;
-                            }
-
-                            @Override
-                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                                // Called when fullscreen content failed to show.
-                                aInterstitialAd = null;
-                                emitSignal("interstitial_failed_to_show", adError.getCode());
-                                aIsInterstitialLoaded = false;
-                            }
-
-                            @Override
-                            public void onAdShowedFullScreenContent() {
-                                // Called when fullscreen content is shown.
-                                emitSignal("interstitial_opened");
-                            }
-                        });
                     }
 
                     @Override
@@ -562,6 +544,42 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
         aActivity.runOnUiThread(() -> {
             if (aIsInitialized) {
                 if (aInterstitialAd != null) {
+                    aInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                        @Override
+                        public void onAdClicked() {
+                            // Called when a click is recorded for an ad.
+                            emitSignal("interstitial_clicked");
+                        }
+
+                        @Override
+                        public void onAdDismissedFullScreenContent() {
+                            // Called when fullscreen content is dismissed.
+                            aInterstitialAd = null;
+                            emitSignal("interstitial_closed");
+                            aIsInterstitialLoaded = false;
+                        }
+
+                        @Override
+                        public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                            // Called when fullscreen content failed to show.
+                            aInterstitialAd = null;
+                            emitSignal("interstitial_failed_to_show", adError.getCode());
+                            aIsInterstitialLoaded = false;
+                        }
+
+                        @Override
+                        public void onAdImpression() {
+                            // Called when an impression is recorded for an ad.
+                            emitSignal("interstitial_recorded_impression");
+                        }
+
+                        @Override
+                        public void onAdShowedFullScreenContent() {
+                            // Called when fullscreen content is shown.
+                            emitSignal("interstitial_opened");
+                        }
+                    });
+
                     aInterstitialAd.show(aActivity);
                 }
             }
@@ -601,10 +619,17 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
                 if (aRewardedAd != null) {
                     aRewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                         @Override
-                        public void onAdShowedFullScreenContent() {
-                            // Called when ad is shown.
+                        public void onAdClicked() {
+                            // Called when a click is recorded for an ad.
+                            emitSignal("rewarded_ad_clicked");
+                        }
 
-                            emitSignal("rewarded_ad_opened");
+                        @Override
+                        public void onAdDismissedFullScreenContent() {
+                            // Called when ad is dismissed.
+                            aRewardedAd = null;
+                            emitSignal("rewarded_ad_closed");
+                            aIsRewardedLoaded = false;
                         }
 
                         @Override
@@ -615,11 +640,15 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
                         }
 
                         @Override
-                        public void onAdDismissedFullScreenContent() {
-                            // Called when ad is dismissed.
-                            aRewardedAd = null;
-                            emitSignal("rewarded_ad_closed");
-                            aIsRewardedLoaded = false;
+                        public void onAdImpression() {
+                            // Called when an impression is recorded for an ad.
+                            emitSignal("rewarded_ad_recorded_impression");
+                        }
+
+                        @Override
+                        public void onAdShowedFullScreenContent() {
+                            // Called when ad is shown.
+                            emitSignal("rewarded_ad_opened");
                         }
                     });
 
@@ -664,9 +693,17 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
                 if (aRewardedInterstitialAd != null) {
                     aRewardedInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                         @Override
-                        public void onAdShowedFullScreenContent() {
-                            // Called when ad is shown.
-                            emitSignal("rewarded_interstitial_ad_opened");
+                        public void onAdClicked() {
+                            // Called when a click is recorded for an ad.
+                            emitSignal("rewarded_interstitial_ad_clicked");
+                        }
+
+                        @Override
+                        public void onAdDismissedFullScreenContent() {
+                            // Called when ad is dismissed.
+                            aRewardedInterstitialAd = null;
+                            emitSignal("rewarded_interstitial_ad_closed");
+                            aIsRewardedInterstitialLoaded = false;
                         }
 
                         @Override
@@ -678,11 +715,15 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
                         }
 
                         @Override
-                        public void onAdDismissedFullScreenContent() {
-                            // Called when ad is dismissed.
-                            aRewardedInterstitialAd = null;
-                            emitSignal("rewarded_interstitial_ad_closed");
-                            aIsRewardedInterstitialLoaded = false;
+                        public void onAdImpression() {
+                            // Called when an impression is recorded for an ad.
+                            emitSignal("rewarded_interstitial_ad_recorded_impression");
+                        }
+
+                        @Override
+                        public void onAdShowedFullScreenContent() {
+                            // Called when ad is shown.
+                            emitSignal("rewarded_interstitial_ad_opened");
                         }
                     });
 
