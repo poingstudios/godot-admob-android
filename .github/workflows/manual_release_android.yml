@@ -7,7 +7,7 @@ on:
         description: 'Tag to publish the build (e.g., v2.0.1)'
         required: true
       godot_version:
-        description: 'Godot version to be builded (e.g., 3.4.3)'
+        description: 'Godot version to be builded (e.g., 3.5)'
         required: true
 
 jobs:
