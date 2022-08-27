@@ -14,7 +14,6 @@ jobs:
   android-template:
     name: Compiling Gradle (Android)
     runs-on: "ubuntu-latest"
-    if: false
     strategy:
       matrix:
         RELEASE_VERSIONS: ["standard", "mono"]
