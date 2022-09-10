@@ -25,4 +25,4 @@ jobs:
       uses: Poing-Studios/godot-android-action@master
       with:
         project_path: admob
-        gdap_path: admob/AdMob.gdap
+        gdap_file_path: admob/AdMob.gdap
