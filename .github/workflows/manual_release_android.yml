@@ -31,3 +31,10 @@ jobs:
 
     - name: Test Artifact output
       run: echo artifact output ${{ steps.build-android.outputs.artifact_name }}
+
+    - uses: actions/download-artifact@v3
+      with:
+        name: ${{ steps.build-android.outputs.artifact_name }}
+
+    - name: Display structure of downloaded files
+      run: ls -R
