@@ -22,8 +22,12 @@ jobs:
     - uses: actions/checkout@v2
     
     - name: Build Android Action
+      id: build-android
       uses: Poing-Studios/godot-android-action@master
       with:
         project_path: admob
         release_version: ${{matrix.RELEASE_VERSIONS}}
         gdap_file_path: admob/AdMob.gdap
+
+    - name: Test Artifact output
+      run: echo artifact output: ${{ steps.build-android.outputs.artifact_name }}
