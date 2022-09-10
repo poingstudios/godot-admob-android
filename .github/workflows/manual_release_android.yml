@@ -30,4 +30,4 @@ jobs:
         gdap_file_path: admob/AdMob.gdap
 
     - name: Test Artifact output
-      run: echo artifact output: ${{ steps.build-android.outputs.artifact_name }}
+      run: echo artifact output ${{ steps.build-android.outputs.artifact_name }}
