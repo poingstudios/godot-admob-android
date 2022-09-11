@@ -35,6 +35,7 @@ jobs:
     - uses: actions/download-artifact@v3
       with:
         name: ${{ steps.build-android.outputs.artifact_name }}
+        path: artifacts_output/
 
     - name: Display structure of downloaded files
       run: ls -R
