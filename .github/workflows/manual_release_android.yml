@@ -39,3 +39,4 @@ jobs:
 
     - name: Display structure of downloaded files
       run: ls -R
+      working-directory: artifacts_output
