@@ -29,13 +29,13 @@ jobs:
         release_version: ${{matrix.RELEASE_VERSIONS}}
         gdap_file_path: admob/AdMob.gdap
 
-    - name: Test Artifact output
-      run: echo artifact output ${{ steps.build-android.outputs.artifact_name }}
+    - name: Create Artifact output folder
+      run: mkdir -p artifacts_output
 
     - uses: actions/download-artifact@v3
       with:
         name: ${{ steps.build-android.outputs.artifact_name }}
-        path: artifacts_output/bin
+        path: artifacts_output
 
     - name: Display structure of downloaded files
       run: ls -R
