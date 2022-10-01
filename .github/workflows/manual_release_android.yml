@@ -37,8 +37,8 @@ jobs:
 
     - name: Compress the artifact output
       run: |
-        compressed_file_output=android-${{matrix.RELEASE_VERSIONS}}-template-v${{env.CURRENT_GODOT_VERSION}}.zip
-        zip -r $compressed_file_output .
+        echo "compressed_file_output=${{matrix.RELEASE_VERSIONS}}-template-v${{env.CURRENT_GODOT_VERSION}}.zip" >> $GITHUB_ENV
+        zip -r ${{ env.compressed_file_output }} .
         ls -R
       working-directory: artifacts_output
       
@@ -46,6 +46,6 @@ jobs:
       uses: svenstaro/upload-release-action@2.3.0
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: artifacts_output/$compressed_file_output
+        file: artifacts_output/${{ env.compressed_file_output }}
         tag: ${{ github.event.inputs.tag }}
         overwrite: true
