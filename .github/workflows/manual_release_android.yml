@@ -25,8 +25,9 @@ jobs:
       id: build-android
       uses: Poing-Studios/godot-android-action@master
       with:
-        project_path: admob
+        godot_version: ${{ github.event.inputs.godot_version }}
         release_version: ${{matrix.RELEASE_VERSIONS}}
+        project_path: admob
         gdap_file_path: admob/AdMob.gdap
 
     - uses: actions/download-artifact@v3
