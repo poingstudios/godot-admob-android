@@ -17,7 +17,7 @@
     <img src="https://github.com/Poing-Studios/godot-admob-android/workflows/Build%20Android/badge.svg">
   </a>
   <a href="https://github.com/Poing-Studios/godot-admob-android/blob/master/admob/build.gradle#L30">
-    <img src="https://img.shields.io/badge/GAD%20SDK%20Android-v21.1.0-informational">
+    <img src="https://img.shields.io/badge/GAD SDK Android-v20.1.0-informational">
   </a>
   <a href="https://github.com/Poing-Studios/godot-admob-android/releases">
     <img src="https://img.shields.io/github/downloads/Poing-Studios/godot-admob-android/total?style=social">
