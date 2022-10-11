@@ -7,8 +7,8 @@ env:
 on:
   push:
     paths: 
-      - ${{ env.GDAP_FILE }}
-      - ${{ env.MD_FILE }}
+      - 'admob/AdMob.gdap'
+      - 'README.md'
       - '.github/workflows/update_readme_sdk_version.yml'
 
 jobs:
