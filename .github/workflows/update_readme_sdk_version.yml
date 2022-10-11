@@ -11,6 +11,10 @@ on:
       - 'README.md'
       - '.github/workflows/update_readme_sdk_version.yml'
 
+permissions:
+  contents: write
+  actions: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
