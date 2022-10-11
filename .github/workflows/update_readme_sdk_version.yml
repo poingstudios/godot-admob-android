@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GH_SECRET }}
+          token: ${{ secrets.ADMOB_ANDROID_WORKFLOW }}
 
       - name: Run a one-line script
         run: |
