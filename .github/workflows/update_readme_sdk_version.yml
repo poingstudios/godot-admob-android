@@ -1,10 +1,14 @@
 name: Change content in file into another
 
+env:
+  GDAP_FILE: 'admob/AdMob.gdap'
+  MD_FILE: 'README.md'
+
 on:
   push:
     paths: 
-      - 'admob/AdMob.gdap'
-      - 'README.md'
+      - ${{ env.GDAP_FILE }}
+      - ${{ env.MD_FILE }}
       - '.github/workflows/update_readme_sdk_version.yml'
 
 jobs:
@@ -16,16 +20,13 @@ jobs:
 
       - name: Run a one-line script
         run: |
-          GDAP_FILE=change_content/correct_content.gdap
-          MD_FILE=change_content/tag_html.md
-          
           REGEX_FIND_VERSION_GDAP_FILE='(?<=play-services-ads:)(\d+[.]\d+[.]\d+)'
           REGEX_FIND_VERSION_TO_CHANGE_CONTENT_MD_FILE='(?<=GAD SDK Android-v)(\d+[.]\d+[.]\d+)'
           
-          GAD_SDK_VERSION=$(cat $GDAP_FILE | perl -ne 'print $1 if /'$REGEX_FIND_VERSION_GDAP_FILE'/s')
-          perl -pi -e "s/$REGEX_FIND_VERSION_TO_CHANGE_CONTENT_MD_FILE/$GAD_SDK_VERSION/g" $MD_FILE
+          GAD_SDK_VERSION=$(cat ${{ env.GDAP_FILE }} | perl -ne 'print $1 if /'$REGEX_FIND_VERSION_GDAP_FILE'/s')
+          perl -pi -e "s/$REGEX_FIND_VERSION_TO_CHANGE_CONTENT_MD_FILE/$GAD_SDK_VERSION/g" ${{ env.MD_FILE }}
 
-          cat $MD_FILE
+          cat ${{ env.MD_FILE }}
       
       - name: Git Auto Commit
         uses: stefanzweifel/git-auto-commit-action@v4.15.0
