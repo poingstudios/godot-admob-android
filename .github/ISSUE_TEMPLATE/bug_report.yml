@@ -16,7 +16,7 @@ body:
     required: true
 - type: input
   attributes:
-    label: Phone information, if applicable
+    label: Phone information
     placeholder: 'Xiaomi 13 with Android 13'
   validations:
     required: true
