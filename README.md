@@ -36,26 +36,20 @@ The plugin supports most versions of Godot from 3.x to 4.x and is **compatible**
 
 
 ## 💡Features
-- **Supports** _Almost_ all [AdFormats](https://support.google.com/admob/answer/6128738?hl=en)💵: 
-  - Banner 
-  - Interstitial
-  - Rewarded
-  - Rewarded Interstitial
-  - ~~App Open~~ ([TO-DO](https://github.com/Poing-Studios/godot-admob-android/issues/141)📝)
-  - ~~Native Advanced~~ ([REMOVED](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/issues/75)⚠️)
+- **Supports** _Almost_ all [AdFormats](https://support.google.com/admob/answer/6128738?hl=en)💵: `Banner, Interstitial, Rewarded, Rewarded Interstitial`
 - EU Consent for GDPR **compliance** 🏦 _[EU Consent/UMP](https://support.google.com/admob/answer/7666519?hl=en)_
 - Targeting **specific** ⭕ audience segments 
 - Has `CI/CD` to **test** ✅, **build** 🛠️ and **release versions** 📨
 - Concise **documentation** 📄
-- ~~Aims to support multiples **Mediations Adapters** ([IN PROGRESS](https://github.com/Poing-Studios/godot-admob-android/issues/28)🕰️):~~
-  - ~~Meta Audience Network (Facebook)~~
-  - ~~AdColony~~
-- ~~Loads **multiple ads** ([TO-DO](https://github.com/Poing-Studios/godot-admob-android/issues/133)📝)~~
 
-
-## Star History
+## 🌠Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=Poing-Studios/godot-admob-android&type=Date)](https://star-history.com/#Poing-Studios/godot-admob-android&Date)
+
+## 🕵️‍♂️ Preview
+
+
+<img src="https://user-images.githubusercontent.com/20030153/213865713-acc1fafa-dccf-4a74-a883-c004f8c91aa4.gif" alt="GodotAdMob" width=200>
 
 
 ## Installation 
