@@ -1,9 +1,15 @@
 
 <h1 align="center">
   <img src="https://i.imgur.com/fLsHNCO.png" alt="GodotAdMob" width=500>
+  <br>
+  Godot AdMob Android
+  <br>
 </h1>
 
 <p align="center">
+  <a href="https://discord.gg/wVkTa3FV">
+    <img src="https://img.shields.io/discord/838750671792373760?label=discord&logo=Discord">
+  </a>
   <a href="https://godotengine.org">
     <img src="https://img.shields.io/badge/GODOT-%23FFFFFF.svg?&logo=godot-engine">
   </a>
@@ -26,13 +32,7 @@
 </p>
 
 <p align="center">
-  <a href="#📖about">📖About</a> •
-  <a href="#💡features">💡Features</a> •
-  <a href="#🕵️‍♂️preview">🕵️‍♂️Preview</a> •
-  <a href="#🔌usage">🔌Usage</a> •
-  <a href="#🔧development">🔧Development</a> •
-  <a href="#💡features">💡Features</a> •
-  <a href="#📃documentation">📃Documentation</a> •
+  <a href="/docs">📃Documentation</a> •
   <a href="https://github.com/Poing-Studios/godot-admob-android/releases">💾Downloads</a> 
 </p>
 
