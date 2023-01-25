@@ -1,4 +1,3 @@
-
 <h1 align="center">
   <img src="https://i.imgur.com/fLsHNCO.png" alt="GodotAdMob" width=500>
   <br>
