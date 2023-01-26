@@ -13,6 +13,7 @@ import com.google.android.gms.ads.AdView; //used to banner ads
 import com.google.android.gms.ads.AdSize; //used to set/get size banner ads
 import com.google.android.gms.ads.AdListener; //used to get events of ads (banner, interstitial)
 
+import com.google.android.gms.ads.initialization.AdapterStatus;
 import com.google.android.gms.ads.interstitial.InterstitialAd; //interstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
@@ -53,6 +54,7 @@ import java.util.Set;
 public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
 
     private boolean aIsInitialized = false;
+    private String aInitializationDesc = "";
     private Activity aActivity;
 
     private ConsentInformation aConsentInformation;
@@ -100,6 +102,7 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
                 "get_banner_width_in_pixels",
                 "get_banner_height_in_pixels",
                 "get_is_initialized",
+                "get_initialization_description",
                 "get_is_banner_loaded",
                 "get_is_interstitial_loaded",
                 "get_is_rewarded_loaded",
@@ -121,6 +124,9 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
     }
     public boolean get_is_rewarded_interstitial_loaded() {
         return aIsRewardedInterstitialLoaded;
+    }
+    public String get_initialization_description() { 
+        return aInitializationDesc; 
     }
 
     @Override
@@ -195,7 +201,9 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
 
             setMobileAdsRequestConfiguration(aIsForChildDirectedTreatment, pMaxAdContentRating, pIsReal); //First call MobileAds.setRequestConfiguration https://groups.google.com/g/google-admob-ads-sdk/c/17oVu0sABjs
             MobileAds.initialize(aActivity, initializationStatus -> {
-                int statusGADMobileAds = Objects.requireNonNull(initializationStatus.getAdapterStatusMap().get("com.google.android.gms.ads.MobileAds")).getInitializationState().ordinal();
+                AdapterStatus status = Objects.requireNonNull(initializationStatus.getAdapterStatusMap().get("com.google.android.gms.ads.MobileAds"));
+                aInitializationDesc = status.getDescription();
+                int statusGADMobileAds = status.getInitializationState().ordinal();
 
                 if (statusGADMobileAds == 0) {
                     aIsInitialized = false;
