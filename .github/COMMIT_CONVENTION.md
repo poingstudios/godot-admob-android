@@ -1,10 +1,11 @@
-# Godot AdMob Plugin Commit Convention
-## Commit Message Format
+# **Commit Convention**
+## **Commit Message Format**
 Each commit message consists of a header, a body, and a footer.
 
-## Header
+## **Header**
 The header should be in the format of:
 
+```md
 - feat: (for new features)
 - fix: (for bug fixes)
 - docs: (for documentation)
@@ -12,14 +13,15 @@ The header should be in the format of:
 - refactor: (for code refactoring)
 - test: (for adding tests)
 - chore: (for maintenance tasks)
+```
 
-## Body
+## **Body**
 The body should provide a clear and concise description of the change. Use the imperative present tense (e.g., "change" not "changed" or "changes").
 
-## Footer
+## **Footer**
 The footer should contain any relevant information such as issue numbers, breaking changes, or references to other commits.
 
-## Example
+## **Example**
 ```md
 feat: Add new feature for Admob mediation
 
