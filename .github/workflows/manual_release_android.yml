@@ -9,6 +9,9 @@ on:
       godot_version:
         description: 'Godot version to be builded (e.g., 3.5)'
         required: true
+      build_version:
+        description: 'The Build Version of Godot (stable/rc1/beta1) (`alpha` or pre-alpha` could not work).'
+        default: 'stable'
 
 jobs:
   android-template:
@@ -32,6 +35,7 @@ jobs:
       uses: Poing-Studios/godot-android-action@master
       with:
         godot_version: ${{ github.event.inputs.godot_version }}
+        build_version: ${{ github.event.inputs.build_version }}
         release_version: ${{matrix.RELEASE_VERSIONS}}
         project_path: admob
         gdap_file_path: admob/AdMob.gdap
