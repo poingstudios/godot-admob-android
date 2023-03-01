@@ -17,9 +17,6 @@ jobs:
   android-template:
     name: Compiling Gradle (Android)
     runs-on: "ubuntu-latest"
-    strategy:
-      matrix:
-        RELEASE_VERSIONS: ["standard", "mono"]
 
     steps:
     - uses: actions/checkout@v2
@@ -36,7 +33,6 @@ jobs:
       with:
         godot_version: ${{ github.event.inputs.godot_version }}
         build_version: ${{ github.event.inputs.build_version }}
-        release_version: ${{matrix.RELEASE_VERSIONS}}
         project_path: admob
         gdap_file_path: admob/AdMob.gdap
 
@@ -47,7 +43,7 @@ jobs:
 
     - name: Compress the artifact output
       run: |
-        OUTPUT_FILENAME=android-${{matrix.RELEASE_VERSIONS}}-template-v${{env.CURRENT_GODOT_VERSION}}.zip
+        OUTPUT_FILENAME=android-template-v${{env.CURRENT_GODOT_VERSION}}.zip
         echo "OUTPUT_FILENAME=${OUTPUT_FILENAME}" >> $GITHUB_ENV
 
         zip -r ${OUTPUT_FILENAME} .
