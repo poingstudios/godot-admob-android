@@ -15,8 +15,7 @@ jobs:
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        RELEASE_VERSIONS: ["standard", "mono"]
-        GODOT_VERSIONS: [3.5]
+        GODOT_VERSIONS: [3.5, 3.5.1, 4.0]
 
     steps:
     - uses: actions/checkout@v2
@@ -28,45 +27,31 @@ jobs:
         if [ ${#CURRENT_GODOT_VERSION} -eq 1 ]; then CURRENT_GODOT_VERSION="${CURRENT_GODOT_VERSION}.0"; fi
         echo "CURRENT_GODOT_VERSION=${CURRENT_GODOT_VERSION}" >> $GITHUB_ENV
 
-    - name: Download and prepare the Stable Godot .AAR LIB
-      run: | 
-        cd godot-lib 
-        GODOT_AAR_LIB="godot-lib.aar"
-        if [ ${{matrix.RELEASE_VERSIONS}} = standard ]; then 
-          GODOT_AAR_FILENAME="godot-lib.${{env.CURRENT_GODOT_VERSION}}.stable.release.aar"
-          FULL_PATHNAME_DOWNLOAD_GODOT_AAR="https://downloads.tuxfamily.org/godotengine/${{env.CURRENT_GODOT_VERSION}}/${GODOT_AAR_FILENAME}"
-        elif [ ${{matrix.RELEASE_VERSIONS}} = mono ]; then 
-          GODOT_AAR_FILENAME="godot-lib.${{env.CURRENT_GODOT_VERSION}}.stable.mono.release.aar"
-          FULL_PATHNAME_DOWNLOAD_GODOT_AAR="https://downloads.tuxfamily.org/godotengine/${{env.CURRENT_GODOT_VERSION}}/mono/${GODOT_AAR_FILENAME}"
-        fi
-
-        #get file on Godot's server and rename
-        wget $FULL_PATHNAME_DOWNLOAD_GODOT_AAR
-        mv $GODOT_AAR_FILENAME $GODOT_AAR_LIB
-    
-    - name: Grant execute permission for gradlew
-      run: |
-        chmod +x gradlew
-        
-    - name: Build with Gradle
-      run: | 
-        ./gradlew build
-
-    - name: Compress the binaries
-      run: |
-        mv admob/AdMob.gdap admob/build/outputs/aar/
-        zip -j android-${{matrix.RELEASE_VERSIONS}}-template-v${{env.CURRENT_GODOT_VERSION}}.zip admob/build/outputs/aar/*
-
-    - name: Upload artifact
-      uses: actions/upload-artifact@v2
+    - name: Build Android Action
+      id: build-android
+      uses: Poing-Studios/godot-android-action@master
       with:
-        name: android-${{matrix.RELEASE_VERSIONS}}-template-v${{env.CURRENT_GODOT_VERSION}}.zip
-        path: android-${{matrix.RELEASE_VERSIONS}}-template-v${{env.CURRENT_GODOT_VERSION}}.zip
+        godot_version: ${{matrix.GODOT_VERSIONS}}
+        project_path: admob
+        gdap_file_path: admob/AdMob.gdap
+
+    - uses: actions/download-artifact@v3
+      with:
+        name: ${{ steps.build-android.outputs.artifact_name }}
+        path: artifacts_output
+
+    - name: Compress the artifact output
+      run: |
+        OUTPUT_FILENAME=android-template-v${{env.CURRENT_GODOT_VERSION}}.zip
+        echo "OUTPUT_FILENAME=${OUTPUT_FILENAME}" >> $GITHUB_ENV
+        zip -r ${OUTPUT_FILENAME} .
+        ls -R
+      working-directory: artifacts_output
 
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: android-${{matrix.RELEASE_VERSIONS}}-template-v${{env.CURRENT_GODOT_VERSION}}.zip
+        file: artifacts_output/${{ env.OUTPUT_FILENAME }}
         tag: ${{ github.ref }}
         overwrite: true
