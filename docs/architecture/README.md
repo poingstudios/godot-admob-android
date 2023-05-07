@@ -1,7 +1,7 @@
 # Architecture
 Welcome to the architecture section of our AdMob plugin open source project. This folder contains detailed information about the design and implementation of our plugin.
 
-# Navigation
+## Navigation
 - The `high-level-overview` directory contains a high-level overview of the architecture, including the main classes and components.
 - The `class-diagrams` directory contains class diagrams that show the relationships between different classes and components of the plugin.
 - The `communication-flow` directory contains a description of the communication between the plugin and AdMob, including data flows and messages.
