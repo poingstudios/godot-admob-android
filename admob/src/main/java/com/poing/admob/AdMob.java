@@ -445,12 +445,7 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
 
         float density = outMetrics.density;
 
-        float adWidthPixels = aGodotLayout.getWidth();
-
-        // If the ad hasn't been laid out, default to the full screen width.
-        if (adWidthPixels == 0) {
-            adWidthPixels = outMetrics.widthPixels;
-        }
+        float adWidthPixels = outMetrics.widthPixels;
 
         int adWidth = (int) (adWidthPixels / density);
         return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(aActivity, adWidth);
