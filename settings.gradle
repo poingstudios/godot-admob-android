@@ -1,4 +1,22 @@
-rootProject.name='admob'
-include ':app'
-include ':godot-lib'
-include ':admob'
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = "admob"
+include ':libs:godot-lib'
+include ':src:ads'
+include ':src:core'
+include ':src:mediation:adcolony'
+include ':src:mediation:vungle'
+include ':src:mediation:meta'

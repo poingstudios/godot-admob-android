@@ -1,0 +1,9 @@
+[config]
+
+name="AdMob Meta"
+binary_type="local"
+binary="poing-godot-admob-libs/poing-godot-admob-meta-v1.0.0-release.aar"
+
+[dependencies]
+
+remote=["com.google.ads.mediation:facebook:6.14.0.0"]

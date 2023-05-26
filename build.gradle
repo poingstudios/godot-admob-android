@@ -1,29 +1,62 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-
-buildscript {
-
-    repositories {
-        google()
-        mavenCentral()
-
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.2'
-
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-
-    }
+plugins {
+    id 'com.android.application' version '7.2.2' apply false
+    id 'com.android.library' version '7.2.2' apply false
+    id 'org.jetbrains.kotlin.android' version '1.7.10' apply false
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+allprojects {
+    afterEvaluate {
+
+    }
+
+}
+
+ext {
+    pluginExportPath = project.hasProperty('pluginExportPath') ? project.property('pluginExportPath') : null
+    aarExportPath = project.hasProperty('pluginExportPath') ? project.property('pluginExportPath') + '\\poing-godot-admob-libs'  : null
+}
+
+task exportAar(type: Copy) {
+    def aarFiles = []
+    subprojects { subproject ->
+        if (subproject.file("src").exists()) {
+            def moduleAarDir = subproject.file("build/outputs/aar")
+            aarFiles.addAll(fileTree(moduleAarDir) {
+                include '*release.aar'
+            })
+        }
+    }
+    from aarFiles
+    into aarExportPath
+}
+
+task exportGdap(type: Copy) {
+    def gdapFiles = []
+    subprojects { subproject ->
+        if (subproject.file("src").exists()) {
+            def configGdapDir = subproject.file("config")
+            gdapFiles.addAll(fileTree(configGdapDir) {
+                include '*.gdap'
+            })
+        }
+    }
+    from gdapFiles
+    into pluginExportPath
+}
+
+
+task exportFiles(dependsOn: [exportAar, exportGdap])
+
+gradle.taskGraph.whenReady { taskGraph ->
+    if (taskGraph.hasTask(exportFiles)) {
+        if (pluginExportPath == null) {
+            throw new GradleException("The export path for AAR files is not defined. Use the command './gradlew exportFiles -pluginExportPath=<desired-path>' to export the AAR files.")
+        }
+        println "Exporting AAR files to: $pluginExportPath"
+    }
 }

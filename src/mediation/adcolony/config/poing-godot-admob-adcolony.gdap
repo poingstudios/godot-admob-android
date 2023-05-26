@@ -1,0 +1,9 @@
+[config]
+
+name="AdMob AdColony"
+binary_type="local"
+binary="poing-godot-admob-libs/poing-godot-admob-adcolony-v1.0.0-release.aar"
+
+[dependencies]
+
+remote=["com.google.ads.mediation:adcolony:4.8.0.2"]
