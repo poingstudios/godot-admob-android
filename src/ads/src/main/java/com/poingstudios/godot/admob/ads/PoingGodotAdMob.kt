@@ -36,35 +36,14 @@ class PoingGodotAdMob(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(
     @UsedByGodot
     fun initialize() {
         MobileAds.initialize(aActivity) { initializationStatus ->
-            val initializationStatusDictionary = createInitializationStatusDictionary(initializationStatus)
+            val initializationStatusDictionary = initializationStatus.convertToGodotDictionary();
             emitSignal("initialization_complete", initializationStatusDictionary)
         }
     }
 
-    private fun createInitializationStatusDictionary(initializationStatus: InitializationStatus) : Dictionary {
-        val statusMap = initializationStatus.adapterStatusMap
-        val initializationStatusDictionary = Dictionary()
-
-        for (adapterClass in statusMap.keys) {
-            Log.d("poing-godot-admob", "")
-
-            val adapterStatusDictionary = createAdapterStatusDictionary(statusMap[adapterClass])
-            initializationStatusDictionary[adapterClass] = adapterStatusDictionary
-        }
-        return initializationStatusDictionary
-    }
-
     @UsedByGodot
     fun get_initialization_status(): Dictionary {
-        return createInitializationStatusDictionary(MobileAds.getInitializationStatus()!!)
+        return MobileAds.getInitializationStatus()!!.convertToGodotDictionary()
     }
 
-    private fun createAdapterStatusDictionary(adapterStatus: AdapterStatus?): Dictionary {
-        val adapterStatusDictionary = Dictionary()
-        adapterStatusDictionary["latency"] = adapterStatus?.latency
-        adapterStatusDictionary["initializationState"] = adapterStatus?.initializationState?.ordinal
-        adapterStatusDictionary["description"] = adapterStatus?.description
-
-        return adapterStatusDictionary
-    }
 }
