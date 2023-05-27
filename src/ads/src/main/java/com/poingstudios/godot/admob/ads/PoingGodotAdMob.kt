@@ -1,4 +1,4 @@
-package com.poingtudios.godot.admob.ads
+package com.poingstudios.godot.admob.ads
 
 import android.app.Activity
 import android.util.ArraySet

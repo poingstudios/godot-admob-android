@@ -1,4 +1,4 @@
-package com.poingtudios.godot.admob.ads
+package com.poingstudios.godot.admob.ads
 
 import org.junit.Test
 
