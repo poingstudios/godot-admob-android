@@ -7,4 +7,4 @@ binary="poing-godot-admob-libs/poing-godot-admob-ads-v1.0.0-release.aar"
 [dependencies]
 
 local=["poing-godot-admob-libs/poing-godot-admob-core-v1.0.0-release.aar"]
-remote=["com.google.android.gms:play-services-ads:22.0.0"]
+remote=["com.google.android.gms:play-services-ads:22.1.0"]

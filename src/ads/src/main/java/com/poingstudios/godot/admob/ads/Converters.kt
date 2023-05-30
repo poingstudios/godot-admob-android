@@ -12,7 +12,7 @@ fun InitializationStatus.convertToGodotDictionary() : Dictionary{
     for (adapterClass in statusMap.keys) {
         Log.d("poing-godot-admob", "")
 
-        val adapterStatusDictionary = statusMap[adapterClass]?.convertToGodotDictionary();
+        val adapterStatusDictionary = statusMap[adapterClass]?.convertToGodotDictionary()
         initializationStatusDictionary[adapterClass] = adapterStatusDictionary
     }
     return initializationStatusDictionary
