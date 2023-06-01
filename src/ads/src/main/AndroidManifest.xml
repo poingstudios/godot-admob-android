@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.poingstudios.godot.admob.ads">
 
-
     <uses-permission android:name="android.permission.INTERNET"/>
     <application>
         <meta-data
@@ -11,7 +10,6 @@
         <meta-data
             android:name="org.godotengine.plugin.v1.PoingGodotAdMobAdView"
             android:value="com.poingstudios.godot.admob.ads.PoingGodotAdMobAdView" />
-
     </application>
 
 </manifest>
