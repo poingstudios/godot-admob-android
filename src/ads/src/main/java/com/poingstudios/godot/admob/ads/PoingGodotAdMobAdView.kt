@@ -2,9 +2,13 @@ package com.poingstudios.godot.admob.ads
 
 import android.app.Activity
 import android.util.ArraySet
+import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
+import com.google.android.gms.ads.AdRequest
 import com.poingstudios.godot.admob.ads.adformats.Banner
+import com.poingstudios.godot.admob.core.AdNetworkExtras
+import com.poingstudios.godot.admob.core.utils.LogUtils.Companion.LOG_TAG_NAME
 import org.godotengine.godot.Dictionary
 import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.SignalInfo
@@ -48,9 +52,25 @@ class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotP
     }
 
     @UsedByGodot
-    fun load_ad(uid : Int){
+    fun load_ad(uid : Int, adRequestDictionary : Dictionary, keywords : Array<String>){
+        Log.d(LOG_TAG_NAME, "Loading Ad!, AdRequestDictionary: $adRequestDictionary, KeyWords: ${keywords.joinToString(", ")}")
+
+        val adRequestBuilder = AdRequest.Builder()
+        val mediationExtras = adRequestDictionary["mediation_extras"] as Dictionary
+        for ((key) in mediationExtras) {
+            val extra = mediationExtras[key] as Dictionary
+            val className = extra["class_name"] as String
+            val objectClass = Class.forName(className).getDeclaredConstructor().newInstance() as AdNetworkExtras
+            val extras = extra["extras"] as Dictionary
+
+            adRequestBuilder.addNetworkExtrasBundle(objectClass.getAdapterClass(), objectClass.buildExtras(extras.toMap()))
+        }
+        for (keyword in keywords) {
+           adRequestBuilder.addKeyword(keyword)
+        }
+
         val banner = banners[uid]
-        banner?.loadAd()
+        banner?.loadAd(adRequestBuilder.build())
     }
     @UsedByGodot
     fun destroy(uid : Int){

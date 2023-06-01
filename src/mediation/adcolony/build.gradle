@@ -51,6 +51,7 @@ android {
 }
 
 dependencies {
+    compileOnly project(path: ':src:core')
 
     File gdap_file = file("config/poing-godot-admob-adcolony.gdap")
     def match = gdap_file.text =~ /(?<=remote=)[^;]+/

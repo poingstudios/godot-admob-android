@@ -101,9 +101,8 @@ class Banner(
     }
 
 
-    fun loadAd(){
+    fun loadAd(adRequest: AdRequest){
         activity.runOnUiThread {
-            val adRequest = AdRequest.Builder().build()
             mAdView.loadAd(adRequest)
         }
     }
