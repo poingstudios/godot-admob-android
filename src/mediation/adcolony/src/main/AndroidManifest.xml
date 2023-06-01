@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.poingstudios.godot.admob.mediation.adcolony">
-
+    <application>
+        <meta-data
+            android:name="org.godotengine.plugin.v1.PoingGodotAdMobAdColonyAppOptions"
+            android:value="com.poingstudios.godot.admob.mediation.adcolony.PoingGodotAdMobAdColonyAppOptions" />
+    </application>
 </manifest>

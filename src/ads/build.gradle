@@ -43,7 +43,6 @@ android {
 }
 
 dependencies {
-    compileOnly project(':libs:godot-lib')
     compileOnly project(':src:core')
 
     implementation 'androidx.appcompat:appcompat:1.6.1'

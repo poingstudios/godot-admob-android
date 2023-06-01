@@ -8,7 +8,7 @@ import android.widget.FrameLayout
 import com.google.android.gms.ads.AdRequest
 import com.poingstudios.godot.admob.ads.adformats.Banner
 import com.poingstudios.godot.admob.core.AdNetworkExtras
-import com.poingstudios.godot.admob.core.utils.LogUtils.Companion.LOG_TAG_NAME
+import com.poingstudios.godot.admob.core.utils.LogUtils
 import org.godotengine.godot.Dictionary
 import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.SignalInfo
@@ -22,6 +22,15 @@ class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotP
         return this::class.simpleName.toString()
     }
 
+    override fun onMainResume() {
+        super.onMainResume()
+        LogUtils.debug("onMainResume")
+    }
+
+    override fun onMainPause() {
+        super.onMainPause()
+        LogUtils.debug("onMainPause")
+    }
     override fun onMainCreate(activity: Activity?): View {
         aActivity = super.getActivity()!!
         aGodotLayout = FrameLayout(aActivity)
@@ -53,7 +62,7 @@ class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotP
 
     @UsedByGodot
     fun load_ad(uid : Int, adRequestDictionary : Dictionary, keywords : Array<String>){
-        Log.d(LOG_TAG_NAME, "Loading Ad!, AdRequestDictionary: $adRequestDictionary, KeyWords: ${keywords.joinToString(", ")}")
+        LogUtils.debug("Loading Ad!, AdRequestDictionary: $adRequestDictionary, KeyWords: ${keywords.joinToString(", ")}")
 
         val adRequestBuilder = AdRequest.Builder()
         val mediationExtras = adRequestDictionary["mediation_extras"] as Dictionary
@@ -63,7 +72,13 @@ class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotP
             val objectClass = Class.forName(className).getDeclaredConstructor().newInstance() as AdNetworkExtras
             val extras = extra["extras"] as Dictionary
 
-            adRequestBuilder.addNetworkExtrasBundle(objectClass.getAdapterClass(), objectClass.buildExtras(extras.toMap()))
+            val bundle = objectClass.buildExtras(extras.toMap())
+            if (bundle != null){
+                adRequestBuilder.addNetworkExtrasBundle(objectClass.getAdapterClass(), bundle)
+            }
+            else{
+                LogUtils.debug("bundle is null: $className")
+            }
         }
         for (keyword in keywords) {
            adRequestBuilder.addKeyword(keyword)
