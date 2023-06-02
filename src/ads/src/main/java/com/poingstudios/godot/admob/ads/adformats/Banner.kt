@@ -28,6 +28,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.google.android.gms.ads.*
+import com.poingstudios.godot.admob.ads.convertToGodotDictionary
+import com.poingstudios.godot.admob.core.utils.LogUtils
 import org.godotengine.godot.Dictionary
 import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.GodotPlugin.emitSignal
@@ -59,7 +61,7 @@ class Banner(
     object SignalInfos {
         val onAdClicked = SignalInfo("on_ad_clicked", Integer::class.java)
         val onAdClosed = SignalInfo("on_ad_closed", Integer::class.java)
-        val onAdFailedToLoad = SignalInfo("on_ad_failed_to_load", Integer::class.java)
+        val onAdFailedToLoad = SignalInfo("on_ad_failed_to_load", Integer::class.java, Dictionary::class.java)
         val onAdImpression = SignalInfo("on_ad_impression", Integer::class.java)
         val onAdLoaded = SignalInfo("on_ad_loaded", Integer::class.java)
         val onAdOpened = SignalInfo("on_ad_opened", Integer::class.java)
@@ -103,8 +105,10 @@ class Banner(
                     emitSignal(godot, pluginName, SignalInfos.onAdClosed, UID)
                 }
 
-                override fun onAdFailedToLoad(adError: LoadAdError) {
-                    emitSignal(godot, pluginName, SignalInfos.onAdFailedToLoad, UID)
+                override fun onAdFailedToLoad(loadAdError: LoadAdError) {
+                    val loadAdErrorDictionary = loadAdError.convertToGodotDictionary()
+                    LogUtils.debug("loadAdErrorDictionary: $loadAdErrorDictionary")
+                    emitSignal(godot, pluginName, SignalInfos.onAdFailedToLoad, UID, loadAdErrorDictionary)
                 }
 
                 override fun onAdImpression() {

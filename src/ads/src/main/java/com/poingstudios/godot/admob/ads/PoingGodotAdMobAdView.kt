@@ -44,15 +44,6 @@ class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotP
         return this::class.simpleName.toString()
     }
 
-    override fun onMainResume() {
-        super.onMainResume()
-        LogUtils.debug("onMainResume")
-    }
-
-    override fun onMainPause() {
-        super.onMainPause()
-        LogUtils.debug("onMainPause")
-    }
     override fun onMainCreate(activity: Activity?): View {
         aActivity = super.getActivity()!!
         aGodotLayout = FrameLayout(aActivity)

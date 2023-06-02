@@ -23,28 +23,43 @@
 package com.poingstudios.godot.admob.ads
 
 import android.util.Log
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.ResponseInfo
 import com.google.android.gms.ads.initialization.AdapterStatus
 import com.google.android.gms.ads.initialization.InitializationStatus
 import org.godotengine.godot.Dictionary
 
 fun InitializationStatus.convertToGodotDictionary() : Dictionary{
     val statusMap = adapterStatusMap
-    val initializationStatusDictionary = Dictionary()
+    val dictionary = Dictionary()
 
     for (adapterClass in statusMap.keys) {
         Log.d("poing-godot-admob", "")
 
         val adapterStatusDictionary = statusMap[adapterClass]?.convertToGodotDictionary()
-        initializationStatusDictionary[adapterClass] = adapterStatusDictionary
+        dictionary[adapterClass] = adapterStatusDictionary
     }
-    return initializationStatusDictionary
+    return dictionary
 }
 
 fun AdapterStatus.convertToGodotDictionary() : Dictionary {
-    val adapterStatusDictionary = Dictionary()
-    adapterStatusDictionary["latency"] = latency
-    adapterStatusDictionary["initializationState"] = initializationState.ordinal
-    adapterStatusDictionary["description"] = description
+    val dictionary = Dictionary()
+    dictionary["latency"] = latency
+    dictionary["initializationState"] = initializationState.ordinal
+    dictionary["description"] = description
 
-    return adapterStatusDictionary
+    return dictionary
+}
+
+fun LoadAdError.convertToGodotDictionary() : Dictionary {
+    val dictionary = Dictionary()
+    dictionary["response_info"] = responseInfo?.convertToGodotDictionary()
+
+    return dictionary
+}
+
+fun ResponseInfo.convertToGodotDictionary() : Dictionary {
+    val dictionary = Dictionary()
+    dictionary["dummy"] = arrayOf("bommy1", "bommy2", "bommy3")
+    return dictionary
 }
