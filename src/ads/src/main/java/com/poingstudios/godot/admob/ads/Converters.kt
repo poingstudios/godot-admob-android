@@ -22,7 +22,9 @@
 
 package com.poingstudios.godot.admob.ads
 
-import android.util.Log
+import android.os.Bundle
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdapterResponseInfo
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.ResponseInfo
 import com.google.android.gms.ads.initialization.AdapterStatus
@@ -34,8 +36,6 @@ fun InitializationStatus.convertToGodotDictionary() : Dictionary{
     val dictionary = Dictionary()
 
     for (adapterClass in statusMap.keys) {
-        Log.d("poing-godot-admob", "")
-
         val adapterStatusDictionary = statusMap[adapterClass]?.convertToGodotDictionary()
         dictionary[adapterClass] = adapterStatusDictionary
     }
@@ -51,15 +51,65 @@ fun AdapterStatus.convertToGodotDictionary() : Dictionary {
     return dictionary
 }
 
+fun AdError.convertToGodotDictionary() : Dictionary {
+    val dictionary = Dictionary()
+    dictionary["code"] = code
+    dictionary["domain"] = domain
+    dictionary["message"] = message
+    dictionary["cause"] = cause?.convertToGodotDictionary()?: Dictionary()
+
+    return dictionary
+}
+
 fun LoadAdError.convertToGodotDictionary() : Dictionary {
     val dictionary = Dictionary()
-    dictionary["response_info"] = responseInfo?.convertToGodotDictionary()
-
+    dictionary["response_info"] = responseInfo?.convertToGodotDictionary()?: Dictionary()
+    dictionary += (this as AdError).convertToGodotDictionary()
     return dictionary
 }
 
 fun ResponseInfo.convertToGodotDictionary() : Dictionary {
     val dictionary = Dictionary()
-    dictionary["dummy"] = arrayOf("bommy1", "bommy2", "bommy3")
+    dictionary["loaded_adapter_response_info"] = loadedAdapterResponseInfo?.convertToGodotDictionary()?: Dictionary()
+    dictionary["adapter_responses"] = adapterResponses.convertToGodotDictionary()
+    dictionary["response_extras"] = responseExtras.convertToGodotDictionary()
+    dictionary["mediation_adapter_class_name"] = mediationAdapterClassName ?: ""
+    dictionary["response_id"] = responseId ?: ""
+
+    return dictionary
+}
+
+fun List<AdapterResponseInfo>.convertToGodotDictionary() : Dictionary {
+    val dictionary = Dictionary()
+
+    for (index in this.indices){
+        val value = this[index].convertToGodotDictionary()
+        dictionary[index.toString()] = value
+    }
+
+    return dictionary
+}
+
+fun AdapterResponseInfo.convertToGodotDictionary() : Dictionary {
+    val dictionary = Dictionary()
+    dictionary["adapter_class_name"] = adapterClassName
+    dictionary["ad_source_id"] = adSourceId
+    dictionary["ad_source_name"] = adSourceName
+    dictionary["ad_source_instance_id"] = adSourceInstanceId
+    dictionary["ad_source_instance_name"] = adSourceInstanceName
+    dictionary["ad_unit_mapping"] = credentials.convertToGodotDictionary()
+    dictionary["ad_error"] = adError?.convertToGodotDictionary()?: Dictionary()
+    dictionary["latency_millis"] = latencyMillis
+
+    return dictionary
+}
+
+fun Bundle.convertToGodotDictionary(): Dictionary {
+    val dictionary = Dictionary()
+
+    for (key in keySet()) {
+        dictionary[key] = getString(key) ?: ""
+    }
+
     return dictionary
 }
