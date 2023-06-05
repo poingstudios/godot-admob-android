@@ -37,7 +37,6 @@ import org.godotengine.godot.plugin.SignalInfo
 import org.godotengine.godot.plugin.UsedByGodot
 
 class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(godot)  {
-    private lateinit var aActivity: Activity
     private lateinit var aGodotLayout : FrameLayout
 
     override fun getPluginName(): String {
@@ -45,8 +44,7 @@ class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotP
     }
 
     override fun onMainCreate(activity: Activity?): View {
-        aActivity = super.getActivity()!!
-        aGodotLayout = FrameLayout(aActivity)
+        aGodotLayout = FrameLayout(getActivity()!!)
         return aGodotLayout
     }
 
@@ -66,7 +64,7 @@ class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotP
 
     @UsedByGodot
     fun create(adViewDictionary : Dictionary) : Int{
-        val banner = Banner(banners.size, aActivity, aGodotLayout, godot, pluginName, adViewDictionary).apply {
+        val banner = Banner(banners.size, activity!!, aGodotLayout, godot, pluginName, adViewDictionary).apply {
             banners.add(this)
         }
 
@@ -100,6 +98,8 @@ class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotP
         val banner = banners[uid]
         banner?.loadAd(adRequestBuilder.build())
     }
+
+
     @UsedByGodot
     fun destroy(uid : Int){
         banners[uid]?.destroy()

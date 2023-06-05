@@ -20,18 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-package com.poingstudios.godot.admob.ads
+package com.poingstudios.godot.admob.ads.converters
 
 import android.os.Bundle
-import com.google.android.gms.ads.AdError
-import com.google.android.gms.ads.AdapterResponseInfo
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.ResponseInfo
+import com.google.android.gms.ads.*
 import com.google.android.gms.ads.initialization.AdapterStatus
 import com.google.android.gms.ads.initialization.InitializationStatus
 import org.godotengine.godot.Dictionary
 
-fun InitializationStatus.convertToGodotDictionary() : Dictionary{
+fun InitializationStatus.convertToGodotDictionary() : Dictionary {
     val statusMap = adapterStatusMap
     val dictionary = Dictionary()
 
@@ -110,6 +107,15 @@ fun Bundle.convertToGodotDictionary(): Dictionary {
     for (key in keySet()) {
         dictionary[key] = getString(key) ?: ""
     }
+
+    return dictionary
+}
+
+fun AdSize.convertToGodotDictionary() : Dictionary{
+    val dictionary = Dictionary()
+
+    dictionary["width"] = width
+    dictionary["height"] = height
 
     return dictionary
 }

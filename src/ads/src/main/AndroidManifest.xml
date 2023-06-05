@@ -10,6 +10,9 @@
         <meta-data
             android:name="org.godotengine.plugin.v1.PoingGodotAdMobAdView"
             android:value="com.poingstudios.godot.admob.ads.PoingGodotAdMobAdView" />
+        <meta-data
+            android:name="org.godotengine.plugin.v1.PoingGodotAdMobAdSize"
+            android:value="com.poingstudios.godot.admob.ads.PoingGodotAdMobAdSize" />
     </application>
 
 </manifest>

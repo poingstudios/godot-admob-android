@@ -27,6 +27,7 @@ import android.util.ArraySet
 import android.view.View
 import android.widget.FrameLayout
 import com.google.android.gms.ads.*
+import com.poingstudios.godot.admob.ads.converters.convertToGodotDictionary
 import org.godotengine.godot.Dictionary
 import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.SignalInfo

@@ -23,12 +23,18 @@
 package com.poingstudios.godot.admob.ads.adformats
 
 import android.app.Activity
+import android.content.res.Resources
+import android.graphics.Rect
+import android.os.Build
+import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.View
+import android.view.View.OnLayoutChangeListener
 import android.view.ViewGroup
+import android.view.WindowInsets
 import android.widget.FrameLayout
 import com.google.android.gms.ads.*
-import com.poingstudios.godot.admob.ads.convertToGodotDictionary
+import com.poingstudios.godot.admob.ads.converters.convertToGodotDictionary
 import com.poingstudios.godot.admob.core.utils.LogUtils
 import org.godotengine.godot.Dictionary
 import org.godotengine.godot.Godot
@@ -44,8 +50,27 @@ class Banner(
     pluginName: String,
     adViewDictionary: Dictionary
 ) : AdFormatsBase(UID, activity, godotLayout, godot, pluginName) {
+    private var adPosition: Int
     private lateinit var mAdView: AdView
     private lateinit var mAdSize: AdSize
+    private var isHidden : Boolean = false
+
+    private val mLayoutChangeListener =
+        OnLayoutChangeListener { _, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+            val currentWidth = right - left
+            val currentHeight = bottom - top
+            val oldWidth = oldRight - oldLeft
+            val oldHeight = oldBottom - oldTop
+
+            val layoutChanged = currentWidth != oldWidth || currentHeight != oldHeight
+            if (!layoutChanged) {
+                return@OnLayoutChangeListener
+            }
+            if (!isHidden) { //only update if is not hidden to improve performance
+                updatePosition()
+            }
+        }
+
 
     enum class AdPosition {
         TOP,
@@ -67,34 +92,20 @@ class Banner(
         val onAdOpened = SignalInfo("on_ad_opened", Integer::class.java)
     }
 
-    init {
-        activity.runOnUiThread {
-            val adSize = adViewDictionary["ad_size"] as Dictionary
-            val adUnitId = adViewDictionary["ad_unit_id"] as String
 
+    init {
+        adPosition = adViewDictionary["ad_position"] as Int
+        val adSizeDictionary = adViewDictionary["ad_size"] as Dictionary
+        val adUnitId = adViewDictionary["ad_unit_id"] as String
+        val adSize = AdSize(adSizeDictionary["width"] as Int, adSizeDictionary["height"] as Int)
+        activity.runOnUiThread {
             mAdView = AdView(activity)
-            mAdView.setAdSize(AdSize(adSize["width"] as Int, adSize["height"] as Int))
+            mAdView.setAdSize(adSize)
             mAdSize = mAdView.adSize!!
             mAdView.adUnitId = adUnitId
-            val adParams = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT
-            )
+            val layoutParams = getLayoutParams()
 
-            val gravity = when (adViewDictionary["ad_position"] as Int) {
-                AdPosition.TOP.ordinal -> Gravity.TOP or Gravity.CENTER_HORIZONTAL
-                AdPosition.BOTTOM.ordinal -> Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-                AdPosition.LEFT.ordinal -> Gravity.START or Gravity.CENTER_VERTICAL
-                AdPosition.RIGHT.ordinal -> Gravity.END or Gravity.CENTER_VERTICAL
-                AdPosition.TOP_LEFT.ordinal -> Gravity.TOP or Gravity.START
-                AdPosition.TOP_RIGHT.ordinal -> Gravity.TOP or Gravity.END
-                AdPosition.BOTTOM_LEFT.ordinal -> Gravity.BOTTOM or Gravity.START
-                AdPosition.BOTTOM_RIGHT.ordinal -> Gravity.BOTTOM or Gravity.END
-                AdPosition.CENTER.ordinal -> Gravity.CENTER_HORIZONTAL or Gravity.CENTER_VERTICAL
-                else -> throw IllegalArgumentException("Value of ad_position invalid")
-            }
-            adParams.gravity = gravity
-
-            godotLayout.addView(mAdView, adParams)
+            godotLayout.addView(mAdView, layoutParams)
 
             mAdView.adListener = object : AdListener() {
                 override fun onAdClicked() {
@@ -107,7 +118,6 @@ class Banner(
 
                 override fun onAdFailedToLoad(loadAdError: LoadAdError) {
                     val loadAdErrorDictionary = loadAdError.convertToGodotDictionary()
-                    LogUtils.debug("loadAdErrorDictionary: $loadAdErrorDictionary")
                     emitSignal(godot, pluginName, SignalInfos.onAdFailedToLoad, UID, loadAdErrorDictionary)
                 }
 
@@ -116,6 +126,9 @@ class Banner(
                 }
 
                 override fun onAdLoaded() {
+                    if (!isHidden) {
+                        show();
+                    }
                     emitSignal(godot, pluginName, SignalInfos.onAdLoaded, UID)
                 }
 
@@ -123,9 +136,79 @@ class Banner(
                     emitSignal(godot, pluginName, SignalInfos.onAdOpened, UID)
                 }
             }
+
         }
+        activity.window.decorView.rootView.addOnLayoutChangeListener(mLayoutChangeListener);
     }
 
+    private fun getSafeArea(): Rect {
+        val safeInsetRect = Rect()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            return safeInsetRect
+        }
+        val windowInsets: WindowInsets = activity.window.decorView.rootWindowInsets ?: return safeInsetRect
+        val displayCutout = windowInsets.displayCutout
+        if (displayCutout != null) {
+            safeInsetRect.set(
+                displayCutout.safeInsetLeft,
+                displayCutout.safeInsetTop,
+                displayCutout.safeInsetRight,
+                displayCutout.safeInsetBottom
+            )
+        }
+        return safeInsetRect
+    }
+    private fun getGravity(adPosition: Int?) : Int{
+        val gravity = when (adPosition) {
+            AdPosition.TOP.ordinal -> Gravity.TOP or Gravity.CENTER_HORIZONTAL
+            AdPosition.BOTTOM.ordinal -> Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+            AdPosition.LEFT.ordinal -> Gravity.START or Gravity.CENTER_VERTICAL
+            AdPosition.RIGHT.ordinal -> Gravity.END or Gravity.CENTER_VERTICAL
+            AdPosition.TOP_LEFT.ordinal -> Gravity.TOP or Gravity.START
+            AdPosition.TOP_RIGHT.ordinal -> Gravity.TOP or Gravity.END
+            AdPosition.BOTTOM_LEFT.ordinal -> Gravity.BOTTOM or Gravity.START
+            AdPosition.BOTTOM_RIGHT.ordinal -> Gravity.BOTTOM or Gravity.END
+            AdPosition.CENTER.ordinal -> Gravity.CENTER_HORIZONTAL or Gravity.CENTER_VERTICAL
+            else -> throw IllegalArgumentException("Value of ad_position invalid")
+        }
+
+        return gravity
+    }
+    private fun getLayoutParams() : FrameLayout.LayoutParams {
+        val adParams = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT
+        )
+        val safeArea = getSafeArea()
+        LogUtils.debug("Safe Area of screen: $safeArea.")
+
+        fun calculateTopMargin() : Int{
+            var returnValue = adParams.topMargin
+            when (adPosition) {
+                AdPosition.TOP.ordinal, AdPosition.TOP_LEFT.ordinal, AdPosition.TOP_RIGHT.ordinal -> {
+                    returnValue = safeArea.top.takeIf { it > 0 } ?: adParams.topMargin
+                }
+            }
+            return returnValue
+        }
+
+        adParams.gravity = getGravity(adPosition)
+
+        adParams.bottomMargin = safeArea.bottom
+        adParams.rightMargin = safeArea.right
+        adParams.leftMargin = safeArea.left
+        adParams.topMargin = calculateTopMargin()
+
+
+        return adParams
+    }
+
+    fun updatePosition(){
+        activity.runOnUiThread{
+            val layoutParams = getLayoutParams()
+            mAdView.layoutParams = layoutParams
+            LogUtils.debug("Change layout of adView")
+        }
+    }
 
     fun loadAd(adRequest: AdRequest){
         activity.runOnUiThread {
@@ -139,10 +222,12 @@ class Banner(
                 (mAdView.parent as ViewGroup).removeView(mAdView)
             }
         }
+        activity.window.decorView.rootView.removeOnLayoutChangeListener(mLayoutChangeListener)
     }
 
     fun hide(){
         activity.runOnUiThread{
+            isHidden = true
             mAdView.visibility = View.GONE
             mAdView.pause()
         }
@@ -150,7 +235,10 @@ class Banner(
 
     fun show(){
         activity.runOnUiThread{
+            LogUtils.debug("Showing the Banner $UID")
+            isHidden = false;
             mAdView.visibility = View.VISIBLE
+            updatePosition()
             mAdView.resume()
         }
     }
