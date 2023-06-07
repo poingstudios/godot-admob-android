@@ -23,10 +23,8 @@
 package com.poingstudios.godot.admob.ads.adformats
 
 import android.app.Activity
-import android.content.res.Resources
 import android.graphics.Rect
 import android.os.Build
-import android.util.DisplayMetrics
 import android.view.Gravity
 import android.view.View
 import android.view.View.OnLayoutChangeListener
@@ -50,22 +48,20 @@ class Banner(
     pluginName: String,
     adViewDictionary: Dictionary
 ) : AdFormatsBase(UID, activity, godotLayout, godot, pluginName) {
-    private var adPosition: Int
+    private var safeArea = getSafeArea()
+    private val adPosition: Int = adViewDictionary["ad_position"] as Int
     private lateinit var mAdView: AdView
     private lateinit var mAdSize: AdSize
     private var isHidden : Boolean = false
 
     private val mLayoutChangeListener =
-        OnLayoutChangeListener { _, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
-            val currentWidth = right - left
-            val currentHeight = bottom - top
-            val oldWidth = oldRight - oldLeft
-            val oldHeight = oldBottom - oldTop
-
-            val layoutChanged = currentWidth != oldWidth || currentHeight != oldHeight
-            if (!layoutChanged) {
+        OnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+            val newSafeArea = getSafeArea()
+            if (newSafeArea == safeArea){
                 return@OnLayoutChangeListener
             }
+            safeArea = newSafeArea
+            LogUtils.debug("OnLayoutChanged")
             if (!isHidden) { //only update if is not hidden to improve performance
                 updatePosition()
             }
@@ -94,7 +90,6 @@ class Banner(
 
 
     init {
-        adPosition = adViewDictionary["ad_position"] as Int
         val adSizeDictionary = adViewDictionary["ad_size"] as Dictionary
         val adUnitId = adViewDictionary["ad_unit_id"] as String
         val adSize = AdSize(adSizeDictionary["width"] as Int, adSizeDictionary["height"] as Int)
@@ -127,7 +122,7 @@ class Banner(
 
                 override fun onAdLoaded() {
                     if (!isHidden) {
-                        show();
+                        show()
                     }
                     emitSignal(godot, pluginName, SignalInfos.onAdLoaded, UID)
                 }
@@ -136,9 +131,8 @@ class Banner(
                     emitSignal(godot, pluginName, SignalInfos.onAdOpened, UID)
                 }
             }
-
+            activity.window.decorView.rootView.addOnLayoutChangeListener(mLayoutChangeListener)
         }
-        activity.window.decorView.rootView.addOnLayoutChangeListener(mLayoutChangeListener);
     }
 
     private fun getSafeArea(): Rect {
@@ -178,7 +172,6 @@ class Banner(
         val adParams = FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT
         )
-        val safeArea = getSafeArea()
         LogUtils.debug("Safe Area of screen: $safeArea.")
 
         fun calculateTopMargin() : Int{
@@ -202,11 +195,10 @@ class Banner(
         return adParams
     }
 
-    fun updatePosition(){
+    private fun updatePosition(){
         activity.runOnUiThread{
             val layoutParams = getLayoutParams()
             mAdView.layoutParams = layoutParams
-            LogUtils.debug("Change layout of adView")
         }
     }
 
@@ -235,8 +227,7 @@ class Banner(
 
     fun show(){
         activity.runOnUiThread{
-            LogUtils.debug("Showing the Banner $UID")
-            isHidden = false;
+            isHidden = false
             mAdView.visibility = View.VISIBLE
             updatePosition()
             mAdView.resume()
