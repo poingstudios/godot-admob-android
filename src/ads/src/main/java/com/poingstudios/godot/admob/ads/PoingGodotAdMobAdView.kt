@@ -23,10 +23,11 @@
 package com.poingstudios.godot.admob.ads
 
 import android.app.Activity
+import android.os.Bundle
 import android.util.ArraySet
-import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
+import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdRequest
 import com.poingstudios.godot.admob.ads.adformats.Banner
 import com.poingstudios.godot.admob.core.AdNetworkExtras
@@ -35,6 +36,8 @@ import org.godotengine.godot.Dictionary
 import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.SignalInfo
 import org.godotengine.godot.plugin.UsedByGodot
+import kotlin.reflect.typeOf
+
 
 class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(godot)  {
     private lateinit var aGodotLayout : FrameLayout
@@ -91,6 +94,17 @@ class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotP
                 LogUtils.debug("bundle is null: $className")
             }
         }
+        val extras = adRequestDictionary["extras"] as Dictionary
+
+        for ((key) in extras) {
+            val networkExtrasBundle = Bundle()
+            when (val value = extras[key]) {
+                is String -> networkExtrasBundle.putString(key, value)
+                is Int -> networkExtrasBundle.putInt(key, value)
+            }
+            adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter::class.java, networkExtrasBundle)
+        }
+
         for (keyword in keywords) {
            adRequestBuilder.addKeyword(keyword)
         }
