@@ -26,6 +26,8 @@ import android.os.Bundle
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.initialization.AdapterStatus
 import com.google.android.gms.ads.initialization.InitializationStatus
+import com.google.android.gms.ads.rewarded.RewardItem
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.android.ump.FormError
 import org.godotengine.godot.Dictionary
 
@@ -126,6 +128,14 @@ fun FormError.convertToGodotDictionary() : Dictionary{
 
     dictionary["error_code"] = errorCode
     dictionary["message"] = message
+
+    return dictionary
+}
+fun RewardItem.convertToGodotDictionary() : Dictionary{
+    val dictionary = Dictionary()
+
+    dictionary["amount"] = amount
+    dictionary["type"] = type
 
     return dictionary
 }
