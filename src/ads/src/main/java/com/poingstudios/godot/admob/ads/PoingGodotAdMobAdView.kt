@@ -30,6 +30,7 @@ import android.widget.FrameLayout
 import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdRequest
 import com.poingstudios.godot.admob.ads.adformats.Banner
+import com.poingstudios.godot.admob.ads.converters.convertToAdRequest
 import com.poingstudios.godot.admob.core.AdNetworkExtras
 import com.poingstudios.godot.admob.core.utils.LogUtils
 import org.godotengine.godot.Dictionary
@@ -39,6 +40,7 @@ import org.godotengine.godot.plugin.UsedByGodot
 
 
 class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(godot)  {
+    private val banners = mutableListOf<Banner?>()
     private lateinit var aGodotLayout : FrameLayout
 
     override fun getPluginName(): String {
@@ -50,7 +52,6 @@ class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotP
         return aGodotLayout
     }
 
-    private val banners = mutableListOf<Banner?>()
 
 
     override fun getPluginSignals(): MutableSet<SignalInfo> {
@@ -75,39 +76,10 @@ class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotP
 
     @UsedByGodot
     fun load_ad(uid : Int, adRequestDictionary : Dictionary, keywords : Array<String>){
-        val adRequestBuilder = AdRequest.Builder()
-        val mediationExtras = adRequestDictionary["mediation_extras"] as Dictionary
-        for ((key) in mediationExtras) {
-            val extra = mediationExtras[key] as Dictionary
-            val className = extra["class_name"] as String
-            val objectClass = Class.forName(className).getDeclaredConstructor().newInstance() as AdNetworkExtras
-            val extras = extra["extras"] as Dictionary
-
-            val bundle = objectClass.buildExtras(extras.toMap())
-            if (bundle != null){
-                adRequestBuilder.addNetworkExtrasBundle(objectClass.getAdapterClass(), bundle)
-            }
-            else{
-                LogUtils.debug("bundle is null: $className")
-            }
-        }
-        val extras = adRequestDictionary["extras"] as Dictionary
-
-        for ((key) in extras) {
-            val networkExtrasBundle = Bundle()
-            when (val value = extras[key]) {
-                is String -> networkExtrasBundle.putString(key, value)
-                is Int -> networkExtrasBundle.putInt(key, value)
-            }
-            adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter::class.java, networkExtrasBundle)
-        }
-
-        for (keyword in keywords) {
-           adRequestBuilder.addKeyword(keyword)
-        }
+        val adRequest = adRequestDictionary.convertToAdRequest(keywords)
 
         val banner = banners[uid]
-        banner?.loadAd(adRequestBuilder.build())
+        banner?.loadAd(adRequest)
     }
 
 

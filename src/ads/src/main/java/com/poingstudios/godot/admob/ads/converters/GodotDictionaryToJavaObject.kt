@@ -23,9 +23,13 @@
 package com.poingstudios.godot.admob.ads.converters
 
 import android.app.Activity
+import android.os.Bundle
+import com.google.ads.mediation.admob.AdMobAdapter
+import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.ump.ConsentDebugSettings
 import com.google.android.ump.ConsentRequestParameters
+import com.poingstudios.godot.admob.core.AdNetworkExtras
 import com.poingstudios.godot.admob.core.utils.LogUtils
 import org.godotengine.godot.Dictionary
 
@@ -59,5 +63,41 @@ fun Dictionary.convertToConsentRequestParameters(activity: Activity): ConsentReq
     }
 
     return consentRequestParametersBuilder.build()
+}
+
+fun Dictionary.convertToAdRequest(keywords : Array<String>) : AdRequest{
+
+    val adRequestBuilder = AdRequest.Builder()
+    val mediationExtras = this["mediation_extras"] as Dictionary
+    for ((key) in mediationExtras) {
+        val extra = mediationExtras[key] as Dictionary
+        val className = extra["class_name"] as String
+        val objectClass = Class.forName(className).getDeclaredConstructor().newInstance() as AdNetworkExtras
+        val extras = extra["extras"] as Dictionary
+
+        val bundle = objectClass.buildExtras(extras.toMap())
+        if (bundle != null){
+            adRequestBuilder.addNetworkExtrasBundle(objectClass.getAdapterClass(), bundle)
+        }
+        else{
+            LogUtils.debug("bundle is null: $className")
+        }
+    }
+    val extras = this["extras"] as Dictionary
+
+    for ((key) in extras) {
+        val networkExtrasBundle = Bundle()
+        when (val value = extras[key]) {
+            is String -> networkExtrasBundle.putString(key, value)
+            is Int -> networkExtrasBundle.putInt(key, value)
+        }
+        adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter::class.java, networkExtrasBundle)
+    }
+
+    for (keyword in keywords) {
+        adRequestBuilder.addKeyword(keyword)
+    }
+
+    return adRequestBuilder.build()
 }
 
