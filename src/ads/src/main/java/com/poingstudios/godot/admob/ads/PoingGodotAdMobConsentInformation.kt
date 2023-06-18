@@ -1,13 +1,18 @@
 package com.poingstudios.godot.admob.ads
 
+import android.util.ArraySet
 import com.google.android.ump.ConsentForm
+import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentInformation.OnConsentInfoUpdateFailureListener
 import com.google.android.ump.ConsentInformation.OnConsentInfoUpdateSuccessListener
 import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.UserMessagingPlatform
+import com.poingstudios.godot.admob.ads.converters.convertToConsentRequestParameters
+import com.poingstudios.godot.admob.ads.converters.convertToGodotDictionary
 import com.poingstudios.godot.admob.core.utils.LogUtils
 import org.godotengine.godot.Dictionary
 import org.godotengine.godot.Godot
+import org.godotengine.godot.plugin.SignalInfo
 import org.godotengine.godot.plugin.UsedByGodot
 
 
@@ -15,40 +20,45 @@ class PoingGodotAdMobConsentInformation(godot: Godot?) : org.godotengine.godot.p
     override fun getPluginName(): String {
         return this::class.simpleName.toString()
     }
+
+    override fun getPluginSignals(): MutableSet<SignalInfo> {
+        val signals: MutableSet<SignalInfo> = ArraySet()
+        signals.add(SignalInfo("on_consent_info_updated_success"))
+        signals.add(SignalInfo("on_consent_info_updated_failure", Dictionary::class.java))
+        return signals
+    }
+
+
+    @UsedByGodot
+    fun get_consent_status() : Int{
+        return UserMessagingPlatform.getConsentInformation(activity!!).consentStatus
+    }
+
+    @UsedByGodot
+    fun get_is_consent_form_available() : Boolean{
+        return UserMessagingPlatform.getConsentInformation(activity!!).isConsentFormAvailable
+    }
+
     @UsedByGodot
     fun update(consentRequestParametersDictionary: Dictionary){
-        LogUtils.debug("update PoingGodotAdMobConsentInformation: $consentRequestParametersDictionary")
-        var consentForm1: ConsentForm
+        val consentRequestParameters = consentRequestParametersDictionary.convertToConsentRequestParameters(activity!!)
+
         val consentInformation = UserMessagingPlatform.getConsentInformation(activity!!)
-        val params = ConsentRequestParameters.Builder()
-            .setTagForUnderAgeOfConsent(false)
-            .build()
+
         consentInformation.requestConsentInfoUpdate(
             activity!!,
-            params,
+            consentRequestParameters,
             {
-                LogUtils.debug("requestConsentInfoUpdate")
-                // The consent information state was updated.
-                // You are now ready to check if a form is available.
-                UserMessagingPlatform.loadConsentForm(
-                    activity!!,
-                    {
-                        LogUtils.debug("loadConsentForm")
-                        consentForm1 = it
-                        consentForm1.show(activity!!) {
-                            LogUtils.debug("showFormError ${it?.message}")
-                        }
-                    },
-                    {
-                        LogUtils.debug("loadConsentFormError")
-                    }
-                )
+                emitSignal("on_consent_info_updated_success")
             },
             {
-                LogUtils.debug("requestConsentInfoUpdateError")
-                // Handle the error.
+                emitSignal("on_consent_info_updated_failure", it.convertToGodotDictionary())
             }
         )
+    }
 
+    @UsedByGodot
+    fun reset(){
+        UserMessagingPlatform.getConsentInformation(activity!!).reset()
     }
 }

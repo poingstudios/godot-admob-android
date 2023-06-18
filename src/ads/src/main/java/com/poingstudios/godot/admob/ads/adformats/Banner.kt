@@ -56,12 +56,13 @@ class Banner(
 
     private val mLayoutChangeListener =
         OnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
+            LogUtils.debug("OnLayoutChanged")
             val newSafeArea = getSafeArea()
             if (newSafeArea == safeArea){
                 return@OnLayoutChangeListener
             }
             safeArea = newSafeArea
-            LogUtils.debug("OnLayoutChanged")
+            LogUtils.debug("safeArea changed")
             if (!isHidden) { //only update if is not hidden to improve performance
                 updatePosition()
             }

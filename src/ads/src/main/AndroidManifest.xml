@@ -17,6 +17,9 @@
         <meta-data
             android:name="org.godotengine.plugin.v1.PoingGodotAdMobConsentInformation"
             android:value="com.poingstudios.godot.admob.ads.PoingGodotAdMobConsentInformation" />
+        <meta-data
+            android:name="org.godotengine.plugin.v1.PoingGodotAdMobUserMessagingPlatform"
+            android:value="com.poingstudios.godot.admob.ads.PoingGodotAdMobUserMessagingPlatform" />
     </application>
 
 </manifest>

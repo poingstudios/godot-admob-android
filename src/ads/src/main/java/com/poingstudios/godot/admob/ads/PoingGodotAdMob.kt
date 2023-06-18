@@ -49,7 +49,7 @@ class PoingGodotAdMob(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(
 
     override fun getPluginSignals(): MutableSet<SignalInfo> {
         val signals: MutableSet<SignalInfo> = ArraySet()
-        signals.add(SignalInfo("initialization_complete", Dictionary::class.java))
+        signals.add(SignalInfo("on_initialization_complete", Dictionary::class.java))
         return signals
     }
 
@@ -57,7 +57,7 @@ class PoingGodotAdMob(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(
     fun initialize() {
         MobileAds.initialize(aActivity) { initializationStatus ->
             val initializationStatusDictionary = initializationStatus.convertToGodotDictionary()
-            emitSignal("initialization_complete", initializationStatusDictionary)
+            emitSignal("on_initialization_complete", initializationStatusDictionary)
         }
     }
 

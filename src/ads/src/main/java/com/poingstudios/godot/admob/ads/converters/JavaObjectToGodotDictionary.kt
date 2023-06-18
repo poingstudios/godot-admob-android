@@ -26,6 +26,7 @@ import android.os.Bundle
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.initialization.AdapterStatus
 import com.google.android.gms.ads.initialization.InitializationStatus
+import com.google.android.ump.FormError
 import org.godotengine.godot.Dictionary
 
 fun InitializationStatus.convertToGodotDictionary() : Dictionary {
@@ -116,6 +117,15 @@ fun AdSize.convertToGodotDictionary() : Dictionary{
 
     dictionary["width"] = width
     dictionary["height"] = height
+
+    return dictionary
+}
+
+fun FormError.convertToGodotDictionary() : Dictionary{
+    val dictionary = Dictionary()
+
+    dictionary["error_code"] = errorCode
+    dictionary["message"] = message
 
     return dictionary
 }

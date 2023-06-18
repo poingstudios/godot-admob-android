@@ -22,10 +22,42 @@
 
 package com.poingstudios.godot.admob.ads.converters
 
+import android.app.Activity
 import com.google.android.gms.ads.AdSize
+import com.google.android.ump.ConsentDebugSettings
+import com.google.android.ump.ConsentRequestParameters
+import com.poingstudios.godot.admob.core.utils.LogUtils
 import org.godotengine.godot.Dictionary
 
 
-fun Dictionary.convertToGodotDictionary(): AdSize {
+fun Dictionary.convertToAdSize(): AdSize {
     return AdSize(get("width") as Int, get("height") as Int)
 }
+
+fun Dictionary.convertToConsentDebugSettings(activity: Activity) : ConsentDebugSettings {
+    val debugSettingsBuilder = ConsentDebugSettings.Builder(activity)
+
+    debugSettingsBuilder.setDebugGeography(this["debug_geography"] as Int)
+
+    for (value in (this["test_device_hashed_ids"] as Dictionary).values){
+        debugSettingsBuilder.addTestDeviceHashedId(value as String)
+    }
+    return debugSettingsBuilder.build()
+}
+
+fun Dictionary.convertToConsentRequestParameters(activity: Activity): ConsentRequestParameters {
+    val consentRequestParametersBuilder = ConsentRequestParameters.Builder()
+    val tagForUnderAgeOfConsent = this["tag_for_under_age_of_consent"]
+    if (tagForUnderAgeOfConsent is Boolean) {
+        consentRequestParametersBuilder.setTagForUnderAgeOfConsent(tagForUnderAgeOfConsent)
+    }
+
+    val consentDebugSettingsDictionary = this["consent_debug_settings"] as Dictionary?
+    val consentDebugSettings = consentDebugSettingsDictionary?.convertToConsentDebugSettings(activity)
+    if (consentDebugSettings != null){
+        consentRequestParametersBuilder.setConsentDebugSettings(consentDebugSettings)
+    }
+
+    return consentRequestParametersBuilder.build()
+}
+

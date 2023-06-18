@@ -36,7 +36,6 @@ import org.godotengine.godot.Dictionary
 import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.SignalInfo
 import org.godotengine.godot.plugin.UsedByGodot
-import kotlin.reflect.typeOf
 
 
 class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(godot)  {
@@ -76,8 +75,6 @@ class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotP
 
     @UsedByGodot
     fun load_ad(uid : Int, adRequestDictionary : Dictionary, keywords : Array<String>){
-        LogUtils.debug("Loading Ad!, AdRequestDictionary: $adRequestDictionary, KeyWords: ${keywords.joinToString(", ")}")
-
         val adRequestBuilder = AdRequest.Builder()
         val mediationExtras = adRequestDictionary["mediation_extras"] as Dictionary
         for ((key) in mediationExtras) {
