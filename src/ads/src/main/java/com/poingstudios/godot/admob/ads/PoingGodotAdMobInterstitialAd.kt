@@ -1,15 +1,11 @@
 package com.poingstudios.godot.admob.ads
 
 import android.util.ArraySet
-import android.util.Log
 import com.google.android.gms.ads.AdError
-import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
-import com.poingstudios.godot.admob.ads.adformats.Banner
-import com.poingstudios.godot.admob.ads.adformats.Interstitial
 import com.poingstudios.godot.admob.ads.converters.convertToAdRequest
 import com.poingstudios.godot.admob.ads.converters.convertToGodotDictionary
 import com.poingstudios.godot.admob.core.utils.LogUtils
