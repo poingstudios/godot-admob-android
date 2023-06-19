@@ -23,21 +23,15 @@
 package com.poingstudios.godot.admob.ads
 
 import android.app.Activity
-import android.os.Bundle
 import android.util.ArraySet
 import android.view.View
 import android.widget.FrameLayout
-import com.google.ads.mediation.admob.AdMobAdapter
-import com.google.android.gms.ads.AdRequest
 import com.poingstudios.godot.admob.ads.adformats.Banner
 import com.poingstudios.godot.admob.ads.converters.convertToAdRequest
-import com.poingstudios.godot.admob.core.AdNetworkExtras
-import com.poingstudios.godot.admob.core.utils.LogUtils
 import org.godotengine.godot.Dictionary
 import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.SignalInfo
 import org.godotengine.godot.plugin.UsedByGodot
-
 
 class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(godot)  {
     private val banners = mutableListOf<Banner?>()

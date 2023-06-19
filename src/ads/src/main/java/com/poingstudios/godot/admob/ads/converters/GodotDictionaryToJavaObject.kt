@@ -27,6 +27,7 @@ import android.os.Bundle
 import com.google.ads.mediation.admob.AdMobAdapter
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.rewarded.ServerSideVerificationOptions
 import com.google.android.ump.ConsentDebugSettings
 import com.google.android.ump.ConsentRequestParameters
 import com.poingstudios.godot.admob.core.AdNetworkExtras
@@ -101,3 +102,18 @@ fun Dictionary.convertToAdRequest(keywords : Array<String>) : AdRequest{
     return adRequestBuilder.build()
 }
 
+fun Dictionary.convertToServerSideVerificationOptions() : ServerSideVerificationOptions{
+    val options = ServerSideVerificationOptions.Builder()
+
+    val customData = this["custom_data"] as String?
+    val userId = this["user_id"] as String?
+
+    if (!customData.isNullOrEmpty()){
+        options.setCustomData(customData)
+    }
+    if (!userId.isNullOrEmpty()){
+        options.setUserId(userId)
+    }
+
+    return options.build()
+}

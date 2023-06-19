@@ -32,13 +32,13 @@ import android.view.ViewGroup
 import android.view.WindowInsets
 import android.widget.FrameLayout
 import com.google.android.gms.ads.*
+import com.poingstudios.godot.admob.ads.converters.convertToAdSize
 import com.poingstudios.godot.admob.ads.converters.convertToGodotDictionary
 import com.poingstudios.godot.admob.core.utils.LogUtils
 import org.godotengine.godot.Dictionary
 import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.GodotPlugin.emitSignal
 import org.godotengine.godot.plugin.SignalInfo
-
 
 class Banner(
     UID: Int,
@@ -93,7 +93,7 @@ class Banner(
     init {
         val adSizeDictionary = adViewDictionary["ad_size"] as Dictionary
         val adUnitId = adViewDictionary["ad_unit_id"] as String
-        val adSize = AdSize(adSizeDictionary["width"] as Int, adSizeDictionary["height"] as Int)
+        val adSize = adSizeDictionary.convertToAdSize()
         activity.runOnUiThread {
             mAdView = AdView(activity)
             mAdView.setAdSize(adSize)
