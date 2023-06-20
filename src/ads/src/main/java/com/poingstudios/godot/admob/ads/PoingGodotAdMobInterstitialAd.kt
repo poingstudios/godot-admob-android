@@ -116,4 +116,11 @@ class PoingGodotAdMobInterstitialAd(godot: Godot?) : org.godotengine.godot.plugi
             interstitials[uid]?.show(activity!!)
         }
     }
+
+    @UsedByGodot
+    fun destroy(uid : Int){
+        LogUtils.debug("DESTROYING ${javaClass.simpleName}")
+        interstitials[uid] = null //just set to null in order to try to clean up memory
+    }
+
 }

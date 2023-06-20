@@ -126,6 +126,12 @@ class PoingGodotAdMobRewardedAd(godot: Godot?) : org.godotengine.godot.plugin.Go
     }
 
     @UsedByGodot
+    fun destroy(uid : Int){
+        LogUtils.debug("DESTROYING ${javaClass.simpleName}")
+        rewardedAds[uid] = null //just set to null in order to try to clean up memory
+    }
+
+    @UsedByGodot
     fun set_server_side_verification_options(uid : Int, serverSideVerificationOptionsDictionary: Dictionary){
         activity!!.runOnUiThread{
             LogUtils.debug("setServerSideVerificationOptions: $serverSideVerificationOptionsDictionary.")
