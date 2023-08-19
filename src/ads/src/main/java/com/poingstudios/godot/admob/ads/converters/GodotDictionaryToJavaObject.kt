@@ -73,15 +73,20 @@ fun Dictionary.convertToAdRequest(keywords : Array<String>) : AdRequest{
     for ((key) in mediationExtras) {
         val extra = mediationExtras[key] as Dictionary
         val className = extra["class_name"] as String
-        val objectClass = Class.forName(className).getDeclaredConstructor().newInstance() as AdNetworkExtras
-        val extras = extra["extras"] as Dictionary
 
-        val bundle = objectClass.buildExtras(extras.toMap())
-        if (bundle != null){
-            adRequestBuilder.addNetworkExtrasBundle(objectClass.getAdapterClass(), bundle)
-        }
-        else{
-            LogUtils.debug("bundle is null: $className")
+        try {
+            val objectClass = Class.forName(className).getDeclaredConstructor().newInstance() as AdNetworkExtras
+            val extras = extra["extras"] as Dictionary
+
+            val bundle = objectClass.buildExtras(extras.toMap())
+            if (bundle != null){
+                adRequestBuilder.addNetworkExtrasBundle(objectClass.getAdapterClass(), bundle)
+            }
+            else{
+                LogUtils.debug("bundle is null: $className")
+            }
+        } catch (e: Exception) {
+            LogUtils.debug("Error creating instance of $className: ${e.message}, check if you mark the Mediation when export the plugin")
         }
     }
     val extras = this["extras"] as Dictionary
