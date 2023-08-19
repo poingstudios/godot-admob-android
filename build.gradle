@@ -24,7 +24,7 @@ ext {
 task exportAar(type: Copy) {
     def aarFiles = []
     subprojects { subproject ->
-        if (subproject.file("src").exists()) {
+        if (subproject.file("src").exists() && subproject.name != "core") {
             def moduleAarDir = subproject.file("build/outputs/aar")
             aarFiles.addAll(fileTree(moduleAarDir) {
                 include '*release.aar'
