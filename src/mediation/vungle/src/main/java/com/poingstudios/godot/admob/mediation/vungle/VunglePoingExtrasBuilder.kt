@@ -36,16 +36,20 @@ abstract class VunglePoingExtrasBuilder : AdNetworkExtras {
     private val SOUND_ENABLED_KEY = "SOUND_ENABLED_KEY"
 
     override fun buildExtras(extras: Map<String, Any>?): Bundle? {
-        val placements = extras?.get(ALL_PLACEMENTS_KEY) ?: return null
+        val placements = extras?.get(ALL_PLACEMENTS_KEY)
 
-        val extrasBuilder = VungleExtrasBuilder((placements as String).split(",").toTypedArray())
+        val extrasBuilder = if (placements != null) {
+            VungleExtrasBuilder((placements as String).split(",").toTypedArray())
+        } else {
+            VungleExtrasBuilder(null)
+        }
 
-        val soundEnabled = extras[SOUND_ENABLED_KEY]
+        val soundEnabled = extras?.get(SOUND_ENABLED_KEY)
         if (soundEnabled != null) {
             extrasBuilder.setStartMuted(soundEnabled as Boolean)
         }
 
-        val userId = extras[USER_ID_KEY]
+        val userId = extras?.get(USER_ID_KEY)
         if (userId != null) {
             extrasBuilder.setUserId(userId as String)
         }
