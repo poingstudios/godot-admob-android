@@ -55,8 +55,36 @@ task exportFiles(dependsOn: [exportAar, exportGdap])
 gradle.taskGraph.whenReady { taskGraph ->
     if (taskGraph.hasTask(exportFiles)) {
         if (pluginExportPath == null) {
-            throw new GradleException("The export path for AAR files is not defined. Use the command './gradlew exportFiles -pluginExportPath=<desired-path>' to export the AAR files.")
+            throw new GradleException("The export path for AAR files is not defined. Use the command './gradlew exportFiles -PpluginExportPath=<desired-path>' to export the AAR files.")
         }
         println "Exporting AAR files to: $pluginExportPath"
+    }
+}
+
+subprojects { subproject ->
+    if (subproject.file("src").exists() && subproject.name != "core") {
+        def moduleAarDir = subproject.file("build/outputs/aar")
+        def aarFiles = fileTree(moduleAarDir) {
+            include '*release.aar'
+        }
+
+        def configGdapDir = subproject.file("config")
+        def gdapFiles = fileTree(configGdapDir) {
+            include '*.gdap'
+        }
+
+        task exportAndZip(type: Zip) {
+
+            archiveFileName.set("${subproject.name}.zip")
+            destinationDirectory.set(file("${rootProject.projectDir}/.output"))
+
+            into("poing-godot-admob-libs") {
+                from(aarFiles)
+            }
+
+            from(gdapFiles) {
+                include '*.gdap'
+            }
+        }
     }
 }

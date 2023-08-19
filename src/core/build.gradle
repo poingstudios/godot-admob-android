@@ -62,3 +62,11 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
+
+task copyAar(type: Copy) {
+    from configurations.archives.allArtifacts.files
+    include '*.aar'
+    into "${project(':src:ads').buildDir}/outputs/aar"
+}
+
+tasks.build.dependsOn copyAar
