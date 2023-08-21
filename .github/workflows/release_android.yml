@@ -23,31 +23,24 @@ jobs:
         if [ ${#CURRENT_GODOT_VERSION} -eq 1 ]; then CURRENT_GODOT_VERSION="${CURRENT_GODOT_VERSION}.0"; fi
         echo "CURRENT_GODOT_VERSION=${CURRENT_GODOT_VERSION}" >> $GITHUB_ENV
 
-    - name: Build Android Action
-      id: build-android
-      uses: Poing-Studios/godot-android-action@master
-      with:
-        godot_version: ${{matrix.GODOT_VERSIONS}}
-        project_path: admob
-        gdap_file_path: admob/AdMob.gdap
+    - name: Download and prepare the Stable Godot .AAR LIB
+      run: |
+        chmod +x ./scripts/unix/download_godot.sh
+        ./scripts/unix/download_godot.sh ${{env.CURRENT_GODOT_VERSION}}
 
-    - uses: actions/download-artifact@v3
-      with:
-        name: ${{ steps.build-android.outputs.artifact_name }}
-        path: artifacts_output
+    - name: Build Plugins
+      run: |
+        chmod +x ./gradlew
+        ./gradlew build
 
     - name: Compress the artifact output
       run: |
-        OUTPUT_FILENAME=android-template-v${{env.CURRENT_GODOT_VERSION}}.zip
-        echo "OUTPUT_FILENAME=${OUTPUT_FILENAME}" >> $GITHUB_ENV
-        zip -r ${OUTPUT_FILENAME} .
-        ls -R
-      working-directory: artifacts_output
+        ./gradlew zipPlugins -PgodotVersion="${{env.CURRENT_GODOT_VERSION}}"
 
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: artifacts_output/${{ env.OUTPUT_FILENAME }}
+        file: .output/poing-admob-android-v${{env.CURRENT_GODOT_VERSION}}.zip
         tag: ${{ github.ref }}
         overwrite: true
