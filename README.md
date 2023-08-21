@@ -40,7 +40,9 @@
       The <b>purpose</b> of this plugin is to always keep <b>up to date with Godot</b>, supporting <b>ALMOST ALL</b> versions from 3.x to 4.x (when it is released), and also make the code <b>compatible</b> on <b>Android and <a href="https://github.com/Poing-Studios/godot-admob-ios">iOS</a></b>, so each advertisement will work <b>identically on both systems</b>.
     </div>
   </div>
-  <img src="static/admob.webp" alt="Preview" style="width: auto; height: 400px;">
+  <div>
+    <img src="static/admob.webp" alt="Preview">
+  </div>
 </div>
 
 
