@@ -10,5 +10,14 @@ CURRENT_GODOT_VERSION="$1"
 
 chmod +x ./scripts/unix/download_godot.sh
 ./scripts/unix/download_godot.sh "${CURRENT_GODOT_VERSION}"
+./gradlew clean
 ./gradlew build
+
+BUILD_EXIT_CODE=$?
+
+if [ $BUILD_EXIT_CODE -ne 0 ]; then
+  echo "Error: ./gradlew build failed with exit code $BUILD_EXIT_CODE"
+  exit 1
+fi
+
 ./gradlew zipPlugins -PgodotVersion="${CURRENT_GODOT_VERSION}"
