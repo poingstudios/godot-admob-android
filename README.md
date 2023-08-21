@@ -16,9 +16,6 @@
   <a href="https://github.com/Poing-Studios/godot-admob-android/actions">
     <img src="https://github.com/Poing-Studios/godot-admob-android/workflows/Build%20Android/badge.svg">
   </a>
-  <a href="https://github.com/Poing-Studios/godot-admob-android/blob/master/admob/build.gradle#L30">
-    <img src="https://img.shields.io/badge/GAD SDK Android-v-informational">
-  </a>
   <a href="https://github.com/Poing-Studios/godot-admob-android/releases">
     <img src="https://img.shields.io/github/downloads/Poing-Studios/godot-admob-android/total?style=social">
   </a>
@@ -34,24 +31,21 @@
 </p>
 
 ## About
+<div style="display: flex; align-items: center;">
+  <div>
+    <div>
+      This repository is for a <i>Godot Engine Plugin</i> that allows showing the ads offered by <b>AdMob</b> in an <b>easy</b> way, without worrying about the building or version, <b>just download and use</b>.
+    </div>
+    <div>
+      The <b>purpose</b> of this plugin is to always keep <b>up to date with Godot</b>, supporting <b>ALMOST ALL</b> versions from 3.x to 4.x (when it is released), and also make the code <b>compatible</b> on <b>Android and <a href="https://github.com/Poing-Studios/godot-admob-ios">iOS</a></b>, so each advertisement will work <b>identically on both systems</b>.
+    </div>
+  </div>
+  <img src="static/admob.webp" alt="Preview" style="width: auto; height: 400px;">
+</div>
 
-<table>
-  <tr>
-  <td>
 
-  This repository is for a _Godot Engine Plugin_ that allows showing the ads offered by **AdMob** in an **easy** way, without worrying about the building or version, **just download and use**.
 
-  The **purpose** of this plugin is to always keep **up to date with Godot**, supporting **ALMOST ALL** versions from 3.x to 4.x (when it is released), and also make the code **compatible** on **Android and [iOS](https://github.com/Poing-Studios/godot-admob-ios)**, so each advertisement will work **identically on both systems**.
 
-  ![Preview](https://i.imgur.com/u5y2GEx.png)
-
-  <p align="right">
-    <sub>(Preview)</sub>
-  </p>
-
-  </td>
-  </tr>
-</table>
 
 ## Features
   
