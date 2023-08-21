@@ -30,41 +30,23 @@
   <a href="https://github.com/Poing-Studios/godot-admob-android/releases">Downloads</a> 
 </p>
 
-## About
-<div style="display: flex; align-items: center;">
-  <div>
-    <div>
-      This repository is for a <i>Godot Engine Plugin</i> that allows showing the ads offered by <b>AdMob</b> in an <b>easy</b> way, without worrying about the building or version, <b>just download and use</b>.
-    </div>
-    <div>
-      The <b>purpose</b> of this plugin is to always keep <b>up to date with Godot</b>, supporting <b>ALMOST ALL</b> versions from 3.x to 4.x (when it is released), and also make the code <b>compatible</b> on <b>Android and <a href="https://github.com/Poing-Studios/godot-admob-ios">iOS</a></b>, so each advertisement will work <b>identically on both systems</b>.
-    </div>
-  </div>
-  <div>
-    <img src="static/admob.webp" alt="Preview">
-  </div>
-</div>
+     
+## About 
 
+<img src="static/admob.webp" align="right"
+     alt="Preview" width="auto" height="320">
 
+This repository is for a _Godot Engine Plugin_ that allows showing the ads offered by **AdMob** in an **easy** way, without worrying about the building or version, **just download and use**.
 
+The **purpose** of this plugin is to always keep **up to date with Godot**, supporting **ALMOST ALL** versions from 3.x to 4.x (when it is released), and also make the code **compatible** on **Android and [iOS](https://github.com/Poing-Studios/godot-admob-ios)**, so each advertisement will work **identically on both systems**.
 
-
-## Features
-  
-|                                       Ad Formats                                        | Available 🤖 |
-| :-------------------------------------------------------------------------------------: | :---------: |
-|                                         Banner                                          |      ✔️      |
-|                                      Interstitial                                       |      ✔️      |
-|                                        Rewarded                                         |      ✔️      |
-|        [Rewarded Interstitial](https://support.google.com/admob/answer/9884467)         |      ✔️      |
-| Native is [REMOVED](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/issues/75) |      ❗      |
-
-|   Others   | Available 🤖 |
-| :--------: | :---------: |
-| EU consent |      ✔️      |
-| Targeting  |      ✔️      |
-| Mediation  |      ❌      |
-|   CI/CD    |      ✔️      |
+- It's a wrapper for [Google Mobile Ads SDK](https://developers.google.com/admob/android/sdk).
+- Easy Configuration.
+- Support with almost all the Ad Formats: **Banner**, **Interstitial**, **Rewarded**, **Rewarded Interstitial**.
+- Support for EU Consent using UMP.
+- Possibility to Targeting.
+- Real integration with Mediation: **AdColony**, **Meta**, **Vungle**.
+- CI/CD for better development and deployment.
 
 
 ## Installation 
