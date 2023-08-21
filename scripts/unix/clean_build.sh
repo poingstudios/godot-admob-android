@@ -1,3 +1,4 @@
+#!/bin/bash
 echo "Executing Clean Build"
 
 if [ $# -eq 0 ]; then
@@ -8,6 +9,6 @@ fi
 CURRENT_GODOT_VERSION="$1"
 
 chmod +x ./scripts/unix/download_godot.sh
-./scripts/unix/download_godot.sh "${CURRENT_GODOT_VERSION}" stable
+./scripts/unix/download_godot.sh "${CURRENT_GODOT_VERSION}"
 ./gradlew build
 ./gradlew zipPlugins -PgodotVersion="${CURRENT_GODOT_VERSION}"

@@ -1,7 +1,18 @@
-cd godot-lib
+#!/bin/bash
+if [ $# -lt 1 ]; then
+  echo "Error: Please provide the Godot version as an argument."
+  exit 1
+fi
 
 CURRENT_GODOT_VERSION="$1"
-BUILD_VERSION="$2"
+
+if [ -z "$2" ]; then
+  BUILD_VERSION="stable"
+else
+  BUILD_VERSION="$2"
+fi
+
+cd godot-lib
 
 GODOT_AAR_LIB="godot-lib.aar"
 GODOT_AAR_FILENAME="godot-lib.${CURRENT_GODOT_VERSION}.${BUILD_VERSION}"
