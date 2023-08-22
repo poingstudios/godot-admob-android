@@ -62,8 +62,9 @@ The **purpose** of this plugin is to always keep **up to date with Godot**, supp
 - To get started, download the `android-template-v{{ your_godot_version }}.zip` file from the [releases tab](https://github.com/Poing-Studios/godot-admob-android/releases). We recommend checking the [supported Godot version](https://github.com/Poing-Studios/godot-admob-versions/blob/master/versions.json) before proceeding. You can also use the [AdMob Plugin](https://github.com/Poing-Studios/godot-admob-plugin) for this step by navigating to `Tools -> AdMob Download Manager -> Android -> LatestVersion`.
 
 ### 🧑‍💻Usage
+- Video tutorial - soon.
 - Enable Android Build Template. [Check the tutorial here](https://docs.godotengine.org/en/stable/tutorials/export/android_custom_build.html).
-- Inside `android-?-template-v{{ your_godot_version }}.zip` you downloaded, you will face some folders like `'ads'`, `adcolony`, `meta`, `vungle`. To AdMob works `ads` is required, but if you want [Mediation](https://support.google.com/admob/answer/13420272?hl=en), you need the other folders.
+- Inside `android-?-template-v{{ your_godot_version }}.zip` you downloaded, you will face some folders like `'ads'`, `'adcolony'`, `'meta'`, `'vungle'`. To AdMob works only `'ads'` is required, but if you want [Mediation](https://support.google.com/admob/answer/13420272?hl=en), you need the other folders.
 - Move the content inside the folder which you need into ```res://android/plugins``` directory on your Godot project.
 - Add your [AdMob App ID](https://support.google.com/admob/answer/7356431) to your app's ```res://android/build/AndroidManifest.xml``` file by adding a ```<meta-data>``` tag with name ```com.google.android.gms.ads.APPLICATION_ID```, as shown below. If you don't do this then you App will crash on start-up.
 
@@ -73,28 +74,37 @@ The **purpose** of this plugin is to always keep **up to date with Godot**, supp
 	android:name="com.google.android.gms.ads.APPLICATION_ID"
 	android:value="ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy"/>
 ```
+- Export the project enabling the `Use Custom Build` and `Ad Mob`, if you have Mediation, also mark `Ad Mob Meta`, `Ad Mob AdColony` etc...
 
-- Export the project enabling the `Use Custom Build` and `AdMob Plugin`:
-- ![Export Project](https://i.imgur.com/MPbnmoD.png)
 
-## iOS (v3.3+):
-- https://github.com/Poing-Studios/godot-admob-ios
+## 📎Useful links:
+- 🍏 iOS: https://github.com/Poing-Studios/godot-admob-ios
+- ⏳ Plugin for Godot below v4.1: https://github.com/Poing-Studios/godot-admob-android/tree/v2
 
-## User Messaging Platform (UMP):
-- To use UMP due of EUROPE ePrivacy Directive and the General Data Protection Regulation (GDPR), you first need to do configure your [Funding Choices](https://support.google.com/fundingchoices/answer/9180084).
-- If your app is "ForChildDirectedTreatment" then the UMP [won't appear and signals won't work for consent](https://stackoverflow.com/a/63232045), this is normal so don't worry.
-- To show personalized or non-personalized ads, then you need to change inside your [AdMob Account](https://apps.admob.com/?utm_source=internal&utm_medium=et&utm_campaign=helpcentrecontextualopt&utm_term=http://goo.gl/6Xkfcf&subid=ww-ww-et-amhelpv4)
-![npa-image](https://i.stack.imgur.com/0v1eL.png)
+## 📄Documentation
+For a complete documentation of this Plugin: [check here](docs).
 
-## Documentation
-For a complete documentation of this Plugin, [check our wiki](https://github.com/Poing-Studios/Godot-admob-android/wiki).
+Alternatively, you can check the docs of AdMob itself of [Android](https://developers.google.com/admob/android/quick-start).
 
-Alternatively, you can check the docs of AdMob itself of [Android](https://developers.google.com/admob/android/quick-start) and [iOS](https://developers.google.com/admob/ios/quick-start).
+## 🙏 Support
+If you find our work valuable and would like to support us, consider contributing via these platforms:
 
-## Contribute
-We are a dedicated area to how contribute for Android and iOS on our wiki.
-- Android: https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/wiki/Android-Plugin#developing
-- iOS: https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/wiki/iOS-Plugin#developing
+[![Patreon](https://img.shields.io/badge/Support%20us%20on-Patreon-orange?style=for-the-badge&logo=patreon)](https://patreon.com/poingstudios)
 
-## Getting help
-[![DISCUSSIONS](https://img.shields.io/badge/Poing%20AdMob-%F0%9F%86%98%20Discussions%C2%A0%F0%9F%86%98-green?style=for-the-badge)](https://github.com/Poing-Studios/Godot-AdMob-Android-iOS/discussions)
+[![Ko-fi](https://img.shields.io/badge/Buy%20us%20a-coffee-yellow?style=for-the-badge&logo=ko-fi)](https://ko-fi.com/poingstudios)
+
+[![Paypal](https://img.shields.io/badge/Donate-via%20Paypal-blue?style=for-the-badge&logo=paypal)](https://www.paypal.com/donate/?hosted_button_id=EBUVPEGF4BUR8)
+
+Your support helps us continue to improve and maintain this plugin. Thank you for being a part of our community!
+
+
+## 🆘Getting help
+[![DISCUSSIONS](https://img.shields.io/badge/Discussions-green?style=for-the-badge)](https://github.com/Poing-Studios/godot-admob-android/discussions)
+[![DISCORD](https://img.shields.io/badge/Discord-7289DA?style=for-the-badge)](https://discord.com/invite/YEPvYjSSMk)
+
+
+
+## ⭐ Star History
+If you appreciate our work, don't forget to give us a star on GitHub! ⭐
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Poing-studios/godot-admob-android&type=Date)](https://star-history.com/#poing-studios/godot-admob-android&Date)
