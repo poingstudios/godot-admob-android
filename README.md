@@ -31,38 +31,41 @@
 </p>
 
      
-## About 
+## ❓ About 
 
 <img src="static/admob.webp" align="right"
-     alt="Preview" width="auto" height="320">
+     alt="Preview" width="auto" height="390">
 
 This repository is for a _Godot Engine Plugin_ that allows showing the ads offered by **AdMob** in an **easy** way, without worrying about the building or version, **just download and use**.
 
-The **purpose** of this plugin is to always keep **up to date with Godot**, supporting **ALMOST ALL** versions from 3.x to 4.x (when it is released), and also make the code **compatible** on **Android and [iOS](https://github.com/Poing-Studios/godot-admob-ios)**, so each advertisement will work **identically on both systems**.
+The **purpose** of this plugin is to always keep **up to date with Godot**, supporting **ALMOST ALL** versions from v4.1+, and also make the code **compatible** on **Android and [iOS](https://github.com/Poing-Studios/godot-admob-ios)**, so each advertisement will work **identically on both systems**.
 
-- It's a wrapper for [Google Mobile Ads SDK](https://developers.google.com/admob/android/sdk).
-- Easy Configuration.
-- Support with almost all the Ad Formats: **Banner**, **Interstitial**, **Rewarded**, **Rewarded Interstitial**.
-- Support for EU Consent using UMP.
-- Possibility to Targeting.
-- Real integration with Mediation: **AdColony**, **Meta**, **Vungle**.
-- CI/CD for better development and deployment.
+### 🔑 Key features
+
+- It's a wrapper for [Google Mobile Ads SDK](https://developers.google.com/admob/android/sdk). 🎁
+- Easy Configuration. 😀
+- Supports nearly all Ad Formats: **Banner**, **Interstitial**, **Rewarded**, **Rewarded Interstitial**. 📺
+- GDPR Compliance with UMP Support. ✉️
+- Targeting Capabilities. 🎯
+- Seamless integration with Mediation partners: **AdColony**, **Meta**, **Vungle**. 💰
+- CI/CD for streamlined development and deployment. 🔄🚀
+- Features a dedicated [Godot Plugin](https://github.com/Poing-Studios/Godot-AdMob-Editor-Plugin), reducing the need for extensive coding. 🔌
 
 
-## Installation 
-- First of all you need to install the [AdMob Editor Plugin](https://github.com/Poing-Studios/Godot-AdMob-Editor-Plugin), you can download direcly from [Godot Assets](https://godotengine.org/asset-library/asset/933).
+## 🙋‍♂️How to use 
+- We recommend you to use the [AdMob Plugin](https://github.com/Poing-Studios/godot-admob-plugin), you can download direcly from [Godot Assets](https://godotengine.org/asset-library/asset/933).
+- After download, we recommend you to read the [README.md](https://github.com/Poing-Studios/godot-admob-plugin/blob/master/README.md) of the Plugin to know how to use.
 
-## Android (v3.2.2+):
-- Tutorial: https://youtu.be/ZnlH3INcAGs
-- Download the ```android-?-template-v{{ your_godot_version }}.zip``` in the [releases tab](https://github.com/Poing-Studios/godot-admob-android/releases), we recommend you to use always the latest.
-- Enable Android Build Template. [Check the tutorial here](https://docs.godotengine.org/en/stable/getting_started/workflow/export/android_custom_build.html)
-- Extract the content in ```android-?-template-v{{ your_godot_version }}.zip``` into ```res://android/plugins``` directory on your Godot project
-- Add your [AdMob App ID](https://support.google.com/admob/answer/7356431) to your app's ```res://android/build/AndroidManifest.xml``` file by adding a ```<meta-data>``` tag with name ```com.google.android.gms.ads.APPLICATION_ID```, as shown below.
+## 📥Installing:
+- To get started, download the `android-template-v{{ your_godot_version }}.zip` file from the [releases tab](https://github.com/Poing-Studios/godot-admob-android/releases). We recommend checking the [supported Godot version](https://github.com/Poing-Studios/godot-admob-versions/blob/master/versions.json) before proceeding. You can also use the [AdMob Plugin](https://github.com/Poing-Studios/godot-admob-plugin) for this step by navigating to `Tools -> AdMob Download Manager -> Android -> LatestVersion`.
+- Enable Android Build Template. [Check the tutorial here](https://docs.godotengine.org/en/stable/tutorials/export/android_custom_build.html).
+- Inside `android-?-template-v{{ your_godot_version }}.zip` you downloaded, you will face some folders like `'ads'`, `adcolony`, `meta`, `vungle`. To AdMob works `ads` is required, but if you want [Mediation](https://support.google.com/admob/answer/13420272?hl=en), you need the other folders.
+- Move the content inside the folder which you need into ```res://android/plugins``` directory on your Godot project.
+- Add your [AdMob App ID](https://support.google.com/admob/answer/7356431) to your app's ```res://android/build/AndroidManifest.xml``` file by adding a ```<meta-data>``` tag with name ```com.google.android.gms.ads.APPLICATION_ID```, as shown below. If you don't do this then you App will crash on start-up.
 
 ``` xml
 <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
 <meta-data
-	tools:replace="android:value"
 	android:name="com.google.android.gms.ads.APPLICATION_ID"
 	android:value="ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy"/>
 ```
