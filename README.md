@@ -56,8 +56,12 @@ The **purpose** of this plugin is to always keep **up to date with Godot**, supp
 - We recommend you to use the [AdMob Plugin](https://github.com/Poing-Studios/godot-admob-plugin), you can download direcly from [Godot Assets](https://godotengine.org/asset-library/asset/933).
 - After download, we recommend you to read the [README.md](https://github.com/Poing-Studios/godot-admob-plugin/blob/master/README.md) of the Plugin to know how to use.
 
-## 📥Installing:
+## 📦Installing:
+
+### 📥Download
 - To get started, download the `android-template-v{{ your_godot_version }}.zip` file from the [releases tab](https://github.com/Poing-Studios/godot-admob-android/releases). We recommend checking the [supported Godot version](https://github.com/Poing-Studios/godot-admob-versions/blob/master/versions.json) before proceeding. You can also use the [AdMob Plugin](https://github.com/Poing-Studios/godot-admob-plugin) for this step by navigating to `Tools -> AdMob Download Manager -> Android -> LatestVersion`.
+
+### 🧑‍💻Usage
 - Enable Android Build Template. [Check the tutorial here](https://docs.godotengine.org/en/stable/tutorials/export/android_custom_build.html).
 - Inside `android-?-template-v{{ your_godot_version }}.zip` you downloaded, you will face some folders like `'ads'`, `adcolony`, `meta`, `vungle`. To AdMob works `ads` is required, but if you want [Mediation](https://support.google.com/admob/answer/13420272?hl=en), you need the other folders.
 - Move the content inside the folder which you need into ```res://android/plugins``` directory on your Godot project.
@@ -68,13 +72,6 @@ The **purpose** of this plugin is to always keep **up to date with Godot**, supp
 <meta-data
 	android:name="com.google.android.gms.ads.APPLICATION_ID"
 	android:value="ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy"/>
-```
-- (Optional) If you are using UMP, you can add too the [Delay app measurement](https://developers.google.com/admob/ump/android/quick-start#delay_app_measurement_optional) inside ```AndroidManifest.xml``` 
-
-``` xml
-<meta-data
-	android:name="com.google.android.gms.ads.DELAY_APP_MEASUREMENT_INIT"
-	android:value="true"/>
 ```
 
 - Export the project enabling the `Use Custom Build` and `AdMob Plugin`:
