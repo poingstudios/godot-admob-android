@@ -41,6 +41,6 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: .output/poing-admob-android-v${{env.CURRENT_GODOT_VERSION}}.zip
+        file: .output/poing-godot-admob-android-v${{env.CURRENT_GODOT_VERSION}}.zip
         tag: ${{ github.ref }}
         overwrite: true
