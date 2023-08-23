@@ -26,9 +26,11 @@ GODOT_AAR_FILENAME+=".template_release.aar"
 FULL_PATHNAME_DOWNLOAD_GODOT_AAR+="/$GODOT_AAR_FILENAME"
 
 HTTP_STATUS=$(curl -o "$GODOT_AAR_FILENAME" -w "%{http_code}" "$FULL_PATHNAME_DOWNLOAD_GODOT_AAR")
-rm "$GODOT_AAR_LIB"
 
 if [ "$HTTP_STATUS" -eq 200 ]; then
+  if [ -f "$GODOT_AAR_LIB" ]; then
+    rm "$GODOT_AAR_LIB"
+  fi
   mv "$GODOT_AAR_FILENAME" "$GODOT_AAR_LIB"
 else
   echo "Error: curl failed with HTTP status $HTTP_STATUS maybe you put a invalid version"
