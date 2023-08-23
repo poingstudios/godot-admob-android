@@ -1,0 +1,72 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 24
+        targetSdk 33
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+
+    def configFile = file('../ads/config/poing-godot-admob-ads.gdap')
+
+    def startName = "poing-godot-admob"
+    def moduleName = project.getName().replaceAll(":", "-") //the module that is being built at the moment
+    def fullModuleName = "$startName-$moduleName"
+    def versionRegex = /${fullModuleName}-(.+?)-(?:release|debug).aar"/
+
+    def versionMatch = configFile.text =~ versionRegex
+    def version = versionMatch[0][1] //if the version is not found, there will be an error, which should be expected because the generated version must be the same as the one in the configuration file
+    println "Version find: $version, of module $moduleName"
+
+    libraryVariants.all { variant ->
+        variant.outputs.all {
+            def outputName = "${fullModuleName}-${version}-${variant.name}.aar"
+            println "Output file will be: $outputName"
+            outputFileName = "$outputName"
+        }
+    }
+}
+
+
+dependencies {
+    File gdap_file = file("../ads/config/poing-godot-admob-ads.gdap")
+    def match = gdap_file.text =~ /(?<=remote=)[^;]+/
+
+    def remote_content = Eval.me(match[0])
+
+    for(item in remote_content){
+        println "api item: $item"
+        api item
+    }
+
+    api project(':libs:godot-lib')
+
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+
+task copyAar(type: Copy) {
+    from configurations.archives.allArtifacts.files
+    include '*.aar'
+    into "${project(':src:ads').buildDir}/outputs/aar"
+}
+
+tasks.build.dependsOn copyAar

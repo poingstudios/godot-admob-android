@@ -1,9 +1,0 @@
-[config]
-
-name="AdMob"
-binary_type="local"
-binary="admob-release.aar"
-
-[dependencies]
-
-remote=["com.google.android.gms:play-services-ads:21.3.0", "com.google.android.ump:user-messaging-platform:2.0.0"]
