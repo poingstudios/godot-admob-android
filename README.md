@@ -50,6 +50,7 @@ The **purpose** of this plugin is to always keep **up to date with Godot**, supp
 - Seamless integration with Mediation partners: **AdColony**, **Meta**, **Vungle**. 💰
 - CI/CD for streamlined development and deployment. 🔄🚀
 - Features a dedicated [Godot Plugin](https://github.com/Poing-Studios/Godot-AdMob-Editor-Plugin), reducing the need for extensive coding. 🔌
+- There is also an [iOS plugin](https://github.com/Poing-Studios/godot-admob-ios) available, which has the same behavior. 🍎
 
 
 ## 🙋‍♂️How to use 
@@ -107,4 +108,4 @@ Your support helps us continue to improve and maintain this plugin. Thank you fo
 ## ⭐ Star History
 If you appreciate our work, don't forget to give us a star on GitHub! ⭐
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Poing-studios/godot-admob-android&type=Date)](https://star-history.com/#poing-studios/godot-admob-android&Date)
+![Star History Chart](https://api.star-history.com/svg?repos=Poing-studios/godot-admob-android&type=Date)
