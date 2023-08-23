@@ -21,14 +21,17 @@ if ($BUILD_VERSION -ne "stable") {
 $GODOT_AAR_FILENAME += ".template_release.aar"
 $FULL_PATHNAME_DOWNLOAD_GODOT_AAR += "/$GODOT_AAR_FILENAME"
 
-$HTTP_STATUS = (Invoke-WebRequest -Uri $FULL_PATHNAME_DOWNLOAD_GODOT_AAR -OutFile $GODOT_AAR_FILENAME).StatusCode
+Invoke-WebRequest -Uri $FULL_PATHNAME_DOWNLOAD_GODOT_AAR -OutFile $GODOT_AAR_FILENAME
 
-Remove-Item -Path $GODOT_AAR_LIB
+if (Test-Path $GODOT_AAR_FILENAME) {
+    if (Test-Path $GODOT_AAR_LIB) {
+        Remove-Item -Path $GODOT_AAR_LIB -Force
+    }
 
-if ($HTTP_STATUS -eq 200) {
     Rename-Item -Path $GODOT_AAR_FILENAME -NewName $GODOT_AAR_LIB
+    Write-Host "Download successful"
 } else {
-    Write-Host "Error: curl failed with HTTP status $HTTP_STATUS maybe you put an invalid version"
+    Write-Host "Error: Couldn't download. Maybe you put an invalid version"
     Remove-Item -Path $GODOT_AAR_FILENAME
     exit 1
 }
