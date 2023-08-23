@@ -32,6 +32,5 @@ if (Test-Path $GODOT_AAR_FILENAME) {
     Write-Host "Download successful"
 } else {
     Write-Host "Error: Couldn't download. Maybe you put an invalid version"
-    Remove-Item -Path $GODOT_AAR_FILENAME
     exit 1
 }
