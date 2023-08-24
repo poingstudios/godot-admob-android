@@ -13,8 +13,8 @@
   <a href="https://github.com/Poing-Studios/godot-admob-android/releases">
     <img src="https://img.shields.io/github/v/tag/Poing-Studios/godot-admob-android?label=Version">
   </a>
-  <a href="https://github.com/Poing-Studios/godot-admob-android/actions">
-    <img src="https://github.com/Poing-Studios/godot-admob-android/workflows/Build%20Android/badge.svg">
+  <a href="https://github.com/Poing-Studios/godot-admob-android/actions/workflows/release_android.yml">
+    <img src="https://github.com/Poing-Studios/godot-admob-android/actions/workflows/release_android.yml/badge.svg">
   </a>
   <a href="https://github.com/Poing-Studios/godot-admob-android/releases">
     <img src="https://img.shields.io/github/downloads/Poing-Studios/godot-admob-android/total?style=social">
