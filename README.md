@@ -63,7 +63,7 @@ The **purpose** of this plugin is to always keep **up to date with Godot**, supp
 - To get started, download the `poing-godot-admob-android-v{{ your_godot_version }}.zip` file from the [releases tab](https://github.com/Poing-Studios/godot-admob-android/releases). We recommend checking the [supported Godot version](https://github.com/Poing-Studios/godot-admob-versions/blob/master/versions.json) before proceeding. You can also use the [AdMob Plugin](https://github.com/Poing-Studios/godot-admob-plugin) for this step by navigating to `Tools -> AdMob Download Manager -> Android -> LatestVersion`.
 
 ### 🧑‍💻Usage
-- Video tutorial - soon.
+- Video tutorial: https://youtu.be/WpVGn7ZasKM.
 - Enable Android Build Template. [Check the tutorial here](https://docs.godotengine.org/en/stable/tutorials/export/android_custom_build.html).
 - Inside `poing-godot-admob-android-v{{ your_godot_version }}.zip` you downloaded, you will face some folders like `'ads'`, `'adcolony'`, `'meta'`, `'vungle'`. To AdMob works only `'ads'` is required, but if you want [Mediation](https://support.google.com/admob/answer/13420272?hl=en), you need the other folders.
 - Move the content inside the folder which you need into ```res://android/plugins``` directory on your Godot project.
