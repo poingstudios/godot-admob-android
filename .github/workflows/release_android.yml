@@ -12,7 +12,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-      ref: ${GITHUB_REF_NAME}
+      with:
+        ref: ${{ github.ref_name }}
 
     - name: Set plugin version on env
       run: |
