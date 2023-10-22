@@ -11,12 +11,14 @@ jobs:
         GODOT_VERSIONS: [4.1, 4.1.1, 4.1.2]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.ref_name }}
 
     - name: Set plugin version on env
       run: |
         PLUGIN_VERSION=$(find . -type f \( -name "*.java" -o -name "*.kt" \) -exec grep -H 'PLUGIN_VERSION = ' {} \; | awk -F'"' '{print $2}')
-        echo "PLUGIN_VERSION=${PLUGIN_VERSION}" >> $GITHUB_ENV
+        echo "PLUGIN_VERSION=v${PLUGIN_VERSION}" >> $GITHUB_ENV
 
     # Github Actions Matrix doesnt support x.0 values, it's replaced by ''
     - name: Verify current matrix's GODOT_VERSIONS
