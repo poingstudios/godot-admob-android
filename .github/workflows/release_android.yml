@@ -15,7 +15,7 @@ jobs:
 
     - name: Set plugin version on env
       run: |
-        PLUGIN_VERSION=$(find . -name "*.java" -exec grep -H 'PLUGIN_VERSION = ' {} \; | awk -F'"' '{print $2}')
+        PLUGIN_VERSION=$(find . -type f \( -name "*.java" -o -name "*.kt" \) -exec grep -H 'PLUGIN_VERSION = ' {} \; | awk -F'"' '{print $2}')
         echo "PLUGIN_VERSION=${PLUGIN_VERSION}" >> $GITHUB_ENV
 
     # Github Actions Matrix doesnt support x.0 values, it's replaced by ''
