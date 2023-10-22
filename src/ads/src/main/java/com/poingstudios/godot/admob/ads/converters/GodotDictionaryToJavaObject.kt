@@ -32,6 +32,7 @@ import com.google.android.ump.ConsentDebugSettings
 import com.google.android.ump.ConsentRequestParameters
 import com.poingstudios.godot.admob.core.AdNetworkExtras
 import com.poingstudios.godot.admob.core.utils.LogUtils
+import com.poingstudios.godot.admob.core.utils.PluginConfiguration.Constants.PLUGIN_VERSION
 import org.godotengine.godot.Dictionary
 
 
@@ -67,8 +68,11 @@ fun Dictionary.convertToConsentRequestParameters(activity: Activity): ConsentReq
 }
 
 fun Dictionary.convertToAdRequest(keywords : Array<String>) : AdRequest{
+    val requestAgentValue = "poingstudiosgodot-$PLUGIN_VERSION"
 
     val adRequestBuilder = AdRequest.Builder()
+    adRequestBuilder.setRequestAgent(requestAgentValue);
+
     val mediationExtras = this["mediation_extras"] as Dictionary
     for ((key) in mediationExtras) {
         val extra = mediationExtras[key] as Dictionary
