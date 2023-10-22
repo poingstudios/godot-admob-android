@@ -52,6 +52,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
+    private static final String PLUGIN_VERSION = "2.1.5";
 
     private boolean aIsInitialized = false;
     private String aInitializationDesc = "";
@@ -315,6 +316,8 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
     private AdRequest getAdRequest() {
         AdRequest.Builder adRequestBuilder = new AdRequest.Builder();
 
+        String requestAgentValue = "poingstudiosgodot-" + PLUGIN_VERSION;
+        adRequestBuilder.setRequestAgent(requestAgentValue);
         return adRequestBuilder.build();
     }
 

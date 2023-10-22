@@ -1,9 +1,6 @@
 name: Build Android
 
-on:
-  push:
-    tags:
-      - '*'
+on: workflow_dispatch
 
 env:
   TAG_NAME: Android_v3.5+
@@ -15,10 +12,15 @@ jobs:
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        GODOT_VERSIONS: [3.5, 3.5.1, 4.0]
+        GODOT_VERSIONS: [3.5, 3.5.1, 3.5.2, 3.5.3, 4.0, 4.0.1, 4.0.2, 4.0.3, 4.0.4, 4.1, 4.1.1, 4.1.2]
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Set plugin version on env
+      run: |
+        PLUGIN_VERSION=$(find . -name "*.java" -exec grep -H 'PLUGIN_VERSION = ' {} \; | awk -F'"' '{print $2}')
+        echo "PLUGIN_VERSION=${PLUGIN_VERSION}" >> $GITHUB_ENV
 
     # Github Actions Matrix doesnt support x.0 values, it's replaced by ''
     - name: Verify current matrix's GODOT_VERSIONS
@@ -53,5 +55,5 @@ jobs:
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: artifacts_output/${{ env.OUTPUT_FILENAME }}
-        tag: ${{ github.ref }}
+        tag: ${{env.PLUGIN_VERSION}}
         overwrite: true
