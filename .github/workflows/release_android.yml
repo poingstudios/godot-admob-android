@@ -51,6 +51,7 @@ jobs:
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
+        target_commit: ${{ github.ref_name }}
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: artifacts_output/${{ env.OUTPUT_FILENAME }}
         tag: ${{env.PLUGIN_VERSION}}
