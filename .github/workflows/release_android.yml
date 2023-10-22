@@ -44,6 +44,7 @@ jobs:
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
+        target_commit: ${{ github.ref_name }}
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: .output/poing-godot-admob-android-v${{env.CURRENT_GODOT_VERSION}}.zip
         tag: ${{env.PLUGIN_VERSION}}
