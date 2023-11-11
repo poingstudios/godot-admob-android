@@ -1,3 +1,25 @@
+// MIT License
+//
+// Copyright (c) 2023-present Poing Studios
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 package com.poing.admob;
 
 import org.godotengine.godot.Godot;
@@ -32,6 +54,7 @@ import android.app.Activity;
 import android.graphics.Rect;
 import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.DisplayCutout;
 import android.view.Gravity;
@@ -52,10 +75,11 @@ import java.util.Objects;
 import java.util.Set;
 
 public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
-    private static final String PLUGIN_VERSION = "2.1.5";
-
+    private static final String PLUGIN_VERSION = "2.1.6";
+    private static final String LOG_TAG_NAME = "poing-godot-admob";
     private boolean aIsInitialized = false;
     private String aInitializationDesc = "";
+    private String aGoogleRequestAgent = "";
     private Activity aActivity;
 
     private ConsentInformation aConsentInformation;
@@ -194,11 +218,16 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
     }
 
 
-    public void initialize(boolean pIsForChildDirectedTreatment, String pMaxAdContentRating, boolean pIsReal, boolean pIsTestEuropeUserConsent) {
+    public void initialize(boolean pIsForChildDirectedTreatment,
+                           String pMaxAdContentRating,
+                           boolean pIsReal,
+                           boolean pIsTestEuropeUserConsent,
+                           String googleRequestAgent) {
         if (!aIsInitialized){
             aIsForChildDirectedTreatment = pIsForChildDirectedTreatment;
             aConsentInformation = UserMessagingPlatform.getConsentInformation(aActivity);
             aIsTestEuropeUserConsent = pIsTestEuropeUserConsent;
+            aGoogleRequestAgent = googleRequestAgent;
 
             setMobileAdsRequestConfiguration(aIsForChildDirectedTreatment, pMaxAdContentRating, pIsReal); //First call MobileAds.setRequestConfiguration https://groups.google.com/g/google-admob-ads-sdk/c/17oVu0sABjs
             MobileAds.initialize(aActivity, initializationStatus -> {
@@ -316,8 +345,10 @@ public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
     private AdRequest getAdRequest() {
         AdRequest.Builder adRequestBuilder = new AdRequest.Builder();
 
-        String requestAgentValue = "poingstudiosgodot-" + PLUGIN_VERSION;
-        adRequestBuilder.setRequestAgent(requestAgentValue);
+        if (!aGoogleRequestAgent.isEmpty()){
+            adRequestBuilder.setRequestAgent(aGoogleRequestAgent);
+            Log.d(LOG_TAG_NAME, aGoogleRequestAgent);
+        }
         return adRequestBuilder.build();
     }
 
