@@ -68,10 +68,14 @@ fun Dictionary.convertToConsentRequestParameters(activity: Activity): ConsentReq
 }
 
 fun Dictionary.convertToAdRequest(keywords : Array<String>) : AdRequest{
-    val requestAgentValue = "poingstudiosgodot-$PLUGIN_VERSION"
-
     val adRequestBuilder = AdRequest.Builder()
-    adRequestBuilder.setRequestAgent(requestAgentValue);
+
+    val googleRequestAgent = this["google_request_agent"] as String?
+
+    if (!googleRequestAgent.isNullOrEmpty()){
+        LogUtils.debug(googleRequestAgent)
+        adRequestBuilder.setRequestAgent(googleRequestAgent)
+    }
 
     val mediationExtras = this["mediation_extras"] as Dictionary
     for ((key) in mediationExtras) {
