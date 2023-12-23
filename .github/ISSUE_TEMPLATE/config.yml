@@ -4,5 +4,5 @@ contact_links:
     url: https://github.com/Poing-Studios/godot-admob-ios
     about: Check the iOS plugin repository.
   - name: Issue with AdMob on Godot Editor
-    url: https://github.com/Poing-Studios/godot-admob-editor
-    about: Check the Android plugin repository.
+    url: https://github.com/Poing-Studios/godot-admob-plugin
+    about: Check the Godot plugin repository.
