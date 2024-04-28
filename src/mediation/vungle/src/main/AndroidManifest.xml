@@ -4,7 +4,7 @@
 
     <application>
         <meta-data
-            android:name="org.godotengine.plugin.v1.PoingGodotAdMobVungle"
+            android:name="org.godotengine.plugin.v2.PoingGodotAdMobVungle"
             android:value="com.poingstudios.godot.admob.mediation.vungle.PoingGodotAdMobVungle" />
     </application>
 </manifest>

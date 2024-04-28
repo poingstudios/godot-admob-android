@@ -5,30 +5,30 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <application>
         <meta-data
-            android:name="org.godotengine.plugin.v1.PoingGodotAdMob"
+            android:name="org.godotengine.plugin.v2.PoingGodotAdMob"
             android:value="com.poingstudios.godot.admob.ads.PoingGodotAdMob" />
         <meta-data
-            android:name="org.godotengine.plugin.v1.PoingGodotAdMobAdView"
+            android:name="org.godotengine.plugin.v2.PoingGodotAdMobAdView"
             android:value="com.poingstudios.godot.admob.ads.PoingGodotAdMobAdView" />
         <meta-data
-            android:name="org.godotengine.plugin.v1.PoingGodotAdMobAdSize"
+            android:name="org.godotengine.plugin.v2.PoingGodotAdMobAdSize"
             android:value="com.poingstudios.godot.admob.ads.PoingGodotAdMobAdSize" />
 
         <meta-data
-            android:name="org.godotengine.plugin.v1.PoingGodotAdMobInterstitialAd"
+            android:name="org.godotengine.plugin.v2.PoingGodotAdMobInterstitialAd"
             android:value="com.poingstudios.godot.admob.ads.PoingGodotAdMobInterstitialAd" />
         <meta-data
-            android:name="org.godotengine.plugin.v1.PoingGodotAdMobRewardedAd"
+            android:name="org.godotengine.plugin.v2.PoingGodotAdMobRewardedAd"
             android:value="com.poingstudios.godot.admob.ads.PoingGodotAdMobRewardedAd" />
         <meta-data
-            android:name="org.godotengine.plugin.v1.PoingGodotAdMobRewardedInterstitialAd"
+            android:name="org.godotengine.plugin.v2.PoingGodotAdMobRewardedInterstitialAd"
             android:value="com.poingstudios.godot.admob.ads.PoingGodotAdMobRewardedInterstitialAd" />
 
         <meta-data
-            android:name="org.godotengine.plugin.v1.PoingGodotAdMobConsentInformation"
+            android:name="org.godotengine.plugin.v2.PoingGodotAdMobConsentInformation"
             android:value="com.poingstudios.godot.admob.ads.PoingGodotAdMobConsentInformation" />
         <meta-data
-            android:name="org.godotengine.plugin.v1.PoingGodotAdMobUserMessagingPlatform"
+            android:name="org.godotengine.plugin.v2.PoingGodotAdMobUserMessagingPlatform"
             android:value="com.poingstudios.godot.admob.ads.PoingGodotAdMobUserMessagingPlatform" />
     </application>
 

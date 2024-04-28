@@ -1,0 +1,105 @@
+#region Copyright
+// MIT License
+//
+// Copyright (c) 2024-present Poing Studios
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+#endregion
+
+#if TOOLS
+
+using System;
+using Godot;
+
+namespace PoingStudios.GodotAdMob;
+
+[Tool]
+public partial class AdMobEditorPlugin : EditorPlugin
+{
+    // Required
+    private AdMobAdsConfig adsConfig;
+    private AdMobCoreConfig coreConfig;
+
+    // Optional - Mediation Support
+    private AdMobAdColonyConfig adColonyConfig;
+    private AdMobMetaConfig metaConfig;
+    private AdMobVungleConfig vungleConfig;
+
+    [Export]
+    private bool useAdColony = false;
+    [Export]
+    private bool useMeta = false;
+    [Export]
+    private bool useVungle = false;
+
+    public override void _EnterTree()
+    {
+        adsConfig = new();
+        AddExportPlugin(adsConfig);
+
+        coreConfig = new();
+        AddExportPlugin(coreConfig);
+
+        if (useAdColony)
+        {
+            adColonyConfig = new();
+            AddExportPlugin(adColonyConfig);
+        }
+
+        if (useMeta)
+        {
+            metaConfig = new();
+            AddExportPlugin(metaConfig);
+        }
+
+        if (useVungle)
+        {
+            vungleConfig = new();
+            AddExportPlugin(vungleConfig);
+        }
+    }
+    public override void _ExitTree()
+    {
+        RemoveExportPlugin(adsConfig);
+        adsConfig = null;
+
+        RemoveExportPlugin(coreConfig);
+        coreConfig = null;
+
+        if (useAdColony)
+        {
+            RemoveExportPlugin(adColonyConfig);
+            adColonyConfig = null;
+        }
+
+        if (useMeta)
+        {
+            RemoveExportPlugin(metaConfig);
+            metaConfig = null;
+        }
+
+        if (useVungle)
+        {
+            RemoveExportPlugin(vungleConfig);
+            vungleConfig = null;
+        }
+    }
+}
+
+#endif
