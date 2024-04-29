@@ -34,8 +34,13 @@ public partial class AdMobAdsConfig : EditorExportPlugin
 {
     private const string PLUGIN_NAME = "PoingGodotAdMobAds";
 
-    private const string LIB_PATH_RELEASE = "godot_admob/libs/poing-godot-admob-ads-v1.0.0-release.aar";
-    private const string LIB_PATH_DEBUG = "godot_admob/libs/poing-godot-admob-ads-v1.0.0-debug.aar";
+    // Dependency paths relative to the project's addons folder.
+    private const string LIB_PATH_RELEASE = "google_admob/libs/poing-godot-admob-ads-v1.0.0-release.aar";
+    private const string LIB_PATH_DEBUG = "google_admob/libs/poing-godot-admob-ads-v1.0.0-debug.aar";
+    private const string RELEASE_DEPENDENCY = "google_admob/libs/poing-godot-admob-core-v1.0.1-release.aar";
+    private const string DEBUG_DEPENDENCY = "google_admob/libs/poing-godot-admob-core-v1.0.1-debug.aar";
+    private const string MAVEN_REPO_NAME = "com.google.android.gms:play-services-ads:22.4.0";
+
 
     public override bool _SupportsPlatform(EditorExportPlatform platform)
     {
@@ -48,7 +53,6 @@ public partial class AdMobAdsConfig : EditorExportPlugin
             return false;
         }
     }
-
     public override string[] _GetAndroidLibraries(EditorExportPlatform platform, bool debug)
     {
         if (debug)
@@ -60,7 +64,21 @@ public partial class AdMobAdsConfig : EditorExportPlugin
             return new string[] { LIB_PATH_RELEASE };
         }
     }
-
+    public override string[] _GetAndroidDependencies(EditorExportPlatform platform, bool debug)
+    {
+        if (debug)
+        {
+            return new string[] { DEBUG_DEPENDENCY };
+        }
+        else 
+        {
+            return new string[] { RELEASE_DEPENDENCY };
+        }
+    }
+    public override string[] _GetAndroidDependenciesMavenRepos(EditorExportPlatform platform, bool debug)
+    {
+        return new string[] { MAVEN_REPO_NAME };
+    }
     public override string _GetName()
     {
         return PLUGIN_NAME;

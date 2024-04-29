@@ -25,8 +25,12 @@ extends EditorExportPlugin
 
 var _plugin_name = "PoingGodotAdMobAds"
 
+# Dependency paths relative to the project's addons folder.
 var _lib_path_release = "godot_admob/libs/poing-godot-admob-ads-v1.0.0-release.aar"
 var _lib_path_debug = "godot_admob/libs/poing-godot-admob-ads-v1.0.0-debug.aar"
+var _release_dependency = "google_admob/libs/poing-godot-admob-core-v1.0.1-release.aar"
+var _debug_dependency = "google_admob/libs/poing-godot-admob-core-v1.0.1-debug.aar"
+var _maven_repo_name = "com.google.android.gms:play-services-ads:22.4.0"
 
 func _supports_platform(platform):
     if (platform is EditorExportPlatformAndroid):
@@ -39,6 +43,15 @@ func _get_android_libraries(platform, debug):
         return PackedStringArray([_lib_path_debug])
     else:
         return PackedStringArray([_lib_path_release])
+
+func _get_android_dependencies(platform, debug):
+    if (debug):
+        return PackedStringArray([_debug_dependency])
+    else:
+        return PackedStringArray([_release_dependency])
+
+func _get_android_dependencies_maven_repos(platform, debug):
+    return PackedStringArray([_maven_repo_name])
     
 func _get_name():
     return _plugin_name

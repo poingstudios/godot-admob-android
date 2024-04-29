@@ -25,41 +25,34 @@ extends EditorPlugin
 
 # Required
 var ads_config : AdMobAdsConfig
-var core_config : AdMobCoreConfig
 
 # Optional - Mediation Support
-var ad_colony_config : AdMobAdColonyConfig
-var meta_config : AdMobMetaConfig
-var vungle_config : AdMobVungleConfig
+#var ad_colony_config : AdMobAdColonyConfig
+#var meta_config : AdMobMetaConfig
+#var vungle_config : AdMobVungleConfig
 
 func _enter_tree():
     ads_config = AndroidExportPlugin.new()
     add_export_plugin(ads_config)
 
-    core_config = AndroidExportPlugin.new()
-    add_export_plugin(core_config)
+    #ad_colony_config = AndroidExportPlugin.new()
+    #add_export_plugin(ad_colony_config)
 
-    ad_colony_config = AndroidExportPlugin.new()
-    add_export_plugin(ad_colony_config)
+    #meta_config = AndroidExportPlugin.new()
+    #add_export_plugin(meta_config)
 
-    meta_config = AndroidExportPlugin.new()
-    add_export_plugin(meta_config)
-
-    vungle_config = AndroidExportPlugin.new()
-    add_export_plugin(vungle_config)    
+    #vungle_config = AndroidExportPlugin.new()
+    #add_export_plugin(vungle_config)    
 
 func _exit_tree():
     remove_export_plugin(ads_config)
     ads_config = null
 
-    remove_export_plugin(core_config)
-    core_config = null
+    #remove_export_plugin(ad_colony_config)
+    #ad_colony_config = null
 
-    remove_export_plugin(ad_colony_config)
-    ad_colony_config = null
+    #remove_export_plugin(meta_config)
+    #meta_config = null
 
-    remove_export_plugin(meta_config)
-    meta_config = null
-
-    remove_export_plugin(vungle_config)
-    vungle_config = null
+    #remove_export_plugin(vungle_config)
+    #vungle_config = null

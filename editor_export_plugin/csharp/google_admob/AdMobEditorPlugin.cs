@@ -34,71 +34,40 @@ public partial class AdMobEditorPlugin : EditorPlugin
 {
     // Required
     private AdMobAdsConfig adsConfig;
-    private AdMobCoreConfig coreConfig;
-
-    // Optional - Mediation Support
-    private AdMobAdColonyConfig adColonyConfig;
-    private AdMobMetaConfig metaConfig;
-    private AdMobVungleConfig vungleConfig;
-
-    [Export]
-    private bool useAdColony = false;
-    [Export]
-    private bool useMeta = false;
-    [Export]
-    private bool useVungle = false;
+    
+    // Optional - Mediation Support 
+    //private AdMobAdColonyConfig adColonyConfig;
+    //private AdMobMetaConfig metaConfig;
+    //private AdMobVungleConfig vungleConfig;
 
     public override void _EnterTree()
     {
         adsConfig = new();
         AddExportPlugin(adsConfig);
-
-        coreConfig = new();
-        AddExportPlugin(coreConfig);
-
-        if (useAdColony)
-        {
-            adColonyConfig = new();
-            AddExportPlugin(adColonyConfig);
-        }
-
-        if (useMeta)
-        {
-            metaConfig = new();
-            AddExportPlugin(metaConfig);
-        }
-
-        if (useVungle)
-        {
-            vungleConfig = new();
-            AddExportPlugin(vungleConfig);
-        }
+        
+        //adColonyConfig = new();
+        //AddExportPlugin(adColonyConfig);
+    
+        //metaConfig = new();
+        //AddExportPlugin(metaConfig);
+    
+        //vungleConfig = new();
+        //AddExportPlugin(vungleConfig);
+        
     }
     public override void _ExitTree()
     {
         RemoveExportPlugin(adsConfig);
         adsConfig = null;
 
-        RemoveExportPlugin(coreConfig);
-        coreConfig = null;
-
-        if (useAdColony)
-        {
-            RemoveExportPlugin(adColonyConfig);
-            adColonyConfig = null;
-        }
-
-        if (useMeta)
-        {
-            RemoveExportPlugin(metaConfig);
-            metaConfig = null;
-        }
-
-        if (useVungle)
-        {
-            RemoveExportPlugin(vungleConfig);
-            vungleConfig = null;
-        }
+        //RemoveExportPlugin(adColonyConfig);
+        //adColonyConfig = null;
+    
+        //RemoveExportPlugin(metaConfig);
+        //metaConfig = null;
+    
+        //RemoveExportPlugin(vungleConfig);
+        //vungleConfig = null;
     }
 }
 
