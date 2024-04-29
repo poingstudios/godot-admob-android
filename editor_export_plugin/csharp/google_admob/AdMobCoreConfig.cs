@@ -34,8 +34,8 @@ public partial class AdMobCoreConfig : EditorExportPlugin
 {
     private const string PLUGIN_NAME = "PoingGodotAdMobCore";
 
-    private const string LIB_PATH_RELEASE = "libs/poing-godot-admob-core-v1.0.1-release.aar";
-    private const string LIB_PATH_DEBUG = "libs/poing-godot-admob-core-v1.0.1-debug.aar";
+    private const string LIB_PATH_RELEASE = "godot_admob/libs/poing-godot-admob-core-v1.0.1-release.aar";
+    private const string LIB_PATH_DEBUG = "godot_admob/libs/poing-godot-admob-core-v1.0.1-debug.aar";
 
     public override bool _SupportsPlatform(EditorExportPlatform platform)
     {

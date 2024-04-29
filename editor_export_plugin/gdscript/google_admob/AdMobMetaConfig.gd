@@ -25,8 +25,8 @@ extends EditorExportPlugin
 
 var _plugin_name = "PoingGodotAdMobMeta"
 
-var _lib_path_release = "libs/poing-godot-admob-meta-v1.0.0-release.aar"
-var _lib_path_debug = "libs/poing-godot-admob-meta-v1.0.0-debug.aar"
+var _lib_path_release = "godot_admob/libs/poing-godot-admob-meta-v1.0.0-release.aar"
+var _lib_path_debug = "godot_admob/libs/poing-godot-admob-meta-v1.0.0-debug.aar"
 
 func _supports_platform(platform):
     if (platform is EditorExportPlatformAndroid):
