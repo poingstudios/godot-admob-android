@@ -36,7 +36,7 @@ public partial class AdMobAdColonyConfig : EditorExportPlugin
 
     private const string LIB_PATH_RELEASE = "google_admob/libs/poing-godot-admob-adcolony-v1.0.0-release.aar";
     private const string LIB_PATH_DEBUG = "google_admob/libs/poing-godot-admob-adcolony-v1.0.0-debug.aar";
-    private const string MAVEN_REPO_NAME = "com.google.ads.mediation:adcolony:4.8.0.2";
+    private const string AD_COLONY_DEPENDENCY = "com.google.ads.mediation:adcolony:4.8.0.2";
 
     public override bool _SupportsPlatform(EditorExportPlatform platform)
     {
@@ -60,9 +60,9 @@ public partial class AdMobAdColonyConfig : EditorExportPlugin
             return new string[] { LIB_PATH_RELEASE };
         }
     }
-    public override string[] _GetAndroidDependenciesMavenRepos(EditorExportPlatform platform, bool debug)
+    public override string[] _GetAndroidDependencies(EditorExportPlatform platform, bool debug)
     {
-        return new string[] { MAVEN_REPO_NAME };
+        return new string[] { AD_COLONY_DEPENDENCY };
     }
     public override string _GetName()
     {

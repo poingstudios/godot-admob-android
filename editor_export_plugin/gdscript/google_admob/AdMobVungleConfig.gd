@@ -27,7 +27,7 @@ var _plugin_name = "PoingGodotAdMobVungle"
 
 var _lib_path_release = "godot_admob/libs/poing-godot-admob-vungle-v1.0.0-release.aar"
 var _lib_path_debug = "godot_admob/libs/poing-godot-admob-vungle-v1.0.0-debug.aar"
-var _maven_repo_name = "com.google.ads.mediation:vungle:6.12.1.1"
+var _vungle_dependency = "com.google.ads.mediation:vungle:6.12.1.1"
 
 func _supports_platform(platform):
     if (platform is EditorExportPlatformAndroid):
@@ -41,8 +41,8 @@ func _get_android_libraries(platform, debug):
     else:
         return PackedStringArray([_lib_path_release])
 
-func _get_android_dependencies_maven_repos(platform, debug):
-    return PackedStringArray([_maven_repo_name])
+func _get_android_dependencies(platform, debug):
+    return PackedStringArray([_vungle_dependency])
     
 func _get_name():
     return _plugin_name

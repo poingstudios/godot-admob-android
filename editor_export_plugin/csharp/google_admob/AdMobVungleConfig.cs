@@ -36,7 +36,7 @@ public partial class AdMobVungleConfig : EditorExportPlugin
 
     private const string LIB_PATH_RELEASE = "google_admob/libs/poing-godot-admob-vungle-v1.0.0-release.aar";
     private const string LIB_PATH_DEBUG = "google_admob/libs/poing-godot-admob-vungle-v1.0.0-debug.aar";
-    private const string MAVEN_REPO_NAME = "com.google.ads.mediation:vungle:6.12.1.1";
+    private const string VUNGLE_DEPENDENCY = "com.google.ads.mediation:vungle:6.12.1.1";
 
     public override bool _SupportsPlatform(EditorExportPlatform platform)
     {
@@ -60,9 +60,9 @@ public partial class AdMobVungleConfig : EditorExportPlugin
             return new string[] { LIB_PATH_RELEASE };
         }
     }
-    public override string[] _GetAndroidDependenciesMavenRepos(EditorExportPlatform platform, bool debug)
+    public override string[] _GetAndroidDependencies(EditorExportPlatform platform, bool debug)
     {
-        return new string[] { MAVEN_REPO_NAME };
+        return new string[] { VUNGLE_DEPENDENCY };
     }
     public override string _GetName()
     {
