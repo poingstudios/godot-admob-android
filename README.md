@@ -109,4 +109,4 @@ Your support helps us continue to improve and maintain this plugin. Thank you fo
 ## ⭐ Star History
 If you appreciate our work, don't forget to give us a star on GitHub! ⭐
 
-![Star History Chart](https://api.star-history.com/svg?repos=Poing-studios/godot-admob-android&type=Date)
+![Star History Chart](https://api.star-history.com/svg?repos=poingstudios/godot-admob-android&type=Date)

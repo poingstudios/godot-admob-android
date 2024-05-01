@@ -32,7 +32,6 @@ import com.google.android.ump.ConsentDebugSettings
 import com.google.android.ump.ConsentRequestParameters
 import com.poingstudios.godot.admob.core.AdNetworkExtras
 import com.poingstudios.godot.admob.core.utils.LogUtils
-import com.poingstudios.godot.admob.core.utils.PluginConfiguration.Constants.PLUGIN_VERSION
 import org.godotengine.godot.Dictionary
 
 
