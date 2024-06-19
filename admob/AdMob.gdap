@@ -6,4 +6,4 @@ binary="admob-release.aar"
 
 [dependencies]
 
-remote=["com.google.android.gms:play-services-ads:22.0.0"]
+remote=["com.google.android.gms:play-services-ads:23.1.0"]
