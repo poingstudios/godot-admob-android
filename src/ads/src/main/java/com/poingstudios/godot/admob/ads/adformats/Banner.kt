@@ -236,19 +236,31 @@ class Banner(
     }
 
     fun getWidth() : Int {
-        return mAdSize.width
+        if (this::mAdSize.isInitialized) {
+            return mAdSize.width
+        }
+        return 0
     }
 
     fun getHeight() : Int{
-        return mAdSize.height
+        if (this::mAdSize.isInitialized) {
+            return mAdSize.height
+        }
+        return 0
     }
 
     fun getWidthInPixels() : Int{
-        return mAdSize.getWidthInPixels(activity)
+        if (this::mAdSize.isInitialized) {
+            return mAdSize.getWidthInPixels(activity);
+        }
+        return 0
     }
 
     fun getHeightInPixels() : Int {
-        return mAdSize.getHeightInPixels(activity)
+        if (this::mAdSize.isInitialized) {
+            return mAdSize.getHeightInPixels(activity)
+        }
+        return 0
     }
 
 }
