@@ -144,6 +144,11 @@ class Banner(
             return safeInsetRect
         }
         val window: Window = activity.window?: return safeInsetRect
+
+        if (!isImmersiveModeEnabledLegacy(window)) {
+            return safeInsetRect
+        }
+
         val windowInsets : WindowInsets= window.decorView.rootWindowInsets ?: return safeInsetRect
         val displayCutout : DisplayCutout = windowInsets.displayCutout ?: return safeInsetRect
 
@@ -154,6 +159,15 @@ class Banner(
 
         return safeInsetRect
     }
+
+    @Suppress("DEPRECATION")
+    private fun isImmersiveModeEnabledLegacy(window: Window): Boolean {
+        val uiOptions = window.decorView.systemUiVisibility
+        return (uiOptions and View.SYSTEM_UI_FLAG_FULLSCREEN != 0) &&
+                (uiOptions and View.SYSTEM_UI_FLAG_HIDE_NAVIGATION != 0) &&
+                (uiOptions and View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY != 0)
+    }
+
     private fun getGravity(adPosition: Int?) : Int{
         val gravity = when (adPosition) {
             AdPosition.TOP.ordinal -> Gravity.TOP or Gravity.CENTER_HORIZONTAL
@@ -171,10 +185,11 @@ class Banner(
         return gravity
     }
     private fun getLayoutParams() : FrameLayout.LayoutParams {
+        LogUtils.debug("Safe Area of screen: $safeArea.")
+
         val adParams : FrameLayout.LayoutParams = FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT
         )
-        LogUtils.debug("Safe Area of screen: $safeArea.")
 
         adParams.gravity = getGravity(adPosition)
         adParams.bottomMargin = safeArea.bottom
@@ -185,7 +200,7 @@ class Banner(
         return adParams
     }
 
-    fun calculateTopMargin(topMargin : Int) : Int{
+    private fun calculateTopMargin(topMargin : Int) : Int{
         var returnValue = topMargin
         when (adPosition) {
             AdPosition.TOP.ordinal, AdPosition.TOP_LEFT.ordinal, AdPosition.TOP_RIGHT.ordinal -> {
