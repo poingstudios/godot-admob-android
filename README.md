@@ -105,6 +105,74 @@ Your support helps us continue to improve and maintain this plugin. Thank you fo
 [![DISCORD](https://img.shields.io/badge/Discord-7289DA?style=for-the-badge)](https://discord.com/invite/YEPvYjSSMk)
 
 
+## Development
+All scripts must be executed within the project root folder
+
+### Downloading
+#### Clear Download & Build Script:
+Unix (Linux & MacOS):
+```shell
+./scripts/unix/clean_build.sh 4.3
+```
+
+Windows:
+```shell
+./scripts/windows/clean_build.ps1 4.3
+```
+
+#### Just Download:
+Unix (Linux & MacOS):
+```shell
+./scripts/unix/download_godot.sh 4.3
+```
+
+Windows:
+```shell
+./scripts/windows/download_godot.ps1 4.3
+```
+
+### Building, Exporting, Zipping
+
+#### Just Build:
+```shell
+./gradlew build
+```
+
+#### Export files:
+```shell
+./gradlew exportFiles -PpluginExportPath=D:\godot-admob-editor\android\plugins
+```
+
+#### Build and exporting plugin files into the desired directory:
+```shell
+./gradlew build ; ./gradlew exportFiles -PpluginExportPath=D:\godot-admob-editor\android\plugins
+```
+
+
+#### Zip:
+(-PgodotVersion is optional)
+```shell
+./gradlew zipPlugins -PgodotVersion=4.1.1 
+```
+
+### Logging
+If you are having some issues with crashing or any expected behavior, you can easily get the log of the plugin with [ADB](https://developer.android.com/tools/adb):
+
+#### Logcat AdMob Plugin & Godot (recommended)
+```shell
+adb logcat -s poing-godot-admob godot
+```
+
+#### Logcat AdMob Plugin
+```shell
+adb logcat -s poing-godot-admob
+```
+
+#### Logcat Godot
+```shell
+adb logcat -s godot
+```
+
 
 ## ⭐ Star History
 If you appreciate our work, don't forget to give us a star on GitHub! ⭐
