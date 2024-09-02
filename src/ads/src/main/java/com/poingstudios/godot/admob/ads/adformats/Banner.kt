@@ -25,10 +25,12 @@ package com.poingstudios.godot.admob.ads.adformats
 import android.app.Activity
 import android.graphics.Rect
 import android.os.Build
+import android.view.DisplayCutout
 import android.view.Gravity
 import android.view.View
 import android.view.View.OnLayoutChangeListener
 import android.view.ViewGroup
+import android.view.Window
 import android.view.WindowInsets
 import android.widget.FrameLayout
 import com.google.android.gms.ads.*
@@ -141,18 +143,31 @@ class Banner(
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
             return safeInsetRect
         }
-        val windowInsets: WindowInsets = activity.window.decorView.rootWindowInsets ?: return safeInsetRect
-        val displayCutout = windowInsets.displayCutout
-        if (displayCutout != null) {
-            safeInsetRect.set(
-                displayCutout.safeInsetLeft,
-                displayCutout.safeInsetTop,
-                displayCutout.safeInsetRight,
-                displayCutout.safeInsetBottom
-            )
+        val window: Window = activity.window?: return safeInsetRect
+
+        if (!isImmersiveModeEnabledLegacy(window)) {
+            return safeInsetRect
         }
+
+        val windowInsets : WindowInsets= window.decorView.rootWindowInsets ?: return safeInsetRect
+        val displayCutout : DisplayCutout = windowInsets.displayCutout ?: return safeInsetRect
+
+        safeInsetRect.left = displayCutout.safeInsetLeft
+        safeInsetRect.top = displayCutout.safeInsetTop
+        safeInsetRect.right = displayCutout.safeInsetRight
+        safeInsetRect.bottom = displayCutout.safeInsetBottom
+
         return safeInsetRect
     }
+
+    @Suppress("DEPRECATION")
+    private fun isImmersiveModeEnabledLegacy(window: Window): Boolean {
+        val uiOptions = window.decorView.systemUiVisibility
+        return (uiOptions and View.SYSTEM_UI_FLAG_FULLSCREEN != 0) &&
+                (uiOptions and View.SYSTEM_UI_FLAG_HIDE_NAVIGATION != 0) &&
+                (uiOptions and View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY != 0)
+    }
+
     private fun getGravity(adPosition: Int?) : Int{
         val gravity = when (adPosition) {
             AdPosition.TOP.ordinal -> Gravity.TOP or Gravity.CENTER_HORIZONTAL
@@ -170,31 +185,31 @@ class Banner(
         return gravity
     }
     private fun getLayoutParams() : FrameLayout.LayoutParams {
-        val adParams = FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT
-        )
         LogUtils.debug("Safe Area of screen: $safeArea.")
 
-        fun calculateTopMargin() : Int{
-            var returnValue = adParams.topMargin
-            when (adPosition) {
-                AdPosition.TOP.ordinal, AdPosition.TOP_LEFT.ordinal, AdPosition.TOP_RIGHT.ordinal -> {
-                    returnValue = safeArea.top.takeIf { it > 0 } ?: adParams.topMargin
-                }
-            }
-            return returnValue
-        }
+        val adParams : FrameLayout.LayoutParams = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT
+        )
 
         adParams.gravity = getGravity(adPosition)
-
         adParams.bottomMargin = safeArea.bottom
         adParams.rightMargin = safeArea.right
         adParams.leftMargin = safeArea.left
-        adParams.topMargin = calculateTopMargin()
-
+        adParams.topMargin = calculateTopMargin(adParams.topMargin)
 
         return adParams
     }
+
+    private fun calculateTopMargin(topMargin : Int) : Int{
+        var returnValue = topMargin
+        when (adPosition) {
+            AdPosition.TOP.ordinal, AdPosition.TOP_LEFT.ordinal, AdPosition.TOP_RIGHT.ordinal -> {
+                returnValue = safeArea.top
+            }
+        }
+        return returnValue
+    }
+
 
     private fun updatePosition(){
         activity.runOnUiThread{
