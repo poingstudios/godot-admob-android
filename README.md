@@ -12,33 +12,33 @@
   <a href="https://godotengine.org">
     <img src="https://img.shields.io/badge/GODOT-%23FFFFFF.svg?&logo=godot-engine">
   </a>
-  <a href="https://github.com/Poing-Studios/godot-admob-android/releases">
-    <img src="https://img.shields.io/github/v/tag/Poing-Studios/godot-admob-android?label=Version">
+  <a href="https://github.com/poingstudios/godot-admob-android/releases">
+    <img src="https://img.shields.io/github/v/tag/poingstudios/godot-admob-android?label=Version">
   </a>
-  <a href="https://github.com/Poing-Studios/godot-admob-android/actions">
-    <img src="https://github.com/Poing-Studios/godot-admob-android/workflows/Build%20Android/badge.svg">
+  <a href="https://github.com/poingstudios/godot-admob-android/actions">
+    <img src="https://github.com/poingstudios/godot-admob-android/workflows/Build%20Android/badge.svg">
   </a>
-  <a href="https://github.com/Poing-Studios/godot-admob-android/blob/master/admob/AdMob.gdap">
+  <a href="https://github.com/poingstudios/godot-admob-android/blob/master/admob/AdMob.gdap">
     <img src="https://img.shields.io/badge/GAD SDK Android-v22.0.0-informational">
   </a>
-  <a href="https://github.com/Poing-Studios/godot-admob-android/releases">
-    <img src="https://img.shields.io/github/downloads/Poing-Studios/godot-admob-android/total?style=social">
+  <a href="https://github.com/poingstudios/godot-admob-android/releases">
+    <img src="https://img.shields.io/github/downloads/poingstudios/godot-admob-android/total?style=social">
   </a>
   <a href="#🌠star-history">
-    <img src="https://img.shields.io/github/stars/Poing-Studios/godot-admob-android?style=social">
+    <img src="https://img.shields.io/github/stars/poingstudios/godot-admob-android?style=social">
   </a>
-  <img src="https://img.shields.io/github/license/Poing-Studios/godot-admob-android?style=plastic">
+  <img src="https://img.shields.io/github/license/poingstudios/godot-admob-android?style=plastic">
 </p>
 
 <p align="center">
   <a href="/docs">📃Documentation</a> •
-  <a href="https://github.com/Poing-Studios/godot-admob-android/releases">💾Downloads</a> 
+  <a href="https://github.com/poingstudios/godot-admob-android/releases">💾Downloads</a> 
 </p>
 
 ## 📖About
 This repository is a _Godot Engine Plugin_ that makes it **easy** to display **AdMob** ads in your game, **just download and use**, no need to worry about building or version compatibility.
 
-The plugin supports most versions of Godot from 3.x to 4.x and is **compatible** with both **Android and [iOS](https://github.com/Poing-Studios/godot-admob-ios)**. 
+The plugin supports most versions of Godot from 3.x to 4.x and is **compatible** with both **Android and [iOS](https://github.com/poingstudios/godot-admob-ios)**. 
 
 ## 💡Features
 - **Supports** _Almost_ all [AdFormats](https://support.google.com/admob/answer/6128738?hl=en)💵: `Banner`, `Interstitial`, `Rewarded`, `Rewarded Interstitial`
@@ -46,7 +46,7 @@ The plugin supports most versions of Godot from 3.x to 4.x and is **compatible**
 - Targeting **specific** ⭕ audience segments 
 - Has `CI/CD` to **test** ✅, **build** 🛠️ and **release versions** 📨
 - Concise **documentation** 📄
-- Same **behavior** as [iOS Plugin](https://github.com/Poing-Studios/godot-admob-ios) 🍎
+- Same **behavior** as [iOS Plugin](https://github.com/poingstudios/godot-admob-ios) 🍎
 
 ## 🕵️‍♂️Preview
 | Banner | Interstitial | Rewarded | Rewarded Interstitial |
@@ -56,11 +56,11 @@ The plugin supports most versions of Godot from 3.x to 4.x and is **compatible**
 ## 🔌Usage
 ### Prerequisites
 - Basic knowledge about usage of Godot Plugins and AdMob
-- Usage of [AdMob Editor Plugin](https://github.com/Poing-Studios/Godot-AdMob-Editor-Plugin)
+- Usage of [AdMob Editor Plugin](https://github.com/poingstudios/godot-admob-plugin)
 
 ### Installation 
 - [YouTube Tutorial](https://youtu.be/ZnlH3INcAGs)
-- Download the ```android-?-template-v{{ your_godot_version }}.zip``` in the [releases tab](https://github.com/Poing-Studios/godot-admob-android/releases), we recommend you to use always the latest.
+- Download the ```android-?-template-v{{ your_godot_version }}.zip``` in the [releases tab](https://github.com/poingstudios/godot-admob-android/releases), we recommend you to use always the latest.
 - Extract the content downloaded into ```res://android/plugins``` directory on your Godot project
 - Add your [AdMob App ID](https://support.google.com/admob/answer/7356431) to your app's ```res://android/build/AndroidManifest.xml``` file by adding a ```<meta-data>``` tag with name ```com.google.android.gms.ads.APPLICATION_ID```, as shown below.
 ``` xml
@@ -89,7 +89,7 @@ The plugin supports most versions of Godot from 3.x to 4.x and is **compatible**
 - For complete and detailed documentation check here: [LINK]()
 
 ## 🌠Star History
-[![Star History Chart](https://api.star-history.com/svg?repos=Poing-Studios/godot-admob-android&type=Date)](https://star-history.com/#Poing-Studios/godot-admob-android&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=poingstudios/godot-admob-android&type=Date)](https://star-history.com/#poingstudios/godot-admob-android&Date)
 
 ## 🪪License
-This project is licensed under the [MIT License](https://github.com/Poing-Studios/godot-admob-android/blob/master/LICENSE).
+This project is licensed under the [MIT License](https://github.com/poingstudios/godot-admob-android/blob/master/LICENSE).
