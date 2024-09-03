@@ -14,6 +14,12 @@ jobs:
     - uses: actions/checkout@v4
       with:
         ref: ${{ github.ref_name }}
+        
+    - name: Set up Java
+      uses: actions/setup-java@v2
+      with:
+        java-version: 17
+        distribution: "temurin"
 
     - name: Set plugin version on env
       run: |
