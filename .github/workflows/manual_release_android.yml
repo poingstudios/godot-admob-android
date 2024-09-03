@@ -29,7 +29,7 @@ jobs:
     
     - name: Build Android Action
       id: build-android
-      uses: Poing-Studios/godot-android-action@master
+      uses: poingstudios/godot-android-action@master
       with:
         godot_version: ${{ github.event.inputs.godot_version }}
         build_version: ${{ github.event.inputs.build_version }}
