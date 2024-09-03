@@ -75,7 +75,7 @@ import java.util.Objects;
 import java.util.Set;
 
 public class AdMob extends org.godotengine.godot.plugin.GodotPlugin {
-    private static final String PLUGIN_VERSION = "2.1.6";
+    private static final String PLUGIN_VERSION = "2.1.7";
     private static final String LOG_TAG_NAME = "poing-godot-admob";
     private boolean aIsInitialized = false;
     private String aInitializationDesc = "";
