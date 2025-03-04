@@ -5,20 +5,21 @@ plugins {
     id 'org.jetbrains.kotlin.android' version '1.9.22' apply false
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
+
 
 allprojects {
     afterEvaluate {
 
     }
-
 }
 
 ext {
     pluginExportPath = project.hasProperty('pluginExportPath') ? project.property('pluginExportPath') : null
     aarExportPath = project.hasProperty('pluginExportPath') ? project.property('pluginExportPath') + '\\poing-godot-admob-libs'  : null
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
 
 task exportAar(type: Copy) {

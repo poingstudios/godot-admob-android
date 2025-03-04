@@ -84,6 +84,7 @@ The **purpose** of this plugin is to always keep **up to date with Godot**, supp
 - 🦾 Godot Plugin: https://github.com/poingstudios/godot-admob-plugin
 - 🍏 iOS: https://github.com/poingstudios/godot-admob-ios
 - ⏳ Plugin for Godot below v4.1: https://github.com/poingstudios/godot-admob-android/tree/v2
+- ⏱️ For strictly Godot v4.1 version use the v3.0.x versions, recommended: https://github.com/poingstudios/godot-admob-android/releases/tag/v3.0.5 
 
 ## 📄Documentation
 For a complete documentation of this Plugin: [check here](https://poingstudios.github.io/godot-admob-plugin/).
