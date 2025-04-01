@@ -20,7 +20,7 @@ jobs:
         PLUGIN_VERSION=$(find . -type f \( -name "*.java" -o -name "*.kt" \) -exec grep -H 'PLUGIN_VERSION = ' {} \; | awk -F'"' '{print $2}')
         echo "PLUGIN_VERSION=v${PLUGIN_VERSION}" >> $GITHUB_ENV
 
-    # Github Actions Matrix doesnt support x.0 values, it's replaced by ''
+    # Github Actions Matrix doesn't support x.0 values, it's replaced by ''
     - name: Verify current matrix's GODOT_VERSIONS
       run: |
         CURRENT_GODOT_VERSION=${{matrix.GODOT_VERSIONS}}
