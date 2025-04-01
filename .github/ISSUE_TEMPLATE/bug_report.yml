@@ -5,19 +5,19 @@ body:
 - type: input
   attributes:
     label: Godot version
-    placeholder: '3.5.1'
+    placeholder: '4.4'
   validations:
     required: true
 - type: input
   attributes:
     label: Plugin version
-    placeholder: 'v2.0.0'
+    placeholder: 'v3.0.5'
   validations:
     required: true
 - type: input
   attributes:
     label: Phone information
-    placeholder: 'Xiaomi 13 with Android 13'
+    placeholder: 'Xiaomi 15 with Android 15'
   validations:
     required: true
 - type: textarea
