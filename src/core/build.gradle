@@ -41,7 +41,7 @@ android {
         }
     }
 }
-
+def isCi = System.getenv("CI") != null || project.hasProperty("ci")
 
 dependencies {
     File gdap_file = file("../ads/config/poing-godot-admob-ads.gdap")
@@ -54,7 +54,18 @@ dependencies {
         api item
     }
 
-    api project(':libs:godotlib')
+    if (isCi) {
+        println "Using local godot-lib"
+
+        api project(':libs:godot-lib')
+    } else {
+        def godotVersion = "4.4.1"
+        def releaseType = "stable"
+        def fullVersion = "$godotVersion.$releaseType"
+        println "Using remote godot-lib on version $fullVersion"
+
+        api "org.godotengine:godot:$fullVersion"
+    }
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
