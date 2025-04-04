@@ -14,7 +14,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "admob"
-include ':libs:godot-lib'
 include ':src:ads'
 include ':src:core'
 include ':src:mediation:adcolony'

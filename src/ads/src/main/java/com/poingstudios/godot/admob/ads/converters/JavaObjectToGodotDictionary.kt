@@ -131,6 +131,7 @@ fun FormError.convertToGodotDictionary() : Dictionary{
 
     return dictionary
 }
+
 fun RewardItem.convertToGodotDictionary() : Dictionary{
     val dictionary = Dictionary()
 

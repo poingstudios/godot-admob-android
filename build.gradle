@@ -5,20 +5,21 @@ plugins {
     id 'org.jetbrains.kotlin.android' version '1.9.22' apply false
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
+
 
 allprojects {
     afterEvaluate {
 
     }
-
 }
 
 ext {
     pluginExportPath = project.hasProperty('pluginExportPath') ? project.property('pluginExportPath') : null
-    aarExportPath = project.hasProperty('pluginExportPath') ? project.property('pluginExportPath') + '\\poing-godot-admob-libs'  : null
+    aarExportPath = project.hasProperty('pluginExportPath') ? project.property('pluginExportPath') + '\\libs'  : null
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
 
 task exportAar(type: Copy) {
@@ -27,7 +28,7 @@ task exportAar(type: Copy) {
         if (subproject.file("src").exists() && subproject.name != "core") {
             def moduleAarDir = subproject.file("build/outputs/aar")
             aarFiles.addAll(fileTree(moduleAarDir) {
-                include '*release.aar'
+                include '*.aar'
             })
         }
     }
@@ -84,7 +85,7 @@ task zipPlugins(type: Zip) {
                 from(gdapFiles) {
                     include '*.gdap'
                 }
-                into("poing-godot-admob-libs") {
+                into("libs") {
                     from(aarFiles)
                 }
             }
