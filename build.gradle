@@ -15,7 +15,7 @@ allprojects {
 
 ext {
     pluginExportPath = project.hasProperty('pluginExportPath') ? project.property('pluginExportPath') : null
-    aarExportPath = project.hasProperty('pluginExportPath') ? project.property('pluginExportPath') + '\\poing-godot-admob-libs'  : null
+    aarExportPath = project.hasProperty('pluginExportPath') ? project.property('pluginExportPath') + '\\libs'  : null
 }
 
 task clean(type: Delete) {
@@ -28,7 +28,7 @@ task exportAar(type: Copy) {
         if (subproject.file("src").exists() && subproject.name != "core") {
             def moduleAarDir = subproject.file("build/outputs/aar")
             aarFiles.addAll(fileTree(moduleAarDir) {
-                include '*release.aar'
+                include '*.aar'
             })
         }
     }
@@ -85,7 +85,7 @@ task zipPlugins(type: Zip) {
                 from(gdapFiles) {
                     include '*.gdap'
                 }
-                into("poing-godot-admob-libs") {
+                into("libs") {
                     from(aarFiles)
                 }
             }
