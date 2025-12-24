@@ -4,11 +4,12 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    namespace "com.poingstudios.godot.admob.core"
+    compileSdk 35
 
     defaultConfig {
-        minSdk 24
-        targetSdk 33
+        minSdk 29
+        targetSdk 35
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -32,6 +33,14 @@ android {
     def versionMatch = configFile.text =~ versionRegex
     def version = versionMatch[0][1] //if the version is not found, there will be an error, which should be expected because the generated version must be the same as the one in the configuration file
     println "Version find: $version, of module $moduleName"
+    ndkVersion '28.1.13356709'
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17
+    }
 
     libraryVariants.all { variant ->
         variant.outputs.all {
@@ -59,7 +68,7 @@ dependencies {
 
         api project(':libs:godot-lib')
     } else {
-        def godotVersion = "4.4.1"
+        def godotVersion = "4.5.1"
         def releaseType = "stable"
         def fullVersion = "$godotVersion.$releaseType"
         println "Using remote godot-lib on version $fullVersion"
