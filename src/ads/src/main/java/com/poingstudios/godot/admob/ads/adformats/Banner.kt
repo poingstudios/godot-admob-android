@@ -200,7 +200,7 @@ class Banner(
                         @Suppress("DEPRECATION")
                         windowInsets.systemWindowInsetTop
                     }
-                    returnValue = Math.max(0, safeArea.top - statusBarHeight)
+                    returnValue = 0.coerceAtLeast(safeArea.top - statusBarHeight)
                 } else {
                     returnValue = safeArea.top
                 }
@@ -266,7 +266,7 @@ class Banner(
 
     fun getWidthInPixels() : Int{
         if (this::mAdSize.isInitialized) {
-            return mAdSize.getWidthInPixels(activity);
+            return mAdSize.getWidthInPixels(activity)
         }
         return 0
     }
