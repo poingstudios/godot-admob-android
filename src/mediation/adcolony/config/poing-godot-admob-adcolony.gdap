@@ -2,7 +2,7 @@
 
 name="AdMob AdColony"
 binary_type="local"
-binary="poing-godot-admob-libs/poing-godot-admob-adcolony-v1.0.0-release.aar"
+binary="poing-godot-admob-libs/poing-godot-admob-adcolony-release.aar"
 
 [dependencies]
 

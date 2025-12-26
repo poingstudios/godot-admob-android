@@ -55,10 +55,12 @@ class PoingGodotAdMob(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(
 
     @UsedByGodot
     fun initialize() {
-        MobileAds.initialize(aActivity) { initializationStatus ->
-            val initializationStatusDictionary = initializationStatus.convertToGodotDictionary()
-            emitSignal("on_initialization_complete", initializationStatusDictionary)
-        }
+        Thread {
+            MobileAds.initialize(aActivity) { initializationStatus ->
+                val initializationStatusDictionary = initializationStatus.convertToGodotDictionary()
+                emitSignal("on_initialization_complete", initializationStatusDictionary)
+            }
+        }.start()
     }
 
     @UsedByGodot

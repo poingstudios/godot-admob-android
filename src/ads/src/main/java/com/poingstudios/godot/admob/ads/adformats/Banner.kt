@@ -145,27 +145,15 @@ class Banner(
         }
         val window: Window = activity.window?: return safeInsetRect
 
-        if (!isImmersiveModeEnabledLegacy(window)) {
-            return safeInsetRect
-        }
-
-        val windowInsets : WindowInsets= window.decorView.rootWindowInsets ?: return safeInsetRect
+        val windowInsets : WindowInsets = window.decorView.rootWindowInsets ?: return safeInsetRect
         val displayCutout : DisplayCutout = windowInsets.displayCutout ?: return safeInsetRect
 
         safeInsetRect.left = displayCutout.safeInsetLeft
         safeInsetRect.top = displayCutout.safeInsetTop
         safeInsetRect.right = displayCutout.safeInsetRight
         safeInsetRect.bottom = displayCutout.safeInsetBottom
-
+        LogUtils.debug("safeInsetRect: $safeInsetRect")
         return safeInsetRect
-    }
-
-    @Suppress("DEPRECATION")
-    private fun isImmersiveModeEnabledLegacy(window: Window): Boolean {
-        val uiOptions = window.decorView.systemUiVisibility
-        return (uiOptions and View.SYSTEM_UI_FLAG_FULLSCREEN != 0) &&
-                (uiOptions and View.SYSTEM_UI_FLAG_HIDE_NAVIGATION != 0) &&
-                (uiOptions and View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY != 0)
     }
 
     private fun getGravity(adPosition: Int?) : Int{
@@ -204,9 +192,21 @@ class Banner(
         var returnValue = topMargin
         when (adPosition) {
             AdPosition.TOP.ordinal, AdPosition.TOP_LEFT.ordinal, AdPosition.TOP_RIGHT.ordinal -> {
-                returnValue = safeArea.top
+                val windowInsets = activity.window?.decorView?.rootWindowInsets
+                if (windowInsets != null) {
+                    val statusBarHeight = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        windowInsets.getInsets(WindowInsets.Type.statusBars()).top
+                    } else {
+                        @Suppress("DEPRECATION")
+                        windowInsets.systemWindowInsetTop
+                    }
+                    returnValue = Math.max(0, safeArea.top - statusBarHeight)
+                } else {
+                    returnValue = safeArea.top
+                }
             }
         }
+        LogUtils.debug("marginTop: $returnValue")
         return returnValue
     }
 
