@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace "com.poingstudios.godot.admob.vungle"
+    namespace = "com.poingstudios.godot.admob.vungle"
     compileSdk = 36
 
     defaultConfig {
@@ -29,7 +29,7 @@ android {
     def moduleName = project.getName().replaceAll(":", "-") //the module that is being built at the moment
     def fullModuleName = "$startName-$moduleName"
 
-    libraryVariants.all { variant ->
+    libraryVariants.configureEach { variant ->
         variant.outputs.all {
             def outputName = "${fullModuleName}-${variant.name}.aar"
             println "Output file will be: $outputName"
@@ -45,14 +45,14 @@ dependencies {
 
     def remote_content = Eval.me(match[0])
 
-    for(item in remote_content){
+    remote_content.each { item ->
         println "compileOnly item: $item"
-        compileOnly item
+        project.dependencies.add("compileOnly", item.toString())
     }
 
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'com.google.android.material:material:1.13.0'
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
 }

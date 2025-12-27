@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace "com.poingstudios.godot.admob.adcolony"
+    namespace = "com.poingstudios.godot.admob.adcolony"
     compileSdk = 36
 
     defaultConfig {
@@ -31,7 +31,7 @@ android {
 
     println "Module find: module $moduleName"
 
-    libraryVariants.all { variant ->
+    libraryVariants.configureEach { variant ->
         variant.outputs.all {
             def outputName = "${fullModuleName}-${variant.name}.aar"
             println "Output file will be: $outputName"
@@ -48,9 +48,9 @@ dependencies {
 
     def remote_content = Eval.me(match[0])
 
-    for(item in remote_content){
+    remote_content.each { item ->
         println "compileOnly item: $item"
-        compileOnly item
+        project.dependencies.add("compileOnly", item.toString())
     }
 
     implementation 'androidx.appcompat:appcompat:1.7.1'

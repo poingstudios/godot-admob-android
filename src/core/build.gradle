@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace "com.poingstudios.godot.admob.core"
+    namespace = "com.poingstudios.godot.admob.core"
     compileSdk = 36
 
     defaultConfig {
@@ -32,7 +32,7 @@ android {
 
     println "Module find: module $moduleName"
 
-    libraryVariants.all { variant ->
+    libraryVariants.configureEach { variant ->
         variant.outputs.all {
             def outputName = "${fullModuleName}-${variant.name}.aar"
             println "Output file will be: $outputName"
@@ -48,9 +48,9 @@ dependencies {
 
     def remote_content = Eval.me(match[0])
 
-    for(item in remote_content){
+    remote_content.each { item ->
         println "api item: $item"
-        api item
+        project.dependencies.add("api", item.toString())
     }
 
     if (isCi) {
@@ -73,7 +73,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
 }
 
-task copyAar(type: Copy) {
+tasks.register('copyAar', Copy) {
     dependsOn 'assemble'
 
     from(layout.buildDirectory.dir("outputs/aar"))
