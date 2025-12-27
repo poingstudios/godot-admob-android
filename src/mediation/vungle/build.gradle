@@ -5,11 +5,11 @@ plugins {
 
 android {
     namespace "com.poingstudios.godot.admob.vungle"
-    compileSdk 33
+    compileSdk = 36
 
     defaultConfig {
-        minSdk 24
-        targetSdk 33
+        minSdk = 24
+        targetSdk = 36
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"

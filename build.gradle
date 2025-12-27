@@ -1,11 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
-    id 'com.android.application' version '7.4.2' apply false
-    id 'com.android.library' version '7.4.2' apply false
-    id 'org.jetbrains.kotlin.android' version '2.2.20' apply false
+    id 'com.android.application' version '8.13.2' apply false
+    id 'com.android.library' version '8.13.2' apply false
+    id 'org.jetbrains.kotlin.android' version '2.3.0' apply false
 }
-
-
 
 allprojects {
     afterEvaluate {
@@ -18,11 +16,11 @@ ext {
     aarExportPath = project.hasProperty('pluginExportPath') ? project.property('pluginExportPath') + '\\libs'  : null
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+tasks.register('clean', Delete) {
+    delete rootProject.layout.buildDirectory
 }
 
-task exportAar(type: Copy) {
+tasks.register('exportAar', Copy) {
     def aarFiles = []
     subprojects { subproject ->
         if (subproject.file("src").exists() && subproject.name != "core") {
@@ -36,7 +34,7 @@ task exportAar(type: Copy) {
     into aarExportPath
 }
 
-task exportGdap(type: Copy) {
+tasks.register('exportGdap', Copy) {
     def gdapFiles = []
     subprojects { subproject ->
         if (subproject.file("src").exists()) {
@@ -51,8 +49,9 @@ task exportGdap(type: Copy) {
 }
 
 
-task exportFiles(dependsOn: [exportAar, exportGdap])
-
+tasks.register('exportFiles') {
+    dependsOn exportAar, exportGdap
+}
 gradle.taskGraph.whenReady { taskGraph ->
     if (taskGraph.hasTask(exportFiles)) {
         if (pluginExportPath == null) {
@@ -62,7 +61,7 @@ gradle.taskGraph.whenReady { taskGraph ->
     }
 }
 
-task zipPlugins(type: Zip) {
+tasks.register('zipPlugins', Zip) {
     def godotVersion = project.hasProperty("godotVersion") ? project.getProperty("godotVersion") : ""
     def zipFileName = "poing-godot-admob-android${godotVersion ? '-v' + godotVersion : ''}.zip"
 
@@ -90,15 +89,5 @@ task zipPlugins(type: Zip) {
                 }
             }
         }
-    }
-}
-
-subprojects {
-    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-        kotlinOptions.jvmTarget = "1.8"
-    }
-    tasks.withType(JavaCompile).configureEach {
-        sourceCompatibility = "1.8"
-        targetCompatibility = "1.8"
     }
 }
