@@ -2,7 +2,7 @@
 
 name="AdMob Vungle"
 binary_type="local"
-binary="poing-godot-admob-libs/poing-godot-admob-vungle-v1.0.0-release.aar"
+binary="poing-godot-admob-libs/poing-godot-admob-vungle-release.aar"
 
 [dependencies]
 

@@ -29,9 +29,6 @@ android {
         jvmTarget = "17"
     }
 
-
-    def configFile = file('config/poing-godot-admob-vungle.gdap')
-
     def startName = "poing-godot-admob"
     def moduleName = project.getName().replaceAll(":", "-") //the module that is being built at the moment
     def fullModuleName = "$startName-$moduleName"
@@ -39,12 +36,11 @@ android {
 
     def versionMatch = configFile.text =~ versionRegex
     def version = versionMatch[0][1] //if the version is not found, there will be an error, which should be expected because the generated version must be the same as the one in the configuration file
-    println "Version find: $version, of module $moduleName"
     ndkVersion '28.1.13356709'
 
     libraryVariants.all { variant ->
         variant.outputs.all {
-            def outputName = "${fullModuleName}-${version}-${variant.name}.aar"
+            def outputName = "${fullModuleName}-${variant.name}.aar"
             println "Output file will be: $outputName"
             outputFileName = "$outputName"
         }
