@@ -40,3 +40,4 @@ local.properties
 *android*.zip
 
 ios/.sconsign.dblite
+.output/
