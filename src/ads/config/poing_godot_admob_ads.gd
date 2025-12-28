@@ -1,24 +1,19 @@
 extends EditorExportPlugin
 
 var _plugin_name := "ads"
-var _dependency_library := "com.google.android.gms:play-services-ads:23.3.0"
+var _dependency_library := ["com.google.android.gms:play-services-ads:24.9.0"]
 
 func _supports_platform(platform: EditorExportPlatform) -> bool:
-	if platform is EditorExportPlatformAndroid:
-		return true
-	return false
+	return platform is EditorExportPlatformAndroid
 
 func _get_android_libraries(_platform: EditorExportPlatform, debug: bool) -> PackedStringArray:
-	if debug:
-		return PackedStringArray([
-			"admob/bin/android/" + _plugin_name + "/poing-godot-admob-" + _plugin_name + "-debug.aar",
-			"admob/bin/android/" + _plugin_name + "/poing-godot-admob-core-debug.aar"
-		])
-	else:
-		return PackedStringArray([
-			"admob/bin/android/" + _plugin_name + "/poing-godot-admob-" + _plugin_name + "-release.aar",
-			"admob/bin/android/" + _plugin_name + "/poing-godot-admob-core-release.aar"
-		])
+	var variant := "debug" if debug else "release"
+	var base := "res://addons/admob/android/bin/libs"
 
-func _get_android_dependencies(_platform, debug):
-	return PackedStringArray([_dependency_library])
+	return PackedStringArray([
+		"%s/poing-godot-admob-%s-%s.aar" % [base, _plugin_name, variant],
+		"%s/poing-godot-admob-core-%s.aar" % [base, variant]
+	])
+
+func _get_android_dependencies(_platform: EditorExportPlatform, _debug: bool) -> PackedStringArray:
+	return PackedStringArray(_dependency_library)

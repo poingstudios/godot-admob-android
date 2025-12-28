@@ -40,7 +40,7 @@ tasks.register('exportGdap', Copy) {
         if (subproject.file("src").exists()) {
             def configGdapDir = subproject.file("config")
             gdapFiles.addAll(fileTree(configGdapDir) {
-                include '*.gdap'
+                include '*.gd'
             })
         }
     }

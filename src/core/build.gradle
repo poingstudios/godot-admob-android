@@ -43,8 +43,8 @@ android {
 def isCi = System.getenv("CI") != null || project.hasProperty("ci")
 
 dependencies {
-    File gdap_file = file("../ads/config/poing-godot-admob-ads.gdap")
-    def match = gdap_file.text =~ /(?<=remote=)[^;]+/
+    File gdap_file = file("../ads/config/poing_godot_admob_ads.gd")
+    def match = gdap_file.text =~ /(?<=_dependency_library := )\[[^\]]+\]/
 
     def remote_content = Eval.me(match[0])
 
@@ -54,12 +54,14 @@ dependencies {
     }
 
     if (isCi) {
+        //RUNNING WHEN IS ON CI
         println "Using local godot-lib"
-
         api project(':libs:godot-lib')
     } else {
+        // CHANGE THESE VARIABLES FOR LOCAL BUILDING
         def godotVersion = "4.5.1"
         def releaseType = "stable"
+
         def fullVersion = "$godotVersion.$releaseType"
         println "Using remote godot-lib on version $fullVersion"
 
