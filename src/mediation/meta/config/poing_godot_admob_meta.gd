@@ -1,7 +1,7 @@
 extends EditorExportPlugin
 
-const PLUGIN_NAME := "ads"
-var _dependency_library := ["com.google.android.gms:play-services-ads:24.9.0"]
+const PLUGIN_NAME := "meta"
+var _dependency_library := ["com.google.ads.mediation:facebook:6.21.0.0"]
 
 func _supports_platform(platform: EditorExportPlatform) -> bool:
 	return platform is EditorExportPlatformAndroid
@@ -11,8 +11,7 @@ func _get_android_libraries(_platform: EditorExportPlatform, debug: bool) -> Pac
 	var base := "res://addons/admob/android/bin/libs"
 
 	return PackedStringArray([
-		"%s/poing-godot-admob-%s-%s.aar" % [base, PLUGIN_NAME, variant],
-		"%s/poing-godot-admob-core-%s.aar" % [base, variant]
+		"%s/poing-godot-admob-%s-%s.aar" % [base, PLUGIN_NAME, variant]
 	])
 
 func _get_android_dependencies(_platform: EditorExportPlatform, _debug: bool) -> PackedStringArray:

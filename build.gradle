@@ -34,24 +34,25 @@ tasks.register('exportAar', Copy) {
     into aarExportPath
 }
 
-tasks.register('exportGdap', Copy) {
-    def gdapFiles = []
+tasks.register('exportGd', Copy) {
+    def gdFiles = []
     subprojects { subproject ->
         if (subproject.file("src").exists()) {
-            def configGdapDir = subproject.file("config")
-            gdapFiles.addAll(fileTree(configGdapDir) {
+            def configGdDir = subproject.file("config")
+            gdFiles.addAll(fileTree(configGdDir) {
                 include '*.gd'
             })
         }
     }
-    from gdapFiles
+    from gdFiles
     into pluginExportPath
 }
 
 
 tasks.register('exportFiles') {
-    dependsOn exportAar, exportGdap
+    dependsOn exportAar, exportGd
 }
+
 gradle.taskGraph.whenReady { taskGraph ->
     if (taskGraph.hasTask(exportFiles)) {
         if (pluginExportPath == null) {
@@ -75,14 +76,14 @@ tasks.register('zipPlugins', Zip) {
                 include '*release.aar'
             }
 
-            def configGdapDir = subproject.file("config")
-            def gdapFiles = fileTree(configGdapDir) {
-                include '*.gdap'
+            def configGdDir = subproject.file("config")
+            def gdFiles = fileTree(configGdDir) {
+                include '*.gd'
             }
 
             into("${subproject.name}") {
-                from(gdapFiles) {
-                    include '*.gdap'
+                from(gdFiles) {
+                    include '*.gd'
                 }
                 into("libs") {
                     from(aarFiles)

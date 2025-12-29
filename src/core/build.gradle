@@ -43,8 +43,8 @@ android {
 def isCi = System.getenv("CI") != null || project.hasProperty("ci")
 
 dependencies {
-    File gdap_file = file("../ads/config/poing_godot_admob_ads.gd")
-    def match = gdap_file.text =~ /(?<=_dependency_library := )\[[^\]]+\]/
+    File gd_file = file("../ads/config/poing_godot_admob_ads.gd")
+    def match = gd_file.text =~ /(?<=_dependency_library := )\[[^\]]+\]/
 
     def remote_content = Eval.me(match[0])
 

@@ -40,8 +40,9 @@ android {
 
 dependencies {
     compileOnly project(path: ':src:core')
-    File gdap_file = file("config/poing-godot-admob-vungle.gdap")
-    def match = gdap_file.text =~ /(?<=remote=)[^;]+/
+
+    File gd_file = file("config/poing_godot_admob_vungle.gd")
+    def match = gd_file.text =~ /(?<=_dependency_library := )\[[^\]]+\]/
 
     def remote_content = Eval.me(match[0])
 
