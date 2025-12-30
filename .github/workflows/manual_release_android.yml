@@ -4,14 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: 'Tag to publish the build (e.g., v2.0.1)'
+        description: 'Tag to publish the build (e.g., v4.0.0)'
         required: true
       godot_version:
-        description: 'Godot version to be builded (e.g., 3.5)'
+        description: 'Godot version to be builded (e.g., 4.5.0)'
         required: true
-      build_version:
-        description: 'The Build Version of Godot (stable/rc1/beta1) (`alpha` or pre-alpha` could not work).'
-        default: 'stable'
 
 jobs:
   android-template:
@@ -27,15 +24,10 @@ jobs:
         if [ ${#CURRENT_GODOT_VERSION} -eq 1 ]; then CURRENT_GODOT_VERSION="${CURRENT_GODOT_VERSION}.0"; fi
         echo "CURRENT_GODOT_VERSION=${CURRENT_GODOT_VERSION}" >> $GITHUB_ENV
 
-    - name: Download and prepare the Stable Godot .AAR LIB
-      run: |
-        chmod +x ./scripts/unix/download_godot.sh
-        ./scripts/unix/download_godot.sh ${{env.CURRENT_GODOT_VERSION}} ${{ github.event.inputs.build_version }}
-
     - name: Build Plugins
       run: |
         chmod +x ./gradlew
-        ./gradlew build
+        ./gradlew build -PgodotVersion=${{env.CURRENT_GODOT_VERSION}}
 
     - name: Compress the artifact output
       run: |

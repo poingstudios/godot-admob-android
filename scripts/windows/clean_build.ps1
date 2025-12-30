@@ -7,14 +7,9 @@ if ($args.Length -eq 0) {
 
 $CURRENT_GODOT_VERSION = $args[0]
 
-.\scripts\windows\download_godot.ps1 $CURRENT_GODOT_VERSION
-if ($LASTEXITCODE -eq 1) {
-    exit 1
-}
-
 cd ../../
 .\gradlew clean
-.\gradlew build
+.\gradlew build -PgodotVersion="$CURRENT_GODOT_VERSION"
 
 if ($LASTEXITCODE -eq 0) {
     exit 1

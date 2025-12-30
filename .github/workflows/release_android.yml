@@ -8,7 +8,7 @@ jobs:
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        GODOT_VERSIONS: [4.2, 4.2.1, 4.2.2, 4.3, 4.4, 4.4.1, 4.5, 4.5.1]
+        GODOT_VERSIONS: ["4.2.0", "4.2.1", "4.2.2", "4.3.0", "4.4.0", "4.4.1", "4.5.0", "4.5.1"]
 
     steps:
     - uses: actions/checkout@v6
@@ -20,32 +20,20 @@ jobs:
         PLUGIN_VERSION=$(find . -type f \( -name "*.java" -o -name "*.kt" \) -exec grep -H 'PLUGIN_VERSION = ' {} \; | awk -F'"' '{print $2}')
         echo "PLUGIN_VERSION=v${PLUGIN_VERSION}" >> $GITHUB_ENV
 
-    # Github Actions Matrix doesn't support x.0 values, it's replaced by ''
-    - name: Verify current matrix's GODOT_VERSIONS
-      run: |
-        CURRENT_GODOT_VERSION=${{matrix.GODOT_VERSIONS}}
-        if [ ${#CURRENT_GODOT_VERSION} -eq 1 ]; then CURRENT_GODOT_VERSION="${CURRENT_GODOT_VERSION}.0"; fi
-        echo "CURRENT_GODOT_VERSION=${CURRENT_GODOT_VERSION}" >> $GITHUB_ENV
-
-    - name: Download and prepare the Stable Godot .AAR LIB
-      run: |
-        chmod +x ./scripts/unix/download_godot.sh
-        ./scripts/unix/download_godot.sh ${{env.CURRENT_GODOT_VERSION}}
-
     - name: Build Plugins
       run: |
         chmod +x ./gradlew
-        ./gradlew build
+        ./gradlew build -PgodotVersion=${{matrix.GODOT_VERSIONS}}
 
     - name: Compress the artifact output
       run: |
-        ./gradlew zipPlugins -PgodotVersion="${{env.CURRENT_GODOT_VERSION}}"
+        ./gradlew zipPlugins -PgodotVersion="${{matrix.GODOT_VERSIONS}}"
 
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
         target_commit: ${{ github.ref_name }}
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: .output/poing-godot-admob-android-v${{env.CURRENT_GODOT_VERSION}}.zip
+        file: .output/poing-godot-admob-android-v${{matrix.GODOT_VERSIONS}}.zip
         tag: ${{env.PLUGIN_VERSION}}
         overwrite: true
