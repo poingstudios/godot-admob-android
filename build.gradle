@@ -13,7 +13,6 @@ allprojects {
 
 ext {
     pluginExportPath = project.hasProperty('pluginExportPath') ? project.property('pluginExportPath') : null
-    aarExportPath = project.hasProperty('pluginExportPath') ? project.property('pluginExportPath') + '\\libs'  : null
 }
 
 tasks.register('clean', Delete) {

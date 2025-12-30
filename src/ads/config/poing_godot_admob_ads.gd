@@ -8,7 +8,7 @@ func _supports_platform(platform: EditorExportPlatform) -> bool:
 
 func _get_android_libraries(_platform: EditorExportPlatform, debug: bool) -> PackedStringArray:
 	var variant := "debug" if debug else "release"
-	var base := "res://addons/admob/android/bin/libs"
+	var base := "res://addons/admob/android/bin/%s/libs" % PLUGIN_NAME
 
 	return PackedStringArray([
 		"%s/poing-godot-admob-%s-%s.aar" % [base, PLUGIN_NAME, variant],
