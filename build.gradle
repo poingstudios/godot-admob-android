@@ -5,18 +5,16 @@ plugins {
     id 'org.jetbrains.kotlin.android' version '2.3.0' apply false
 }
 
-allprojects {
-    afterEvaluate {
-
+subprojects {
+    plugins.withId("org.jetbrains.kotlin.android") {
+        kotlin {
+            jvmToolchain(17)
+        }
     }
 }
 
 ext {
     pluginExportPath = project.hasProperty('pluginExportPath') ? project.property('pluginExportPath') : null
-}
-
-tasks.register('clean', Delete) {
-    delete rootProject.layout.buildDirectory
 }
 
 def pluginContent = copySpec {
@@ -51,6 +49,11 @@ tasks.register('zipPlugins', Zip) {
 
     with pluginContent
 }
+
+tasks.register('clean', Delete) {
+    delete rootProject.layout.buildDirectory
+}
+
 
 gradle.taskGraph.whenReady { taskGraph ->
     if (taskGraph.hasTask(exportFiles)) {

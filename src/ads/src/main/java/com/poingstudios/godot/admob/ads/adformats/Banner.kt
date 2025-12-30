@@ -42,14 +42,15 @@ import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.GodotPlugin.emitSignal
 import org.godotengine.godot.plugin.SignalInfo
 
+@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN") // Godot expects Java types, not Kotlin ones (e.g. Integer)
 class Banner(
-    UID: Int,
+    uid: Int,
     activity: Activity,
     godotLayout: FrameLayout,
     godot: Godot,
     pluginName: String,
     adViewDictionary: Dictionary
-) : AdFormatsBase(UID, activity, godotLayout, godot, pluginName) {
+) : AdFormatsBase(uid, activity, godot) {
     private var safeArea = getSafeArea()
     private val adPosition: Int = adViewDictionary["ad_position"] as Int
     private lateinit var mAdView: AdView
@@ -70,7 +71,6 @@ class Banner(
             }
         }
 
-
     enum class AdPosition {
         TOP,
         BOTTOM,
@@ -82,6 +82,7 @@ class Banner(
         BOTTOM_RIGHT,
         CENTER
     }
+
     object SignalInfos {
         val onAdClicked = SignalInfo("on_ad_clicked", Integer::class.java)
         val onAdClosed = SignalInfo("on_ad_closed", Integer::class.java)
@@ -90,7 +91,6 @@ class Banner(
         val onAdLoaded = SignalInfo("on_ad_loaded", Integer::class.java)
         val onAdOpened = SignalInfo("on_ad_opened", Integer::class.java)
     }
-
 
     init {
         val adSizeDictionary = adViewDictionary["ad_size"] as Dictionary
@@ -107,31 +107,31 @@ class Banner(
 
             mAdView.adListener = object : AdListener() {
                 override fun onAdClicked() {
-                    emitSignal(godot, pluginName, SignalInfos.onAdClicked, UID)
+                    emitSignal(godot, pluginName, SignalInfos.onAdClicked, uid)
                 }
 
                 override fun onAdClosed() {
-                    emitSignal(godot, pluginName, SignalInfos.onAdClosed, UID)
+                    emitSignal(godot, pluginName, SignalInfos.onAdClosed, uid)
                 }
 
                 override fun onAdFailedToLoad(loadAdError: LoadAdError) {
                     val loadAdErrorDictionary = loadAdError.convertToGodotDictionary()
-                    emitSignal(godot, pluginName, SignalInfos.onAdFailedToLoad, UID, loadAdErrorDictionary)
+                    emitSignal(godot, pluginName, SignalInfos.onAdFailedToLoad, uid, loadAdErrorDictionary)
                 }
 
                 override fun onAdImpression() {
-                    emitSignal(godot, pluginName, SignalInfos.onAdImpression, UID)
+                    emitSignal(godot, pluginName, SignalInfos.onAdImpression, uid)
                 }
 
                 override fun onAdLoaded() {
                     if (!isHidden) {
                         show()
                     }
-                    emitSignal(godot, pluginName, SignalInfos.onAdLoaded, UID)
+                    emitSignal(godot, pluginName, SignalInfos.onAdLoaded, uid)
                 }
 
                 override fun onAdOpened() {
-                    emitSignal(godot, pluginName, SignalInfos.onAdOpened, UID)
+                    emitSignal(godot, pluginName, SignalInfos.onAdOpened, uid)
                 }
             }
             activity.window.decorView.rootView.addOnLayoutChangeListener(mLayoutChangeListener)

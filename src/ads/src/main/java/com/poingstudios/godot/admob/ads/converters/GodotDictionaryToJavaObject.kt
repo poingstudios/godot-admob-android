@@ -34,7 +34,6 @@ import com.poingstudios.godot.admob.core.AdNetworkExtras
 import com.poingstudios.godot.admob.core.utils.LogUtils
 import org.godotengine.godot.Dictionary
 
-
 fun Dictionary.convertToAdSize(): AdSize {
     return AdSize(get("width") as Int, get("height") as Int)
 }

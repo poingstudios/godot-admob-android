@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+@file:Suppress("FunctionName")
 package com.poingstudios.godot.admob.ads
 
 import android.util.ArraySet
@@ -28,7 +29,6 @@ import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
-import com.google.android.gms.ads.rewarded.ServerSideVerificationOptions
 import com.poingstudios.godot.admob.ads.converters.convertToAdRequest
 import com.poingstudios.godot.admob.ads.converters.convertToGodotDictionary
 import com.poingstudios.godot.admob.ads.converters.convertToServerSideVerificationOptions
@@ -38,6 +38,9 @@ import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.SignalInfo
 import org.godotengine.godot.plugin.UsedByGodot
 
+@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "unused")
+// Godot expects Java types, not Kotlin ones (e.g. Integer)
+// Instantiated by Android via AndroidManifest (AAR / Godot plugin)
 class PoingGodotAdMobRewardedAd(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(godot) {
     private val rewardedAds = mutableListOf<RewardedAd?>()
     override fun getPluginName(): String {

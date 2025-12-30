@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+@file:Suppress("FunctionName")
 package com.poingstudios.godot.admob.ads
 
 import android.util.ArraySet
@@ -37,6 +38,9 @@ import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.SignalInfo
 import org.godotengine.godot.plugin.UsedByGodot
 
+@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "unused")
+// Godot expects Java types, not Kotlin ones (e.g. Integer)
+// Instantiated by Android via AndroidManifest (AAR / Godot plugin)
 class PoingGodotAdMobRewardedInterstitialAd(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(godot) {
     private val rewardedInterstitialAds = mutableListOf<RewardedInterstitialAd?>()
     override fun getPluginName(): String {

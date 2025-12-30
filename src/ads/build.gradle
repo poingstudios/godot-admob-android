@@ -22,10 +22,6 @@ android {
         }
     }
 
-    kotlin {
-        jvmToolchain(8)
-    }
-
     def startName = "poing-godot-admob"
     def moduleName = project.getName().replaceAll(":", "-") //the module that is being built at the moment
     def fullModuleName = "$startName-$moduleName"
