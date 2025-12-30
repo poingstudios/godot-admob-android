@@ -60,9 +60,8 @@ The **purpose** of this plugin is to always keep **up to date with Godot**, supp
 ## 📦Installing:
 
 ### 📥Download
-- To get started, download the `poing-godot-admob-android-v{{ your_godot_version }}.zip` file from the [releases tab](https://github.com/Poing-Studios/godot-admob-android/releases). We recommend checking the [supported Godot version](https://github.com/Poing-Studios/godot-admob-versions/blob/master/versions.json) before proceeding. You can also use the [AdMob Plugin](https://github.com/Poing-Studios/godot-admob-plugin) for this step by navigating to `Tools -> AdMob Download Manager -> Android -> LatestVersion`.
-- As of Godot 4.2+ the architecture for [Android Plugins](https://docs.godotengine.org/en/stable/tutorials/platform/android/android_plugin.html) has changed and now properly supports `EditorExportPlugin`. That means no more `.gdap` files. Instead, place the directory `google_admob` from `editor_export_plugin` inside your `addons` folder in your Godot project. You can choose your preferred language (C# or GDScript) so both don't need to be added. Then it can be enabled from the export template just like before.
 - To get started, download the `poing-godot-admob-android-v{{ your_godot_version }}.zip` file from the [releases tab](https://github.com/poingstudios/godot-admob-android/releases). We recommend checking the [supported Godot version](https://github.com/poingstudios/godot-admob-versions/blob/master/versions.json) before proceeding. You can also use the [AdMob Plugin](https://github.com/poingstudios/godot-admob-plugin) for this step by navigating to `Tools -> AdMob Download Manager -> Android -> LatestVersion`.
+- As of Godot 4.2+ the architecture for [Android Plugins](https://docs.godotengine.org/en/stable/tutorials/platform/android/android_plugin.html) has changed and now properly supports `EditorExportPlugin`. That means no more `.gdap` files. Instead, extract the `.zip` and paste the content inside your `res://addons/admob/android/bin/` folder in your Godot project.
 
 ### 🧑‍💻Usage
 - Video tutorial: https://youtu.be/WpVGn7ZasKM.
@@ -84,7 +83,7 @@ The **purpose** of this plugin is to always keep **up to date with Godot**, supp
 - 🦾 Godot Plugin: https://github.com/poingstudios/godot-admob-plugin
 - 🍏 iOS: https://github.com/poingstudios/godot-admob-ios
 - ⏳ Plugin for Godot below v4.1: https://github.com/poingstudios/godot-admob-android/tree/v2
-- ⏱️ For strictly Godot v4.1 version use the v3.0.x versions, recommended: https://github.com/poingstudios/godot-admob-android/releases/tag/v3.0.5 
+- ⏱️ For strictly Godot v4.1 version use the v3.0.x versions, recommended: https://github.com/poingstudios/godot-admob-android/releases/tag/v3.0.6 
 
 ## 📄Documentation
 For a complete documentation of this Plugin: [check here](https://poingstudios.github.io/godot-admob-plugin/).
