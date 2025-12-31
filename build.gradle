@@ -7,6 +7,12 @@ plugins {
 
 subprojects {
     plugins.withId("org.jetbrains.kotlin.android") {
+        android {
+            compileSdk 36
+            defaultConfig {
+                minSdk 24
+            }
+        }
         kotlin {
             jvmToolchain(17)
         }

@@ -31,6 +31,4 @@ class LogUtils {
             Log.d(LOG_TAG_NAME, message)
         }
     }
-
-
 }
