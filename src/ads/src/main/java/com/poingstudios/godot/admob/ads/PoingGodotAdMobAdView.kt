@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+@file:Suppress("FunctionName")
 package com.poingstudios.godot.admob.ads
 
 import android.app.Activity
@@ -33,6 +34,7 @@ import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.SignalInfo
 import org.godotengine.godot.plugin.UsedByGodot
 
+@Suppress("unused") // Instantiated by Android via AndroidManifest (AAR / Godot plugin)
 class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(godot)  {
     private val banners = mutableListOf<Banner?>()
     private lateinit var aGodotLayout : FrameLayout
@@ -45,8 +47,6 @@ class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotP
         aGodotLayout = FrameLayout(getActivity()!!)
         return aGodotLayout
     }
-
-
 
     override fun getPluginSignals(): MutableSet<SignalInfo> {
         val signals: MutableSet<SignalInfo> = ArraySet()
@@ -65,7 +65,7 @@ class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotP
             banners.add(this)
         }
 
-        return banner.UID
+        return banner.uid
     }
 
     @UsedByGodot

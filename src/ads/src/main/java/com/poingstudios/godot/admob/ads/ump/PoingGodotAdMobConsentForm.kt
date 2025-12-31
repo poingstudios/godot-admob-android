@@ -10,7 +10,8 @@ import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.GodotPlugin.emitSignal
 import org.godotengine.godot.plugin.SignalInfo
 
-class PoingGodotAdMobConsentForm(val UID: Int,
+@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN") // Godot expects Java types, not Kotlin ones (e.g. Integer)
+class PoingGodotAdMobConsentForm(val uid: Int,
                                  private val consentForm: ConsentForm,
                                  private val activity: Activity,
                                  private val godot: Godot,
@@ -26,7 +27,7 @@ class PoingGodotAdMobConsentForm(val UID: Int,
             {
 
                 LogUtils.debug("consentStatus: ${UserMessagingPlatform.getConsentInformation(activity).consentStatus}")
-                emitSignal(godot, pluginName, SignalInfos.onConsentFormDismissed, UID, it?.convertToGodotDictionary()?: Dictionary())
+                emitSignal(godot, pluginName, SignalInfos.onConsentFormDismissed, uid, it?.convertToGodotDictionary()?: Dictionary())
             }
         }
     }

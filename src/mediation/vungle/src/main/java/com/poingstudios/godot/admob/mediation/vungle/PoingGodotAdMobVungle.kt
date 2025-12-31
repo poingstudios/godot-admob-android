@@ -20,12 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+@file:Suppress("FunctionName")
 package com.poingstudios.godot.admob.mediation.vungle
 
 import com.vungle.warren.Vungle
 import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.UsedByGodot
 
+@Suppress("unused") // Instantiated by Android via AndroidManifest (AAR / Godot plugin)
 class PoingGodotAdMobVungle(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(godot) {
     override fun getPluginName(): String {
         return this::class.simpleName.toString()

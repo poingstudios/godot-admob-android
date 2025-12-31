@@ -23,11 +23,14 @@
 package com.poingstudios.godot.admob.ads.converters
 
 import android.os.Bundle
-import com.google.android.gms.ads.*
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdapterResponseInfo
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.ResponseInfo
 import com.google.android.gms.ads.initialization.AdapterStatus
 import com.google.android.gms.ads.initialization.InitializationStatus
 import com.google.android.gms.ads.rewarded.RewardItem
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.android.ump.FormError
 import org.godotengine.godot.Dictionary
 
@@ -131,6 +134,7 @@ fun FormError.convertToGodotDictionary() : Dictionary{
 
     return dictionary
 }
+
 fun RewardItem.convertToGodotDictionary() : Dictionary{
     val dictionary = Dictionary()
 

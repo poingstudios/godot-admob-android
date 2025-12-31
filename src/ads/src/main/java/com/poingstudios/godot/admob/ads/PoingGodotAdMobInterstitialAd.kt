@@ -36,6 +36,9 @@ import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.SignalInfo
 import org.godotengine.godot.plugin.UsedByGodot
 
+@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "unused")
+// Godot expects Java types, not Kotlin ones (e.g. Integer)
+// Instantiated by Android via AndroidManifest (AAR / Godot plugin)
 class PoingGodotAdMobInterstitialAd(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(godot) {
     private val interstitials = mutableListOf<InterstitialAd?>()
     override fun getPluginName(): String {

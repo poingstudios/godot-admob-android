@@ -4,12 +4,9 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    namespace = "com.poingstudios.godot.admob.ads"
 
     defaultConfig {
-        minSdk 24
-        targetSdk 33
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -21,17 +18,12 @@ android {
         }
     }
 
-    def startName = "poing-godot-admob"
-    def moduleName = project.getName().replaceAll(":", "-") //the module that is being built at the moment
-    def fullModuleName = "$startName-$moduleName"
+    def fullModuleName = rootProject.ext.buildFullModuleName(project)
 
-    println "Module find: module $moduleName"
-
-    libraryVariants.all { variant ->
+    libraryVariants.configureEach { variant ->
         variant.outputs.all {
-            def outputName = "${fullModuleName}-${variant.name}.aar"
-            println "Output file will be: $outputName"
-            outputFileName = "$outputName"
+            outputFileName = "${fullModuleName}-${variant.name}.aar"
+            println "Output file will be: $outputFileName"
         }
     }
 }
@@ -39,9 +31,9 @@ android {
 dependencies {
     compileOnly project(':src:core')
 
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'com.google.android.material:material:1.13.0'
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.7.0'
 }

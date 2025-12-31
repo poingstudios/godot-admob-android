@@ -1,9 +1,0 @@
-[config]
-
-name="AdMob Vungle"
-binary_type="local"
-binary="poing-godot-admob-libs/poing-godot-admob-vungle-release.aar"
-
-[dependencies]
-
-remote=["com.google.ads.mediation:vungle:6.12.1.1"]

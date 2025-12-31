@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+@file:Suppress("FunctionName")
 package com.poingstudios.godot.admob.ads
 
 import android.util.ArraySet
@@ -32,7 +33,7 @@ import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.SignalInfo
 import org.godotengine.godot.plugin.UsedByGodot
 
-
+@Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "unused") // Godot expects Java types, not Kotlin ones (e.g. Integer)
 class PoingGodotAdMobUserMessagingPlatform(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(godot){
     private val consentForms = mutableListOf<PoingGodotAdMobConsentForm?>()
 
@@ -58,7 +59,7 @@ class PoingGodotAdMobUserMessagingPlatform(godot: Godot?) : org.godotengine.godo
                     val consentForm = PoingGodotAdMobConsentForm(consentForms.size, it, activity!!, godot, pluginName).apply {
                         consentForms.add(this)
                     }
-                    emitSignal("on_consent_form_load_success_listener", consentForm.UID)
+                    emitSignal("on_consent_form_load_success_listener", consentForm.uid)
                 },
                 {
                     emitSignal("on_consent_form_load_failure_listener", it.convertToGodotDictionary())
@@ -68,7 +69,7 @@ class PoingGodotAdMobUserMessagingPlatform(godot: Godot?) : org.godotengine.godo
     }
 
     @UsedByGodot
-    fun show(UID : Int){
-        consentForms[UID]?.show()
+    fun show(uid : Int){
+        consentForms[uid]?.show()
     }
 }

@@ -20,6 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+@file:Suppress("FunctionName")
 package com.poingstudios.godot.admob.mediation.adcolony
 
 import com.adcolony.sdk.AdColonyAppOptions
@@ -27,6 +28,7 @@ import com.google.ads.mediation.adcolony.AdColonyMediationAdapter
 import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.UsedByGodot
 
+@Suppress("unused") // Instantiated by Android via reflection in AdRequest
 class PoingGodotAdMobAdColonyAppOptions(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(godot) {
     private val appOptions: AdColonyAppOptions = AdColonyMediationAdapter.getAppOptions()
 

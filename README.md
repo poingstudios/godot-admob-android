@@ -38,7 +38,7 @@
 
 This repository is for a _Godot Engine Plugin_ that allows showing the ads offered by **AdMob** in an **easy** way, without worrying about the building or version, **just download and use**.
 
-The **purpose** of this plugin is to always keep **up to date with Godot**, supporting **ALMOST ALL** versions from v4.1+, and also make the code **compatible** on **Android and [iOS](https://github.com/poingstudios/godot-admob-ios)**, so each advertisement will work **identically on both systems**.
+The **purpose** of this plugin is to always keep **up to date with Godot**, supporting **ALMOST ALL** versions from v4.2+, and also make the code **compatible** on **Android and [iOS](https://github.com/poingstudios/godot-admob-ios)**, so each advertisement will work **identically on both systems**.
 
 ### 🔑 Key features
 
@@ -54,34 +54,25 @@ The **purpose** of this plugin is to always keep **up to date with Godot**, supp
 
 
 ## 🙋‍♂️How to use 
-- We recommend you to use the [AdMob Plugin](https://github.com/poingstudios/godot-admob-plugin), you can download direcly from [Godot Assets](https://godotengine.org/asset-library/asset/2063).
+- Video tutorial: https://youtu.be/WpVGn7ZasKM.
+- Download [AdMob Plugin](https://github.com/poingstudios/godot-admob-plugin), you can download directly from [Godot Assets](https://godotengine.org/asset-library/asset/2063).
 - After download, we recommend you to read the [README.md](https://github.com/poingstudios/godot-admob-plugin/blob/master/README.md) of the Plugin to know how to use.
+- Add your [AdMob App ID](https://support.google.com/admob/answer/7356431) to your app's ```res://addons/admob/android/config.gd``` script by changing  `APPLICATION_ID` const.
 
-## 📦Installing:
+## 📦 Manual Installation:
 
 ### 📥Download
-- To get started, download the `poing-godot-admob-android-v{{ your_godot_version }}.zip` file from the [releases tab](https://github.com/poingstudios/godot-admob-android/releases). We recommend checking the [supported Godot version](https://github.com/poingstudios/godot-admob-versions/blob/master/versions.json) before proceeding. You can also use the [AdMob Plugin](https://github.com/poingstudios/godot-admob-plugin) for this step by navigating to `Tools -> AdMob Download Manager -> Android -> LatestVersion`.
+- To get started, download the `poing-godot-admob-android-v{{ your_godot_version }}.zip` file from the [releases tab](https://github.com/poingstudios/godot-admob-android/releases). We recommend checking the [supported Godot version](https://github.com/poingstudios/godot-admob-versions) before proceeding. You can also use the [AdMob Plugin](https://github.com/poingstudios/godot-admob-plugin) for this step by navigating to `Tools -> AdMob Download Manager -> Android -> LatestVersion`.
 
 ### 🧑‍💻Usage
-- Video tutorial: https://youtu.be/WpVGn7ZasKM.
-- Enable Android Build Template. [Check the tutorial here](https://docs.godotengine.org/en/stable/tutorials/export/android_custom_build.html).
-- Inside `poing-godot-admob-android-v{{ your_godot_version }}.zip` you downloaded, you will face some folders like `'ads'`, `'adcolony'`, `'meta'`, `'vungle'`. To AdMob works only `'ads'` is required, but if you want [Mediation](https://support.google.com/admob/answer/13420272?hl=en), you need the other folders.
-- Move the content inside the folder which you need into ```res://android/plugins``` directory on your Godot project.
-- Add your [AdMob App ID](https://support.google.com/admob/answer/7356431) to your app's ```res://android/build/AndroidManifest.xml``` file by adding a ```<meta-data>``` tag with name ```com.google.android.gms.ads.APPLICATION_ID```, as shown below. If you don't do this then you App will crash on start-up.
-
-``` xml
-<!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
-<meta-data
-	android:name="com.google.android.gms.ads.APPLICATION_ID"
-	android:value="ca-app-pub-xxxxxxxxxxxxxxxx~yyyyyyyyyy"/>
-```
-- Export the project enabling the `Use Custom Build` and `Ad Mob`, if you have Mediation, also mark `Ad Mob Meta`, `Ad Mob AdColony` etc...
-
+- Enable Android Build Template. [Check the tutorial here](https://docs.godotengine.org/en/stable/tutorials/export/android_gradle_build.html).
+- Extract the `.zip` and paste the content inside your `res://addons/admob/android/bin/` folder in your Godot project.
 
 ## 📎Useful links:
 - 🦾 Godot Plugin: https://github.com/poingstudios/godot-admob-plugin
 - 🍏 iOS: https://github.com/poingstudios/godot-admob-ios
 - ⏳ Plugin for Godot below v4.1: https://github.com/poingstudios/godot-admob-android/tree/v2
+- ⏱️ For strictly Godot v4.1 version use the v3.0.x versions, recommended: https://github.com/poingstudios/godot-admob-android/releases/tag/v3.0.6 
 
 ## 📄Documentation
 For a complete documentation of this Plugin: [check here](https://poingstudios.github.io/godot-admob-plugin/).
@@ -112,23 +103,23 @@ All scripts must be executed within the project root folder
 #### Clear Download & Build Script:
 Unix (Linux & MacOS):
 ```shell
-./scripts/unix/clean_build.sh 4.3
+./scripts/unix/clean_build.sh 4.6.0
 ```
 
 Windows:
 ```shell
-./scripts/windows/clean_build.ps1 4.3
+./scripts/windows/clean_build.ps1 4.6.0
 ```
 
 #### Just Download:
 Unix (Linux & MacOS):
 ```shell
-./scripts/unix/download_godot.sh 4.3
+./scripts/unix/download_godot.sh 4.6.0
 ```
 
 Windows:
 ```shell
-./scripts/windows/download_godot.ps1 4.3
+./scripts/windows/download_godot.ps1 4.6.0
 ```
 
 ### Building, Exporting, Zipping
@@ -152,7 +143,7 @@ Windows:
 #### Zip:
 (-PgodotVersion is optional)
 ```shell
-./gradlew zipPlugins -PgodotVersion=4.1.1 
+./gradlew zipPlugins -PgodotVersion=4.6.0
 ```
 
 ### Logging

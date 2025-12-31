@@ -19,6 +19,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
+@file:Suppress("FunctionName")
 
 package com.poingstudios.godot.admob.ads
 
@@ -33,6 +34,7 @@ import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.SignalInfo
 import org.godotengine.godot.plugin.UsedByGodot
 
+@Suppress("unused") // Instantiated by Android via AndroidManifest (AAR / Godot plugin)
 class PoingGodotAdMob(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(godot) {
     private lateinit var aActivity: Activity
     private lateinit var aGodotLayout : FrameLayout
@@ -83,7 +85,4 @@ class PoingGodotAdMob(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(
     fun get_initialization_status(): Dictionary {
         return MobileAds.getInitializationStatus()!!.convertToGodotDictionary()
     }
-
-
-
 }
