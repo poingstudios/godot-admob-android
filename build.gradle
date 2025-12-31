@@ -25,7 +25,12 @@ ext {
 
 def pluginContent = copySpec {
     rootProject.subprojects.each { subproject ->
-        if (subproject.file("src").exists() && subproject.name != "core") {
+        if (subproject.name == "core"){
+            from(subproject.file("config")) {
+                include '*.gd'
+            }
+        }
+        else if (subproject.file("src").exists()) {
             into(subproject.name) {
                 from(subproject.file("config")) {
                     include '*.gd'
