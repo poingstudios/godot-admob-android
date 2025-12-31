@@ -19,7 +19,6 @@ subprojects {
     }
 }
 
-
 def pluginContent = copySpec {
     rootProject.subprojects.each { subproject ->
         if (subproject.name == "core"){
@@ -88,5 +87,15 @@ ext {
 
         def arrayText = matcher.group(1)
         return Eval.me(arrayText)
+    }
+
+    buildFullModuleName = { Project project ->
+        def startName = PLUGIN_ID
+        def moduleName = project.getName().replaceAll(":", "-")
+        def fullModuleName = "${startName}-${moduleName}"
+
+        println "Module find: $fullModuleName"
+
+        return fullModuleName
     }
 }

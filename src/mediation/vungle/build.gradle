@@ -18,15 +18,12 @@ android {
         }
     }
 
-    def startName = "poing-godot-admob"
-    def moduleName = project.getName().replaceAll(":", "-") //the module that is being built at the moment
-    def fullModuleName = "$startName-$moduleName"
+    def fullModuleName = rootProject.ext.buildFullModuleName(project)
 
     libraryVariants.configureEach { variant ->
         variant.outputs.all {
-            def outputName = "${fullModuleName}-${variant.name}.aar"
-            println "Output file will be: $outputName"
-            outputFileName = "$outputName"
+            outputFileName = "${fullModuleName}-${variant.name}.aar"
+            println "Output file will be: $outputFileName"
         }
     }
 }
