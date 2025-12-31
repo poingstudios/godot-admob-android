@@ -17,7 +17,7 @@ jobs:
 
     - name: Set plugin version on env
       run: |
-        PLUGIN_VERSION=$(find . -type f \( -name "*.java" -o -name "*.kt" \) -exec grep -H 'PLUGIN_VERSION = ' {} \; | awk -F'"' '{print $2}')
+        PLUGIN_VERSION=$(find . -name "package.gd" -exec grep 'const VERSION' {} \; | head -n 1 | awk -F'"' '{print $2}')
         echo "PLUGIN_VERSION=v${PLUGIN_VERSION}" >> $GITHUB_ENV
 
     - name: Build Plugins
