@@ -32,12 +32,11 @@ android {
 }
 
 dependencies {
-    File gd_file = file("config/poing_godot_admob_meta.gd")
-    def match = gd_file.text =~ /(?<=_dependency_library := )\[[^\]]+\]/
+    def libs = rootProject.ext.readDependencyLibrary(
+            file("config/poing_godot_admob_meta.gd")
+    )
 
-    def remote_content = Eval.me(match[0])
-
-    remote_content.each { item ->
+    libs.each { item ->
         println "compileOnly item: $item"
         project.dependencies.add("compileOnly", item.toString())
     }

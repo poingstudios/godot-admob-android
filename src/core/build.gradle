@@ -34,12 +34,11 @@ android {
 }
 
 dependencies {
-    File gd_file = file("../ads/config/poing_godot_admob_ads.gd")
-    def match = gd_file.text =~ /(?<=_dependency_library := )\[[^\]]+\]/
+    def libs = rootProject.ext.readDependencyLibrary(
+            file("../ads/config/poing_godot_admob_ads.gd")
+    )
 
-    def remote_content = Eval.me(match[0])
-
-    remote_content.each { item ->
+    libs.each { item ->
         println "api item: $item"
         project.dependencies.add("api", item.toString())
     }

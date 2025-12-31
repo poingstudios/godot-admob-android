@@ -19,9 +19,6 @@ subprojects {
     }
 }
 
-ext {
-    pluginExportPath = project.hasProperty('pluginExportPath') ? project.property('pluginExportPath') : null
-}
 
 def pluginContent = copySpec {
     rootProject.subprojects.each { subproject ->
@@ -72,5 +69,24 @@ gradle.taskGraph.whenReady { taskGraph ->
             throw new GradleException("The export path for AAR files is not defined. Use the command './gradlew exportFiles -PpluginExportPath=<desired-path>' to export the AAR files.")
         }
         println "Exporting AAR files to: $pluginExportPath"
+    }
+}
+
+ext {
+    pluginExportPath = project.hasProperty('pluginExportPath') ? project.property('pluginExportPath') : null
+
+    readDependencyLibrary = { File gdFile ->
+        if (!gdFile.exists()) {
+            throw new GradleException("File does not exist: ${gdFile}")
+        }
+
+        def matcher = gdFile.text =~ /_dependency_library\s*(?::=|=)\s*(\[[^]]+])/
+
+        if (!matcher.find()) {
+            throw new GradleException("_dependency_library not found in ${gdFile}")
+        }
+
+        def arrayText = matcher.group(1)
+        return Eval.me(arrayText)
     }
 }
