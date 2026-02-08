@@ -68,8 +68,8 @@ class PoingGodotAdMob(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(
     @UsedByGodot
     fun set_request_configuration(requestConfigurationDictionary: Dictionary, testDeviceIds : Array<String>) {
         val maxAdContentRating = requestConfigurationDictionary["max_ad_content_rating"] as String
-        val tagForChildDirectedTreatment = requestConfigurationDictionary["tag_for_child_directed_treatment"] as Int
-        val tagForUnderAgeOfConsent = requestConfigurationDictionary["tag_for_under_age_of_consent"] as Int
+        val tagForChildDirectedTreatment = (requestConfigurationDictionary["tag_for_child_directed_treatment"] as? Number)?.toInt() ?: RequestConfiguration.TAG_FOR_CHILD_DIRECTED_TREATMENT_UNSPECIFIED
+        val tagForUnderAgeOfConsent = (requestConfigurationDictionary["tag_for_under_age_of_consent"] as? Number)?.toInt() ?: RequestConfiguration.TAG_FOR_UNDER_AGE_OF_CONSENT_UNSPECIFIED
 
         val requestConfiguration = RequestConfiguration.Builder()
             .setMaxAdContentRating(maxAdContentRating)

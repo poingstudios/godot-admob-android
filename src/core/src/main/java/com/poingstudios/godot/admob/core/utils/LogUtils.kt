@@ -30,5 +30,9 @@ class LogUtils {
         fun debug(message : String){
             Log.d(LOG_TAG_NAME, message)
         }
+
+        fun error(message: String, throwable: Throwable? = null) {
+            Log.e(LOG_TAG_NAME, message, throwable)
+        }
     }
 }

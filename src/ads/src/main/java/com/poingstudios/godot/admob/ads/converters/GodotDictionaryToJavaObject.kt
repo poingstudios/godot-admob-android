@@ -35,16 +35,22 @@ import com.poingstudios.godot.admob.core.utils.LogUtils
 import org.godotengine.godot.Dictionary
 
 fun Dictionary.convertToAdSize(): AdSize {
-    return AdSize(get("width") as Int, get("height") as Int)
+    val width = (this["width"] as? Number)?.toInt() ?: 0
+    val height = (this["height"] as? Number)?.toInt() ?: 0
+    return AdSize(width, height)
 }
 
 fun Dictionary.convertToConsentDebugSettings(activity: Activity) : ConsentDebugSettings {
     val debugSettingsBuilder = ConsentDebugSettings.Builder(activity)
 
-    debugSettingsBuilder.setDebugGeography(this["debug_geography"] as Int)
+    val debugGeography = (this["debug_geography"] as? Number)?.toInt() ?: ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_DISABLED
+    debugSettingsBuilder.setDebugGeography(debugGeography)
 
-    for (value in (this["test_device_hashed_ids"] as Dictionary).values){
-        debugSettingsBuilder.addTestDeviceHashedId(value as String)
+    val testDeviceHashedIds = this["test_device_hashed_ids"] as? Dictionary
+    if (testDeviceHashedIds != null) {
+        for (value in testDeviceHashedIds.values) {
+            debugSettingsBuilder.addTestDeviceHashedId(value as String)
+        }
     }
     return debugSettingsBuilder.build()
 }
@@ -101,7 +107,7 @@ fun Dictionary.convertToAdRequest(keywords : Array<String>) : AdRequest{
         val networkExtrasBundle = Bundle()
         when (val value = extras[key]) {
             is String -> networkExtrasBundle.putString(key, value)
-            is Int -> networkExtrasBundle.putInt(key, value)
+            is Number -> networkExtrasBundle.putInt(key, value.toInt())
         }
         adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter::class.java, networkExtrasBundle)
     }

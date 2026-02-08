@@ -52,7 +52,7 @@ class Banner(
     adViewDictionary: Dictionary
 ) : AdFormatsBase(uid, activity, godot) {
     private var safeArea = getSafeArea()
-    private val adPosition: Int = adViewDictionary["ad_position"] as Int
+    private val adPosition: Int = (adViewDictionary["ad_position"] as Number).toInt()
     private lateinit var mAdView: AdView
     private lateinit var mAdSize: AdSize
     private var isHidden : Boolean = false
@@ -195,11 +195,11 @@ class Banner(
                 val windowInsets = activity.window?.decorView?.rootWindowInsets
                 if (windowInsets != null) {
                     val statusBarHeight = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        windowInsets.getInsets(WindowInsets.Type.statusBars()).top
-                    } else {
-                        @Suppress("DEPRECATION")
-                        windowInsets.systemWindowInsetTop
-                    }
+                            windowInsets.getInsets(WindowInsets.Type.statusBars()).top
+                        } else {
+                            @Suppress("DEPRECATION")
+                            windowInsets.systemWindowInsetTop
+                        }
                     returnValue = 0.coerceAtLeast(safeArea.top - statusBarHeight)
                 } else {
                     returnValue = safeArea.top

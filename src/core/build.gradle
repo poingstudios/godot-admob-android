@@ -38,7 +38,7 @@ dependencies {
         project.dependencies.add("api", item.toString())
     }
 
-    def godotVersion    = project.findProperty("godotVersion") ?: "4.5.1"
+    def godotVersion    = project.findProperty("godotVersion") ?: "4.6.0"
     def releaseType     = project.findProperty("releaseType") ?: "stable"
 
     def fullVersion = "$godotVersion.$releaseType"
