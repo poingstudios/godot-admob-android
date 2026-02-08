@@ -37,6 +37,7 @@ import com.google.android.gms.ads.*
 import com.poingstudios.godot.admob.ads.converters.convertToAdSize
 import com.poingstudios.godot.admob.ads.converters.convertToGodotDictionary
 import com.poingstudios.godot.admob.core.utils.LogUtils
+import com.poingstudios.godot.admob.core.utils.getInt
 import org.godotengine.godot.Dictionary
 import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.GodotPlugin.emitSignal
@@ -52,7 +53,7 @@ class Banner(
     adViewDictionary: Dictionary
 ) : AdFormatsBase(uid, activity, godot) {
     private var safeArea = getSafeArea()
-    private val adPosition: Int = (adViewDictionary["ad_position"] as Number).toInt()
+    private val adPosition: Int = adViewDictionary.getInt("ad_position")
     private lateinit var mAdView: AdView
     private lateinit var mAdSize: AdSize
     private var isHidden : Boolean = false

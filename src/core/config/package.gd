@@ -27,4 +27,4 @@
 ## [br][b]Note:[/b] This file is READ-ONLY for manual edits during releases.
 
 ## Current version of the plugin in Semantic Versioning (SemVer) format.
-const VERSION := "4.0.0"
+const VERSION := "4.0.1"

@@ -32,18 +32,19 @@ import com.google.android.ump.ConsentDebugSettings
 import com.google.android.ump.ConsentRequestParameters
 import com.poingstudios.godot.admob.core.AdNetworkExtras
 import com.poingstudios.godot.admob.core.utils.LogUtils
+import com.poingstudios.godot.admob.core.utils.getInt
 import org.godotengine.godot.Dictionary
 
 fun Dictionary.convertToAdSize(): AdSize {
-    val width = (this["width"] as? Number)?.toInt() ?: 0
-    val height = (this["height"] as? Number)?.toInt() ?: 0
+    val width = getInt("width")
+    val height = getInt("height")
     return AdSize(width, height)
 }
 
 fun Dictionary.convertToConsentDebugSettings(activity: Activity) : ConsentDebugSettings {
     val debugSettingsBuilder = ConsentDebugSettings.Builder(activity)
 
-    val debugGeography = (this["debug_geography"] as? Number)?.toInt() ?: ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_DISABLED
+    val debugGeography = getInt("debug_geography", ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_DISABLED)
     debugSettingsBuilder.setDebugGeography(debugGeography)
 
     val testDeviceHashedIds = this["test_device_hashed_ids"] as? Dictionary
