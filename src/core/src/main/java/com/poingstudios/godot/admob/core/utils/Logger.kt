@@ -24,15 +24,14 @@ package com.poingstudios.godot.admob.core.utils
 
 import android.util.Log
 
-class LogUtils {
-    companion object{
-        private const val LOG_TAG_NAME = "poing-godot-admob"
-        fun debug(message : String){
-            Log.d(LOG_TAG_NAME, message)
-        }
+object Logger {
+    private const val TAG = "poing-godot-admob"
 
-        fun error(message: String, throwable: Throwable? = null) {
-            Log.e(LOG_TAG_NAME, message, throwable)
-        }
+    fun debug(message: String) {
+        Log.d(TAG, message)
+    }
+
+    fun error(message: String, throwable: Throwable? = null) {
+        Log.e(TAG, message, throwable)
     }
 }

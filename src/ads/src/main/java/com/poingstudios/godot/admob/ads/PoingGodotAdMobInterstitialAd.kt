@@ -30,7 +30,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.poingstudios.godot.admob.ads.converters.convertToAdRequest
 import com.poingstudios.godot.admob.ads.converters.convertToGodotDictionary
-import com.poingstudios.godot.admob.core.utils.LogUtils
+import com.poingstudios.godot.admob.core.utils.Logger
 import org.godotengine.godot.Dictionary
 import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.SignalInfo
@@ -68,7 +68,7 @@ class PoingGodotAdMobInterstitialAd(godot: Godot?) : org.godotengine.godot.plugi
     @UsedByGodot
     fun load(adUnitId : String, adRequestDictionary : Dictionary, keywords : Array<String>, uid: Int){
         activity!!.runOnUiThread{
-            LogUtils.debug("loading interstitial ad")
+            Logger.debug("loading interstitial ad")
             val adRequest = adRequestDictionary.convertToAdRequest(keywords)
 
             InterstitialAd.load(activity!!,
@@ -80,29 +80,29 @@ class PoingGodotAdMobInterstitialAd(godot: Godot?) : org.godotengine.godot.plugi
                         interstitials[uid] = interstitialAd
                         interstitialAd.fullScreenContentCallback = object: FullScreenContentCallback() {
                             override fun onAdClicked() {
-                                LogUtils.debug("Ad was clicked.")
+                                Logger.debug("Ad was clicked.")
                                 emitSignal("on_interstitial_ad_clicked", uid)
                             }
 
                             override fun onAdDismissedFullScreenContent() {
-                                LogUtils.debug("Ad dismissed fullscreen content.")
+                                Logger.debug("Ad dismissed fullscreen content.")
                                 interstitials[uid] = null
                                 emitSignal("on_interstitial_ad_dismissed_full_screen_content", uid)
                             }
 
                             override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-                                LogUtils.debug("Ad failed to show fullscreen content.")
+                                Logger.debug("Ad failed to show fullscreen content.")
                                 interstitials[uid] = null
                                 emitSignal("on_interstitial_ad_failed_to_show_full_screen_content", uid, adError.convertToGodotDictionary())
                             }
 
                             override fun onAdImpression() {
-                                LogUtils.debug("Ad recorded an impression.")
+                                Logger.debug("Ad recorded an impression.")
                                 emitSignal("on_interstitial_ad_impression", uid)
                             }
 
                             override fun onAdShowedFullScreenContent() {
-                                LogUtils.debug("Ad showed fullscreen content.")
+                                Logger.debug("Ad showed fullscreen content.")
                                 emitSignal("on_interstitial_ad_showed_full_screen_content", uid)
                             }
                         }
@@ -122,7 +122,7 @@ class PoingGodotAdMobInterstitialAd(godot: Godot?) : org.godotengine.godot.plugi
 
     @UsedByGodot
     fun destroy(uid : Int){
-        LogUtils.debug("DESTROYING ${javaClass.simpleName}")
+        Logger.debug("DESTROYING ${javaClass.simpleName}")
         interstitials[uid] = null //just set to null in order to try to clean up memory
     }
 

@@ -31,7 +31,7 @@ import com.google.android.gms.ads.rewarded.ServerSideVerificationOptions
 import com.google.android.ump.ConsentDebugSettings
 import com.google.android.ump.ConsentRequestParameters
 import com.poingstudios.godot.admob.core.AdNetworkExtras
-import com.poingstudios.godot.admob.core.utils.LogUtils
+import com.poingstudios.godot.admob.core.utils.Logger
 import com.poingstudios.godot.admob.core.utils.getInt
 import org.godotengine.godot.Dictionary
 
@@ -78,7 +78,7 @@ fun Dictionary.convertToAdRequest(keywords : Array<String>) : AdRequest{
     val googleRequestAgent = this["google_request_agent"] as String?
 
     if (!googleRequestAgent.isNullOrEmpty()){
-        LogUtils.debug(googleRequestAgent)
+        Logger.debug(googleRequestAgent)
         adRequestBuilder.setRequestAgent(googleRequestAgent)
     }
 
@@ -96,10 +96,10 @@ fun Dictionary.convertToAdRequest(keywords : Array<String>) : AdRequest{
                 adRequestBuilder.addNetworkExtrasBundle(objectClass.getAdapterClass(), bundle)
             }
             else{
-                LogUtils.debug("bundle is null: $className")
+                Logger.debug("bundle is null: $className")
             }
         } catch (e: Exception) {
-            LogUtils.debug("Error creating instance of $className: ${e.message}, check if you mark the Mediation when export the plugin")
+            Logger.debug("Error creating instance of $className: ${e.message}, check if you mark the Mediation when export the plugin")
         }
     }
     val extras = this["extras"] as Dictionary

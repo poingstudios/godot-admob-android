@@ -24,7 +24,7 @@ package com.poingstudios.godot.admob.mediation.vungle
 
 import android.os.Bundle
 import com.poingstudios.godot.admob.core.AdNetworkExtras
-import com.poingstudios.godot.admob.core.utils.LogUtils
+import com.poingstudios.godot.admob.core.utils.Logger
 import com.vungle.mediation.VungleExtrasBuilder
 import kotlin.Any
 import kotlin.String
@@ -55,7 +55,7 @@ abstract class VunglePoingExtrasBuilder : AdNetworkExtras {
             extrasBuilder.setUserId(userId as String)
         }
 
-        LogUtils.debug("buildExtras of class : ${getAdapterClass()}")
+        Logger.debug("buildExtras of class : ${getAdapterClass()}")
         return extrasBuilder.build()
     }
 }

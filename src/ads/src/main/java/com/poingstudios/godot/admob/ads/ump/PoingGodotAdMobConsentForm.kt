@@ -4,7 +4,7 @@ import android.app.Activity
 import com.google.android.ump.ConsentForm
 import com.google.android.ump.UserMessagingPlatform
 import com.poingstudios.godot.admob.ads.converters.convertToGodotDictionary
-import com.poingstudios.godot.admob.core.utils.LogUtils
+import com.poingstudios.godot.admob.core.utils.Logger
 import org.godotengine.godot.Dictionary
 import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.GodotPlugin.emitSignal
@@ -26,7 +26,7 @@ class PoingGodotAdMobConsentForm(val uid: Int,
             consentForm.show(activity)
             {
 
-                LogUtils.debug("consentStatus: ${UserMessagingPlatform.getConsentInformation(activity).consentStatus}")
+                Logger.debug("consentStatus: ${UserMessagingPlatform.getConsentInformation(activity).consentStatus}")
                 emitSignal(godot, pluginName, SignalInfos.onConsentFormDismissed, uid, it?.convertToGodotDictionary()?: Dictionary())
             }
         }
