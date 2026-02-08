@@ -27,7 +27,7 @@ import com.google.android.gms.ads.mediation.MediationExtrasReceiver
 import com.jirbo.adcolony.AdColonyAdapter
 import com.jirbo.adcolony.AdColonyBundleBuilder
 import com.poingstudios.godot.admob.core.AdNetworkExtras
-import com.poingstudios.godot.admob.core.utils.LogUtils
+import com.poingstudios.godot.admob.core.utils.Logger
 import kotlin.String
 
 @Suppress("unused") // Instantiated by Android via AndroidManifest (AAR / Godot plugin)
@@ -48,7 +48,7 @@ class AdColonyExtrasBuilder : AdNetworkExtras {
             AdColonyBundleBuilder.setShowPostPopup(showPostPopup as Boolean)
         }
 
-        LogUtils.debug("buildExtras of class : ${getAdapterClass()}")
+        Logger.debug("buildExtras of class : ${getAdapterClass()}")
         return AdColonyBundleBuilder.build()
     }
 

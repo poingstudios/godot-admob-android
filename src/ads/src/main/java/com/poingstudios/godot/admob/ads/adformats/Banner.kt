@@ -36,7 +36,8 @@ import android.widget.FrameLayout
 import com.google.android.gms.ads.*
 import com.poingstudios.godot.admob.ads.converters.convertToAdSize
 import com.poingstudios.godot.admob.ads.converters.convertToGodotDictionary
-import com.poingstudios.godot.admob.core.utils.LogUtils
+import com.poingstudios.godot.admob.core.utils.Logger
+import com.poingstudios.godot.admob.core.utils.getInt
 import org.godotengine.godot.Dictionary
 import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.GodotPlugin.emitSignal
@@ -52,20 +53,20 @@ class Banner(
     adViewDictionary: Dictionary
 ) : AdFormatsBase(uid, activity, godot) {
     private var safeArea = getSafeArea()
-    private val adPosition: Int = adViewDictionary["ad_position"] as Int
+    private val adPosition: Int = adViewDictionary.getInt("ad_position")
     private lateinit var mAdView: AdView
     private lateinit var mAdSize: AdSize
     private var isHidden : Boolean = false
 
     private val mLayoutChangeListener =
         OnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
-            LogUtils.debug("OnLayoutChanged")
+            Logger.debug("OnLayoutChanged")
             val newSafeArea = getSafeArea()
             if (newSafeArea == safeArea){
                 return@OnLayoutChangeListener
             }
             safeArea = newSafeArea
-            LogUtils.debug("safeArea changed")
+            Logger.debug("safeArea changed")
             if (!isHidden) { //only update if is not hidden to improve performance
                 updatePosition()
             }
@@ -152,7 +153,7 @@ class Banner(
         safeInsetRect.top = displayCutout.safeInsetTop
         safeInsetRect.right = displayCutout.safeInsetRight
         safeInsetRect.bottom = displayCutout.safeInsetBottom
-        LogUtils.debug("safeInsetRect: $safeInsetRect")
+        Logger.debug("safeInsetRect: $safeInsetRect")
         return safeInsetRect
     }
 
@@ -173,7 +174,7 @@ class Banner(
         return gravity
     }
     private fun getLayoutParams() : FrameLayout.LayoutParams {
-        LogUtils.debug("Safe Area of screen: $safeArea.")
+        Logger.debug("Safe Area of screen: $safeArea.")
 
         val adParams : FrameLayout.LayoutParams = FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT
@@ -195,18 +196,18 @@ class Banner(
                 val windowInsets = activity.window?.decorView?.rootWindowInsets
                 if (windowInsets != null) {
                     val statusBarHeight = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        windowInsets.getInsets(WindowInsets.Type.statusBars()).top
-                    } else {
-                        @Suppress("DEPRECATION")
-                        windowInsets.systemWindowInsetTop
-                    }
+                            windowInsets.getInsets(WindowInsets.Type.statusBars()).top
+                        } else {
+                            @Suppress("DEPRECATION")
+                            windowInsets.systemWindowInsetTop
+                        }
                     returnValue = 0.coerceAtLeast(safeArea.top - statusBarHeight)
                 } else {
                     returnValue = safeArea.top
                 }
             }
         }
-        LogUtils.debug("marginTop: $returnValue")
+        Logger.debug("marginTop: $returnValue")
         return returnValue
     }
 

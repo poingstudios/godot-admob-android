@@ -32,7 +32,7 @@ import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoa
 import com.poingstudios.godot.admob.ads.converters.convertToAdRequest
 import com.poingstudios.godot.admob.ads.converters.convertToGodotDictionary
 import com.poingstudios.godot.admob.ads.converters.convertToServerSideVerificationOptions
-import com.poingstudios.godot.admob.core.utils.LogUtils
+import com.poingstudios.godot.admob.core.utils.Logger
 import org.godotengine.godot.Dictionary
 import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.SignalInfo
@@ -72,7 +72,7 @@ class PoingGodotAdMobRewardedInterstitialAd(godot: Godot?) : org.godotengine.god
     @UsedByGodot
     fun load(adUnitId : String, adRequestDictionary : Dictionary, keywords : Array<String>, uid: Int){
         activity!!.runOnUiThread{
-            LogUtils.debug("loading rewarded interstitial ad")
+            Logger.debug("loading rewarded interstitial ad")
             val adRequest = adRequestDictionary.convertToAdRequest(keywords)
 
             RewardedInterstitialAd.load(activity!!,
@@ -84,29 +84,29 @@ class PoingGodotAdMobRewardedInterstitialAd(godot: Godot?) : org.godotengine.god
                         rewardedInterstitialAds[uid] = rewardedInterstitialAd
                         rewardedInterstitialAd.fullScreenContentCallback = object: FullScreenContentCallback() {
                             override fun onAdClicked() {
-                                LogUtils.debug("Ad was clicked.")
+                                Logger.debug("Ad was clicked.")
                                 emitSignal("on_rewarded_interstitial_ad_clicked", uid)
                             }
 
                             override fun onAdDismissedFullScreenContent() {
-                                LogUtils.debug("Ad dismissed fullscreen content.")
+                                Logger.debug("Ad dismissed fullscreen content.")
                                 rewardedInterstitialAds[uid] = null
                                 emitSignal("on_rewarded_interstitial_ad_dismissed_full_screen_content", uid)
                             }
 
                             override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-                                LogUtils.debug("Ad failed to show fullscreen content.")
+                                Logger.debug("Ad failed to show fullscreen content.")
                                 rewardedInterstitialAds[uid] = null
                                 emitSignal("on_rewarded_interstitial_ad_failed_to_show_full_screen_content", uid, adError.convertToGodotDictionary())
                             }
 
                             override fun onAdImpression() {
-                                LogUtils.debug("Ad recorded an impression.")
+                                Logger.debug("Ad recorded an impression.")
                                 emitSignal("on_rewarded_interstitial_ad_impression", uid)
                             }
 
                             override fun onAdShowedFullScreenContent() {
-                                LogUtils.debug("Ad showed fullscreen content.")
+                                Logger.debug("Ad showed fullscreen content.")
                                 emitSignal("on_rewarded_interstitial_ad_showed_full_screen_content", uid)
                             }
                         }
@@ -123,21 +123,21 @@ class PoingGodotAdMobRewardedInterstitialAd(godot: Godot?) : org.godotengine.god
             rewardedInterstitialAds[uid]?.show(activity!!)
             {
                 emitSignal("on_rewarded_interstitial_ad_user_earned_reward", uid, it.convertToGodotDictionary())
-                LogUtils.debug("User earned the reward.")
+                Logger.debug("User earned the reward.")
             }
         }
     }
 
     @UsedByGodot
     fun destroy(uid : Int){
-        LogUtils.debug("DESTROYING ${javaClass.simpleName}")
+        Logger.debug("DESTROYING ${javaClass.simpleName}")
         rewardedInterstitialAds[uid] = null //just set to null in order to try to clean up memory
     }
 
     @UsedByGodot
     fun set_server_side_verification_options(uid : Int, serverSideVerificationOptionsDictionary: Dictionary){
         activity!!.runOnUiThread{
-            LogUtils.debug("setServerSideVerificationOptions: $serverSideVerificationOptionsDictionary.")
+            Logger.debug("setServerSideVerificationOptions: $serverSideVerificationOptionsDictionary.")
             rewardedInterstitialAds[uid]?.setServerSideVerificationOptions(serverSideVerificationOptionsDictionary.convertToServerSideVerificationOptions())
         }
     }

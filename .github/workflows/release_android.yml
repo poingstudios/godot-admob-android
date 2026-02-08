@@ -8,7 +8,7 @@ jobs:
     runs-on: "ubuntu-latest"
     strategy:
       matrix:
-        GODOT_VERSIONS: ["4.2.0", "4.2.1", "4.2.2", "4.3.0", "4.4.0", "4.4.1", "4.5.0", "4.5.1"]
+        GODOT_VERSIONS: ["4.2.0", "4.2.1", "4.2.2", "4.3.0", "4.4.0", "4.4.1", "4.5.0", "4.5.1", "4.6.0"]
 
     steps:
     - uses: actions/checkout@v6

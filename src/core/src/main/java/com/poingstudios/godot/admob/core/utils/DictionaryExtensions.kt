@@ -1,6 +1,6 @@
 // MIT License
 //
-// Copyright (c) 2023-present Poing Studios
+// Copyright (c) 2026-present Poing Studios
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,13 +22,20 @@
 
 package com.poingstudios.godot.admob.core.utils
 
-import android.util.Log
+import org.godotengine.godot.Dictionary
 
-class LogUtils {
-    companion object{
-        private const val LOG_TAG_NAME = "poing-godot-admob"
-        fun debug(message : String){
-            Log.d(LOG_TAG_NAME, message)
-        }
-    }
+fun Dictionary.getInt(key: String, default: Int = 0): Int {
+    return (this[key] as? Number)?.toInt() ?: default
+}
+
+fun Dictionary.getLong(key: String, default: Long = 0L): Long {
+    return (this[key] as? Number)?.toLong() ?: default
+}
+
+fun Dictionary.getFloat(key: String, default: Float = 0f): Float {
+    return (this[key] as? Number)?.toFloat() ?: default
+}
+
+fun Dictionary.getDouble(key: String, default: Double = 0.0): Double {
+    return (this[key] as? Number)?.toDouble() ?: default
 }

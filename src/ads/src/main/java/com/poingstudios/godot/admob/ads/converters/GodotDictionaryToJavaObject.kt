@@ -31,20 +31,27 @@ import com.google.android.gms.ads.rewarded.ServerSideVerificationOptions
 import com.google.android.ump.ConsentDebugSettings
 import com.google.android.ump.ConsentRequestParameters
 import com.poingstudios.godot.admob.core.AdNetworkExtras
-import com.poingstudios.godot.admob.core.utils.LogUtils
+import com.poingstudios.godot.admob.core.utils.Logger
+import com.poingstudios.godot.admob.core.utils.getInt
 import org.godotengine.godot.Dictionary
 
 fun Dictionary.convertToAdSize(): AdSize {
-    return AdSize(get("width") as Int, get("height") as Int)
+    val width = getInt("width")
+    val height = getInt("height")
+    return AdSize(width, height)
 }
 
 fun Dictionary.convertToConsentDebugSettings(activity: Activity) : ConsentDebugSettings {
     val debugSettingsBuilder = ConsentDebugSettings.Builder(activity)
 
-    debugSettingsBuilder.setDebugGeography(this["debug_geography"] as Int)
+    val debugGeography = getInt("debug_geography", ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_DISABLED)
+    debugSettingsBuilder.setDebugGeography(debugGeography)
 
-    for (value in (this["test_device_hashed_ids"] as Dictionary).values){
-        debugSettingsBuilder.addTestDeviceHashedId(value as String)
+    val testDeviceHashedIds = this["test_device_hashed_ids"] as? Dictionary
+    if (testDeviceHashedIds != null) {
+        for (value in testDeviceHashedIds.values) {
+            debugSettingsBuilder.addTestDeviceHashedId(value as String)
+        }
     }
     return debugSettingsBuilder.build()
 }
@@ -71,7 +78,7 @@ fun Dictionary.convertToAdRequest(keywords : Array<String>) : AdRequest{
     val googleRequestAgent = this["google_request_agent"] as String?
 
     if (!googleRequestAgent.isNullOrEmpty()){
-        LogUtils.debug(googleRequestAgent)
+        Logger.debug(googleRequestAgent)
         adRequestBuilder.setRequestAgent(googleRequestAgent)
     }
 
@@ -89,10 +96,10 @@ fun Dictionary.convertToAdRequest(keywords : Array<String>) : AdRequest{
                 adRequestBuilder.addNetworkExtrasBundle(objectClass.getAdapterClass(), bundle)
             }
             else{
-                LogUtils.debug("bundle is null: $className")
+                Logger.debug("bundle is null: $className")
             }
         } catch (e: Exception) {
-            LogUtils.debug("Error creating instance of $className: ${e.message}, check if you mark the Mediation when export the plugin")
+            Logger.debug("Error creating instance of $className: ${e.message}, check if you mark the Mediation when export the plugin")
         }
     }
     val extras = this["extras"] as Dictionary
@@ -101,7 +108,7 @@ fun Dictionary.convertToAdRequest(keywords : Array<String>) : AdRequest{
         val networkExtrasBundle = Bundle()
         when (val value = extras[key]) {
             is String -> networkExtrasBundle.putString(key, value)
-            is Int -> networkExtrasBundle.putInt(key, value)
+            is Number -> networkExtrasBundle.putInt(key, value.toInt())
         }
         adRequestBuilder.addNetworkExtrasBundle(AdMobAdapter::class.java, networkExtrasBundle)
     }

@@ -27,7 +27,7 @@ import android.util.ArraySet
 import com.google.android.ump.UserMessagingPlatform
 import com.poingstudios.godot.admob.ads.converters.convertToGodotDictionary
 import com.poingstudios.godot.admob.ads.ump.PoingGodotAdMobConsentForm
-import com.poingstudios.godot.admob.core.utils.LogUtils
+import com.poingstudios.godot.admob.core.utils.Logger
 import org.godotengine.godot.Dictionary
 import org.godotengine.godot.Godot
 import org.godotengine.godot.plugin.SignalInfo
@@ -52,7 +52,7 @@ class PoingGodotAdMobUserMessagingPlatform(godot: Godot?) : org.godotengine.godo
     @UsedByGodot
     fun load_consent_form(){
         activity!!.runOnUiThread {
-            LogUtils.debug("load_consent_form")
+            Logger.debug("load_consent_form")
             UserMessagingPlatform.loadConsentForm(
                 activity!!,
                 {
