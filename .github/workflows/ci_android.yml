@@ -1,0 +1,85 @@
+name: CI Android PR
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  detect-latest:
+    name: Check latest Godot version
+    runs-on: ubuntu-latest
+    outputs:
+      godot_version: ${{ steps.detect.outputs.godot_version }}
+    steps:
+    - name: Detect latest Godot version
+      id: detect
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        LATEST=$(gh api repos/godotengine/godot/releases \
+          --jq '[.[] | select(.tag_name | test("^4\\.[0-9]+(\\.[0-9]+)?-stable$")) | .tag_name][0]' \
+          | sed 's/-stable//' \
+          | awk -F. '{if(NF==2) print $0".0"; else print $0}')
+        echo "godot_version=$LATEST" >> $GITHUB_OUTPUT
+
+  build-and-artifact:
+    name: Build & Upload Artifact
+    needs: detect-latest
+    runs-on: "ubuntu-latest"
+    permissions:
+      pull-requests: write
+
+    steps:
+    - uses: actions/checkout@v6
+
+    - name: Build Plugins
+      run: |
+        chmod +x ./gradlew
+        ./gradlew build -PgodotVersion=${{ needs.detect-latest.outputs.godot_version }}
+
+    - name: Compress the artifact output
+      run: |
+        ./gradlew zipPlugins -PgodotVersion="${{ needs.detect-latest.outputs.godot_version }}"
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      id: artifact-upload-step
+      with:
+        name: poing-godot-admob-android-v${{ needs.detect-latest.outputs.godot_version }}-${{ github.event.pull_request.head.sha }}
+        path: .output/poing-godot-admob-android-v${{ needs.detect-latest.outputs.godot_version }}.zip
+        retention-days: 14
+
+    - name: Comment PR with Artifact Link
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const artifactUrl = '${{ steps.artifact-upload-step.outputs.artifact-url }}';
+          const commitSha = '${{ github.event.pull_request.head.sha }}'.substring(0, 7);
+          const body = `✅ **Build Successful!** (Commit: \`${commitSha}\`)\n\nThe plugin has been compiled for Godot ${ '${{ needs.detect-latest.outputs.godot_version }}' }.\n\n📦 [Download Artifact ZIP](${artifactUrl})`;
+          
+          const { data: comments } = await github.rest.issues.listComments({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+          });
+          
+          const botComment = comments.find(comment => 
+            comment.user.type === 'Bot' && comment.body.includes('Download Artifact ZIP')
+          );
+          
+          if (botComment) {
+            await github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: botComment.id,
+              body: body
+            });
+          } else {
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+          }
