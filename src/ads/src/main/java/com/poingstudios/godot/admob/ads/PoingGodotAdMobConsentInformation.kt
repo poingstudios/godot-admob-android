@@ -22,6 +22,7 @@
 @file:Suppress("FunctionName")
 package com.poingstudios.godot.admob.ads
 
+import android.app.Activity
 import android.util.ArraySet
 import com.google.android.ump.UserMessagingPlatform
 import com.poingstudios.godot.admob.ads.converters.convertToConsentRequestParameters
@@ -33,8 +34,14 @@ import org.godotengine.godot.plugin.UsedByGodot
 
 @Suppress("unused") // Instantiated by Android via AndroidManifest (AAR / Godot plugin)
 class PoingGodotAdMobConsentInformation(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(godot){
+    private lateinit var aActivity: Activity
     override fun getPluginName(): String {
         return this::class.simpleName.toString()
+    }
+
+    override fun onMainCreate(activity: Activity?): android.view.View? {
+        aActivity = super.getActivity()!!
+        return null
     }
 
     override fun getPluginSignals(): MutableSet<SignalInfo> {
@@ -47,22 +54,22 @@ class PoingGodotAdMobConsentInformation(godot: Godot?) : org.godotengine.godot.p
 
     @UsedByGodot
     fun get_consent_status() : Int{
-        return UserMessagingPlatform.getConsentInformation(activity!!).consentStatus
+        return UserMessagingPlatform.getConsentInformation(aActivity).consentStatus
     }
 
     @UsedByGodot
     fun get_is_consent_form_available() : Boolean{
-        return UserMessagingPlatform.getConsentInformation(activity!!).isConsentFormAvailable
+        return UserMessagingPlatform.getConsentInformation(aActivity).isConsentFormAvailable
     }
 
     @UsedByGodot
     fun update(consentRequestParametersDictionary: Dictionary){
-        val consentRequestParameters = consentRequestParametersDictionary.convertToConsentRequestParameters(activity!!)
+        val consentRequestParameters = consentRequestParametersDictionary.convertToConsentRequestParameters(aActivity)
 
-        val consentInformation = UserMessagingPlatform.getConsentInformation(activity!!)
+        val consentInformation = UserMessagingPlatform.getConsentInformation(aActivity)
 
         consentInformation.requestConsentInfoUpdate(
-            activity!!,
+            aActivity,
             consentRequestParameters,
             {
                 emitSignal("on_consent_info_updated_success")
@@ -75,6 +82,6 @@ class PoingGodotAdMobConsentInformation(godot: Godot?) : org.godotengine.godot.p
 
     @UsedByGodot
     fun reset(){
-        UserMessagingPlatform.getConsentInformation(activity!!).reset()
+        UserMessagingPlatform.getConsentInformation(aActivity).reset()
     }
 }

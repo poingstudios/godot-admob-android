@@ -22,6 +22,7 @@
 
 package com.poingstudios.godot.admob.ads
 
+import android.app.Activity
 import android.util.ArraySet
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -40,9 +41,15 @@ import org.godotengine.godot.plugin.UsedByGodot
 // Godot expects Java types, not Kotlin ones (e.g. Integer)
 // Instantiated by Android via AndroidManifest (AAR / Godot plugin)
 class PoingGodotAdMobInterstitialAd(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(godot) {
+    private lateinit var aActivity: Activity
     private val interstitials = mutableListOf<InterstitialAd?>()
     override fun getPluginName(): String {
         return this::class.simpleName.toString()
+    }
+
+    override fun onMainCreate(activity: Activity?): android.view.View? {
+        aActivity = super.getActivity()!!
+        return null
     }
 
     override fun getPluginSignals(): MutableSet<SignalInfo> {
@@ -67,11 +74,11 @@ class PoingGodotAdMobInterstitialAd(godot: Godot?) : org.godotengine.godot.plugi
 
     @UsedByGodot
     fun load(adUnitId : String, adRequestDictionary : Dictionary, keywords : Array<String>, uid: Int){
-        activity!!.runOnUiThread{
+        aActivity.runOnUiThread{
             Logger.debug("loading interstitial ad")
             val adRequest = adRequestDictionary.convertToAdRequest(keywords)
 
-            InterstitialAd.load(activity!!,
+            InterstitialAd.load(aActivity,
                 adUnitId, adRequest, object : InterstitialAdLoadCallback() {
                     override fun onAdFailedToLoad(loadAdError: LoadAdError) {
                         emitSignal("on_interstitial_ad_failed_to_load", uid, loadAdError.convertToGodotDictionary())
@@ -115,8 +122,8 @@ class PoingGodotAdMobInterstitialAd(godot: Godot?) : org.godotengine.godot.plugi
 
     @UsedByGodot
     fun show(uid : Int){
-        activity!!.runOnUiThread {
-            interstitials[uid]?.show(activity!!)
+        aActivity.runOnUiThread {
+            interstitials[uid]?.show(aActivity)
         }
     }
 

@@ -36,6 +36,7 @@ import org.godotengine.godot.plugin.UsedByGodot
 
 @Suppress("unused") // Instantiated by Android via AndroidManifest (AAR / Godot plugin)
 class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(godot)  {
+    private lateinit var aActivity: Activity
     private val banners = mutableListOf<Banner?>()
     private lateinit var aGodotLayout : FrameLayout
 
@@ -44,7 +45,8 @@ class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotP
     }
 
     override fun onMainCreate(activity: Activity?): View {
-        aGodotLayout = FrameLayout(getActivity()!!)
+        aActivity = super.getActivity()!!
+        aGodotLayout = FrameLayout(aActivity)
         return aGodotLayout
     }
 
@@ -61,7 +63,7 @@ class PoingGodotAdMobAdView(godot: Godot?) : org.godotengine.godot.plugin.GodotP
 
     @UsedByGodot
     fun create(adViewDictionary : Dictionary) : Int{
-        val banner = Banner(banners.size, activity!!, aGodotLayout, godot, pluginName, adViewDictionary).apply {
+        val banner = Banner(banners.size, aActivity, aGodotLayout, godot, pluginName, adViewDictionary).apply {
             banners.add(this)
         }
 

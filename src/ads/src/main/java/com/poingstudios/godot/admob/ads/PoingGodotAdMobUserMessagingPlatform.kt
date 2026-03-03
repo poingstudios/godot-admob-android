@@ -23,6 +23,7 @@
 @file:Suppress("FunctionName")
 package com.poingstudios.godot.admob.ads
 
+import android.app.Activity
 import android.util.ArraySet
 import com.google.android.ump.UserMessagingPlatform
 import com.poingstudios.godot.admob.ads.converters.convertToGodotDictionary
@@ -35,10 +36,16 @@ import org.godotengine.godot.plugin.UsedByGodot
 
 @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN", "unused") // Godot expects Java types, not Kotlin ones (e.g. Integer)
 class PoingGodotAdMobUserMessagingPlatform(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(godot){
+    private lateinit var aActivity: Activity
     private val consentForms = mutableListOf<PoingGodotAdMobConsentForm?>()
 
     override fun getPluginName(): String {
         return this::class.simpleName.toString()
+    }
+
+    override fun onMainCreate(activity: Activity?): android.view.View? {
+        aActivity = super.getActivity()!!
+        return null
     }
 
     override fun getPluginSignals(): MutableSet<SignalInfo> {
@@ -51,12 +58,12 @@ class PoingGodotAdMobUserMessagingPlatform(godot: Godot?) : org.godotengine.godo
 
     @UsedByGodot
     fun load_consent_form(){
-        activity!!.runOnUiThread {
+        aActivity.runOnUiThread {
             Logger.debug("load_consent_form")
             UserMessagingPlatform.loadConsentForm(
-                activity!!,
+                aActivity,
                 {
-                    val consentForm = PoingGodotAdMobConsentForm(consentForms.size, it, activity!!, godot, pluginName).apply {
+                    val consentForm = PoingGodotAdMobConsentForm(consentForms.size, it, aActivity, godot, pluginName).apply {
                         consentForms.add(this)
                     }
                     emitSignal("on_consent_form_load_success_listener", consentForm.uid)

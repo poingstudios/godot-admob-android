@@ -23,6 +23,7 @@
 @file:Suppress("FunctionName")
 package com.poingstudios.godot.admob.ads
 
+import android.app.Activity
 import android.util.ArraySet
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -42,9 +43,15 @@ import org.godotengine.godot.plugin.UsedByGodot
 // Godot expects Java types, not Kotlin ones (e.g. Integer)
 // Instantiated by Android via AndroidManifest (AAR / Godot plugin)
 class PoingGodotAdMobRewardedAd(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(godot) {
+    private lateinit var aActivity: Activity
     private val rewardedAds = mutableListOf<RewardedAd?>()
     override fun getPluginName(): String {
         return this::class.simpleName.toString()
+    }
+
+    override fun onMainCreate(activity: Activity?): android.view.View? {
+        aActivity = super.getActivity()!!
+        return null
     }
 
     override fun getPluginSignals(): MutableSet<SignalInfo> {
@@ -71,11 +78,11 @@ class PoingGodotAdMobRewardedAd(godot: Godot?) : org.godotengine.godot.plugin.Go
 
     @UsedByGodot
     fun load(adUnitId : String, adRequestDictionary : Dictionary, keywords : Array<String>, uid: Int){
-        activity!!.runOnUiThread{
+        aActivity.runOnUiThread{
             Logger.debug("loading rewarded ad")
             val adRequest = adRequestDictionary.convertToAdRequest(keywords)
 
-            RewardedAd.load(activity!!,
+            RewardedAd.load(aActivity,
                 adUnitId, adRequest, object : RewardedAdLoadCallback() {
                     override fun onAdFailedToLoad(loadAdError: LoadAdError) {
                         emitSignal("on_rewarded_ad_failed_to_load", uid, loadAdError.convertToGodotDictionary())
@@ -119,8 +126,8 @@ class PoingGodotAdMobRewardedAd(godot: Godot?) : org.godotengine.godot.plugin.Go
 
     @UsedByGodot
     fun show(uid : Int){
-        activity!!.runOnUiThread {
-            rewardedAds[uid]?.show(activity!!)
+        aActivity.runOnUiThread {
+            rewardedAds[uid]?.show(aActivity)
             {
                 emitSignal("on_rewarded_ad_user_earned_reward", uid, it.convertToGodotDictionary())
                 Logger.debug("User earned the reward.")
@@ -136,7 +143,7 @@ class PoingGodotAdMobRewardedAd(godot: Godot?) : org.godotengine.godot.plugin.Go
 
     @UsedByGodot
     fun set_server_side_verification_options(uid : Int, serverSideVerificationOptionsDictionary: Dictionary){
-        activity!!.runOnUiThread{
+        aActivity.runOnUiThread{
             Logger.debug("setServerSideVerificationOptions: $serverSideVerificationOptionsDictionary.")
             rewardedAds[uid]?.setServerSideVerificationOptions(serverSideVerificationOptionsDictionary.convertToServerSideVerificationOptions())
         }
