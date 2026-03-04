@@ -23,6 +23,7 @@
 @file:Suppress("FunctionName")
 package com.poingstudios.godot.admob.ads
 
+import android.app.Activity
 import android.util.ArraySet
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -42,9 +43,15 @@ import org.godotengine.godot.plugin.UsedByGodot
 // Godot expects Java types, not Kotlin ones (e.g. Integer)
 // Instantiated by Android via AndroidManifest (AAR / Godot plugin)
 class PoingGodotAdMobRewardedInterstitialAd(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(godot) {
+    private lateinit var aActivity: Activity
     private val rewardedInterstitialAds = mutableListOf<RewardedInterstitialAd?>()
     override fun getPluginName(): String {
         return this::class.simpleName.toString()
+    }
+
+    override fun onMainCreate(activity: Activity?): android.view.View? {
+        aActivity = super.getActivity()!!
+        return null
     }
 
     override fun getPluginSignals(): MutableSet<SignalInfo> {
@@ -71,11 +78,11 @@ class PoingGodotAdMobRewardedInterstitialAd(godot: Godot?) : org.godotengine.god
 
     @UsedByGodot
     fun load(adUnitId : String, adRequestDictionary : Dictionary, keywords : Array<String>, uid: Int){
-        activity!!.runOnUiThread{
+        aActivity.runOnUiThread{
             Logger.debug("loading rewarded interstitial ad")
             val adRequest = adRequestDictionary.convertToAdRequest(keywords)
 
-            RewardedInterstitialAd.load(activity!!,
+            RewardedInterstitialAd.load(aActivity,
                 adUnitId, adRequest, object : RewardedInterstitialAdLoadCallback() {
                     override fun onAdFailedToLoad(loadAdError: LoadAdError) {
                         emitSignal("on_rewarded_interstitial_ad_failed_to_load", uid, loadAdError.convertToGodotDictionary())
@@ -119,8 +126,8 @@ class PoingGodotAdMobRewardedInterstitialAd(godot: Godot?) : org.godotengine.god
 
     @UsedByGodot
     fun show(uid : Int){
-        activity!!.runOnUiThread {
-            rewardedInterstitialAds[uid]?.show(activity!!)
+        aActivity.runOnUiThread {
+            rewardedInterstitialAds[uid]?.show(aActivity)
             {
                 emitSignal("on_rewarded_interstitial_ad_user_earned_reward", uid, it.convertToGodotDictionary())
                 Logger.debug("User earned the reward.")
@@ -136,7 +143,7 @@ class PoingGodotAdMobRewardedInterstitialAd(godot: Godot?) : org.godotengine.god
 
     @UsedByGodot
     fun set_server_side_verification_options(uid : Int, serverSideVerificationOptionsDictionary: Dictionary){
-        activity!!.runOnUiThread{
+        aActivity.runOnUiThread{
             Logger.debug("setServerSideVerificationOptions: $serverSideVerificationOptionsDictionary.")
             rewardedInterstitialAds[uid]?.setServerSideVerificationOptions(serverSideVerificationOptionsDictionary.convertToServerSideVerificationOptions())
         }
