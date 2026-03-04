@@ -34,9 +34,15 @@ jobs:
 
         echo "Latest Godot version: $LATEST"
 
-        EXISTS=$(gh api "repos/${{ github.repository }}/releases/tags/${PLUGIN_VERSION}" \
-          --jq ".assets[].name" 2>/dev/null \
-          | grep -q "poing-godot-admob-android-v${LATEST}.zip" && echo "true" || echo "false")
+        RELEASE_EXISTS=$(gh api "repos/${{ github.repository }}/releases/tags/${PLUGIN_VERSION}" > /dev/null 2>&1 && echo "true" || echo "false")
+
+        if [ "$RELEASE_EXISTS" = "true" ]; then
+          EXISTS=$(gh api "repos/${{ github.repository }}/releases/tags/${PLUGIN_VERSION}" \
+            --jq ".assets[].name" 2>/dev/null \
+            | grep -q "poing-godot-admob-android-v${LATEST}.zip" && echo "true" || echo "false")
+        else
+          EXISTS="false"
+        fi
 
         if [ "$EXISTS" = "true" ]; then
           echo "should_build=false" >> $GITHUB_OUTPUT
@@ -44,6 +50,7 @@ jobs:
         else
           echo "should_build=true" >> $GITHUB_OUTPUT
           echo "godot_version=$LATEST" >> $GITHUB_OUTPUT
+
           echo "Need to build for $LATEST"
         fi
 
