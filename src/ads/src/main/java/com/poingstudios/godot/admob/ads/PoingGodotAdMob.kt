@@ -86,4 +86,14 @@ class PoingGodotAdMob(godot: Godot?) : org.godotengine.godot.plugin.GodotPlugin(
     fun get_initialization_status(): Dictionary {
         return MobileAds.getInitializationStatus()!!.convertToGodotDictionary()
     }
+
+    @UsedByGodot
+    fun set_app_volume(volume: Float) {
+        MobileAds.setAppVolume(clampAppVolume(volume))
+    }
+
+    @UsedByGodot
+    fun set_app_muted(muted: Boolean) {
+        MobileAds.setAppMuted(muted)
+    }
 }
