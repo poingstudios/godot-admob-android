@@ -131,12 +131,12 @@ Windows:
 
 #### Export files:
 ```shell
-./gradlew exportFiles -PpluginExportPath=D:\godot-admob-editor\android\plugins
+./gradlew exportFiles -PpluginExportPath=D:\godot-admob-editor\addons\admob\android\bin
 ```
 
 #### Build and exporting plugin files into the desired directory:
 ```shell
-./gradlew build ; ./gradlew exportFiles -PpluginExportPath=D:\godot-admob-editor\android\plugins
+./gradlew build ; ./gradlew exportFiles -PpluginExportPath=D:\godot-admob-editor\addons\admob\android\bin
 ```
 
 
