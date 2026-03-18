@@ -1,4 +1,15 @@
+# ⚠️ ARCHIVED – REPOSITORY MIGRATED ⚠️
 
+> [!CAUTION]
+> **IMPORTANT ARCHIVING NOTICE – EFFECTIVE IMMEDIATELY** > This repository is now **archived indefinitely** as part of our migration to a unified monorepo structure.  
+> 
+> All Android-specific code, future updates, and plugin binaries have been moved to the main repository to simplify maintenance and compatibility.  
+> 
+> **Please use the main repository for the latest releases and documentation:** > 👉 **[godot-admob-plugin](https://github.com/poingstudios/godot-admob-plugin)** > 
+> For more details on this transition, see:  
+> [Issue #211 – Migrate iOS and Android repositories to a monorepo](https://github.com/poingstudios/godot-admob-plugin/issues/211)
+
+---
 <h1 align="center">
   <br>
   <img src="https://i.imgur.com/fLsHNCO.png" alt="GodotAdMob" width=500>
